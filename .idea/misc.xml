@@ -3,9 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/ac_login.xml" value="0.264" />
+        <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/font/chewy.xml" value="0.16041666666666668" />
+        <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/ac_login.xml" value="0.1" />
+        <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/ac_navigation.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/activity_main.xml" value="0.176" />
-        <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/fg_weather.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/com_weather.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/fg_weather.xml" value="0.536" />
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/nav_header.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/menu/nav_menu.xml" value="0.25416666666666665" />
       </map>

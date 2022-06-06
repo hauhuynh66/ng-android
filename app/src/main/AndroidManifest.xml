@@ -17,13 +17,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Material3.Light.NoActionBar">
         <activity
-            android:name="com.app.activity.LoginActivity"
+            android:name="com.app.activity.NavigationActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name="com.app.activity.LoginActivity"
+            android:exported="true">
+
         </activity>
     </application>
 

@@ -28,21 +28,26 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         )
         drawerLayout.addDrawerListener(drawerToggle)
         drawerToggle.syncState()
-        drawerLayout.open();
         if(savedInstanceState==null){
             supportFragmentManager.beginTransaction().replace(R.id.container,  WeatherFragment()).commit()
         }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        //this.drawerLayout.closeDrawer(GravityCompat.START);
+        when(item.itemId){
+            else->{
+                supportFragmentManager.beginTransaction().replace(R.id.container,  WeatherFragment()).commit()
+            }
+        }
+        this.drawerLayout.closeDrawer(GravityCompat.START);
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-                (android.R.id.home)->
-                    this.drawerLayout.openDrawer(GravityCompat.START);
+                (android.R.id.home)-> {
+                    this.drawerLayout.openDrawer(GravityCompat.START)
+                }
         }
         return super.onOptionsItemSelected(item)
     }
