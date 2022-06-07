@@ -3,14 +3,24 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/drawable/bg.xml" value="0.14635416666666667" />
+        <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/drawable/ic_wb_sunny.xml" value="0.14635416666666667" />
+        <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/font/audiowide.xml" value="0.16041666666666668" />
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/font/chewy.xml" value="0.16041666666666668" />
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/ac_login.xml" value="0.1" />
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/ac_navigation.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/activity_main.xml" value="0.176" />
+        <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/com_item.xml" value="0.12" />
+        <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/com_note.xml" value="0.152" />
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/com_weather.xml" value="0.13020833333333334" />
-        <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/fg_weather.xml" value="0.536" />
+        <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/dlg_newnote.xml" value="0.2" />
+        <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/fg_item.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/fg_map.xml" value="0.136" />
+        <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/fg_note.xml" value="0.264" />
+        <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/fg_weather.xml" value="0.136" />
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/nav_header.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/menu/nav_menu.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/menu/weather_menu.xml" value="0.13020833333333334" />
       </map>
     </option>
   </component>

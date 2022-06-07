@@ -6,16 +6,18 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.data.WeatherData
 import com.app.ngn.R
+import com.app.util.ViewUtils.Companion.getWeatherIcon
 
 class WeatherAdapter(private val context:Activity, var data:ArrayList<WeatherData>):
     RecyclerView.Adapter<WeatherAdapter.WeatherViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherViewHolder {
-        val inflater:LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         return WeatherViewHolder(inflater.inflate(R.layout.com_weather, parent, false))
     }
 
@@ -26,9 +28,11 @@ class WeatherAdapter(private val context:Activity, var data:ArrayList<WeatherDat
         val des = holder.v.findViewById<TextView>(R.id.sub_des)
         val temp = holder.v.findViewById<TextView>(R.id.sub_temp)
         val humid = holder.v.findViewById<TextView>(R.id.sub_humid)
-        des.text = data[position].description
-        temp.text = data[position].temp.toString()
-        humid.text = data[position].humid.toString()
+        val icon = holder.v.findViewById<ImageView>(R.id.weather_icon)
+        des.text = this.data[position].description
+        temp.text = this.data[position].temp.toString()
+        humid.text = this.data[position].humid.toString()
+        icon.setImageDrawable(getWeatherIcon(this.data[position].description, this.context))
     }
 
     override fun getItemCount(): Int {
