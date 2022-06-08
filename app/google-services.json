@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "440247298126",
+    "project_id": "ng-fb-966ff",
+    "storage_bucket": "ng-fb-966ff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:440247298126:android:86f85de9ed9eb2251ffb1f",
+        "android_client_info": {
+          "package_name": "com.app.ngn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "440247298126-ao87oncilbvmeqk2l19v3b4tsbcoqvp3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADQCTWIsI-RM4X5LOoJqksip6cBBypFf0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "440247298126-ao87oncilbvmeqk2l19v3b4tsbcoqvp3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

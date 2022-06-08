@@ -1,50 +1,66 @@
 package com.app.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.Request
-import com.android.volley.RequestQueue
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.app.ngn.R
-import java.util.*
-import org.json.JSONObject
-
-
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 
 class LoginActivity: AppCompatActivity() {
-    private lateinit var password:EditText;
-    private lateinit var email:EditText;
-    private lateinit var requestQueue: RequestQueue
+    private lateinit var password:EditText
+    private lateinit var email:EditText
+    private lateinit var auth:FirebaseAuth
+    private var n:Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_login)
-        requestQueue = Volley.newRequestQueue(this)
+        auth = Firebase.auth
         password = findViewById(R.id.password)
         email = findViewById(R.id.email)
+        email.setText("hauhuynh66@gmail.com")
+        password.setText("Hauhuynh")
         val loginBtn = findViewById<Button>(R.id.loginBtn)
         val clearBtn = findViewById<Button>(R.id.clearBtn)
         clearBtn.setOnClickListener{
             email.text.clear()
             password.text.clear()
+            n++
+            if (n>5) {
+                val skip = Intent(this, NavigationActivity::class.java)
+                startActivity(skip)
+            }
         }
         loginBtn.setOnClickListener {
-            val body = JSONObject()
-            body.put("username", this.email.text.toString())
-            body.put("password", this.password.text.toString())
-            val success = true
-            if(success){
-                val intent = Intent(this, NavigationActivity::class.java)
-                startActivity(intent)
-            }else{
-                Toast.makeText(this, "Bad Credentials", Toast.LENGTH_SHORT).show()
-            }
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(loginBtn.windowToken,0)
+            auth.signInWithEmailAndPassword(this.email.text!!.toString(), this.password.text!!.toString())
+                .addOnCompleteListener(this){
+                    task->run{
+                        if(task.isSuccessful){
+                            val mainIntent = Intent(this, NavigationActivity::class.java)
+                            startActivity(mainIntent)
+                        }else{
+                            clearBtn.performClick()
+                            Toast.makeText(this, "Bad Credentials", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
+                .addOnFailureListener {
+                    err->
+                    run{
+                        clearBtn.performClick()
+                        Toast.makeText(this, err.message, Toast.LENGTH_LONG).show()
+                    }
+
+                }
         }
     }
 }

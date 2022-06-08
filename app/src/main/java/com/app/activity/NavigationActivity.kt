@@ -3,23 +3,41 @@ package com.app.activity
 import android.Manifest
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import com.app.fragment.NoteFragment
 import com.app.fragment.WeatherFragment
 import com.app.ngn.R
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import kotlin.system.exitProcess
 
 class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var auth:FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_navigation)
+        auth = Firebase.auth
+        val user = auth.currentUser
+        if(user==null){
+            exitProcess(0)
+        }else{
+            val displayName = findViewById<TextView>(R.id.displayName)
+            val displayEmail = findViewById<TextView>(R.id.email)
+            //val userImg = findViewById<ImageView>(R.id.userImg)
+            displayName.text = user.displayName
+            displayEmail.text = user.email
+            //userImg.setImageBitmap(user.photoUrl)
+        }
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -39,16 +57,17 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         }
 
         val permission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
-                permission -> {
-                    when{
-                        permission.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false)->{
+                permission ->
+                run {
+                    when {
+                        permission.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
 
                         }
-                        else->{
+                        else -> {
 
                         }
                     }
-        }
+                }
         }
 
         permission.launch(arrayOf(
@@ -76,7 +95,7 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
 
             }
         }
-        this.drawerLayout.closeDrawer(GravityCompat.START);
+        this.drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 
@@ -90,9 +109,6 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
     }
 
     override fun onBackPressed() {
-        val f:Fragment = supportFragmentManager.findFragmentById(R.id.container) as Fragment
-        if(f is WeatherFragment){
 
-        }
     }
 }
