@@ -5,19 +5,36 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.android.volley.RequestQueue
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.app.adapter.ItemAdapter
+import com.app.data.ItemData
+import com.app.ngn.R
+import com.app.util.ViewUtils.Companion.generateString
+import kotlin.random.Random
 
 class ItemFragment:Fragment() {
-    private lateinit var requestQueue: RequestQueue
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
+    private lateinit var itemList: ArrayList<ItemData>
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
+        return inflater.inflate(R.layout.fg_item, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        itemList = generatePseudoItem(10)
+        val adapter = ItemAdapter(requireActivity(), itemList)
+        val layoutManager = GridLayoutManager(requireContext(), 2)
+        val list = view.findViewById<RecyclerView>(R.id.itemList)
+        list.layoutManager = layoutManager
+        list.adapter = adapter
+    }
+
+    private fun generatePseudoItem(n:Int):ArrayList<ItemData>{
+        val list = arrayListOf<ItemData>()
+        for (i in 0..n){
+            list.add(ItemData(generateString(10),"https://picsum.photos/id/".plus(Random.nextInt(50)+1).plus("/200/300"),Random.nextLong(1000)+1000))
+        }
+        return list
     }
 }

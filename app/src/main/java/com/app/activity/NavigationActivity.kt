@@ -3,13 +3,12 @@ package com.app.activity
 import android.Manifest
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.app.fragment.ItemFragment
 import com.app.fragment.NoteFragment
 import com.app.fragment.WeatherFragment
 import com.app.ngn.R
@@ -31,11 +30,11 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         if(user==null){
             exitProcess(0)
         }else{
-            val displayName = findViewById<TextView>(R.id.displayName)
-            val displayEmail = findViewById<TextView>(R.id.email)
+            //val displayName = findViewById<TextView>(R.id.displayName)
+            //val displayEmail = findViewById<TextView>(R.id.email)
             //val userImg = findViewById<ImageView>(R.id.userImg)
-            displayName.text = user.displayName
-            displayEmail.text = user.email
+            //displayName.text = user.displayName
+            //displayEmail.text = user.email
             //userImg.setImageBitmap(user.photoUrl)
         }
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
@@ -84,7 +83,8 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
 
             }
             R.id.nav_menu_item->{
-
+                supportActionBar!!.title = "Item"
+                supportFragmentManager.beginTransaction().replace(R.id.container,  ItemFragment(), "ITEM").commit()
             }
             else->{
                 val f = supportFragmentManager.findFragmentById(R.id.container)

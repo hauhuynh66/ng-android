@@ -31,5 +31,6 @@ class NoteAdapter(val context: Activity,val data:ArrayList<NoteData>):RecyclerVi
     }
 
     public class NoteViewHolder(val v: View):RecyclerView.ViewHolder(v){
+
     }
 }
