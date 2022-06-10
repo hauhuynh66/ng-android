@@ -1,18 +1,15 @@
 package com.app.fragment
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,10 +20,13 @@ import com.android.volley.RequestQueue
 import com.android.volley.TimeoutError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.app.activity.MapActivity
 import com.app.adapter.WeatherAdapter
 import com.app.data.ForecastData
 import com.app.data.WeatherData
+import com.app.dialog.GraphDialog
 import com.app.ngn.R
+import com.app.util.AnimateUtils.Companion.crossfade
 import com.app.util.ViewUtils.Companion.getWeatherIcon
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -36,13 +36,12 @@ import java.text.DecimalFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class WeatherFragment: Fragment(){
+class WeatherFragment(): Fragment(){
     private lateinit var requestQueue:RequestQueue
     private lateinit var progressBar: ProgressBar
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var location:SimpleLocation
-    private lateinit var mainLayout: View
-    private lateinit var subLayout: View
+    private lateinit var contentLayout: View
     private var forecast:ForecastData? = null
     private val cnt = 7
     private val defaultLongitude:Double = 106.6667
@@ -53,15 +52,28 @@ class WeatherFragment: Fragment(){
         return inflater.inflate(R.layout.fg_weather, container, false)
     }
 
+    @SuppressLint("MissingPermission")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        this.mainLayout = view.findViewById<ConstraintLayout>(R.id.main_layout)
-        this.subLayout = view.findViewById<ConstraintLayout>(R.id.sub_layout)
-        mainLayout.visibility = View.INVISIBLE
-        subLayout.visibility = View.INVISIBLE
-        this.progressBar = view.findViewById<ProgressBar>(R.id.progress)
+        contentLayout = view.findViewById(R.id.contentLayout)
+        contentLayout.visibility = View.INVISIBLE
+        this.progressBar = view.findViewById(R.id.progress)
         this.progressBar.visibility = View.VISIBLE
         this.requestQueue = Volley.newRequestQueue(this.requireContext())
 
+        val graph = view.findViewById<Button>(R.id.graph)
+        val map = view.findViewById<Button>(R.id.map)
+        graph.setOnClickListener{
+            GraphDialog(forecast).show(requireActivity().supportFragmentManager, "Graph")
+        }
+
+        map.setOnClickListener {
+            val intent = Intent(requireActivity(), MapActivity::class.java)
+            println(location.lon)
+            println(location.lat)
+            intent.putExtra("lon", location.lon)
+            intent.putExtra("lat", location.lat)
+            startActivity(intent)
+        }
         val key = "1f21f91e5b111cf398a465df830c423b"
         var url = "https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={key}&cnt={cnt}"
         url = url.replace("{key}", key)
@@ -83,11 +95,13 @@ class WeatherFragment: Fragment(){
                     url = url.replace("{lat}", this.location.lat.toString())
                     processRequest(url, view)
                 }
-            }.addOnFailureListener { run{
-                url = url.replace("{lon}", defaultLongitude.toString())
-                url = url.replace("{lat}", defaultLongitude.toString())
-                processRequest(url, view)
-            } }
+            }.addOnFailureListener {
+                run{
+                    url = url.replace("{lon}", defaultLongitude.toString())
+                    url = url.replace("{lat}", defaultLongitude.toString())
+                    processRequest(url, view)
+                }
+            }
         }else{
             url = url.replace("{lon}", defaultLongitude.toString())
             url = url.replace("{lat}", defaultLatitude.toString())
@@ -145,9 +159,7 @@ class WeatherFragment: Fragment(){
                     val listView:RecyclerView = view.findViewById(R.id.weather_list)
                     listView.layoutManager = layoutManager
                     listView.adapter = WeatherAdapter(this.requireActivity(), forecast!!.data)
-                    this.progressBar.visibility = View.INVISIBLE
-                    mainLayout.visibility = View.VISIBLE
-                    subLayout.visibility = View.VISIBLE
+                    crossfade(contentLayout, progressBar, 800)
                     finished = true
                 }
             }, { error-> run {
@@ -162,10 +174,7 @@ class WeatherFragment: Fragment(){
         requestQueue.add(forecastRequest)
     }
 
-    private class SimpleLocation(var lon:Double, var lat:Double, var alt:Double){
+    class SimpleLocation(var lon:Double, var lat:Double, var alt:Double){
 
     }
-
-
-
 }

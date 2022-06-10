@@ -5,17 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.NoteAdapter
 import com.app.data.NoteData
-import com.app.dialog.NewNoteDialog
-import com.app.listener.NoteListener
+import com.app.dialog.NoteDialog
+import com.app.helper.OneColumnListHelperCallback
+import com.app.listener.NoteDialogListener
+import com.app.listener.NoteItemListener
 import com.app.ngn.R
+import com.app.util.ViewUtils.Companion.generateString
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.*
 
-class NoteFragment:Fragment(), NoteListener {
+class NoteFragment:Fragment(), NoteDialogListener {
     private lateinit var fb:FloatingActionButton
     private lateinit var data:ArrayList<NoteData>
     private lateinit var adapter:NoteAdapter
@@ -25,20 +29,32 @@ class NoteFragment:Fragment(), NoteListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        data = arrayListOf()
-        data.add(NoteData("Chapter 1", "Something", Date()))
-        data.add(NoteData("Chapter 2", "Lorem", Date()))
-        data.add(NoteData("Chapter 3", "Ipsum", Date()))
+        data = getPseudoNotes(10)
         val layoutManager = LinearLayoutManager(this.requireContext())
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         val noteList = view.findViewById<RecyclerView>(R.id.noteList)
         noteList.layoutManager = layoutManager
-        adapter = NoteAdapter(this.requireActivity(), data)
+        adapter = NoteAdapter(this.requireActivity(), data, object: NoteItemListener{
+            override fun onItemClick(note: NoteData) {
+
+            }
+        })
         noteList.adapter = adapter
         fb = view.findViewById(R.id.addBtn)
         fb.setOnClickListener {
-            NewNoteDialog(this).show(requireActivity().supportFragmentManager, "NewNote")
+            NoteDialog(this, null).show(requireActivity().supportFragmentManager, "NewNote")
         }
+        val itemCallback = OneColumnListHelperCallback(adapter)
+        val itemHelper = ItemTouchHelper(itemCallback)
+        itemHelper.attachToRecyclerView(noteList)
+    }
+
+    private fun getPseudoNotes(length:Int):ArrayList<NoteData>{
+        data = arrayListOf()
+        for(i in 0 until length){
+            data.add(NoteData(generateString(10), generateString(25), Date()))
+        }
+        return data
     }
 
     override fun onAdd(note: NoteData) {

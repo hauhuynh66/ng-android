@@ -10,12 +10,12 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.app.data.NoteData
-import com.app.listener.NoteListener
+import com.app.listener.NoteDialogListener
 import com.app.ngn.R
 import com.app.util.ViewUtils.Companion.parseDate
 import java.util.*
 
-class NewNoteDialog(private val listener: NoteListener):DialogFragment() {
+class NoteDialog(private val dialogListener: NoteDialogListener, data: NoteData?):DialogFragment() {
     private lateinit var dp:Button
     private lateinit var tp:Button
     private lateinit var title:EditText
@@ -31,6 +31,7 @@ class NewNoteDialog(private val listener: NoteListener):DialogFragment() {
         this.content = v.findViewById(R.id.content)
         val date:EditText = v.findViewById(R.id.date)
         val time:EditText = v.findViewById(R.id.time)
+
         val dpListener = DatePickerDialog.OnDateSetListener { _, year, month, day ->
             run {
                 calendar.set(Calendar.YEAR, year)
@@ -70,13 +71,13 @@ class NewNoteDialog(private val listener: NoteListener):DialogFragment() {
                 /*validate*/
                 val sb:StringBuilder = StringBuilder()
                 sb.append(date.text.toString(),time.text.toString())
-                listener.onAdd(NoteData(this.title.text.toString(), this.content.text.toString(), parseDate(sb.toString())))
+                dialogListener.onAdd(NoteData(this.title.text.toString(), this.content.text.toString(), parseDate(sb.toString())))
             }
         }).setNegativeButton("No", DialogInterface.OnClickListener{
             di, _ -> run{
                 val sb:StringBuilder = StringBuilder()
                 sb.append(date.text.toString(),time.text.toString())
-                listener.onCancel(NoteData(this.title.text.toString(), this.content.text.toString(), parseDate(sb.toString())))
+                dialogListener.onCancel(NoteData(this.title.text.toString(), this.content.text.toString(), parseDate(sb.toString())))
                 di.dismiss()
             }
         })

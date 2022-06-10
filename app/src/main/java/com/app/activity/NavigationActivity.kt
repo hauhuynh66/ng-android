@@ -2,6 +2,7 @@ package com.app.activity
 
 import android.Manifest
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -21,28 +22,26 @@ import kotlin.system.exitProcess
 class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var auth:FirebaseAuth
+    private lateinit var currentLocation:WeatherFragment.SimpleLocation
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_navigation)
         auth = Firebase.auth
-        val user = auth.currentUser
-        if(user==null){
-            exitProcess(0)
-        }else{
-            //val displayName = findViewById<TextView>(R.id.displayName)
-            //val displayEmail = findViewById<TextView>(R.id.email)
-            //val userImg = findViewById<ImageView>(R.id.userImg)
-            //displayName.text = user.displayName
-            //displayEmail.text = user.email
-            //userImg.setImageBitmap(user.photoUrl)
-        }
-        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        val user = auth.currentUser ?: exitProcess(0)
+        //val displayName = findViewById<TextView>(R.id.displayName)
+        //val displayEmail = findViewById<TextView>(R.id.email)
+        //val userImg = findViewById<ImageView>(R.id.userImg)
+        //displayName.text = user.displayName!!
+        //displayEmail.text = user.email
+        //userImg.setImageBitmap(user.photoUrl)
+        toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this)
-        this.drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
+        this.drawerLayout = findViewById(R.id.drawer_layout)
         val drawerToggle = ActionBarDrawerToggle(this, drawerLayout,
             R.string.drawer_open,
             R.string.drawer_close
@@ -99,9 +98,13 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         return true
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        return super.onCreateOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-                (android.R.id.home)-> {
+                android.R.id.home->{
                     this.drawerLayout.openDrawer(GravityCompat.START)
                 }
         }

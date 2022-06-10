@@ -1,7 +1,9 @@
 package com.app.activity
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import com.app.fragment.WeatherFragment
 import com.app.ngn.R
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -12,9 +14,15 @@ import com.google.android.gms.maps.model.MarkerOptions
 
 class MapActivity:AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
+    private var location: WeatherFragment.SimpleLocation? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fg_map)
+        setContentView(R.layout.ac_map)
+        val bundle = intent.extras
+        location = WeatherFragment.SimpleLocation(bundle!!.getDouble("lon")
+            , bundle.getDouble("lat"), 10.0)
+        setSupportActionBar(findViewById(R.id.toolbar))
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -22,11 +30,21 @@ class MapActivity:AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        val defaultLocation = LatLng(-34.0, 151.0)
+        val defaultLocation = LatLng(location!!.lat, location!!.lon)
         mMap.addMarker(
             MarkerOptions()
             .position(defaultLocation)
-            .title("Marker in Sydney"))
+            .title("Current Location"))
+        mMap.setMinZoomPreference(5f)
         mMap.moveCamera(CameraUpdateFactory.newLatLng(defaultLocation))
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            android.R.id.home->{
+                super.onBackPressed()
+            }
+        }
+        return true
     }
 }

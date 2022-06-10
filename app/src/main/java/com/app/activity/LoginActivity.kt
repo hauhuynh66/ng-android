@@ -23,6 +23,11 @@ class LoginActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_login)
         auth = Firebase.auth
+        val user = auth.currentUser
+        if(user!=null){
+            val mainIntent = Intent(this, NavigationActivity::class.java)
+            startActivity(mainIntent)
+        }
         password = findViewById(R.id.password)
         email = findViewById(R.id.email)
         email.setText("hauhuynh66@gmail.com")
@@ -38,6 +43,7 @@ class LoginActivity: AppCompatActivity() {
                 startActivity(skip)
             }
         }
+
         loginBtn.setOnClickListener {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(loginBtn.windowToken,0)
