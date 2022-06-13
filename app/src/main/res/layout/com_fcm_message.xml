@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constrainedWidth="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/com_fcm_image"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/ic_baseline_person"/>
+    <TextView
+        android:layout_width="0dp"
+        app:layout_constrainedWidth="true"
+        android:layout_height="wrap_content"
+        android:textSize="12pt"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/com_fcm_image"
+        android:padding="10dp"
+        android:paddingEnd="20dp"
+        android:minWidth="200dp"
+        android:fontFamily="@font/audiowide"
+        android:id="@+id/com_fcm_message"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

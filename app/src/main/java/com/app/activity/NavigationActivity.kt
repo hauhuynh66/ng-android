@@ -9,6 +9,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.app.fragment.FCMFragment
 import com.app.fragment.ItemFragment
 import com.app.fragment.NoteFragment
 import com.app.fragment.WeatherFragment
@@ -73,25 +74,32 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.nav_note->{
-                supportActionBar!!.title = "Note"
-                supportFragmentManager.beginTransaction().replace(R.id.container,  NoteFragment(), "NOTE").commit()
-            }
-            R.id.nav_test->{
-
-            }
-            R.id.nav_menu_item->{
-                supportActionBar!!.title = "Item"
-                supportFragmentManager.beginTransaction().replace(R.id.container,  ItemFragment(), "ITEM").commit()
-            }
-            else->{
-                val f = supportFragmentManager.findFragmentById(R.id.container)
-                if(f !is WeatherFragment){
-                    supportActionBar!!.title = "Weather"
-                    supportFragmentManager.beginTransaction().replace(R.id.container,  WeatherFragment(), "WEATHER").commit()
+        supportActionBar!!.apply {
+            when(item.itemId){
+                R.id.nav_note->{
+                    this.title = "Note"
+                    supportFragmentManager.beginTransaction().replace(R.id.container,  NoteFragment(), "NOTE").commit()
                 }
+                R.id.nav_test->{
+                    this.title = "Cloud Messaging"
+                    supportFragmentManager.beginTransaction().replace(R.id.container,  FCMFragment(), "CLOUD MESSAGING").commit()
+                }
+                R.id.nav_menu_item->{
+                    this.title = "Item"
+                    supportFragmentManager.beginTransaction().replace(R.id.container,  ItemFragment(), "ITEM").commit()
+                }
+                R.id.nav_menu_fcm->{
+                    this.title = "Cloud Messaging"
+                    supportFragmentManager.beginTransaction().replace(R.id.container,  FCMFragment(), "CLOUD MESSAGING").commit()
+                }
+                else->{
+                    val f = supportFragmentManager.findFragmentById(R.id.container)
+                    if(f !is WeatherFragment){
+                        supportActionBar!!.title = "Weather"
+                        supportFragmentManager.beginTransaction().replace(R.id.container,  WeatherFragment(), "WEATHER").commit()
+                    }
 
+                }
             }
         }
         this.drawerLayout.closeDrawer(GravityCompat.START)

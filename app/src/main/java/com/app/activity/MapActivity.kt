@@ -3,6 +3,7 @@ package com.app.activity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.app.fragment.WeatherFragment
 import com.app.ngn.R
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -21,7 +22,9 @@ class MapActivity:AppCompatActivity(), OnMapReadyCallback {
         val bundle = intent.extras
         location = WeatherFragment.SimpleLocation(bundle!!.getDouble("lon")
             , bundle.getDouble("lat"), 10.0)
-        setSupportActionBar(findViewById(R.id.toolbar))
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        toolbar.title = "Map"
+        setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment

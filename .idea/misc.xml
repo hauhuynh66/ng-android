@@ -11,11 +11,13 @@
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/ac_map.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/ac_navigation.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/activity_main.xml" value="0.176" />
+        <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/com_fcm_message.xml" value="0.176" />
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/com_item.xml" value="0.152" />
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/com_note.xml" value="0.152" />
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/com_weather.xml" value="0.13020833333333334" />
-        <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/dlg_graph.xml" value="0.10400000000000001" />
+        <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/dlg_graph.xml" value="0.152" />
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/dlg_newnote.xml" value="0.2" />
+        <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/fg_fcm.xml" value="0.176" />
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/fg_item.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/fg_map.xml" value="0.136" />
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/layout/fg_note.xml" value="0.10400000000000001" />

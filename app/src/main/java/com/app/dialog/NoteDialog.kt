@@ -13,6 +13,7 @@ import com.app.data.NoteData
 import com.app.listener.NoteDialogListener
 import com.app.ngn.R
 import com.app.util.ViewUtils.Companion.parseDate
+import java.text.DecimalFormat
 import java.util.*
 
 class NoteDialog(private val dialogListener: NoteDialogListener, data: NoteData?):DialogFragment() {
@@ -86,18 +87,19 @@ class NoteDialog(private val dialogListener: NoteDialogListener, data: NoteData?
 
     private fun getText(cl:Calendar, mode:Int) : String {
         val sb:StringBuilder = StringBuilder()
+        val f = DecimalFormat("00")
         when(mode){
             1->{
                 sb.append(cl.get(Calendar.YEAR))
                 sb.append("/")
-                sb.append(cl.get(Calendar.MONTH))
+                sb.append(f.format(cl.get(Calendar.MONTH)))
                 sb.append("/")
-                sb.append(cl.get(Calendar.DATE))
+                sb.append(f.format(cl.get(Calendar.DATE)))
             }
             2->{
-                sb.append(cl.get(Calendar.HOUR))
+                sb.append(f.format(cl.get(Calendar.HOUR)))
                 sb.append(":")
-                sb.append(cl.get(Calendar.MINUTE))
+                sb.append(f.format(cl.get(Calendar.MINUTE)))
             }
 
         }

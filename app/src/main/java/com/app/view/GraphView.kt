@@ -31,20 +31,24 @@ class GraphView : View{
 
     override fun onDraw(canvas: Canvas?) {
         init()
-        canvas!!.drawLine(5f,5f,5f, height.toFloat(), linePaint)
-        canvas.drawLine(5f,height.toFloat(),width.toFloat(), height.toFloat(), linePaint)
+        val pX = 5f
+        val pY = 10f
         val dY = height/50
         val dX = width/data!!.data.size
         var i = 0
+        canvas!!.apply {
+            canvas.drawLine(pX,pY,pX, height.toFloat() - pY, linePaint)
+            canvas.drawLine(pX,height.toFloat()- pY,width.toFloat(), height.toFloat()- pY, linePaint)
+        }
         data!!.apply {
             data.size>0
             for(weather in this.data){
-                canvas.drawPoint(5f + i*dX,dY * (50f - weather.temp.toFloat()), pointPaint)
+                canvas.drawPoint(pX + i*dX,dY * (50f - weather.temp.toFloat()) - pY, pointPaint)
                 linePaint.color = Color.BLACK
                 linePaint.textSize = 20f
                 val s = weather.temp.toString()
                 val x = if(i > 0){
-                    5f + i*dX - bounds.width()/2
+                    pX + i*dX - bounds.width()/2
                 }else{
                     10f
                 }
@@ -55,8 +59,8 @@ class GraphView : View{
             }
             linePaint.color = Color.BLUE
             for(j in 0 until i - 1){
-                canvas.drawLine(5f + j*dX, dY * (50 - this.data[j].temp.toFloat())
-                    ,5f+(j+1)*dX, dY * (50 - this.data[j+1].temp.toFloat()), linePaint)
+                canvas.drawLine(pX + j*dX, dY * (50 - this.data[j].temp.toFloat()) - pY
+                    ,pX+(j+1)*dX, dY * (50 - this.data[j+1].temp.toFloat()) - pY, linePaint)
             }
         }
     }

@@ -4,6 +4,9 @@
         android:title="Home"
         android:id="@+id/nav_home"/>
     <item
+        android:title="Cloud Messaging"
+        android:id="@+id/nav_menu_fcm"/>
+    <item
         android:title="Note"
         android:id="@+id/nav_note"/>
     <item
