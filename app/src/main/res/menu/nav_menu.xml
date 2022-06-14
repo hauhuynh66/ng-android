@@ -4,9 +4,6 @@
         android:title="Home"
         android:id="@+id/nav_home"/>
     <item
-        android:title="Cloud Messaging"
-        android:id="@+id/nav_menu_fcm"/>
-    <item
         android:title="Note"
         android:id="@+id/nav_note"/>
     <item
@@ -15,4 +12,12 @@
     <item
         android:title="Item"
         android:id="@+id/nav_menu_item"/>
+    <item
+        android:title="Misc"
+        android:id="@+id/nav_menu_misc"/>
+    <group>
+        <item
+            android:title="Setting"
+            android:id="@+id/nav_menu_setting"/>
+    </group>
 </menu>

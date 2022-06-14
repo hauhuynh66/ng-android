@@ -1,22 +1,17 @@
 package com.app.service
 
 import android.content.Intent
-import com.app.data.FCMData
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
-class FCMService(): FirebaseMessagingService() {
+class FCMService : FirebaseMessagingService() {
     private val filter = "MESSAGE_RECEIVED"
-    private var data:ArrayList<FCMData> = arrayListOf()
-    constructor(data:ArrayList<FCMData>): this(){
-        this.data = data
-    }
     override fun onMessageReceived(message: RemoteMessage) {
-        if(message.data.isNotEmpty()){
-            data.add(FCMData(message.data.toString(), message.from!!))
-            val i = Intent()
-            i.putExtra("news", message)
-            val intent = Intent(this.filter)
+        super.onMessageReceived(message)
+        val i = Intent()
+        i.putExtra("news", message)
+        if (message.data.isNotEmpty()) {
+            val intent = Intent(filter)
             intent.putExtra("news", message)
             sendBroadcast(intent)
         }

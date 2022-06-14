@@ -6,25 +6,38 @@ import android.app.NotificationManager
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
-import android.widget.Toast
 import com.app.broadcast.FirebaseMessageReceiver
 import com.google.firebase.messaging.RemoteMessage
+import org.opencv.android.OpenCVLoader
 
 class App: Application() {
     private val channel1ID = "CHANNEL_1"
     private val channel2ID = "CHANNEL_2"
     private val channel3ID = "CHANNEL_3"
+    private val messageReceive = "MESSAGE_RECEIVED"
     val actionMessageReceived = "ACTION_MESSAGE_RECEIVED"
-    val messages:ArrayList<RemoteMessage>? = null
+    companion object {
+        val messages:ArrayList<RemoteMessage?> = arrayListOf()
+    }
 
     override fun onCreate() {
         super.onCreate()
+        OpenCVLoader.initDebug()
+        println("OK")
         createNotificationChannel()
-
+        registerMessageReceiver()
     }
 
     private fun registerMessageReceiver() {
-
+        val listener:FirebaseMessageReceiver.Listener = object : FirebaseMessageReceiver.Listener{
+            override fun onReceive(remoteMessage: RemoteMessage?) {
+                messages.add(remoteMessage)
+                val intent = Intent(actionMessageReceived)
+                sendBroadcast(intent)
+            }
+        }
+        val receiver = FirebaseMessageReceiver(listener)
+        registerReceiver(receiver, IntentFilter(messageReceive))
     }
 
     private fun createNotificationChannel() {

@@ -1,18 +1,15 @@
 package com.app.activity
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.app.fragment.FCMFragment
-import com.app.fragment.ItemFragment
-import com.app.fragment.NoteFragment
-import com.app.fragment.WeatherFragment
+import com.app.fragment.*
 import com.app.ngn.R
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -23,7 +20,6 @@ import kotlin.system.exitProcess
 class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var auth:FirebaseAuth
-    private lateinit var currentLocation:WeatherFragment.SimpleLocation
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,6 +70,7 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        toolbar.menu.clear()
         supportActionBar!!.apply {
             when(item.itemId){
                 R.id.nav_note->{
@@ -81,16 +78,20 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                     supportFragmentManager.beginTransaction().replace(R.id.container,  NoteFragment(), "NOTE").commit()
                 }
                 R.id.nav_test->{
-                    this.title = "Cloud Messaging"
-                    supportFragmentManager.beginTransaction().replace(R.id.container,  FCMFragment(), "CLOUD MESSAGING").commit()
+                    this.title = "Test"
+                    supportFragmentManager.beginTransaction().replace(R.id.container,  TestFragment(), "TEST").commit()
                 }
                 R.id.nav_menu_item->{
                     this.title = "Item"
                     supportFragmentManager.beginTransaction().replace(R.id.container,  ItemFragment(), "ITEM").commit()
                 }
-                R.id.nav_menu_fcm->{
-                    this.title = "Cloud Messaging"
-                    supportFragmentManager.beginTransaction().replace(R.id.container,  FCMFragment(), "CLOUD MESSAGING").commit()
+                R.id.nav_menu_misc->{
+                    this.title = "Others"
+                    supportFragmentManager.beginTransaction().replace(R.id.container,  MiscFragment(), "MISC").commit()
+                }
+                R.id.nav_menu_setting->{
+                    val intent = Intent(this@NavigationActivity, SettingsActivity::class.java)
+                    startActivity(intent)
                 }
                 else->{
                     val f = supportFragmentManager.findFragmentById(R.id.container)
@@ -98,7 +99,6 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                         supportActionBar!!.title = "Weather"
                         supportFragmentManager.beginTransaction().replace(R.id.container,  WeatherFragment(), "WEATHER").commit()
                     }
-
                 }
             }
         }
@@ -106,15 +106,11 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         return true
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        return super.onCreateOptionsMenu(menu)
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-                android.R.id.home->{
-                    this.drawerLayout.openDrawer(GravityCompat.START)
-                }
+            android.R.id.home->{
+                drawerLayout.openDrawer(GravityCompat.START)
+            }
         }
         return super.onOptionsItemSelected(item)
     }
