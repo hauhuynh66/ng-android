@@ -10,7 +10,8 @@
 .DS_Store
 /build
 /captures
-opencv/
+/gradle/
+/opencv/
 .externalNativeBuild
 .cxx
 local.properties
