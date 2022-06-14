@@ -2,6 +2,7 @@ package com.app.fragment
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,6 +34,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import org.apache.commons.text.WordUtils
 import org.json.JSONObject
+import java.security.Permissions
 import java.text.DecimalFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -40,14 +43,10 @@ class WeatherFragment(): Fragment(){
     private lateinit var requestQueue:RequestQueue
     private lateinit var progressBar: ProgressBar
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private lateinit var location:SimpleLocation
     private lateinit var contentLayout: View
+    private lateinit var location:Location
     private var forecast:ForecastData? = null
     private val cnt = 7
-    private val defaultLongitude:Double = 106.6667
-    private val defaultLatitude:Double = 10.75
-
-    var finished = false
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fg_weather, container, false)
     }
@@ -68,10 +67,8 @@ class WeatherFragment(): Fragment(){
 
         map.setOnClickListener {
             val intent = Intent(requireActivity(), MapActivity::class.java)
-            println(location.lon)
-            println(location.lat)
-            intent.putExtra("lon", location.lon)
-            intent.putExtra("lat", location.lat)
+            intent.putExtra("lon", location.longitude)
+            intent.putExtra("lat", location.latitude)
             startActivity(intent)
         }
         val key = "1f21f91e5b111cf398a465df830c423b"
@@ -80,32 +77,20 @@ class WeatherFragment(): Fragment(){
         url = url.replace("{cnt}", cnt.toString())
 
         this.fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this.requireContext())
-
-        if(ActivityCompat.checkSelfPermission(
-                this.requireContext(), Manifest.permission.ACCESS_FINE_LOCATION
-            )==PackageManager.PERMISSION_GRANTED){
-            fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
-                run {
-                    this.location = SimpleLocation(
-                        location!!.longitude,
-                        location.latitude,
-                        location.altitude
-                    )
-                    url = url.replace("{lon}", this.location.lon.toString())
-                    url = url.replace("{lat}", this.location.lat.toString())
-                    processRequest(url, view)
-                }
-            }.addOnFailureListener {
+        val requiredPermissions = arrayListOf<String>()
+        requiredPermissions.add(Manifest.permission.ACCESS_FINE_LOCATION)
+        requiredPermissions.add(Manifest.permission.ACCESS_COARSE_LOCATION)
+        if(checkPermission(requireContext(), requiredPermissions)){
+            fusedLocationProviderClient.lastLocation.addOnSuccessListener {
                 run{
-                    url = url.replace("{lon}", defaultLongitude.toString())
-                    url = url.replace("{lat}", defaultLongitude.toString())
-                    processRequest(url, view)
+                    this.location = it
+                    url = url.replace("{lat}", it.latitude.toString())
+                    url = url.replace("{lon}", it.longitude.toString())
+                    processRequest(url, contentLayout)
                 }
             }
         }else{
-            url = url.replace("{lon}", defaultLongitude.toString())
-            url = url.replace("{lat}", defaultLatitude.toString())
-            processRequest(url, view)
+            this.requestPermission()
         }
     }
 
@@ -133,7 +118,7 @@ class WeatherFragment(): Fragment(){
             val weatherArr = data.getJSONArray("weather")
             val des = WordUtils.capitalize(weatherArr.getJSONObject(0).getString("description"))
             val d = Date(data.getLong("dt"))
-            val df = DecimalFormat("##.##")
+            val df = DecimalFormat("##,##")
             val temp = df.format(weather.getDouble("temp") - 273.15).toDouble()
             list.add(
                 WeatherData(temp, weather.getLong("humidity"),des, d))
@@ -160,7 +145,6 @@ class WeatherFragment(): Fragment(){
                     listView.layoutManager = layoutManager
                     listView.adapter = WeatherAdapter(this.requireActivity(), forecast!!.data)
                     crossfade(contentLayout, progressBar, 800)
-                    finished = true
                 }
             }, { error-> run {
                     if(error is TimeoutError){
@@ -174,7 +158,32 @@ class WeatherFragment(): Fragment(){
         requestQueue.add(forecastRequest)
     }
 
-    class SimpleLocation(var lon:Double, var lat:Double, var alt:Double){
+    private fun checkPermission(context: Context, permissions: ArrayList<String>):Boolean{
+        for (permission in permissions){
+            context.apply {
+                if(ActivityCompat.checkSelfPermission(context, permission)!=PackageManager.PERMISSION_GRANTED){
+                    return false
+                }
+            }
+        }
+        return true
+    }
 
+    private fun requestPermission(){
+        val permission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
+            permission ->
+            run {
+                when {
+                    permission.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+
+                    }
+                    else -> {
+
+                    }
+                }
+            }
+        }
+        permission.launch(arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION))
     }
 }

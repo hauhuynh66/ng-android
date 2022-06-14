@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Projects/Android/ng-android/app/src/main/res/layout/ac_cv.xml" value="0.1" />
+        <entry key="..\:/Projects/Android/ng-android/app/src/main/res/layout/fg_weather.xml" value="0.1" />
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/drawable/bg.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/drawable/ic_wb_sunny.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/font/audiowide.xml" value="0.16041666666666668" />

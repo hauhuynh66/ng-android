@@ -16,15 +16,17 @@ import com.app.task.TaskRunner
 import com.app.util.AnimateUtils.Companion.crossfade
 import java.io.File
 import java.io.FileOutputStream
+import java.nio.file.Files
+import java.nio.file.Paths
 
 class CVActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var mainLayout: ConstraintLayout
-    private lateinit var filePath:String
+    private val filePath:String = Environment.getExternalStorageDirectory().absolutePath
+    private val photoFolder:String = "photo"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_cv)
-        filePath = Environment.getExternalStorageDirectory().absolutePath + "/photo"
         val src = findViewById<ImageView>(R.id.ac_cv_src)
         val out = findViewById<ImageView>(R.id.ac_cv_out)
         val task = TaskRunner()
@@ -35,26 +37,13 @@ class CVActivity : AppCompatActivity() {
         mainLayout = findViewById(R.id.main_layout)
         mainLayout.visibility = View.INVISIBLE
         progressBar.visibility = View.VISIBLE
+        val dir = File(filePath, photoFolder)
+        val success = dir.mkdirs()
+        println(success)
         task.execute(ImageCallable("https://picsum.photos/id/237/200/300"), object: TaskRunner.Callback<Bitmap?>{
             override fun onComplete(result: Bitmap?) {
                 src.setImageBitmap(result)
                 crossfade(mainLayout, progressBar, 1000)
-                val dir = File(filePath)
-                if(!dir.exists()){
-                    dir.mkdir()
-                }
-                val image = File(dir, "dog.png")
-                println(image.absolutePath)
-                if(!image.exists()){
-                    val fOut = FileOutputStream(image)
-                    result!!.apply {
-                        this.compress(Bitmap.CompressFormat.PNG, 90,fOut)
-                        fOut.flush()
-                        fOut.close()
-                    }
-                }else{
-                    println("existed")
-                }
             }
         })
     }

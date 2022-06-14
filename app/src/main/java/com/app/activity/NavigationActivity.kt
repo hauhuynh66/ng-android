@@ -50,23 +50,6 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
             supportFragmentManager.beginTransaction().replace(R.id.container,  WeatherFragment(), "WEATHER").commit()
             supportActionBar!!.title = "Weather"
         }
-
-        val permission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
-                permission ->
-                run {
-                    when {
-                        permission.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-
-                        }
-                        else -> {
-
-                        }
-                    }
-                }
-        }
-
-        permission.launch(arrayOf(
-            Manifest.permission.ACCESS_FINE_LOCATION))
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
