@@ -12,7 +12,7 @@ import androidx.fragment.app.DialogFragment
 import com.app.data.NoteData
 import com.app.listener.NoteDialogListener
 import com.app.ngn.R
-import com.app.util.ViewUtils.Companion.parseDate
+import com.app.util.Format.Companion.parseDate
 import java.text.DecimalFormat
 import java.util.*
 

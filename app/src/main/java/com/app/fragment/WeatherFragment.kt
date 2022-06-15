@@ -2,9 +2,7 @@ package com.app.fragment
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,13 +25,13 @@ import com.app.data.ForecastData
 import com.app.data.WeatherData
 import com.app.dialog.GraphDialog
 import com.app.ngn.R
-import com.app.util.AnimateUtils.Companion.crossfade
-import com.app.util.ViewUtils.Companion.getWeatherIcon
+import com.app.util.Animation.Companion.crossfade
+import com.app.util.Check.Companion.checkPermissions
+import com.app.util.Generator.Companion.getWeatherIcon
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import org.apache.commons.text.WordUtils
 import org.json.JSONObject
-import java.security.Permissions
 import java.text.DecimalFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -80,7 +77,7 @@ class WeatherFragment(): Fragment(){
         val requiredPermissions = arrayListOf<String>()
         requiredPermissions.add(Manifest.permission.ACCESS_FINE_LOCATION)
         requiredPermissions.add(Manifest.permission.ACCESS_COARSE_LOCATION)
-        if(checkPermission(requireContext(), requiredPermissions)){
+        if(checkPermissions(requireContext(), requiredPermissions)){
             fusedLocationProviderClient.lastLocation.addOnSuccessListener {
                 run{
                     this.location = it
@@ -158,16 +155,6 @@ class WeatherFragment(): Fragment(){
         requestQueue.add(forecastRequest)
     }
 
-    private fun checkPermission(context: Context, permissions: ArrayList<String>):Boolean{
-        for (permission in permissions){
-            context.apply {
-                if(ActivityCompat.checkSelfPermission(context, permission)!=PackageManager.PERMISSION_GRANTED){
-                    return false
-                }
-            }
-        }
-        return true
-    }
 
     private fun requestPermission(){
         val permission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){

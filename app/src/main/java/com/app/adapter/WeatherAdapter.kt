@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.data.WeatherData
 import com.app.ngn.R
-import com.app.util.ViewUtils.Companion.getWeatherIcon
+import com.app.util.Generator.Companion.getWeatherIcon
 
 class WeatherAdapter(private val context:Activity, var data:ArrayList<WeatherData>):
     RecyclerView.Adapter<WeatherAdapter.WeatherViewHolder>() {

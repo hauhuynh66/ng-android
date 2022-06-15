@@ -4,7 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.view.View
 
-class AnimateUtils {
+class Animation {
     companion object{
         fun crossfade(v1:View, v2:View, duration: Long) {
             v1.apply {

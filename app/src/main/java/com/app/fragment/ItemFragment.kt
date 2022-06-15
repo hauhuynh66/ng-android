@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.ItemAdapter
 import com.app.data.ItemData
 import com.app.ngn.R
-import com.app.util.ViewUtils.Companion.generateString
+import com.app.util.Generator.Companion.generateString
 import kotlin.random.Random
 
 class ItemFragment:Fragment() {

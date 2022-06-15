@@ -15,7 +15,7 @@ import com.app.helper.OneColumnListHelperCallback
 import com.app.listener.NoteDialogListener
 import com.app.listener.NoteItemListener
 import com.app.ngn.R
-import com.app.util.ViewUtils.Companion.generateString
+import com.app.util.Generator.Companion.generateString
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.*
 
