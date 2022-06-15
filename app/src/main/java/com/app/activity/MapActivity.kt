@@ -15,13 +15,16 @@ import com.google.android.gms.maps.model.MarkerOptions
 
 class MapActivity:AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
-    private var location: WeatherFragment.SimpleLocation? = null
+    private lateinit var data:MutableMap<String, Double>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_map)
         val bundle = intent.extras
-        location = WeatherFragment.SimpleLocation(bundle!!.getDouble("lon")
-            , bundle.getDouble("lat"), 10.0)
+        data = hashMapOf()
+        bundle!!.apply {
+            data["lat"] = this.getDouble("lat")
+            data["lon"] = this.getDouble("lon")
+        }
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         toolbar.title = "Map"
         setSupportActionBar(toolbar)
@@ -33,12 +36,12 @@ class MapActivity:AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        val defaultLocation = LatLng(location!!.lat, location!!.lon)
+        val defaultLocation = LatLng(data["lat"]!!, data["lon"]!!)
         mMap.addMarker(
             MarkerOptions()
             .position(defaultLocation)
             .title("Current Location"))
-        mMap.setMinZoomPreference(5f)
+        mMap.setMinZoomPreference(13f)
         mMap.moveCamera(CameraUpdateFactory.newLatLng(defaultLocation))
     }
 
