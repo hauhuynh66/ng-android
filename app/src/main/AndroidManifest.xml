@@ -48,10 +48,6 @@
             android:name="com.app.activity.FCMActivity"
             android:exported="true"/>
 
-        <activity
-            android:name="com.app.activity.CVActivity"
-            android:exported="true"/>
-
         <service
             android:name="com.app.service.FCMService"
             android:exported="false">

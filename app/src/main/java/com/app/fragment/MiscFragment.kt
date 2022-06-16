@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.activity.CVActivity
 import com.app.activity.FCMActivity
 import com.app.adapter.MiscAdapter
 import com.app.data.MiscData
@@ -31,12 +30,6 @@ class MiscFragment : Fragment() {
         data.add(MiscData(null, object : MiscData.Listener{
             override fun onClick() {
                 val intent = Intent(requireActivity(), FCMActivity::class.java)
-                startActivity(intent)
-            }
-        }))
-        data.add(MiscData(null, object : MiscData.Listener{
-            override fun onClick() {
-                val intent = Intent(requireActivity(), CVActivity::class.java)
                 startActivity(intent)
             }
         }))

@@ -11,12 +11,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.app.data.NoteData
-import com.app.listener.NoteItemListener
+import com.app.model.Note
 import com.app.ngn.R
 import com.app.util.Format.Companion.formatDate
 
-class NoteAdapter(val context: Activity,val data:ArrayList<NoteData>, private val listener: NoteItemListener):RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
+class NoteAdapter(val context: Activity,val data:List<Note>, private val callback: NoteAdapter.Callback?):RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         val inflater = this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         return NoteViewHolder(inflater.inflate(R.layout.com_note, parent, false))
@@ -25,7 +24,7 @@ class NoteAdapter(val context: Activity,val data:ArrayList<NoteData>, private va
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
 
 
-        holder.bind(this.data[position], listener)
+        holder.bind(this.data[position], callback)
     }
 
     override fun getItemCount(): Int {
@@ -33,16 +32,19 @@ class NoteAdapter(val context: Activity,val data:ArrayList<NoteData>, private va
     }
 
     class NoteViewHolder(private val v: View):RecyclerView.ViewHolder(v){
-        fun bind(note:NoteData, listener: NoteItemListener){
+        fun bind(note:Note, callback: Callback?){
             val title = v.findViewById<TextView>(R.id.title)
             val content = v.findViewById<TextView>(R.id.content)
             val date = v.findViewById<TextView>(R.id.displayDate)
             title.text = note.title
             content.text = note.content
             date.text = formatDate(note.displayDate)
-            v.setOnClickListener{
-                listener.onItemClick(note)
+            if(callback!=null){
+                v.setOnClickListener{
+                    callback.onItemClick(note)
+                }
             }
+
         }
     }
 
@@ -59,5 +61,9 @@ class NoteAdapter(val context: Activity,val data:ArrayList<NoteData>, private va
         override fun onDrawShadow(canvas: Canvas?) {
             shadow.draw(canvas!!)
         }
+    }
+
+    interface Callback{
+        fun onItemClick(note:Note)
     }
 }

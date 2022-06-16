@@ -9,10 +9,16 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import androidx.room.Room
 import com.app.data.NoteData
 import com.app.listener.NoteDialogListener
+import com.app.model.AppDatabase
+import com.app.model.Note
 import com.app.ngn.R
 import com.app.util.Format.Companion.parseDate
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.text.DecimalFormat
 import java.util.*
 
@@ -21,6 +27,7 @@ class NoteDialog(private val dialogListener: NoteDialogListener, data: NoteData?
     private lateinit var tp:Button
     private lateinit var title:EditText
     private lateinit var content:EditText
+    private lateinit var db: AppDatabase
     private var calendar: Calendar = Calendar.getInstance()
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(requireContext())
@@ -32,6 +39,7 @@ class NoteDialog(private val dialogListener: NoteDialogListener, data: NoteData?
         this.content = v.findViewById(R.id.content)
         val date:EditText = v.findViewById(R.id.date)
         val time:EditText = v.findViewById(R.id.time)
+        db = Room.databaseBuilder(requireContext(), AppDatabase::class.java, "db").build()
 
         val dpListener = DatePickerDialog.OnDateSetListener { _, year, month, day ->
             run {
@@ -72,13 +80,33 @@ class NoteDialog(private val dialogListener: NoteDialogListener, data: NoteData?
                 /*validate*/
                 val sb:StringBuilder = StringBuilder()
                 sb.append(date.text.toString(),time.text.toString())
-                dialogListener.onAdd(NoteData(this.title.text.toString(), this.content.text.toString(), parseDate(sb.toString())))
+                val note = Note(
+                        title =  this.title.text.toString(),
+                        content = this.content.text.toString(),
+                        displayDate = parseDate(sb.toString())
+                )
+
+                runBlocking {
+                    withContext(Dispatchers.IO){
+                        db.noteDAO().insert(note)
+                    }
+                }
+
+                dialogListener.onAdd(
+                    note
+                )
             }
         }).setNegativeButton("No", DialogInterface.OnClickListener{
             di, _ -> run{
                 val sb:StringBuilder = StringBuilder()
                 sb.append(date.text.toString(),time.text.toString())
-                dialogListener.onCancel(NoteData(this.title.text.toString(), this.content.text.toString(), parseDate(sb.toString())))
+                dialogListener.onCancel(
+                    Note(
+                        title = this.title.text.toString(),
+                        content = this.content.text.toString(),
+                        displayDate = parseDate(sb.toString())
+                    )
+                )
                 di.dismiss()
             }
         })

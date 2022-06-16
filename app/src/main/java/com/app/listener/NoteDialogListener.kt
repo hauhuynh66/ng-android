@@ -1,8 +1,8 @@
 package com.app.listener
 
-import com.app.data.NoteData
+import com.app.model.Note
 
 interface NoteDialogListener {
-    fun onAdd(note: NoteData)
-    fun onCancel(temp: NoteData)
+    fun onAdd(note: Note)
+    fun onCancel(temp: Note)
 }
