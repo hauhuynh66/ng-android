@@ -7,7 +7,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.app.model.Note
 import java.util.*
-import kotlin.collections.ArrayList
 
 @Dao
 interface NoteDAO {

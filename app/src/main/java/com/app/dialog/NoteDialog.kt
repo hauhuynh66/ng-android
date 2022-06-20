@@ -96,10 +96,10 @@ class NoteDialog(private val dialogListener: NoteDialogListener, data: NoteData?
                     note
                 )
             }
-        }).setNegativeButton("No", DialogInterface.OnClickListener{
-            di, _ -> run{
-                val sb:StringBuilder = StringBuilder()
-                sb.append(date.text.toString(),time.text.toString())
+        }).setNegativeButton("No") { di, _ ->
+            run {
+                val sb: StringBuilder = StringBuilder()
+                sb.append(date.text.toString(), time.text.toString())
                 dialogListener.onCancel(
                     Note(
                         title = this.title.text.toString(),
@@ -109,7 +109,7 @@ class NoteDialog(private val dialogListener: NoteDialogListener, data: NoteData?
                 )
                 di.dismiss()
             }
-        })
+        }
         return builder.create()
     }
 

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.activity.FCMActivity
+import com.app.activity.fex.FileExplorerActivity
 import com.app.adapter.MiscAdapter
 import com.app.data.MiscData
 import com.app.ngn.R
@@ -30,6 +31,12 @@ class MiscFragment : Fragment() {
         data.add(MiscData(null, object : MiscData.Listener{
             override fun onClick() {
                 val intent = Intent(requireActivity(), FCMActivity::class.java)
+                startActivity(intent)
+            }
+        }))
+        data.add(MiscData(null, object : MiscData.Listener{
+            override fun onClick() {
+                val intent = Intent(requireActivity(), FileExplorerActivity::class.java)
                 startActivity(intent)
             }
         }))

@@ -7,7 +7,7 @@ import java.util.*
 
 @Entity
 data class Note (
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) val id: Int = 1,
     @ColumnInfo(name = "title") val title: String?,
     @ColumnInfo(name = "content") val content: String?,
     @ColumnInfo(name = "display_date") val displayDate: Date = Date()){
