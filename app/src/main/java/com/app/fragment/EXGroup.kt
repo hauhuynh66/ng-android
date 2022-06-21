@@ -29,11 +29,11 @@ class EXGroup : Fragment() {
         for( i in 0 until 8){
             data.add(MiscData(null, object : MiscData.Listener{
                 override fun onClick() {
-                    Toast.makeText(requireContext(), i, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), i.toString(), Toast.LENGTH_SHORT).show()
                 }
             }))
         }
-        val iconList = view.findViewById<RecyclerView>(R.id.fg_ex_icon_list)
+        val iconList = view.findViewById<RecyclerView>(R.id.fg_ex_group1_list)
         val layoutManager = GridLayoutManager(requireContext(), 5)
         val adapter = MiscAdapter(requireActivity(), data)
         iconList.layoutManager = layoutManager
