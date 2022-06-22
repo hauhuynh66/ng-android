@@ -3,8 +3,8 @@ package com.app.adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.app.fragment.EXGroup
-import com.app.fragment.EXList
+import com.app.fragment.fex.EXGroup
+import com.app.fragment.fex.EXList
 
 class EXFragmentAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     private val count = 2

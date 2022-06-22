@@ -17,12 +17,14 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:maxLines="1"
+            android:inputType="text"
             android:id="@+id/fg_ex_list_input"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fg_ex_list_input_group"
-        android:id="@+id/fg_ex_list_list"
-        android:layout_marginTop="10dp"/>
+        android:id="@+id/fg_ex_list_list"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

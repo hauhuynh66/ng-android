@@ -1,4 +1,4 @@
-package com.app.fragment
+package com.app.fragment.fex
 
 import android.os.Bundle
 import android.os.Environment
@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.EXListAdapter
 import com.app.data.FileData
+import com.app.dialog.FileActionDialog
 import com.app.listener.EXPathChangeListener
 import com.app.ngn.R
 import java.io.File
@@ -61,18 +62,29 @@ class EXList : Fragment(), EXPathChangeListener {
         val file = File(path)
         if(file.isDirectory){
             for(f:File? in file.listFiles()){
-                f!!.apply {
-                    val attrs = Files.readAttributes(file.toPath(),BasicFileAttributes::class.java)
-                    val date = attrs.creationTime().toMillis()
-                    val listener = object : FileData.Listener{
-                        override fun onClick( path: String) {
-                            if(File(path).isDirectory){
-                                this@EXList.path = path
-                                onChanged(path)
+                if(file.exists()){
+                    f!!.apply {
+                        val attrs = Files.readAttributes(file.toPath(),BasicFileAttributes::class.java)
+                        val date = attrs.creationTime().toMillis()
+                        val listener = object : FileData.Listener{
+                            override fun onClick( path: String) {
+                                if(File(path).isDirectory){
+                                    this@EXList.path = path
+                                    onChanged(path)
+                                }
+                            }
+
+                            override fun onLongClick(path: String) {
+                                val dialog = FileActionDialog(path)
+                                dialog.show(requireActivity().supportFragmentManager, "TAG")
                             }
                         }
+                        if(f.isDirectory){
+                            ret.add(FileData(f.name, Date(date), null, listener, f.absolutePath, "DIR"))
+                        }else{
+                            ret.add(FileData(f.name, Date(date), f.length()/1024, listener, f.absolutePath, f.extension))
+                        }
                     }
-                    ret.add(FileData(f.name, Date(date), length()/1024, listener, f.absolutePath))
                 }
             }
         }

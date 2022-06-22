@@ -1,4 +1,4 @@
-package com.app.fragment
+package com.app.fragment.fex
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -34,7 +34,7 @@ class EXGroup : Fragment() {
             }))
         }
         val iconList = view.findViewById<RecyclerView>(R.id.fg_ex_group1_list)
-        val layoutManager = GridLayoutManager(requireContext(), 5)
+        val layoutManager = GridLayoutManager(requireContext(), 4)
         val adapter = MiscAdapter(requireActivity(), data)
         iconList.layoutManager = layoutManager
         iconList.adapter = adapter
