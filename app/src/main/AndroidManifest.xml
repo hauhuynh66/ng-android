@@ -54,6 +54,9 @@
         <activity android:name="com.app.activity.diary.DiaryActivity"
             android:exported="true"/>
 
+        <activity android:name="com.app.activity.fex.FileListViewActivity"
+            android:exported="true"/>
+
         <service
             android:name="com.app.service.FCMService"
             android:exported="false">

@@ -41,7 +41,7 @@ class EXList : Fragment(), EXPathChangeListener {
         list = view.findViewById(R.id.fg_ex_list_list)
         val layoutManager = LinearLayoutManager(requireContext())
         data = getFileList(path)
-        this.adapter = EXListAdapter(requireActivity(), data)
+        this.adapter = EXListAdapter(requireActivity(), data, false)
         list.layoutManager = layoutManager
         list.adapter = adapter
         pathView = view.findViewById<EditText>(R.id.fg_ex_list_input)
@@ -75,7 +75,30 @@ class EXList : Fragment(), EXPathChangeListener {
                             }
 
                             override fun onLongClick(path: String) {
-                                val dialog = FileActionDialog(path)
+                                val dialog = FileActionDialog(path, object : FileActionDialog.Listener{
+                                    override fun onRename(oldName: String, newName: String) {
+                                        val renamed = data.filter{
+                                            it.name == oldName
+                                        }[0]
+                                        val m =
+                                            FileData(newName, renamed.createDate, renamed.size, renamed.listener, renamed.path, renamed.type)
+                                        val pos = data.indexOf(renamed)
+                                        data.remove(renamed)
+                                        data.add(m)
+                                        adapter.notifyItemRemoved(pos)
+                                        adapter.notifyItemInserted(data.size-1)
+                                    }
+
+                                    override fun onDelete(name: String) {
+                                        val deleted = data.filter {
+                                            it.name == name
+                                        }[0]
+                                        val pos = data.indexOf(deleted)
+                                        data.remove(deleted)
+                                        adapter.notifyItemRemoved(pos)
+
+                                    }
+                                })
                                 dialog.show(requireActivity().supportFragmentManager, "TAG")
                             }
                         }

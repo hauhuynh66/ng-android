@@ -6,32 +6,41 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.data.FileData
 import com.app.ngn.R
 import com.app.util.Format.Companion.formatDate
 
-class EXListAdapter(val context: Activity, val data: ArrayList<FileData>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class EXListAdapter(val context: Activity, val data: ArrayList<FileData>, private val isGrid: Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        return when(viewType){
-            0->{
-                EXListFileViewHolder(inflater.inflate(R.layout.com_ex_list_file,parent, false))
+        return if(!isGrid){
+            when(viewType){
+                0->{
+                    EXListFileViewHolder(inflater.inflate(R.layout.com_ex_list_file,parent, false))
+                }
+                else->{
+                    EXListFolderViewHolder(inflater.inflate(R.layout.com_ex_list_dir,parent, false))
+                }
             }
-            else->{
-                EXListFolderViewHolder(inflater.inflate(R.layout.com_ex_list_dir,parent, false))
-            }
+        }else{
+            EXGridFileViewHolder(inflater.inflate(R.layout.com_ex_grid,parent, false))
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(holder.itemViewType){
-            0->{
-                (holder as EXListFileViewHolder).bind(data[position])
-            }
-            else->{
-                (holder as EXListFolderViewHolder).bind(data[position])
+        if(isGrid){
+            (holder as EXGridFileViewHolder).bind(data[position])
+        }else {
+            when (holder.itemViewType) {
+                0 -> {
+                    (holder as EXListFileViewHolder).bind(data[position])
+                }
+                else -> {
+                    (holder as EXListFolderViewHolder).bind(data[position])
+                }
             }
         }
 
@@ -100,6 +109,14 @@ class EXListAdapter(val context: Activity, val data: ArrayList<FileData>) : Recy
                 size.text = fileData.size.toString()
             }
             createdDate.text = formatDate(fileData.createDate)
+        }
+    }
+
+    class EXGridFileViewHolder(private val v:View) : RecyclerView.ViewHolder(v){
+        fun bind(fileData: FileData){
+            val icon = v.findViewById<ImageView>(R.id.com_ex_grid_icon)
+            val name = v.findViewById<TextView>(R.id.com_ex_grid_name)
+            name.text = fileData.name
         }
     }
 }
