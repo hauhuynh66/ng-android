@@ -25,7 +25,19 @@ class ItemFragment:Fragment() {
         itemList = generatePseudoItem(10)
         val adapter = ItemAdapter(requireActivity(), itemList)
         val layoutManager = GridLayoutManager(requireContext(), 2)
-        val list = view.findViewById<RecyclerView>(R.id.itemList)
+        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
+            override fun getSpanSize(position: Int): Int {
+                return when(position){
+                    0->{
+                        layoutManager.spanCount
+                    }
+                    else->{
+                        1
+                    }
+                }
+            }
+        }
+        val list = view.findViewById<RecyclerView>(R.id.fg_item_list)
         list.layoutManager = layoutManager
         list.adapter = adapter
     }
@@ -33,7 +45,7 @@ class ItemFragment:Fragment() {
     private fun generatePseudoItem(n:Int):ArrayList<ItemData>{
         val list = arrayListOf<ItemData>()
         for (i in 0..n){
-            list.add(ItemData(generateString(10),"https://picsum.photos/id/".plus(Random.nextInt(50)+1).plus("/200/300"),Random.nextLong(1000)+1000))
+            list.add(ItemData(generateString(10),"https://picsum.photos/id/".plus(Random.nextInt(20)+1).plus("/200/300"),Random.nextLong(1000)+1000))
         }
         return list
     }

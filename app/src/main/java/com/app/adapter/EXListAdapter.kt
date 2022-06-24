@@ -116,7 +116,7 @@ class EXListAdapter(val context: Activity, val data: ArrayList<FileData>, privat
         fun bind(fileData: FileData){
             val icon = v.findViewById<ImageView>(R.id.com_ex_grid_icon)
             val name = v.findViewById<TextView>(R.id.com_ex_grid_name)
-            name.text = fileData.name
+            name.text = fileData.name.substringBeforeLast(".")
         }
     }
 }

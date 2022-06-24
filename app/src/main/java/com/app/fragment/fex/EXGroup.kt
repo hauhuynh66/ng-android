@@ -62,13 +62,6 @@ class EXGroup : Fragment() {
                         }
                     }))
                 }
-                else->{
-                    data.add(MiscData(null, object : MiscData.Listener{
-                        override fun onClick() {
-
-                        }
-                    }))
-                }
             }
         }
         val iconList = view.findViewById<RecyclerView>(R.id.fg_ex_group1_list)
