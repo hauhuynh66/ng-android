@@ -10,7 +10,7 @@ import com.app.ngn.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.io.File
 
-class FileActionDialog(val path: String, val listener : Listener) : BottomSheetDialogFragment() {
+class FileActionDialog(val paths : ArrayList<String>, val listener : Listener) : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -18,48 +18,60 @@ class FileActionDialog(val path: String, val listener : Listener) : BottomSheetD
     ): View? {
         return inflater.inflate(R.layout.fg_modal_file_action, container, false)
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val property = view.findViewById<TextView>(R.id.fg_modal_file_action_show_properties)
-        property.setOnClickListener {
-            DetailDialog(path).show(requireActivity().supportFragmentManager, "DETAIL")
-        }
-
         val rename = view.findViewById<TextView>(R.id.fg_modal_file_action_rename)
-        rename.setOnClickListener {
-            EditTextDialog(File(path).name, object : EditTextDialog.Listener{
-                override fun onConfirm(value: String) {
-                    val dirPath = path.substringBeforeLast("/")
-                    val to = File(dirPath, value)
-                    if(!to.exists()){
-                        val success = File(path).renameTo(to)
-                        if(success){
-                            listener.onRename(File(path).name, value)
-                        }
-                    }else{
-                        Toast.makeText(requireContext(),"File with entered name already existed" ,Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-            ).show(requireActivity().supportFragmentManager, "EDIT")
-        }
-
         val del = view.findViewById<TextView>(R.id.fg_modal_file_action_delete)
+
         del.setOnClickListener{
             ConfirmDialog("Do you want to delete?", object : ConfirmDialog.Listener{
-                override fun <T> onConfirm(pr: T) {
-                    val retName = File(pr.toString()).name
-                    val success = File(pr.toString()).delete()
+                override fun onConfirm(data: Any?) {
+                    val retName = File(data.toString()).name
+                    val success = File(data.toString()).delete()
                     if(success){
                         listener.onDelete(retName)
                     }
                 }
-            }, path).show(requireActivity().supportFragmentManager, "DELETE")
+            }, paths).show(requireActivity().supportFragmentManager, "DELETE")
         }
+
+        when{
+            paths.size > 1->{
+                property.visibility = View.GONE
+                rename.visibility = View.GONE
+            }
+            paths.size == 1 ->{
+                property.setOnClickListener {
+                    DetailDialog(paths[0]).show(requireActivity().supportFragmentManager, "DETAIL")
+                }
+
+                rename.setOnClickListener {
+                    EditTextDialog(File(paths[0]).name, object : EditTextDialog.Listener{
+                        override fun onConfirm(value: String) {
+                            val dirPath = paths[0].substringBeforeLast("/")
+                            val to = File(dirPath, value)
+                            if(!to.exists()){
+                                val success = File(paths[0]).renameTo(to)
+                                if(success){
+                                    listener.onRename(File(paths[0]).name, value)
+                                }
+                            }else{
+                                Toast.makeText(requireContext(),"File with entered name already existed" ,Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                    ).show(requireActivity().supportFragmentManager, "EDIT")
+                }
+            }
+        }
+
+
     }
 
     interface Listener{
-        fun onRename(oldName: String, newName : String)
+        fun onRename(oldName: String, newName : String){
+
+        }
         fun onDelete(name : String)
     }
 }

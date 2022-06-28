@@ -46,9 +46,10 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_ex_list_dir.xml" value="0.25416666666666665" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_ex_list_file.xml" value="0.25416666666666665" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_image.xml" value="0.13020833333333334" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_item.xml" value="0.11354166666666667" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_list_header.xml" value="0.11354166666666667" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_misc.xml" value="0.2" />
-        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_search_card.xml" value="0.152" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_search_card.xml" value="0.2" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/dlg_edit.xml" value="0.13020833333333334" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/dlg_ex_detail.xml" value="0.22735507246376813" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/dlg_file_dowload.xml" value="0.17300724637681159" />
@@ -60,11 +61,13 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_diary_page.xml" value="0.24166666666666667" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_ex_detail.xml" value="0.2368659420289855" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_ex_group.xml" value="0.176" />
-        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_ex_list.xml" value="0.12" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_ex_list.xml" value="0.152" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_item.xml" value="0.11354166666666667" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_modal_file_action.xml" value="0.12916666666666668" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/nav_header.xml" value="0.264" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/menu/cv_menu.xml" value="0.2" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/menu/nav_menu.xml" value="0.11354166666666667" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/xml/provider_paths.xml" value="0.11354166666666667" />
       </map>
     </option>
   </component>

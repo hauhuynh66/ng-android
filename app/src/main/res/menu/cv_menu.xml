@@ -2,13 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:icon="@drawable/ic_add"
-        app:showAsAction="always"
-        android:id="@+id/cv_menu_choose"
-        android:title="Choose" />
+        android:id="@+id/cv_menu_camera"
+        android:title="Camera"
+        android:icon="@drawable/ic_baseline_camera_alt"
+        app:showAsAction="always"/>
     <item
-        android:icon="@drawable/ic_baseline_save_alt"
-        app:showAsAction="always"
-        android:id="@+id/cv_menu_download"
-        android:title="Download" />
+        android:id="@+id/cv_menu_effects"
+        android:title="Camera"
+        android:icon="@drawable/ic_baseline_settings"
+        app:showAsAction="always"/>
 </menu>

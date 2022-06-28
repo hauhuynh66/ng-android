@@ -19,6 +19,7 @@ class EditTextDialog(private val originalText:String?, val listener: Listener) :
             text.setText(originalText)
         }
         builder.setView(v)
+        text.requestFocus()
         builder.setPositiveButton("Confirm"){
             di, _ -> run{
                 listener.onConfirm(text.text.toString())

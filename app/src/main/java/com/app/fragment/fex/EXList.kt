@@ -5,8 +5,12 @@ import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
+import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +19,7 @@ import com.app.data.FileData
 import com.app.dialog.FileActionDialog
 import com.app.listener.EXPathChangeListener
 import com.app.ngn.R
+import com.app.util.Animation.Companion.crossfade
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.attribute.BasicFileAttributes
@@ -27,6 +32,12 @@ class EXList : Fragment(), EXPathChangeListener {
     private lateinit var adapter : EXListAdapter
     private lateinit var list : RecyclerView
     private lateinit var pathView : EditText
+    private lateinit var pathGroup: LinearLayoutCompat
+    private lateinit var bottomBar: ConstraintLayout
+    private var isMultiple = false
+    private var selected: ArrayList<String> = arrayListOf()
+    private lateinit var num: TextView
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,18 +50,56 @@ class EXList : Fragment(), EXPathChangeListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         list = view.findViewById(R.id.fg_ex_list_list)
-        val layoutManager = LinearLayoutManager(requireContext())
-        data = getFileList(path)
-        this.adapter = EXListAdapter(requireActivity(), data, false)
-        list.layoutManager = layoutManager
-        list.adapter = adapter
-        pathView = view.findViewById<EditText>(R.id.fg_ex_list_input)
+        pathView = view.findViewById(R.id.fg_ex_list_input)
+        bottomBar = view.findViewById(R.id.fg_ex_list_bottom_bar)
+        num = view.findViewById(R.id.fg_ex_list_num_selected)
+        pathGroup = view.findViewById(R.id.fg_ex_list_input_group)
         val prev = view.findViewById<ImageButton>(R.id.fg_ex_list_input_button)
-        pathView.setText(path)
-        prev.setOnClickListener{
-            if(pathView.text.toString() == rootPath){
+        val dismissBottomBar = view.findViewById<Button>(R.id.fg_ex_list_back)
+        val more = view.findViewById<Button>(R.id.fg_ex_list_more)
 
-            }else{
+        data = getFileList(path)
+        adapter = EXListAdapter(requireActivity(), data, isGrid = false)
+        list.layoutManager = LinearLayoutManager(requireContext())
+        list.adapter = adapter
+        pathView.setText(path)
+
+        dismissBottomBar.setOnClickListener {
+            isMultiple = false
+            selected = arrayListOf()
+            crossfade(pathGroup, bottomBar, 200)
+        }
+
+        more.setOnClickListener {
+            val dialog = FileActionDialog(selected, object : FileActionDialog.Listener{
+                override fun onRename(oldName: String, newName: String) {
+                    val renamed = data.filter{
+                        it.name == oldName
+                    }[0]
+                    val m =
+                        FileData(newName, renamed.createDate, renamed.size, renamed.listener, renamed.path, renamed.type)
+                    val pos = data.indexOf(renamed)
+                    data.remove(renamed)
+                    data.add(m)
+                    adapter.notifyItemRemoved(pos)
+                    adapter.notifyItemInserted(data.size-1)
+                }
+
+                override fun onDelete(name: String) {
+                    val deleted = data.filter {
+                        it.name == name
+                    }[0]
+                    val pos = data.indexOf(deleted)
+                    data.remove(deleted)
+                    adapter.notifyItemRemoved(pos)
+
+                }
+            })
+            dialog.show(requireActivity().supportFragmentManager, "TAG")
+        }
+
+        prev.setOnClickListener{
+            if(pathView.text.toString() != rootPath){
                 path = path.substringBeforeLast("/")
                 onChanged(path)
             }
@@ -68,14 +117,29 @@ class EXList : Fragment(), EXPathChangeListener {
                         val date = attrs.creationTime().toMillis()
                         val listener = object : FileData.Listener{
                             override fun onClick( path: String) {
-                                if(File(path).isDirectory){
-                                    this@EXList.path = path
-                                    onChanged(path)
+                                if(!isMultiple){
+                                    if(File(path).isDirectory){
+                                        this@EXList.path = path
+                                        onChanged(path)
+                                    }
+                                }else{
+                                    if(!selected.contains(path)){
+                                        selected.add(path)
+                                    }else{
+                                        selected.remove(path)
+                                    }
+                                    num.text = selected.size.toString().plus(" selected")
                                 }
                             }
 
                             override fun onLongClick(path: String) {
-                                val dialog = FileActionDialog(path, object : FileActionDialog.Listener{
+                                if(!isMultiple){
+                                    selected.add(path)
+                                    num.text = selected.size.toString().plus(" selected")
+                                    isMultiple = true
+                                    crossfade(bottomBar, pathGroup, 200)
+                                }
+                                /*val dialog = FileActionDialog(path, object : FileActionDialog.Listener{
                                     override fun onRename(oldName: String, newName: String) {
                                         val renamed = data.filter{
                                             it.name == oldName
@@ -99,7 +163,8 @@ class EXList : Fragment(), EXPathChangeListener {
 
                                     }
                                 })
-                                dialog.show(requireActivity().supportFragmentManager, "TAG")
+                                dialog.show(requireActivity().supportFragmentManager, "TAG")*/
+
                             }
                         }
                         if(f.isDirectory){

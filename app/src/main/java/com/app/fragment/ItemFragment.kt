@@ -6,9 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.app.adapter.ExpandableCardAdapter
 import com.app.adapter.ItemAdapter
 import com.app.data.ItemData
+import com.app.data.SearchCardData
 import com.app.ngn.R
 import com.app.util.Generator.Companion.generateString
 import kotlin.random.Random
@@ -25,21 +28,18 @@ class ItemFragment:Fragment() {
         itemList = generatePseudoItem(10)
         val adapter = ItemAdapter(requireActivity(), itemList)
         val layoutManager = GridLayoutManager(requireContext(), 2)
-        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
-            override fun getSpanSize(position: Int): Int {
-                return when(position){
-                    0->{
-                        layoutManager.spanCount
-                    }
-                    else->{
-                        1
-                    }
-                }
-            }
-        }
+
         val list = view.findViewById<RecyclerView>(R.id.fg_item_list)
         list.layoutManager = layoutManager
         list.adapter = adapter
+
+        val filter = view.findViewById<RecyclerView>(R.id.fg_item_filter_group)
+        filter.layoutManager = LinearLayoutManager(requireContext())
+        val words = arrayListOf<String>()
+        for(i:Int in 0 until 15){
+            words.add(generateString(6))
+        }
+        filter.adapter = ExpandableCardAdapter(requireActivity(), SearchCardData("Search",words))
     }
 
     private fun generatePseudoItem(n:Int):ArrayList<ItemData>{

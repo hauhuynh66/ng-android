@@ -7,10 +7,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/fg_item_filter_group"/>
+        android:id="@+id/fg_item_filter_group"
+        android:layout_margin="10dp"/>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/fg_item_filter_group"
-        android:id="@+id/fg_item_list"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/fg_item_list"
+        android:layout_marginTop="20dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

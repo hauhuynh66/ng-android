@@ -59,7 +59,7 @@ class FileListViewActivity() : AppCompatActivity() {
             override fun onComplete(result: ArrayList<FileData>) {
                 this@FileListViewActivity.data = result
                 list.layoutManager = GridLayoutManager(this@FileListViewActivity, 4)
-                list.adapter = EXListAdapter(this@FileListViewActivity, data, true)
+                list.adapter = EXListAdapter(this@FileListViewActivity, data, isGrid = true)
                 crossfade(list, progress, 1000)
             }
         })

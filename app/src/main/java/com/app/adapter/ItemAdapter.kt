@@ -14,37 +14,14 @@ import com.app.ngn.R
 import com.app.task.ImageCallable
 import com.app.task.TaskRunner
 
-class ItemAdapter(val context: Activity,var data:ArrayList<ItemData>):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ItemAdapter(val context: Activity, var data:ArrayList<ItemData>):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        return when(viewType){
-            0->{
-                HeaderViewHolder(inflater.inflate(R.layout.com_list_header, parent, false))
-            }
-            else->{
-                ItemViewHolder(inflater.inflate(R.layout.com_item, parent, false))
-            }
-        }
-
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return if(position==0){
-            0
-        }else{
-            1
-        }
+        return ItemViewHolder(inflater.inflate(R.layout.com_item, parent, false))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(holder.itemViewType){
-            0->{
-
-            }
-            else->{
-                (holder as ItemViewHolder).bind(data[position-1])
-            }
-        }
+        (holder as ItemViewHolder).bind(data[position])
     }
 
     override fun getItemCount(): Int {
@@ -66,6 +43,4 @@ class ItemAdapter(val context: Activity,var data:ArrayList<ItemData>):RecyclerVi
             })
         }
     }
-
-    class HeaderViewHolder(v:View):RecyclerView.ViewHolder(v)
 }

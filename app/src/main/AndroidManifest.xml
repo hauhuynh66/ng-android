@@ -10,6 +10,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true" />
 
     <application
         android:name="com.app.App"
@@ -57,6 +59,9 @@
         <activity android:name="com.app.activity.fex.FileListViewActivity"
             android:exported="true"/>
 
+        <activity android:name="com.app.activity.cv.CVActivity"
+            android:exported="true"/>
+
         <service
             android:name="com.app.service.FCMService"
             android:exported="false">
@@ -71,6 +76,16 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.app.activity.cv.CVActivity.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
     </application>
 
 </manifest>

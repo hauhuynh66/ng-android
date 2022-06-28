@@ -13,7 +13,8 @@ import com.app.data.FileData
 import com.app.ngn.R
 import com.app.util.Format.Companion.formatDate
 
-class EXListAdapter(val context: Activity, val data: ArrayList<FileData>, private val isGrid: Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class EXListAdapter(val context: Activity, val data: ArrayList<FileData>,
+                    private val isGrid: Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         return if(!isGrid){
