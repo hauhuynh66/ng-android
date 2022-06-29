@@ -4,8 +4,9 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
+import com.app.data.ConfirmDialogData
 
-class ConfirmDialog(private val message : String, val listener : Listener, val data : Any?) : DialogFragment() {
+class ConfirmDialog(private val message : String, val listener : Listener, val data : ConfirmDialogData) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(requireContext())
         builder.setMessage(message).setPositiveButton("Confirm"){
@@ -22,7 +23,7 @@ class ConfirmDialog(private val message : String, val listener : Listener, val d
     }
 
     interface Listener{
-        fun onConfirm(data : Any?){
+        fun onConfirm(data : ConfirmDialogData){
 
         }
     }

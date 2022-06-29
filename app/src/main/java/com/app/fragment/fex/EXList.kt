@@ -35,7 +35,7 @@ class EXList : Fragment(), EXPathChangeListener {
     private lateinit var pathGroup: LinearLayoutCompat
     private lateinit var bottomBar: ConstraintLayout
     private var isMultiple = false
-    private var selected: ArrayList<String> = arrayListOf()
+    private var selected: ArrayList<Any> = arrayListOf()
     private lateinit var num: TextView
 
     override fun onCreateView(
@@ -77,12 +77,14 @@ class EXList : Fragment(), EXPathChangeListener {
                         it.name == oldName
                     }[0]
                     val m =
-                        FileData(newName, renamed.createDate, renamed.size, renamed.listener, renamed.path, renamed.type)
+                        FileData(newName, renamed.createDate, renamed.size, renamed.listener,
+                            renamed.path.replace(oldName, newName), renamed.type)
                     val pos = data.indexOf(renamed)
                     data.remove(renamed)
                     data.add(m)
                     adapter.notifyItemRemoved(pos)
                     adapter.notifyItemInserted(data.size-1)
+                    dismissBottomBar.performClick()
                 }
 
                 override fun onDelete(name: String) {
@@ -92,7 +94,7 @@ class EXList : Fragment(), EXPathChangeListener {
                     val pos = data.indexOf(deleted)
                     data.remove(deleted)
                     adapter.notifyItemRemoved(pos)
-
+                    dismissBottomBar.performClick()
                 }
             })
             dialog.show(requireActivity().supportFragmentManager, "TAG")

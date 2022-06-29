@@ -6,11 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import com.app.data.ConfirmDialogData
 import com.app.ngn.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.io.File
 
-class FileActionDialog(val paths : ArrayList<String>, val listener : Listener) : BottomSheetDialogFragment() {
+class FileActionDialog(private val paths : ArrayList<Any>, val listener : Listener) : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,14 +26,17 @@ class FileActionDialog(val paths : ArrayList<String>, val listener : Listener) :
 
         del.setOnClickListener{
             ConfirmDialog("Do you want to delete?", object : ConfirmDialog.Listener{
-                override fun onConfirm(data: Any?) {
-                    val retName = File(data.toString()).name
-                    val success = File(data.toString()).delete()
-                    if(success){
-                        listener.onDelete(retName)
+                override fun onConfirm(data: ConfirmDialogData) {
+                    for(s:Any in data.data){
+                        val retName = File(s.toString()).name
+                        val success = File(s.toString()).delete()
+                        if(success){
+                            listener.onDelete(retName)
+                            dismiss()
+                        }
                     }
                 }
-            }, paths).show(requireActivity().supportFragmentManager, "DELETE")
+            }, ConfirmDialogData(paths)).show(requireActivity().supportFragmentManager, "DELETE")
         }
 
         when{
@@ -41,31 +45,34 @@ class FileActionDialog(val paths : ArrayList<String>, val listener : Listener) :
                 rename.visibility = View.GONE
             }
             paths.size == 1 ->{
-                property.setOnClickListener {
-                    DetailDialog(paths[0]).show(requireActivity().supportFragmentManager, "DETAIL")
-                }
+                paths[0].toString().apply {
+                    property.setOnClickListener {
+                        DetailDialog(this).show(requireActivity().supportFragmentManager, "DETAIL")
+                        dismiss()
+                    }
 
-                rename.setOnClickListener {
-                    EditTextDialog(File(paths[0]).name, object : EditTextDialog.Listener{
-                        override fun onConfirm(value: String) {
-                            val dirPath = paths[0].substringBeforeLast("/")
-                            val to = File(dirPath, value)
-                            if(!to.exists()){
-                                val success = File(paths[0]).renameTo(to)
-                                if(success){
-                                    listener.onRename(File(paths[0]).name, value)
+                    rename.setOnClickListener {
+                        EditTextDialog(File(this).name, object : EditTextDialog.Listener{
+                            override fun onConfirm(value: String) {
+                                val dirPath = this@apply.substringBeforeLast("/")
+                                val to = File(dirPath, value)
+                                if(!to.exists()){
+                                    val success = File(this@apply).renameTo(to)
+                                    if(success){
+                                        listener.onRename(File(this@apply).name, value)
+                                        dismiss()
+                                    }
+                                }else{
+                                    Toast.makeText(requireContext(),"File with entered name already existed" ,Toast.LENGTH_SHORT).show()
                                 }
-                            }else{
-                                Toast.makeText(requireContext(),"File with entered name already existed" ,Toast.LENGTH_SHORT).show()
                             }
                         }
+                        ).show(requireActivity().supportFragmentManager, "EDIT")
                     }
-                    ).show(requireActivity().supportFragmentManager, "EDIT")
                 }
+
             }
         }
-
-
     }
 
     interface Listener{

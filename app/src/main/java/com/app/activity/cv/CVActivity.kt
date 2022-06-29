@@ -7,6 +7,7 @@ import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -34,8 +35,9 @@ class CVActivity : AppCompatActivity() {
             if (it == true) {
                 val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, photoURI)
                 image.setImageBitmap(bitmap)
-                //transformed.setImageBitmap(gaussianFilter(bitmap))
                 transformed.setImageBitmap(sift(bitmap))
+            }else{
+                Toast.makeText(this@CVActivity, "Cancelled", Toast.LENGTH_SHORT).show()
             }
         }
     }

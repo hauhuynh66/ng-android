@@ -2,6 +2,7 @@ package com.app.util
 
 import android.graphics.Bitmap
 import org.opencv.android.Utils
+import org.opencv.core.Core
 import org.opencv.core.Mat
 import org.opencv.core.MatOfKeyPoint
 import org.opencv.core.Size
@@ -48,6 +49,27 @@ class CVUtils {
             val sift = SIFT.create()
             sift.detect(filtered, keypoint)
             Features2d.drawKeypoints(src, keypoint, dst)
+            Utils.matToBitmap(dst, ret)
+            return ret
+        }
+
+        fun harris(bitmap: Bitmap) : Bitmap {
+            val ret = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
+            val src = Mat()
+            val filtered = Mat()
+            val dst = Mat()
+
+            Utils.bitmapToMat(bitmap, src)
+            Imgproc.cvtColor(src, filtered, Imgproc.COLOR_BGR2GRAY)
+
+            val blockSize = 2
+            val apertureSize = 3
+            val k = 0.04
+
+            Imgproc.cornerHarris(filtered, dst, blockSize, apertureSize, k)
+            Core.normalize(dst, dst, 0.0, 255.0, Core.NORM_MINMAX)
+            Core.convertScaleAbs(dst, dst)
+
             Utils.matToBitmap(dst, ret)
             return ret
         }
