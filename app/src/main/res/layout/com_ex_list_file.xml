@@ -6,69 +6,90 @@
     android:minWidth="80dp">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        app:layout_constraintWidth_percent="0.2"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintWidth_percent="0.8"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/com_ex_list_icon_group">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_margin="10dp"
-            android:layout_height="60dp"
+        android:id="@+id/com_ex_list_info_group">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.3"
+            android:layout_height="80dp"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/ic_baseline_description"
-            app:layout_constraintLeft_toLeftOf="parent"/>
+            android:id="@+id/com_ex_list_icon_group">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_margin="10dp"
+                android:layout_height="60dp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/ic_baseline_description"
+                app:layout_constraintLeft_toLeftOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintWidth_percent="0.7"
+            android:minHeight="80dp"
+            app:layout_constraintLeft_toRightOf="@id/com_ex_list_icon_group"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.4"
+                app:layout_constraintTop_toTopOf="parent">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="8pt"
+                    android:text="Name"
+                    android:lines="1"
+                    android:paddingLeft="10dp"
+                    android:id="@+id/com_ex_list_name"
+                    android:gravity="center_vertical"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.6"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:weightSum="10"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="6"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="Date created"
+                    android:lines="1"
+                    android:id="@+id/com_ex_list_date"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"
+                    android:text="File size"
+                    android:lines="1"
+                    android:paddingLeft="10dp"
+                    android:id="@+id/com_ex_list_size"/>
+
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        app:layout_constraintWidth_percent="0.8"
-        android:minHeight="80dp"
-        app:layout_constraintLeft_toRightOf="@id/com_ex_list_icon_group"
-        android:id="@+id/com_ex_list_info_group"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.4"
-            app:layout_constraintTop_toTopOf="parent">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textSize="8pt"
-                android:text="Name"
-                android:lines="1"
-                android:paddingLeft="10dp"
-                android:id="@+id/com_ex_list_name"
-                android:gravity="center_vertical"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.6"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:weightSum="10"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="6"
-                android:layout_height="match_parent"
-                android:gravity="left|center_vertical"
-                android:paddingLeft="10dp"
-                android:text="Date created"
-                android:lines="1"
-                android:id="@+id/com_ex_list_date"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="4"
-                android:layout_height="match_parent"
-                android:gravity="left|center_vertical"
-                android:text="File size"
-                android:lines="1"
-                android:paddingLeft="10dp"
-                android:id="@+id/com_ex_list_size"/>
-
-        </LinearLayout>
+        android:layout_height="80dp"
+        app:layout_constraintWidth_percent="0.2"
+        app:layout_constraintLeft_toRightOf="@id/com_ex_list_info_group"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <RadioButton
+            android:layout_width="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_height="match_parent"
+            android:id="@+id/com_ex_list_check"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

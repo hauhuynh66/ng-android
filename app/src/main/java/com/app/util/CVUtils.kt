@@ -2,11 +2,10 @@ package com.app.util
 
 import android.graphics.Bitmap
 import org.opencv.android.Utils
-import org.opencv.core.Core
-import org.opencv.core.Mat
-import org.opencv.core.MatOfKeyPoint
-import org.opencv.core.Size
+import org.opencv.core.*
+import org.opencv.features2d.BFMatcher
 import org.opencv.features2d.Features2d
+import org.opencv.features2d.ORB
 import org.opencv.features2d.SIFT
 import org.opencv.imgproc.Imgproc
 
@@ -70,6 +69,47 @@ class CVUtils {
             Core.normalize(dst, dst, 0.0, 255.0, Core.NORM_MINMAX)
             Core.convertScaleAbs(dst, dst)
 
+            Utils.matToBitmap(dst, ret)
+            return ret
+        }
+
+        fun featureMatching(img1 : Bitmap, img2 : Bitmap) : Bitmap{
+            val src1 = Mat()
+            val src2 = Mat()
+            val dst = Mat()
+            Utils.bitmapToMat(img1, src1)
+            Imgproc.cvtColor(src1, src1, Imgproc.COLOR_BGR2GRAY)
+
+            Utils.bitmapToMat(img2, src2)
+            Imgproc.cvtColor(src2, src2, Imgproc.COLOR_BGR2GRAY)
+
+            val orb = ORB.create()
+            val kp1 = MatOfKeyPoint()
+            val kp2 = MatOfKeyPoint()
+            val descriptor1 = Mat()
+            val descriptor2 = Mat()
+            orb.detectAndCompute(src1, Mat() , kp1, descriptor1)
+            orb.detectAndCompute(src2, Mat() , kp2, descriptor2)
+
+            val bf = BFMatcher.create()
+            val matches = arrayListOf<MatOfDMatch>()
+            val goodMatchList = arrayListOf<DMatch>()
+
+            bf.knnMatch(descriptor1, descriptor2, matches, 2)
+
+            val iterator = matches.iterator()
+            while (iterator.hasNext()){
+                val m = iterator.next()
+                if((m.toArray()[0].distance)/(m.toArray()[1].distance) < 0.75){
+                    goodMatchList.add(m.toArray()[0])
+                }
+            }
+
+            val goodMatches = MatOfDMatch()
+            goodMatches.fromList(goodMatchList)
+
+            Features2d.drawMatches(src1, kp1, src2, kp2, goodMatches, dst)
+            val ret = Bitmap.createBitmap(dst.width(), dst.height(), Bitmap.Config.ARGB_8888)
             Utils.matToBitmap(dst, ret)
             return ret
         }

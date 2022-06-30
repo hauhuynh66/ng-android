@@ -5,16 +5,17 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.RadioButton
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.app.data.FileData
 import com.app.ngn.R
 import com.app.util.Format.Companion.formatDate
 
 class EXListAdapter(val context: Activity, val data: ArrayList<FileData>,
-                    private val isGrid: Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                    private val isGrid: Boolean, val listener: Listener? = null) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         return if(!isGrid){
@@ -37,10 +38,10 @@ class EXListAdapter(val context: Activity, val data: ArrayList<FileData>,
         }else {
             when (holder.itemViewType) {
                 0 -> {
-                    (holder as EXListFileViewHolder).bind(data[position])
+                    (holder as EXListFileViewHolder).bind(data[position], listener!!)
                 }
                 else -> {
-                    (holder as EXListFolderViewHolder).bind(data[position])
+                    (holder as EXListFolderViewHolder).bind(data[position], listener!!)
                 }
             }
         }
@@ -63,19 +64,25 @@ class EXListAdapter(val context: Activity, val data: ArrayList<FileData>,
     }
 
     class EXListFolderViewHolder(private val v: View) : RecyclerView.ViewHolder (v){
-        fun bind(fileData: FileData){
-            v.setOnClickListener{
+        fun bind(fileData: FileData, listener: Listener){
+            val next = v.findViewById<ConstraintLayout>(R.id.com_ex_list_info_group)
+            next.setOnClickListener{
                 fileData.listener.onClick(fileData.path)
             }
 
-            v.setOnLongClickListener {
+            next.setOnLongClickListener {
                 fileData.listener.onLongClick(fileData.path)
                 true
             }
 
-            val button = v.findViewById<ImageButton>(R.id.com_ex_list_next_btn)
-            button.setOnClickListener {
-                fileData.listener.onClick(fileData.path)
+            val radio = v.findViewById<RadioButton>(R.id.com_ex_list_check)
+            radio.isChecked = fileData.checked
+            radio.setOnClickListener {
+                if(radio.isChecked){
+                    listener.onCheck(fileData.path)
+                }else{
+                    listener.onUnCheck(fileData.path)
+                }
             }
 
             val name = v.findViewById<TextView>(R.id.com_ex_list_name)
@@ -92,14 +99,24 @@ class EXListAdapter(val context: Activity, val data: ArrayList<FileData>,
     }
 
     class EXListFileViewHolder(private val v:View) : RecyclerView.ViewHolder(v){
-        fun bind(fileData: FileData){
-            v.setOnClickListener{
+        fun bind(fileData: FileData, listener: Listener){
+            val next = v.findViewById<ConstraintLayout>(R.id.com_ex_list_info_group)
+            next.setOnClickListener{
                 fileData.listener.onClick(fileData.path)
             }
 
-            v.setOnLongClickListener {
+            next.setOnLongClickListener {
                 fileData.listener.onLongClick(fileData.path)
                 true
+            }
+
+            val radio = v.findViewById<RadioButton>(R.id.com_ex_list_check)
+            radio.setOnClickListener {
+                if(radio.isChecked){
+                    listener.onCheck(fileData.path)
+                }else{
+                    listener.onUnCheck(fileData.path)
+                }
             }
 
             val name = v.findViewById<TextView>(R.id.com_ex_list_name)
@@ -119,5 +136,10 @@ class EXListAdapter(val context: Activity, val data: ArrayList<FileData>,
             val name = v.findViewById<TextView>(R.id.com_ex_grid_name)
             name.text = fileData.name.substringBeforeLast(".")
         }
+    }
+
+    interface Listener{
+        fun onCheck(path : String)
+        fun onUnCheck(path : String)
     }
 }

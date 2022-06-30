@@ -1,11 +1,13 @@
 package com.app.activity
 
+import android.Manifest
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -14,6 +16,7 @@ import com.app.fragment.*
 import com.app.ngn.R
 import com.app.task.ImageCallable
 import com.app.task.TaskRunner
+import com.app.util.Check.Companion.checkPermissions
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -28,6 +31,7 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_navigation)
+        permissionCheck()
         auth = Firebase.auth
         val user = auth.currentUser ?: exitProcess(0)
         toolbar = findViewById(R.id.toolbar)
@@ -111,7 +115,40 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onBackPressed() {
+    private fun permissionCheck(){
+        val permissions = arrayListOf<String>()
+        permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION)
+        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION)
+        permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+        if(!checkPermissions(this, permissions)){
+            val requestPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
+                permission -> run {
+                    when{
+                        permission.getOrDefault(Manifest.permission.READ_EXTERNAL_STORAGE, false)->{
 
+                        }
+                        permission.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false)->{
+
+                        }
+                        permission.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false)->{
+
+                        }
+                        permission.getOrDefault(Manifest.permission.WRITE_EXTERNAL_STORAGE, false)->{
+
+                        }
+                        else->{
+                            exitProcess(0)
+                        }
+                    }
+                }
+            }
+            requestPermissions.launch(arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ))
+        }
     }
 }

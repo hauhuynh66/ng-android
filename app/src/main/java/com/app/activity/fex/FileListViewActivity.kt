@@ -34,7 +34,7 @@ class FileListViewActivity() : AppCompatActivity() {
         extensionList = arrayListOf()
         when(type){
             "PICTURE"->{
-                extensionList.addAll(listOf("png","jpeg"))
+                extensionList.addAll(listOf("png","jpeg", "jpg"))
             }
             "MUSIC"->{
                 extensionList.addAll(listOf("mp3"))
@@ -60,7 +60,7 @@ class FileListViewActivity() : AppCompatActivity() {
                 this@FileListViewActivity.data = result
                 list.layoutManager = GridLayoutManager(this@FileListViewActivity, 4)
                 list.adapter = EXListAdapter(this@FileListViewActivity, data, isGrid = true)
-                crossfade(list, progress, 1000)
+                crossfade(arrayListOf(list), arrayListOf(progress), duration = 1000)
             }
         })
     }

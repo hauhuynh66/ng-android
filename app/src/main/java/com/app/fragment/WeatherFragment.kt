@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,7 +25,6 @@ import com.app.data.WeatherData
 import com.app.dialog.GraphDialog
 import com.app.ngn.R
 import com.app.util.Animation.Companion.crossfade
-import com.app.util.Check.Companion.checkPermissions
 import com.app.util.Generator.Companion.getWeatherIcon
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -34,7 +32,6 @@ import org.apache.commons.text.WordUtils
 import org.json.JSONObject
 import java.text.DecimalFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class WeatherFragment(): Fragment(){
     private lateinit var requestQueue:RequestQueue
@@ -77,17 +74,17 @@ class WeatherFragment(): Fragment(){
         val requiredPermissions = arrayListOf<String>()
         requiredPermissions.add(Manifest.permission.ACCESS_FINE_LOCATION)
         requiredPermissions.add(Manifest.permission.ACCESS_COARSE_LOCATION)
-        if(checkPermissions(requireContext(), requiredPermissions)){
-            fusedLocationProviderClient.lastLocation.addOnSuccessListener {
-                run{
+        fusedLocationProviderClient.lastLocation.addOnSuccessListener {
+            run{
+                if(it!=null){
                     this.location = it
                     url = url.replace("{lat}", it.latitude.toString())
                     url = url.replace("{lon}", it.longitude.toString())
                     processRequest(url, contentLayout)
                 }
             }
-        }else{
-            this.requestPermission()
+        }.addOnFailureListener{
+            Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -141,7 +138,7 @@ class WeatherFragment(): Fragment(){
                     val listView:RecyclerView = view.findViewById(R.id.weather_list)
                     listView.layoutManager = layoutManager
                     listView.adapter = WeatherAdapter(this.requireActivity(), forecast!!.data)
-                    crossfade(contentLayout, progressBar, 800)
+                    crossfade(arrayListOf(contentLayout), arrayListOf(progressBar), duration = 800)
                 }
             }, { error-> run {
                     if(error is TimeoutError){
@@ -155,22 +152,4 @@ class WeatherFragment(): Fragment(){
         requestQueue.add(forecastRequest)
     }
 
-
-    private fun requestPermission(){
-        val permission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
-            permission ->
-            run {
-                when {
-                    permission.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-
-                    }
-                    else -> {
-
-                    }
-                }
-            }
-        }
-        permission.launch(arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION))
-    }
 }

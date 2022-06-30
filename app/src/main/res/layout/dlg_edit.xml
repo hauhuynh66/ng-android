@@ -9,8 +9,7 @@
         android:layout_height="wrap_content"
         android:lines="1"
         android:fontFamily="@font/audiowide"
-        android:inputType="text"
-        android:textSize="10pt"
+        android:textSize="8pt"
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/dlg_edit_text"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

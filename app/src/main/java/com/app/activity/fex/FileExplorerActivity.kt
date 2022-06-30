@@ -13,7 +13,7 @@ class FileExplorerActivity : AppCompatActivity() {
         setContentView(R.layout.ac_flx)
         val pager = findViewById<ViewPager>(R.id.pager)
         val tabs = findViewById<TabLayout>(R.id.tabs)
-        pager.adapter = EXFragmentAdapter(supportFragmentManager)
+        pager.adapter = EXFragmentAdapter(supportFragmentManager, tabs)
         tabs.setupWithViewPager(pager)
     }
 }
