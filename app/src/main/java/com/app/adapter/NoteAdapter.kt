@@ -22,8 +22,6 @@ class NoteAdapter(val context: Activity,val data:List<Note>, private val callbac
     }
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
-
-
         holder.bind(this.data[position], callback)
     }
 
@@ -44,7 +42,6 @@ class NoteAdapter(val context: Activity,val data:List<Note>, private val callbac
                     callback.onItemClick(note)
                 }
             }
-
         }
     }
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +13,7 @@ import com.app.adapter.ExpandableCardAdapter
 import com.app.adapter.ItemAdapter
 import com.app.data.ItemData
 import com.app.data.SearchCardData
+import com.app.dialog.ItemDetailDialog
 import com.app.ngn.R
 import com.app.util.Generator.Companion.generateString
 import kotlin.random.Random
@@ -26,7 +28,22 @@ class ItemFragment:Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         itemList = generatePseudoItem(10)
-        val adapter = ItemAdapter(requireActivity(), itemList)
+        val itemListener = object : ItemAdapter.Listener{
+            override fun onClick(data: ItemData) {
+                val itemListener = object : ItemDetailDialog.Listener{
+                    override fun onConfirm(data: ItemData, count: Int) {
+
+                    }
+
+                    override fun onCancel() {
+
+                    }
+                }
+                ItemDetailDialog(data,itemListener).show(requireActivity().supportFragmentManager, "ITEM DETAILS")
+            }
+        }
+
+        val adapter = ItemAdapter(requireActivity(), itemList, itemListener)
         val layoutManager = GridLayoutManager(requireContext(), 2)
 
         val list = view.findViewById<RecyclerView>(R.id.fg_item_list)

@@ -19,6 +19,7 @@ import com.app.util.Format.Companion.parseDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import java.lang.Exception
 import java.text.DecimalFormat
 import java.util.*
 
@@ -39,7 +40,7 @@ class NoteDialog(private val dialogListener: NoteDialogListener, data: NoteData?
         this.content = v.findViewById(R.id.content)
         val date:EditText = v.findViewById(R.id.date)
         val time:EditText = v.findViewById(R.id.time)
-        db = Room.databaseBuilder(requireContext(), AppDatabase::class.java, "db").build()
+        db = Room.databaseBuilder(requireActivity().applicationContext, AppDatabase::class.java, "db").fallbackToDestructiveMigration().build()
 
         val dpListener = DatePickerDialog.OnDateSetListener { _, year, month, day ->
             run {
@@ -86,11 +87,16 @@ class NoteDialog(private val dialogListener: NoteDialogListener, data: NoteData?
                         displayDate = parseDate(sb.toString())
                 )
 
-                runBlocking {
-                    withContext(Dispatchers.IO){
-                        db.noteDAO().insert(note)
+                try {
+                    runBlocking {
+                        withContext(Dispatchers.IO){
+                            db.noteDAO().insert(note)
+                        }
                     }
+                }catch (e : Exception){
+                    println(e)
                 }
+
 
                 dialogListener.onAdd(
                     note

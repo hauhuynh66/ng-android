@@ -5,8 +5,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageView
-import android.widget.RadioButton
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +14,7 @@ import com.app.data.FileData
 import com.app.ngn.R
 import com.app.util.Format.Companion.formatDate
 
-class EXListAdapter(val context: Activity, val data: ArrayList<FileData>,
+class EXListAdapter(val context: Activity, var data: ArrayList<FileData>,
                     private val isGrid: Boolean, val listener: Listener? = null) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -38,10 +38,10 @@ class EXListAdapter(val context: Activity, val data: ArrayList<FileData>,
         }else {
             when (holder.itemViewType) {
                 0 -> {
-                    (holder as EXListFileViewHolder).bind(data[position], listener!!)
+                    (holder as EXListFileViewHolder).bind(data[position], listener!!, position)
                 }
                 else -> {
-                    (holder as EXListFolderViewHolder).bind(data[position], listener!!)
+                    (holder as EXListFolderViewHolder).bind(data[position], listener!!, position)
                 }
             }
         }
@@ -64,25 +64,26 @@ class EXListAdapter(val context: Activity, val data: ArrayList<FileData>,
     }
 
     class EXListFolderViewHolder(private val v: View) : RecyclerView.ViewHolder (v){
-        fun bind(fileData: FileData, listener: Listener){
-            val next = v.findViewById<ConstraintLayout>(R.id.com_ex_list_info_group)
-            next.setOnClickListener{
-                fileData.listener.onClick(fileData.path)
-            }
-
-            next.setOnLongClickListener {
-                fileData.listener.onLongClick(fileData.path)
-                true
-            }
-
-            val radio = v.findViewById<RadioButton>(R.id.com_ex_list_check)
-            radio.isChecked = fileData.checked
-            radio.setOnClickListener {
-                if(radio.isChecked){
+        fun bind(fileData: FileData, listener: Listener, position : Int){
+            val chk = v.findViewById<CheckBox>(R.id.com_ex_list_check)
+            chk.isChecked = fileData.checked
+            chk.setOnClickListener {
+                if(chk.isChecked){
                     listener.onCheck(fileData.path)
                 }else{
                     listener.onUnCheck(fileData.path)
                 }
+                fileData.checked = chk.isChecked
+            }
+
+            val next = v.findViewById<ConstraintLayout>(R.id.com_ex_list_info_group)
+            next.setOnClickListener{
+                listener.onClick(fileData.path, chk.isChecked, position)
+            }
+
+            next.setOnLongClickListener {
+                listener.onLongClick(fileData.path)
+                true
             }
 
             val name = v.findViewById<TextView>(R.id.com_ex_list_name)
@@ -99,24 +100,26 @@ class EXListAdapter(val context: Activity, val data: ArrayList<FileData>,
     }
 
     class EXListFileViewHolder(private val v:View) : RecyclerView.ViewHolder(v){
-        fun bind(fileData: FileData, listener: Listener){
-            val next = v.findViewById<ConstraintLayout>(R.id.com_ex_list_info_group)
-            next.setOnClickListener{
-                fileData.listener.onClick(fileData.path)
-            }
-
-            next.setOnLongClickListener {
-                fileData.listener.onLongClick(fileData.path)
-                true
-            }
-
-            val radio = v.findViewById<RadioButton>(R.id.com_ex_list_check)
-            radio.setOnClickListener {
-                if(radio.isChecked){
+        fun bind(fileData: FileData, listener: Listener, position : Int){
+            val chk = v.findViewById<CheckBox>(R.id.com_ex_list_check)
+            chk.isChecked = fileData.checked
+            chk.setOnClickListener {
+                if(chk.isChecked){
                     listener.onCheck(fileData.path)
                 }else{
                     listener.onUnCheck(fileData.path)
                 }
+                fileData.checked = chk.isChecked
+            }
+
+            val next = v.findViewById<ConstraintLayout>(R.id.com_ex_list_info_group)
+            next.setOnClickListener{
+                listener.onClick(fileData.path, chk.isChecked, position)
+            }
+
+            next.setOnLongClickListener {
+                listener.onLongClick(fileData.path)
+                true
             }
 
             val name = v.findViewById<TextView>(R.id.com_ex_list_name)
@@ -139,7 +142,9 @@ class EXListAdapter(val context: Activity, val data: ArrayList<FileData>,
     }
 
     interface Listener{
-        fun onCheck(path : String)
-        fun onUnCheck(path : String)
+        fun onCheck(path: String)
+        fun onUnCheck(path: String)
+        fun onClick(path : String, isChecked: Boolean, position: Int)
+        fun onLongClick(path : String)
     }
 }

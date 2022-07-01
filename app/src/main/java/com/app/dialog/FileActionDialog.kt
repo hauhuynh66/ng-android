@@ -10,8 +10,9 @@ import com.app.data.ConfirmDialogData
 import com.app.ngn.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.io.File
+import java.util.*
 
-class FileActionDialog(private val paths : ArrayList<Any>, val listener : Listener) : BottomSheetDialogFragment() {
+class FileActionDialog(private val paths : List<String>, val listener : Listener) : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -28,15 +29,15 @@ class FileActionDialog(private val paths : ArrayList<Any>, val listener : Listen
             ConfirmDialog("Do you want to delete?", object : ConfirmDialog.Listener{
                 override fun onConfirm(data: ConfirmDialogData) {
                     for(s:Any in data.data){
-                        val retName = File(s.toString()).name
+                        val retName = File(s.toString()).absolutePath
                         val success = File(s.toString()).delete()
                         if(success){
                             listener.onDelete(retName)
-                            dismiss()
                         }
+                        dismiss()
                     }
                 }
-            }, ConfirmDialogData(paths)).show(requireActivity().supportFragmentManager, "DELETE")
+            }, ConfirmDialogData(ArrayList(paths))).show(requireActivity().supportFragmentManager, "DELETE")
         }
 
         when{
@@ -79,6 +80,7 @@ class FileActionDialog(private val paths : ArrayList<Any>, val listener : Listen
         fun onRename(oldName: String, newName : String){
 
         }
-        fun onDelete(name : String)
+
+        fun onDelete(path : String)
     }
 }

@@ -17,6 +17,9 @@ import com.app.model.AppDatabase
 import com.app.model.Note
 import com.app.ngn.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 class NoteFragment:Fragment(), NoteDialogListener {
     private lateinit var fb:FloatingActionButton
@@ -32,13 +35,14 @@ class NoteFragment:Fragment(), NoteDialogListener {
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         val noteList = view.findViewById<RecyclerView>(R.id.noteList)
         noteList.layoutManager = layoutManager
-        val db = Room.databaseBuilder(requireContext(), AppDatabase::class.java, "db").build()
+        val db = Room.databaseBuilder(requireActivity().applicationContext, AppDatabase::class.java, "db").fallbackToDestructiveMigration().build()
         val d = db.noteDAO().getAll().value
         if(d!=null){
             this.data = ArrayList(d)
         }else{
             this.data = arrayListOf()
         }
+
         adapter = NoteAdapter(this.requireActivity(), data, null)
         noteList.adapter = adapter
         fb = view.findViewById(R.id.addBtn)

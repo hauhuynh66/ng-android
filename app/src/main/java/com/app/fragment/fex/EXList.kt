@@ -18,15 +18,15 @@ import com.app.adapter.EXListAdapter
 import com.app.data.FileData
 import com.app.dialog.FileActionDialog
 import com.app.listener.EXListListener
-import com.app.listener.EXPathChangeListener
 import com.app.ngn.R
 import com.app.util.Animation.Companion.crossfade
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.attribute.BasicFileAttributes
 import java.util.*
+import java.util.stream.Collectors
 
-class EXList(val listener : Listener) : Fragment(), EXPathChangeListener, EXListListener {
+class EXList(val listener : Listener) : Fragment(), EXListListener {
     private lateinit var data: ArrayList<FileData>
     private val rootPath : String = Environment.getExternalStorageDirectory().absolutePath
     private var path : String = rootPath
@@ -37,7 +37,7 @@ class EXList(val listener : Listener) : Fragment(), EXPathChangeListener, EXList
     private lateinit var bottomBar: ConstraintLayout
     private lateinit var topBar: ConstraintLayout
     private var isMultiple = false
-    private var selected: ArrayList<Any> = arrayListOf()
+    private var selected: MutableList<String> = mutableListOf()
     private lateinit var num: TextView
     private var isCheckAll = false
 
@@ -68,10 +68,9 @@ class EXList(val listener : Listener) : Fragment(), EXPathChangeListener, EXList
             override fun onCheck(path : String) {
                 if(!isMultiple){
                     isMultiple = true
+                    crossfade(arrayListOf(bottomBar, topBar), arrayListOf(pathGroup))
                     listener.onMultipleChanged(isMultiple)
-                    crossfade(arrayListOf(bottomBar, topBar), arrayListOf(pathGroup), 0)
                 }
-
                 if(!selected.contains(path)){
                     selected.add(path)
                 }
@@ -84,6 +83,41 @@ class EXList(val listener : Listener) : Fragment(), EXPathChangeListener, EXList
                     selected.remove(path)
                 }
                 onSelectionChange()
+                isCheckAll = false
+            }
+
+            override fun onClick(path: String, isChecked: Boolean, position : Int) {
+                if(!isMultiple){
+                    adapter.data = getFileList(path)
+                    adapter.notifyDataSetChanged()
+                    pathView.setText(path)
+                    onPathChanged(path)
+                }else{
+                    if(!isChecked){
+                        if(!selected.contains(path)){
+                            selected.add(path)
+                        }
+                    }else{
+                        if(selected.contains(path)){
+                            selected.remove(path)
+                        }
+                    }
+                    adapter.data[position].checked = !isChecked
+                    adapter.notifyItemChanged(position)
+                    onSelectionChange()
+                }
+            }
+
+            override fun onLongClick(path: String) {
+                if(!isMultiple){
+                    isMultiple = true
+                    crossfade(arrayListOf(bottomBar, topBar), arrayListOf(pathGroup))
+                    listener.onMultipleChanged(isMultiple)
+
+                    selected.add(path)
+                    isCheckAll = adapter.data.size == 1
+                    onSelectionChange()
+                }
             }
         }
 
@@ -95,7 +129,11 @@ class EXList(val listener : Listener) : Fragment(), EXPathChangeListener, EXList
         dismissBottomBar.setOnClickListener {
             isMultiple = false
             listener.onMultipleChanged(isMultiple)
-            selected = arrayListOf()
+            selected.clear()
+            for (fileData in adapter.data){
+                fileData.checked = false
+            }
+            adapter.notifyDataSetChanged()
             crossfade(arrayListOf(pathGroup),arrayListOf(bottomBar, topBar), duration = 0)
         }
 
@@ -106,7 +144,7 @@ class EXList(val listener : Listener) : Fragment(), EXPathChangeListener, EXList
                         it.name == oldName
                     }[0]
                     val m =
-                        FileData(newName, renamed.createDate, renamed.size, renamed.listener,
+                        FileData(newName, renamed.createDate, renamed.size,
                             renamed.path.replace(oldName, newName), renamed.type)
                     val pos = data.indexOf(renamed)
                     data.remove(renamed)
@@ -116,12 +154,12 @@ class EXList(val listener : Listener) : Fragment(), EXPathChangeListener, EXList
                     dismissBottomBar.performClick()
                 }
 
-                override fun onDelete(name: String) {
-                    val deleted = data.filter {
-                        it.name == name
+                override fun onDelete(path: String) {
+                    val deleted = adapter.data.filter {
+                        it.path == path
                     }[0]
                     val pos = data.indexOf(deleted)
-                    data.remove(deleted)
+                    adapter.data.remove(deleted)
                     adapter.notifyItemRemoved(pos)
                     dismissBottomBar.performClick()
                 }
@@ -130,27 +168,28 @@ class EXList(val listener : Listener) : Fragment(), EXPathChangeListener, EXList
         }
 
         prev.setOnClickListener{
-            if(pathView.text.toString() != rootPath){
-                path = path.substringBeforeLast("/")
-                onChanged(path)
+            if(pathView.text.toString() != rootPath || pathView.text.toString().length > rootPath.length){
+                this.path = this.path.substringBeforeLast("/")
+                onPathChanged(path)
+            }else{
+                pathView.setText(rootPath)
             }
         }
 
         check.setOnClickListener {
             if(!isCheckAll){
-                for ((i, fileData) in adapter.data.withIndex()){
-                    if(!selected.contains(fileData.path)){
-                        selected.add(fileData.path)
-                    }
+                for (fileData in adapter.data){
                     fileData.checked = true
-                    adapter.notifyItemChanged(i)
-                }
-            }else{
-                for ((i, fileData) in adapter.data.withIndex()){
-                    fileData.checked = false
-                    adapter.notifyItemChanged(i)
                 }
                 selected.clear()
+                selected = adapter.data.stream().map { it.path }.collect(Collectors.toList())
+                adapter.notifyDataSetChanged()
+            }else{
+                for (fileData in adapter.data){
+                    fileData.checked = false
+                }
+                selected.clear()
+                adapter.notifyDataSetChanged()
             }
             isCheckAll = !isCheckAll
             onSelectionChange()
@@ -167,39 +206,10 @@ class EXList(val listener : Listener) : Fragment(), EXPathChangeListener, EXList
                     f!!.apply {
                         val attrs = Files.readAttributes(file.toPath(),BasicFileAttributes::class.java)
                         val date = attrs.creationTime().toMillis()
-                        val listener = object : FileData.Listener{
-                            override fun onClick( path: String) {
-                                if(!isMultiple){
-                                    if(File(path).isDirectory){
-                                        this@EXList.path = path
-                                        onChanged(path)
-                                    }
-                                }else{
-                                    if(!selected.contains(path)){
-                                        selected.add(path)
-                                    }else{
-                                        selected.remove(path)
-                                    }
-                                    onSelectionChange()
-                                    isCheckAll = adapter.data.size == selected.size
-                                }
-                            }
-
-                            override fun onLongClick(path: String) {
-                                if(!isMultiple){
-                                    selected.add(path)
-                                    onSelectionChange()
-                                    isMultiple = true
-                                    listener.onMultipleChanged(isMultiple)
-                                    crossfade(arrayListOf(bottomBar, topBar), arrayListOf(pathGroup), duration = 0)
-                                    isCheckAll = adapter.data.size == 1
-                                }
-                            }
-                        }
                         if(f.isDirectory){
-                            ret.add(FileData(f.name, Date(date), null, listener, f.absolutePath, "DIR"))
+                            ret.add(FileData(f.name, Date(date), null, f.absolutePath, "DIR"))
                         }else{
-                            ret.add(FileData(f.name, Date(date), f.length()/1024, listener, f.absolutePath, f.extension))
+                            ret.add(FileData(f.name, Date(date), f.length()/1024, f.absolutePath, f.extension))
                         }
                     }
                 }
@@ -208,11 +218,12 @@ class EXList(val listener : Listener) : Fragment(), EXPathChangeListener, EXList
         return ret
     }
 
-    override fun onChanged(path : String) {
-        data.clear()
-        data.addAll(getFileList(path))
-        adapter.notifyDataSetChanged()
+    override fun onPathChanged(path : String) {
+        this.path = path
         pathView.setText(path)
+        adapter.data.clear()
+        adapter.data.addAll(getFileList(this.path))
+        adapter.notifyDataSetChanged()
     }
 
     override fun onSelectionChange() {

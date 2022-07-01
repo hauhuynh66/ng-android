@@ -36,6 +36,7 @@
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/menu/weather_menu.xml" value="0.2" />
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/xml/root_preferences.xml" value="0.1" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/drawable/bg2.xml" value="0.2" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/drawable/custom_chk.xml" value="0.1355" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_cv.xml" value="0.13020833333333334" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_file_list.xml" value="0.22735507246376813" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_flx.xml" value="0.12916666666666668" />
@@ -56,7 +57,7 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/dlg_file_download.xml" value="0.2235722964763062" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/dlg_graph.xml" value="0.17300724637681159" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/dlg_image.xml" value="0.2" />
-        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/dlg_item_detail.xml" value="0.136" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/dlg_item_detail.xml" value="0.152" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/dlg_newnote.xml" value="0.11200000000000002" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_diary_page.xml" value="0.24166666666666667" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_ex_detail.xml" value="0.2368659420289855" />

@@ -6,7 +6,7 @@ import android.view.View
 
 class Animation {
     companion object{
-        fun crossfade(v1: ArrayList<View>, v2:ArrayList<View>, duration: Long) {
+        fun crossfade(v1: ArrayList<View>, v2:ArrayList<View>, duration: Long = 0) {
             v1.forEach {
                 it.apply {
                     alpha = 0f

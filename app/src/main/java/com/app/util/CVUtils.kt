@@ -100,7 +100,7 @@ class CVUtils {
             val iterator = matches.iterator()
             while (iterator.hasNext()){
                 val m = iterator.next()
-                if((m.toArray()[0].distance)/(m.toArray()[1].distance) < 0.75){
+                if((m.toArray()[0].distance)/(m.toArray()[1].distance) < 0.6){
                     goodMatchList.add(m.toArray()[0])
                 }
             }
