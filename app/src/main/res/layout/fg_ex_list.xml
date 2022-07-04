@@ -19,11 +19,14 @@
                 android:id="@+id/fg_ex_list_input_button"
                 android:src="@drawable/ic_baseline_arrow_upward"
                 android:background="@android:color/transparent"/>
-            <EditText
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:maxLines="1"
                 android:inputType="text"
+                android:textSize="8pt"
+                android:paddingStart="10dp"
+                android:gravity="left|center_vertical"
                 android:id="@+id/fg_ex_list_input"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
         <androidx.constraintlayout.widget.ConstraintLayout

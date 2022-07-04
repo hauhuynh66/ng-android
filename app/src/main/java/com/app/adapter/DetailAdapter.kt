@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ngn.R
 
-class DetailAdapter(val context: Activity, val data : ArrayList<DetailData>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class DetailAdapter(val context: Context, val data : ArrayList<DetailData>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         return DetailViewHolder(inflater.inflate(R.layout.com_detail, parent, false))

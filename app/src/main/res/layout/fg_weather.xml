@@ -10,8 +10,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.6"
+            app:layout_constraintHeight_percent="0.5"
             app:layout_constraintTop_toTopOf="parent"
+            android:paddingTop="10dp"
             android:id="@+id/main_layout">
             <Button
                 android:layout_width="50dp"
@@ -102,10 +103,10 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.4"
-            app:layout_constraintTop_toBottomOf="@id/main_layout"
+            app:layout_constraintHeight_percent="0.25"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/sub_layout">
-            <view class="androidx.recyclerview.widget.RecyclerView"
+            <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
@@ -113,8 +114,7 @@
                 android:background="@drawable/bg1"
                 android:layout_margin="5dp"
                 android:padding="10dp">
-
-            </view>
+            </androidx.recyclerview.widget.RecyclerView>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <ProgressBar

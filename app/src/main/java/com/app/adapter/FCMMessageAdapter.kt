@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.ngn.R
 import com.google.firebase.messaging.RemoteMessage
 
-class FCMMessageAdapter(val context:Activity,val data: ArrayList<RemoteMessage>)
+class FCMMessageAdapter(val context : Context,val data: ArrayList<RemoteMessage>)
     : RecyclerView.Adapter<FCMMessageAdapter.FCMViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FCMViewHolder {

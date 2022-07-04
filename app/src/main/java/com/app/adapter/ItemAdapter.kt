@@ -14,7 +14,7 @@ import com.app.ngn.R
 import com.app.task.ImageCallable
 import com.app.task.TaskRunner
 
-class ItemAdapter(val context: Activity, var data:ArrayList<ItemData>, val listener: Listener):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ItemAdapter(val context: Context, var data:ArrayList<ItemData>, val listener: Listener):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         return ItemViewHolder(inflater.inflate(R.layout.com_item, parent, false))

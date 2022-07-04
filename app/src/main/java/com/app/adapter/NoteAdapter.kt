@@ -15,7 +15,7 @@ import com.app.model.Note
 import com.app.ngn.R
 import com.app.util.Format.Companion.formatDate
 
-class NoteAdapter(val context: Activity,val data:List<Note>, private val callback: NoteAdapter.Callback?):RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
+class NoteAdapter(val context: Context,val data:List<Note>, private val callback: NoteAdapter.Callback?):RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         val inflater = this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         return NoteViewHolder(inflater.inflate(R.layout.com_note, parent, false))

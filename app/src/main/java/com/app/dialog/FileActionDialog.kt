@@ -18,7 +18,7 @@ class FileActionDialog(private val paths : List<String>, val listener : Listener
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fg_modal_file_action, container, false)
+        return inflater.inflate(R.layout.dlg_file_action, container, false)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val property = view.findViewById<TextView>(R.id.fg_modal_file_action_show_properties)

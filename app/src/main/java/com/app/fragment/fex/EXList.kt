@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.widget.LinearLayoutCompat
@@ -32,7 +31,7 @@ class EXList(val listener : Listener) : Fragment(), EXListListener {
     private var path : String = rootPath
     private lateinit var adapter : EXListAdapter
     private lateinit var list : RecyclerView
-    private lateinit var pathView : EditText
+    private lateinit var pathView : TextView
     private lateinit var pathGroup: LinearLayoutCompat
     private lateinit var bottomBar: ConstraintLayout
     private lateinit var topBar: ConstraintLayout

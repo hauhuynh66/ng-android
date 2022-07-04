@@ -13,6 +13,7 @@ import com.app.activity.cv.CVActivity
 import com.app.activity.fex.FileExplorerActivity
 import com.app.adapter.MiscAdapter
 import com.app.data.MiscData
+import com.app.dialog.OptionBottomSheet
 import com.app.ngn.R
 
 class MiscFragment : Fragment() {
@@ -43,15 +44,28 @@ class MiscFragment : Fragment() {
         }))
         data.add(MiscData(null, object : MiscData.Listener{
             override fun onClick() {
-                val intent = Intent(requireActivity(), CVActivity::class.java)
-                startActivity(intent)
+                val options = arrayListOf<String>("Blur", "Harris", "Orb")
+                val opts = arrayListOf<OptionBottomSheet.BottomSheetData>()
+                val cbs = arrayListOf<OptionBottomSheet.Listener>()
+
+                for(i in 0 until 3){
+                    opts.add(OptionBottomSheet.BottomSheetData(options[i], true, options[i]))
+                    val cb = object : OptionBottomSheet.Listener{
+                        override fun onClick(option: String?) {
+                            val intent = Intent(requireActivity(), CVActivity::class.java)
+                            startActivity(intent)
+                        }
+                    }
+                    cbs.add(cb)
+                }
+
+                OptionBottomSheet(opts, cbs)
+                    .show(requireActivity().supportFragmentManager, "CV_OPTIONS")
             }
         }))
 
-        val layoutManager = GridLayoutManager(requireContext(), 2)
         val list = view.findViewById<RecyclerView>(R.id.fg_misc_list)
-        val adapter = MiscAdapter(requireActivity(), data)
-        list.layoutManager = layoutManager
-        list.adapter = adapter
+        list.layoutManager = GridLayoutManager(requireContext(), 2)
+        list.adapter = MiscAdapter(requireContext(), data)
     }
 }

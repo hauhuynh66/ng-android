@@ -15,7 +15,7 @@ import com.app.ngn.R
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 
-class ExpandableCardAdapter(val context: Activity, val data : SearchCardData) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ExpandableCardAdapter(val context: Context, val data : SearchCardData) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var expandPos: Int = -1
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return CardViewHolder((context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater)

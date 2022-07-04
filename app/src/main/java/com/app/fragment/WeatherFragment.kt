@@ -133,10 +133,8 @@ class WeatherFragment(): Fragment(){
                     response-> run {
                     forecast = processWeatherAPI(response)
                     updateUI(forecast!!, view)
-                    val layoutManager = LinearLayoutManager(this.requireContext())
-                    layoutManager.orientation = LinearLayoutManager.HORIZONTAL
                     val listView:RecyclerView = view.findViewById(R.id.weather_list)
-                    listView.layoutManager = layoutManager
+                    listView.layoutManager = LinearLayoutManager(this.requireContext(), LinearLayoutManager.HORIZONTAL, false)
                     listView.adapter = WeatherAdapter(this.requireActivity(), forecast!!.data)
                     crossfade(arrayListOf(contentLayout), arrayListOf(progressBar), duration = 800)
                 }

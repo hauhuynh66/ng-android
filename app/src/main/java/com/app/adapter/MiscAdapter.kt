@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.data.MiscData
 import com.app.ngn.R
 
-class MiscAdapter(val context:Activity, val data:ArrayList<MiscData>):RecyclerView.Adapter<MiscAdapter.MiscViewHolder>() {
+class MiscAdapter(val context : Context, val data:ArrayList<MiscData>):RecyclerView.Adapter<MiscAdapter.MiscViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MiscViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         return MiscViewHolder(inflater.inflate(R.layout.com_misc,parent, false))
