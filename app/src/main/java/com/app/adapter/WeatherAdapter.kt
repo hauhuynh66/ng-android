@@ -1,7 +1,6 @@
 package com.app.adapter
 
 import android.content.Context
-import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +20,8 @@ class WeatherAdapter(private val context:Context, var data:ArrayList<WeatherData
     }
 
     override fun onBindViewHolder(holder: WeatherViewHolder, position: Int) {
+        val metric = context.resources.displayMetrics
+        holder.v.layoutParams.width = metric.widthPixels/3
         val des = holder.v.findViewById<TextView>(R.id.sub_des)
         val temp = holder.v.findViewById<TextView>(R.id.sub_temp)
         val humid = holder.v.findViewById<TextView>(R.id.sub_humid)

@@ -61,6 +61,8 @@
 
         <activity android:name="com.app.activity.cv.CVActivity"
             android:exported="true"/>
+        <activity android:name="com.app.activity.ItemActivity"
+            android:exported="true"/>
 
         <service
             android:name="com.app.service.FCMService"

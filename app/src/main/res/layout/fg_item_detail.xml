@@ -1,25 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:gravity="center"
-        android:textSize="10pt"
-        android:text="Item name"
-        app:layout_constraintTop_toTopOf="parent"
-        android:fontFamily="@font/audiowide"
-        android:id="@+id/dlg_item_detail_title"
-        android:background="@color/design_default_color_primary"/>
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="300dp"
         android:layout_margin="40dp"
         android:id="@+id/dlg_item_detail_image"
-        app:layout_constraintTop_toBottomOf="@id/dlg_item_detail_title"/>
+        app:layout_constraintTop_toTopOf="parent"/>
     <SeekBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

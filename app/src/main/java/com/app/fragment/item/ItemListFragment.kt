@@ -1,10 +1,9 @@
-package com.app.fragment
+package com.app.fragment.item
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,16 +12,15 @@ import com.app.adapter.ExpandableCardAdapter
 import com.app.adapter.ItemAdapter
 import com.app.data.ItemData
 import com.app.data.SearchCardData
-import com.app.dialog.ItemDetailDialog
 import com.app.ngn.R
 import com.app.util.Generator.Companion.generateString
 import kotlin.random.Random
 
-class ItemFragment:Fragment() {
+class ItemListFragment:Fragment() {
     private lateinit var itemList: ArrayList<ItemData>
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        return inflater.inflate(R.layout.fg_item, container, false)
+        return inflater.inflate(R.layout.fg_item_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -30,7 +28,7 @@ class ItemFragment:Fragment() {
         itemList = generatePseudoItem(10)
         val itemListener = object : ItemAdapter.Listener{
             override fun onClick(data: ItemData) {
-                val itemListener = object : ItemDetailDialog.Listener{
+                val itemListener = object : ItemDetailFragment.Listener{
                     override fun onConfirm(data: ItemData, count: Int) {
 
                     }
@@ -39,7 +37,7 @@ class ItemFragment:Fragment() {
 
                     }
                 }
-                ItemDetailDialog(data,itemListener).show(requireActivity().supportFragmentManager, "ITEM DETAILS")
+
             }
         }
 

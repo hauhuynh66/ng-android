@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.app.fragment.*
+import com.app.fragment.item.ItemListFragment
 import com.app.ngn.R
 import com.app.task.ImageCallable
 import com.app.task.TaskRunner
@@ -78,10 +79,6 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                     R.id.nav_test->{
                         this.title = "Test"
                         supportFragmentManager.beginTransaction().replace(R.id.container,  TestFragment(), "TEST").commit()
-                    }
-                    R.id.nav_menu_item->{
-                        this.title = "Item"
-                        supportFragmentManager.beginTransaction().replace(R.id.container,  ItemFragment(), "ITEM").commit()
                     }
                     R.id.nav_menu_misc->{
                         this.title = "Others"
