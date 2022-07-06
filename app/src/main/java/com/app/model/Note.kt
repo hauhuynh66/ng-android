@@ -1,11 +1,9 @@
 package com.app.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 import java.util.*
 
-@Entity
+@Entity(indices = [Index(value = ["title"], unique = true)])
 data class Note (
     @ColumnInfo(name = "title") val title: String?,
     @ColumnInfo(name = "content") val content: String?,

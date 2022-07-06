@@ -1,6 +1,5 @@
 package com.app.adapter
 
-import android.app.Activity
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -9,6 +8,7 @@ import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.model.Note
@@ -31,9 +31,10 @@ class NoteAdapter(val context: Context,val data:List<Note>, private val callback
 
     class NoteViewHolder(private val v: View):RecyclerView.ViewHolder(v){
         fun bind(note:Note, callback: Callback?){
-            val title = v.findViewById<TextView>(R.id.title)
-            val content = v.findViewById<TextView>(R.id.content)
-            val date = v.findViewById<TextView>(R.id.displayDate)
+            val title = v.findViewById<TextView>(R.id.com_note_title)
+            val content = v.findViewById<TextView>(R.id.com_note_content)
+            val date = v.findViewById<TextView>(R.id.com_note_displayDate)
+            val del = v.findViewById<Button>(R.id.com_note_delete)
             title.text = note.title
             content.text = note.content
             date.text = formatDate(note.displayDate)

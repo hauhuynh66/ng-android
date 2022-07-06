@@ -9,8 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.activity.FCMActivity
-import com.app.activity.cv.CVActivity
-import com.app.activity.fex.FileExplorerActivity
+import com.app.activity.CVActivity
+import com.app.activity.FileExplorerActivity
+import com.app.activity.ItemActivity
 import com.app.adapter.MiscAdapter
 import com.app.data.MiscData
 import com.app.dialog.OptionBottomSheet
@@ -30,6 +31,12 @@ class MiscFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         data = arrayListOf()
+        data.add(MiscData(null, object : MiscData.Listener{
+            override fun onClick() {
+                val intent = Intent(requireActivity(), ItemActivity::class.java)
+                startActivity(intent)
+            }
+        }))
         data.add(MiscData(null, object : MiscData.Listener{
             override fun onClick() {
                 val intent = Intent(requireActivity(), FCMActivity::class.java)

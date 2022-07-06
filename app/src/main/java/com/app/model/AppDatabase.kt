@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import com.app.repository.NoteDAO
 import com.app.view.DateConverter
 
-@Database(entities = [Note::class], version = 1)
+@Database(entities = [Note::class], version = 2)
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun noteDAO(): NoteDAO

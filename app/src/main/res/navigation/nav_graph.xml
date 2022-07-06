@@ -10,10 +10,10 @@
         android:label="ItemListFragment" >
         <action
             android:id="@+id/action_itemListFragment_to_itemDetailFragment"
-            app:destination="@id/itemDetailFragment" />
+            app:destination="@id/itemDetailFragment"/>
         <action
             android:id="@+id/action_itemListFragment_to_itemConfirmFragment"
-            app:destination="@id/itemConfirmFragment" />
+            app:destination="@id/itemConfirmFragment"/>
     </fragment>
     <fragment
         android:id="@+id/itemDetailFragment"
@@ -21,7 +21,7 @@
         android:label="ItemDetailFragment" >
         <action
             android:id="@+id/action_itemDetailFragment_to_itemListFragment"
-            app:destination="@id/itemListFragment" />
+            app:destination="@id/itemListFragment"/>
     </fragment>
     <fragment
         android:id="@+id/itemConfirmFragment"

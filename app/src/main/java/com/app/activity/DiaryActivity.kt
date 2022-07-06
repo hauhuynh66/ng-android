@@ -1,4 +1,4 @@
-package com.app.activity.diary
+package com.app.activity
 
 import androidx.appcompat.app.AppCompatActivity
 

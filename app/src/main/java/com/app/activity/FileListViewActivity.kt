@@ -1,4 +1,4 @@
-package com.app.activity.fex
+package com.app.activity
 
 import android.os.Bundle
 import android.os.Environment

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.activity.fex.FileListViewActivity
+import com.app.activity.FileListViewActivity
 import com.app.adapter.MiscAdapter
 import com.app.data.MiscData
 import com.app.ngn.R

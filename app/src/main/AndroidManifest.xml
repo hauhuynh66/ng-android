@@ -50,17 +50,18 @@
             android:name="com.app.activity.FCMActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.fex.FileExplorerActivity"
+        <activity android:name="com.app.activity.FileExplorerActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.diary.DiaryActivity"
+        <activity android:name="com.app.activity.DiaryActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.fex.FileListViewActivity"
+        <activity android:name="com.app.activity.FileListViewActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.cv.CVActivity"
+        <activity android:name="com.app.activity.CVActivity"
             android:exported="true"/>
+
         <activity android:name="com.app.activity.ItemActivity"
             android:exported="true"/>
 
@@ -81,7 +82,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.app.activity.cv.CVActivity.provider"
+            android:authorities="com.app.activity.CVActivity.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

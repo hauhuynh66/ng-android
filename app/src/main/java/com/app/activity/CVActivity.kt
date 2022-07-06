@@ -1,4 +1,4 @@
-package com.app.activity.cv
+package com.app.activity
 
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
@@ -53,7 +53,7 @@ class CVActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.cv_menu, menu)
         return true
     }
@@ -63,7 +63,7 @@ class CVActivity : AppCompatActivity() {
             R.id.cv_menu_camera->{
                 val file = createImageFile()
                 photoURI = if(file!=null){
-                    FileProvider.getUriForFile(this,"com.app.activity.cv.CVActivity.provider", file)
+                    FileProvider.getUriForFile(this,"com.app.activity.CVActivity.provider", file)
                 }else{
                     null
                 }

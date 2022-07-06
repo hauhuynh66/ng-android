@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,16 +29,7 @@ class ItemListFragment:Fragment() {
         itemList = generatePseudoItem(10)
         val itemListener = object : ItemAdapter.Listener{
             override fun onClick(data: ItemData) {
-                val itemListener = object : ItemDetailFragment.Listener{
-                    override fun onConfirm(data: ItemData, count: Int) {
-
-                    }
-
-                    override fun onCancel() {
-
-                    }
-                }
-
+                requireActivity().findNavController(R.id.ac_item_nav_host).navigate(R.id.itemDetailFragment)
             }
         }
 
