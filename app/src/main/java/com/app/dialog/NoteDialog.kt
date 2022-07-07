@@ -77,7 +77,8 @@ class NoteDialog(private val dialogListener: NoteDialogListener, data: NoteData?
                     Note(
                         title =  this.title.text.toString(),
                         content = this.content.text.toString(),
-                        displayDate = parseDate(sb.toString())
+                        displayDate = parseDate(sb.toString()),
+                        null
                     )
                 )
             }

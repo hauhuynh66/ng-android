@@ -87,10 +87,12 @@ class EXList(val listener : Listener) : Fragment(), EXListListener {
 
             override fun onClick(path: String, isChecked: Boolean, position : Int) {
                 if(!isMultiple){
-                    adapter.data = getFileList(path)
-                    adapter.notifyDataSetChanged()
-                    pathView.setText(path)
-                    onPathChanged(path)
+                    if(adapter.data[position].type =="DIR"){
+                        adapter.data = getFileList(path)
+                        adapter.notifyDataSetChanged()
+                        pathView.text = path
+                        onPathChanged(path)
+                    }
                 }else{
                     if(!isChecked){
                         if(!selected.contains(path)){

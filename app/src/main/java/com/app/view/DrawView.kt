@@ -8,7 +8,7 @@ import android.view.View
 import kotlin.math.abs
 
 class DrawView : View {
-    private lateinit var mBitmap: Bitmap
+    var mBitmap: Bitmap? = null
     private var mCanvas: Canvas? = null
     private var mPath: Path? = null
     private var mBitmapPaint: Paint? = null
@@ -17,15 +17,23 @@ class DrawView : View {
     private var circlePath: Path
     private var c : Context? = null
     private var mX = 0f
-    private  var mY:kotlin.Float = 0f
+    private  var mY = 0f
     private val tolerance = 4f
 
     fun reset(){
-
+        mCanvas!!.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
     }
 
-    fun changeColor(){
+    fun changeColor(color : Int){
+        mPaint.apply {
+            this.color = color
+        }
+    }
 
+    fun changePathWidth(width : Float){
+        mPaint.apply {
+            this.strokeWidth = width
+        }
     }
 
     constructor(context: Context?) : super(context){
@@ -73,12 +81,12 @@ class DrawView : View {
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         mBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-        mCanvas = Canvas(mBitmap)
+        mCanvas = Canvas(mBitmap!!)
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        canvas.drawBitmap(mBitmap, 0f, 0f, mBitmapPaint)
+        canvas.drawBitmap(mBitmap!!, 0f, 0f, mBitmapPaint)
         canvas.drawPath(mPath!!, mPaint)
         canvas.drawPath(circlePath, circlePaint)
     }

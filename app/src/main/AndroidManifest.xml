@@ -65,6 +65,9 @@
         <activity android:name="com.app.activity.ItemActivity"
             android:exported="true"/>
 
+        <activity android:name="com.app.activity.DrawActivity"
+            android:exported="true"/>
+
         <service
             android:name="com.app.service.FCMService"
             android:exported="false">
@@ -82,7 +85,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.app.activity.CVActivity.provider"
+            android:authorities="com.app.activity.ngn"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

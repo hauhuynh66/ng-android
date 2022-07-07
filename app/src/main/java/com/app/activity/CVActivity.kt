@@ -17,6 +17,7 @@ import androidx.core.content.FileProvider
 import com.app.ngn.R
 import com.app.util.CVUtils.Companion.featureMatching
 import com.app.util.CVUtils.Companion.sift
+import com.app.util.Utils
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -61,9 +62,9 @@ class CVActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.cv_menu_camera->{
-                val file = createImageFile()
+                val file = Utils.createImageFile(dir)
                 photoURI = if(file!=null){
-                    FileProvider.getUriForFile(this,"com.app.activity.CVActivity.provider", file)
+                    FileProvider.getUriForFile(this,"com.app.activity.ngn", file)
                 }else{
                     null
                 }
@@ -77,27 +78,5 @@ class CVActivity : AppCompatActivity() {
             }
         }
         return true
-    }
-
-    private fun createImageFile() : File?{
-        val formatter = SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault())
-        val name = formatter.format(Date()).plus("_IMG.jpg")
-        if(!File(dir).exists()){
-            val success = File(dir).mkdirs()
-            if(!success){
-                return null
-            }
-        }
-        val file = File(dir, name)
-        return if(!file.exists()){
-            val success = file.createNewFile()
-            if(success){
-                file
-            }else{
-                null
-            }
-        }else{
-            file
-        }
     }
 }

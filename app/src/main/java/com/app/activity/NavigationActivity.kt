@@ -12,8 +12,9 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.app.fragment.*
-import com.app.fragment.item.ItemListFragment
+import com.app.fragment.MiscFragment
+import com.app.fragment.NoteFragment
+import com.app.fragment.WeatherFragment
 import com.app.ngn.R
 import com.app.task.ImageCallable
 import com.app.task.TaskRunner
@@ -75,10 +76,6 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                     R.id.nav_note->{
                         this.title = "Note"
                         supportFragmentManager.beginTransaction().replace(R.id.container,  NoteFragment(), "NOTE").commit()
-                    }
-                    R.id.nav_test->{
-                        this.title = "Test"
-                        supportFragmentManager.beginTransaction().replace(R.id.container,  TestFragment(), "TEST").commit()
                     }
                     R.id.nav_menu_misc->{
                         this.title = "Others"

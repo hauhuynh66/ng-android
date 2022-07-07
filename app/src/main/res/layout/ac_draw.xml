@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.app.view.DrawView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/fg_test_size"
+        android:id="@+id/fg_test_draw" />
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/ic_baseline_refresh"
+        android:id="@+id/fg_test_clear"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_marginVertical="10dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/fg_test_color"
+        app:layout_constraintTop_toBottomOf="@id/fg_test_draw"
+        android:id="@+id/fg_test_size"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_marginVertical="10dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toBottomOf="@id/fg_test_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/fg_test_color"/>
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/ic_baseline_save"
+        android:id="@+id/fg_test_save"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
