@@ -125,7 +125,7 @@ class EXList(val listener : Listener) : Fragment(), EXListListener {
         adapter = EXListAdapter(requireActivity(), data, isGrid = false, itemListener)
         list.layoutManager = LinearLayoutManager(requireContext())
         list.adapter = adapter
-        pathView.setText(path)
+        pathView.text = path
 
         dismissBottomBar.setOnClickListener {
             isMultiple = false
@@ -165,6 +165,8 @@ class EXList(val listener : Listener) : Fragment(), EXListListener {
                     dismissBottomBar.performClick()
                 }
             })
+
+            dialog.isCancelable = true
             dialog.show(requireActivity().supportFragmentManager, "TAG")
         }
 
@@ -173,7 +175,7 @@ class EXList(val listener : Listener) : Fragment(), EXListListener {
                 this.path = this.path.substringBeforeLast("/")
                 onPathChanged(path)
             }else{
-                pathView.setText(rootPath)
+                pathView.text = rootPath
             }
         }
 
@@ -221,7 +223,7 @@ class EXList(val listener : Listener) : Fragment(), EXListListener {
 
     override fun onPathChanged(path : String) {
         this.path = path
-        pathView.setText(path)
+        pathView.text = path
         adapter.data.clear()
         adapter.data.addAll(getFileList(this.path))
         adapter.notifyDataSetChanged()

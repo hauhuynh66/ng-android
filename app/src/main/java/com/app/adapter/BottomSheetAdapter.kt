@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.dialog.OptionBottomSheet
 import com.app.ngn.R
 
-class BottomSheetAdapter(val context : Context, val data : ArrayList<OptionBottomSheet.BottomSheetData>, val listeners : ArrayList<OptionBottomSheet.Listener>) :
+class BottomSheetAdapter(val context : Context, val data : ArrayList<OptionBottomSheet.BottomSheetData>, private val listeners : ArrayList<OptionBottomSheet.Listener>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ElementHolder((context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(

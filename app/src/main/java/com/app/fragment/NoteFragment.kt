@@ -25,7 +25,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import java.io.File
 import java.util.*
 
 class NoteFragment:Fragment(), NoteDialogListener {
@@ -45,20 +44,25 @@ class NoteFragment:Fragment(), NoteDialogListener {
             run{
                 if(result.resultCode== Activity.RESULT_OK) {
                     val path = result.data!!.extras!!.getString("bmp")
-                    if(File(path!!).exists()){
-                        val note = Note(
-                            title = System.currentTimeMillis().toString(),
-                            content = null,
-                            displayDate = Date(),
-                            extra = path
-                        )
-                        runBlocking {
-                            withContext(Dispatchers.IO){
-                                db.noteDAO().insert(note)
-                            }
-                        }
 
+                    val note = Note(
+                        title = System.currentTimeMillis().toString(),
+                        content = null,
+                        displayDate = Date(),
+                        extra = path
+                    )
+
+                    var id : Long
+
+                    runBlocking {
+                        withContext(Dispatchers.IO){
+                            id = db.noteDAO().insert(note)
+                        }
                     }
+
+                    note.id = id.toInt()
+                    data.add(note)
+                    adapter.notifyItemInserted(data.size - 1)
                 }
             }
         }
@@ -70,13 +74,31 @@ class NoteFragment:Fragment(), NoteDialogListener {
         runBlocking {
             withContext(Dispatchers.IO){
                 val d = db.noteDAO().getAll()
-                println(d.size)
-                data = d.toCollection(java.util.ArrayList())
-                println(data.size)
+                data = d.toCollection(ArrayList())
             }
         }
 
-        adapter = NoteAdapter(this.requireActivity(), data, null)
+        adapter = NoteAdapter(this.requireActivity(), data, object : NoteAdapter.Callback{
+            override fun onItemClick(note: Note) {
+
+            }
+
+            override fun onDelete(note: Note) {
+                var success = false
+                runBlocking {
+                    withContext(Dispatchers.IO){
+                        success = db.noteDAO().delete(note) == 1
+                    }
+                }
+                if(success){
+                    val pos = data.indexOf(note)
+                    data.remove(note)
+                    adapter.notifyItemRemoved(pos)
+                }
+
+            }
+        })
+
         noteList.adapter = adapter
         fb = view.findViewById(R.id.addBtn)
         fb.setOnClickListener {
@@ -95,13 +117,17 @@ class NoteFragment:Fragment(), NoteDialogListener {
     override fun onAdd(note: Note) {
         /**/
         try{
+            var success: Long?
             runBlocking {
                 withContext(Dispatchers.IO){
-                    db.noteDAO().insert(note)
+                    success = db.noteDAO().insert(note)
                 }
             }
-            this.data.add(note)
-            adapter.notifyItemInserted(this.data.size - 1)
+            if(success!=null){
+                this.data.add(note)
+                adapter.notifyItemInserted(this.data.size - 1)
+            }
+
         }catch (e : Exception){
             Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
         }

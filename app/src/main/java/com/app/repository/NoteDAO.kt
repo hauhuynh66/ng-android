@@ -16,10 +16,10 @@ interface NoteDAO {
     fun getAllByDisplayDate(date: Date) : Array<Note>
 
     @Insert
-    suspend fun insert(vararg notes:Note)
+    fun insert(notes:Note) : Long
 
     @Delete
-    fun delete(note:Note)
+    fun delete(note:Note) : Int
 
     @Query("delete from note")
     fun clear()

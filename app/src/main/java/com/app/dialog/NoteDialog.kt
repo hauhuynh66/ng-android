@@ -71,16 +71,19 @@ class NoteDialog(private val dialogListener: NoteDialogListener, data: NoteData?
         builder.setPositiveButton("Add", DialogInterface.OnClickListener{
             _, _ -> run{
                 /*validate*/
-                val sb:StringBuilder = StringBuilder()
-                sb.append(date.text.toString(),time.text.toString())
-                dialogListener.onAdd(
-                    Note(
-                        title =  this.title.text.toString(),
-                        content = this.content.text.toString(),
-                        displayDate = parseDate(sb.toString()),
-                        null
+                if(title.length()>10 && content.length()>10){
+                    val sb:StringBuilder = StringBuilder()
+                    sb.append(date.text.toString(),time.text.toString())
+                    dialogListener.onAdd(
+                        Note(
+                            title =  this.title.text.toString(),
+                            content = this.content.text.toString(),
+                            displayDate = parseDate(sb.toString()),
+                            null
+                        )
                     )
-                )
+                }
+
             }
         }).setNegativeButton("Cancel") { di, _ ->
             run {

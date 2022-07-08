@@ -9,4 +9,6 @@
         <item>reply</item>
         <item>reply_all</item>
     </string-array>
+    <integer name="card_flip_time_full">500</integer>
+    <integer name="card_flip_time_half">250</integer>
 </resources>

@@ -34,8 +34,8 @@ class FileActionDialog(private val paths : List<String>, val listener : Listener
                         if(success){
                             listener.onDelete(retName)
                         }
-                        dismiss()
                     }
+                    dismiss()
                 }
             }, ConfirmDialogData(ArrayList(paths))).show(requireActivity().supportFragmentManager, "DELETE")
         }
@@ -46,7 +46,7 @@ class FileActionDialog(private val paths : List<String>, val listener : Listener
                 rename.visibility = View.GONE
             }
             paths.size == 1 ->{
-                paths[0].toString().apply {
+                paths[0].apply {
                     property.setOnClickListener {
                         DetailDialog(this).show(requireActivity().supportFragmentManager, "DETAIL")
                         dismiss()

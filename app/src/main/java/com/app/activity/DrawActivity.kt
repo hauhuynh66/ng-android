@@ -48,7 +48,7 @@ class DrawActivity : AppCompatActivity() {
         sizeList.layoutManager =
             SpanLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         colorList.adapter = DrawUtilAdapter(this,
-            arrayListOf(Color.RED, Color.GREEN, Color.BLUE, Color.BLACK, Color.WHITE),
+            getArray(1),
             0,
             object : DrawUtilAdapter.Listener {
                 override fun onClick(value: Int) {
@@ -56,8 +56,9 @@ class DrawActivity : AppCompatActivity() {
                 }
             }
         )
+
         sizeList.adapter = DrawUtilAdapter(this,
-            arrayListOf(6, 12, 36, 48, 72),
+            getArray(2),
             1,
             object : DrawUtilAdapter.Listener {
                 override fun onClick(value: Int) {
@@ -75,9 +76,38 @@ class DrawActivity : AppCompatActivity() {
             bmp!!.compress(Bitmap.CompressFormat.PNG, 100, fos)
             fos.flush()
             fos.close()
-            intent.putExtra("bmp", file!!.absolutePath)
-            setResult(Activity.RESULT_OK, intent)
-            finish()
+            file!!.apply {
+                intent.putExtra("bmp", path)
+                setResult(Activity.RESULT_OK, intent)
+                finish()
+            }
+        }
+    }
+
+    private fun getArray(mode : Int) : ArrayList<DrawUtilAdapter.DrawUtilData>{
+        when(mode){
+            1->{
+                return arrayListOf(
+                    DrawUtilAdapter.DrawUtilData(Color.RED),
+                    DrawUtilAdapter.DrawUtilData(Color.BLUE),
+                    DrawUtilAdapter.DrawUtilData(Color.GREEN, true),
+                    DrawUtilAdapter.DrawUtilData(Color.BLACK),
+                    DrawUtilAdapter.DrawUtilData(Color.WHITE),
+                    DrawUtilAdapter.DrawUtilData(Color.YELLOW),
+                )
+            }
+            2->{
+                return arrayListOf(
+                    DrawUtilAdapter.DrawUtilData(6),
+                    DrawUtilAdapter.DrawUtilData(12, true),
+                    DrawUtilAdapter.DrawUtilData(36),
+                    DrawUtilAdapter.DrawUtilData(48),
+                    DrawUtilAdapter.DrawUtilData(72)
+                )
+            }
+            else->{
+                return arrayListOf()
+            }
         }
     }
 }

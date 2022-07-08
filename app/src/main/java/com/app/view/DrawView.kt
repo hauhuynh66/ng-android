@@ -106,7 +106,12 @@ class DrawView : View {
             mX = x
             mY = y
             circlePath.reset()
-            circlePath.addCircle(mX, mY, 30f, Path.Direction.CW)
+            val minWidth = if(12f>mPaint.strokeWidth){
+                12f
+            }else{
+                mPaint.strokeWidth
+            }
+            circlePath.addCircle(mX, mY, minWidth, Path.Direction.CW)
         }
     }
 

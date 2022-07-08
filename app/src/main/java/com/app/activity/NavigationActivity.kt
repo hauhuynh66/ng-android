@@ -29,6 +29,9 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var auth:FirebaseAuth
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+    private var count: Int = 0
+    private var prev: Long = 0L
+    private var curr: Long = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,15 +74,24 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         toolbar.menu.clear()
         if(supportActionBar!=null){
+            val transaction = supportFragmentManager.beginTransaction()
+                .setCustomAnimations(
+                    R.anim.flip_right_in,
+                    R.anim.flip_right_out,
+                    R.anim.flip_left_in,
+                    R.anim.flip_left_out
+            )
             supportActionBar!!.apply {
                 when(item.itemId){
                     R.id.nav_note->{
                         this.title = "Note"
-                        supportFragmentManager.beginTransaction().replace(R.id.container,  NoteFragment(), "NOTE").commit()
+                        transaction.replace(R.id.container,  NoteFragment(), "NOTE").commit()
+                        transaction.addToBackStack("NOTE")
                     }
                     R.id.nav_menu_misc->{
                         this.title = "Others"
-                        supportFragmentManager.beginTransaction().replace(R.id.container,  MiscFragment(), "MISC").commit()
+                        transaction.replace(R.id.container,  MiscFragment(), "MISC").commit()
+                        transaction.addToBackStack("MISC")
                     }
                     R.id.nav_menu_setting->{
                         val intent = Intent(this@NavigationActivity, SettingsActivity::class.java)
@@ -89,7 +101,8 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                         val f = supportFragmentManager.findFragmentById(R.id.container)
                         if(f !is WeatherFragment){
                             supportActionBar!!.title = "Weather"
-                            supportFragmentManager.beginTransaction().replace(R.id.container,  WeatherFragment(), "WEATHER").commit()
+                            transaction.replace(R.id.container,  WeatherFragment(), "WEATHER").commit()
+                            transaction.addToBackStack("WEATHER")
                         }
                     }
                 }
@@ -143,6 +156,28 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ))
+        }
+    }
+
+    override fun onBackPressed() {
+        if(supportFragmentManager.backStackEntryCount==0){
+            when(count){
+                0->{
+                    prev = System.currentTimeMillis()
+                    count++
+                }
+                1->{
+                    curr = System.currentTimeMillis()
+                    val diff = curr - prev
+                    if( diff < 1000L){
+                        exitProcess(0)
+                    }else{
+                        prev = curr
+                    }
+                }
+            }
+        }else{
+            supportFragmentManager.popBackStack()
         }
     }
 }

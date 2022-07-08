@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.activity.FCMActivity
 import com.app.activity.CVActivity
+import com.app.activity.FCMActivity
 import com.app.activity.FileExplorerActivity
 import com.app.activity.ItemActivity
 import com.app.adapter.MiscAdapter
@@ -51,7 +51,7 @@ class MiscFragment : Fragment() {
         }))
         data.add(MiscData(null, object : MiscData.Listener{
             override fun onClick() {
-                val options = arrayListOf<String>("Blur", "Harris", "Orb")
+                val options = arrayListOf("Blur", "Harris", "Orb")
                 val opts = arrayListOf<OptionBottomSheet.BottomSheetData>()
                 val cbs = arrayListOf<OptionBottomSheet.Listener>()
 
@@ -66,8 +66,9 @@ class MiscFragment : Fragment() {
                     cbs.add(cb)
                 }
 
-                OptionBottomSheet(opts, cbs)
-                    .show(requireActivity().supportFragmentManager, "CV_OPTIONS")
+                val bottomSheet = OptionBottomSheet(opts, cbs)
+                bottomSheet.isCancelable = true
+                bottomSheet.show(requireActivity().supportFragmentManager, "CV_OPTIONS")
             }
         }))
 

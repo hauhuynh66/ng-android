@@ -1,16 +1,19 @@
 package com.app.adapter
 
 import android.content.Context
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.app.model.Note
 import com.app.ngn.R
 import com.app.util.Format.Companion.formatDate
+import java.io.File
 
 class NoteAdapter(val context: Context,val data:List<Note>, private val callback: NoteAdapter.Callback?)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -32,7 +35,7 @@ class NoteAdapter(val context: Context,val data:List<Note>, private val callback
                 (holder as NoteViewHolder).bind(this.data[position], callback)
             }
             else->{
-                (holder as NoteImgViewHolder).bind(this.data[position], callback)
+                (holder as NoteImgViewHolder).bind(this.data[position], callback, context)
             }
         }
     }
@@ -62,20 +65,35 @@ class NoteAdapter(val context: Context,val data:List<Note>, private val callback
                 v.setOnClickListener{
                     callback.onItemClick(note)
                 }
+                del.setOnClickListener{
+                    callback.onDelete(note)
+                }
             }
         }
     }
 
     class NoteImgViewHolder(val v: View) : RecyclerView.ViewHolder(v){
-        fun bind(note:Note, callback: Callback?) {
+        fun bind(note:Note, callback: Callback?, context: Context) {
             val img = v.findViewById<ImageView>(R.id.com_note_img_src)
-
+            val del = v.findViewById<Button>(R.id.com_note_img_del)
+            val file = File(note.extra!!)
+            if(file.exists()){
+                val uri = FileProvider.getUriForFile(context, "com.app.activity.ngn", File(note.extra!!))
+                img.setImageBitmap(MediaStore.Images.Media.getBitmap(context.contentResolver, uri))
+            }
+            if(callback!=null){
+                v.setOnClickListener{
+                    callback.onItemClick(note)
+                }
+                del.setOnClickListener{
+                    callback.onDelete(note)
+                }
+            }
         }
     }
 
-
-
     interface Callback{
         fun onItemClick(note:Note)
+        fun onDelete(note: Note)
     }
 }
