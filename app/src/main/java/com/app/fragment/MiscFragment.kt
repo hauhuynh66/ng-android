@@ -51,15 +51,16 @@ class MiscFragment : Fragment() {
         }))
         data.add(MiscData(null, object : MiscData.Listener{
             override fun onClick() {
-                val options = arrayListOf("Blur", "Harris", "Orb")
+                val options = arrayListOf("Orb")
                 val opts = arrayListOf<OptionBottomSheet.BottomSheetData>()
                 val cbs = arrayListOf<OptionBottomSheet.Listener>()
 
-                for(i in 0 until 3){
+                for(i in 0 until 1){
                     opts.add(OptionBottomSheet.BottomSheetData(options[i], true, options[i]))
                     val cb = object : OptionBottomSheet.Listener{
                         override fun onClick(option: String?) {
                             val intent = Intent(requireActivity(), CVActivity::class.java)
+                            intent.putExtra("mode", options[i])
                             startActivity(intent)
                         }
                     }

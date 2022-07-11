@@ -67,6 +67,9 @@
 
         <activity android:name="com.app.activity.DrawActivity"
             android:exported="true"/>
+        
+        <activity android:name="com.app.activity.MediaViewer"
+            android:exported="true"/>
 
         <service
             android:name="com.app.service.FCMService"

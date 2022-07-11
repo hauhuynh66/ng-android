@@ -7,6 +7,8 @@ import androidx.viewpager.widget.ViewPager
 import com.app.adapter.EXFragmentAdapter
 import com.app.ngn.R
 import com.google.android.material.tabs.TabLayout
+import kotlin.math.abs
+import kotlin.math.max
 
 class FileExplorerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,8 +23,8 @@ class FileExplorerActivity : AppCompatActivity() {
 
     companion object {
         class ZoomOutPageTransformer: ViewPager.PageTransformer{
-            private val MIN_SCALE = 0.85f
-            private val MIN_ALPHA = 0.5f
+            private val minScale = 0.85f
+            private val minAlpha = 0.5f
             override fun transformPage(page: View, position: Float) {
                 page.apply {
                     val pageWidth = width
@@ -33,20 +35,20 @@ class FileExplorerActivity : AppCompatActivity() {
                         }
                         position <= 1 -> {
 
-                            val scaleFactor = Math.max(MIN_SCALE, 1 - Math.abs(position))
+                            val scaleFactor = max(minScale, 1 - abs(position))
                             val vertMargin = pageHeight * (1 - scaleFactor) / 2
-                            val horzMargin = pageWidth * (1 - scaleFactor) / 2
+                            val horizontalMargin = pageWidth * (1 - scaleFactor) / 2
                             translationX = if (position < 0) {
-                                horzMargin - vertMargin / 2
+                                horizontalMargin - vertMargin / 2
                             } else {
-                                horzMargin + vertMargin / 2
+                                horizontalMargin + vertMargin / 2
                             }
 
                             scaleX = scaleFactor
                             scaleY = scaleFactor
 
-                            alpha = (MIN_ALPHA +
-                                    (((scaleFactor - MIN_SCALE) / (1 - MIN_SCALE)) * (1 - MIN_ALPHA)))
+                            alpha = (minAlpha +
+                                    (((scaleFactor - minScale) / (1 - minScale)) * (1 - minScale)))
                         }
                         else -> {
                             alpha = 0f
@@ -57,7 +59,7 @@ class FileExplorerActivity : AppCompatActivity() {
         }
 
         class DepthPageTransFormer : ViewPager.PageTransformer{
-            private val MIN_SCALE = 0.75f
+            private val minScale = 0.75f
             override fun transformPage(page: View, position: Float) {
                 page.apply {
                     val pageWidth = width
@@ -76,7 +78,7 @@ class FileExplorerActivity : AppCompatActivity() {
 
                             translationX = pageWidth * -position
 
-                            val scaleFactor = (MIN_SCALE + (1 - MIN_SCALE) * (1 - Math.abs(position)))
+                            val scaleFactor = (minScale + (1 - minScale) * (1 - Math.abs(position)))
                             scaleX = scaleFactor
                             scaleY = scaleFactor
                         }

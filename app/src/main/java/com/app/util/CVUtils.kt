@@ -52,7 +52,7 @@ class CVUtils {
             return ret
         }
 
-        fun harris(bitmap: Bitmap) : Bitmap {
+        fun harris(bitmap: Bitmap, k : Double) : Bitmap {
             val ret = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
             val src = Mat()
             val filtered = Mat()
@@ -63,7 +63,6 @@ class CVUtils {
 
             val blockSize = 2
             val apertureSize = 3
-            val k = 0.04
 
             Imgproc.cornerHarris(filtered, dst, blockSize, apertureSize, k)
             Core.normalize(dst, dst, 0.0, 255.0, Core.NORM_MINMAX)
@@ -73,7 +72,7 @@ class CVUtils {
             return ret
         }
 
-        fun featureMatching(img1 : Bitmap, img2 : Bitmap) : Bitmap{
+        fun featureMatching(img1 : Bitmap, img2 : Bitmap, distance : Double) : Bitmap{
             val src1 = Mat()
             val src2 = Mat()
             val dst = Mat()
@@ -100,7 +99,7 @@ class CVUtils {
             val iterator = matches.iterator()
             while (iterator.hasNext()){
                 val m = iterator.next()
-                if((m.toArray()[0].distance)/(m.toArray()[1].distance) < 0.6){
+                if((m.toArray()[0].distance)/(m.toArray()[1].distance) < distance){
                     goodMatchList.add(m.toArray()[0])
                 }
             }

@@ -39,6 +39,7 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/drawable/bg2.xml" value="0.2" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/drawable/border.xml" value="0.1355" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/drawable/custom_chk.xml" value="0.1355" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_broadcast.xml" value="0.10190217391304347" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_cv.xml" value="0.13020833333333334" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_draw.xml" value="0.11354166666666667" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_file_list.xml" value="0.22735507246376813" />
@@ -61,6 +62,7 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_search_card.xml" value="0.2" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_sheet_element.xml" value="0.1296875" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_weather.xml" value="0.152" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_wifi.xml" value="0.115625" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/dlg_bottom_sheet.xml" value="0.1296875" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/dlg_edit.xml" value="0.13020833333333334" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/dlg_ex_detail.xml" value="0.22735507246376813" />
@@ -76,12 +78,14 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_ex_detail.xml" value="0.2368659420289855" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_ex_group.xml" value="0.176" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_ex_list.xml" value="0.2" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_harris.xml" value="0.22735507246376813" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_item.xml" value="0.11354166666666667" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_item_confirm.xml" value="0.22735507246376813" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_item_detail.xml" value="0.10190217391304347" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_item_list.xml" value="0.1" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_modal_file_action.xml" value="0.12916666666666668" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_note.xml" value="0.2" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_orb.xml" value="0.22735507246376813" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_test.xml" value="0.1296875" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_weather.xml" value="0.10190217391304347" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/nav_header.xml" value="0.264" />

@@ -18,7 +18,7 @@ class Generator {
         }
 
         fun getWeatherIcon(des: String, context: Context): Drawable {
-            when(des){
+            when{
                 else -> {
                     return ContextCompat.getDrawable(context, R.drawable.ic_wb_sunny)!!
                 }

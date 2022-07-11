@@ -22,21 +22,23 @@ class WeatherAdapter(private val context:Context, var data:ArrayList<WeatherData
     override fun onBindViewHolder(holder: WeatherViewHolder, position: Int) {
         val metric = context.resources.displayMetrics
         holder.v.layoutParams.width = metric.widthPixels/3
-        val des = holder.v.findViewById<TextView>(R.id.sub_des)
-        val temp = holder.v.findViewById<TextView>(R.id.sub_temp)
-        val humid = holder.v.findViewById<TextView>(R.id.sub_humid)
-        val icon = holder.v.findViewById<ImageView>(R.id.weather_icon)
-        des.text = this.data[position].description
-        temp.text = this.data[position].temp.toString()
-        humid.text = this.data[position].humid.toString()
-        icon.setImageDrawable(getWeatherIcon(this.data[position].description, this.context))
+        holder.bind(data[position], context)
     }
 
     override fun getItemCount(): Int {
         return data.size
     }
 
-    class WeatherViewHolder(var v:View):RecyclerView.ViewHolder(v){
-
+    class WeatherViewHolder(var v:View) : RecyclerView.ViewHolder(v){
+        fun bind(data : WeatherData, context: Context){
+            val des = v.findViewById<TextView>(R.id.sub_des)
+            val temp = v.findViewById<TextView>(R.id.sub_temp)
+            val humid = v.findViewById<TextView>(R.id.sub_humid)
+            val icon = v.findViewById<ImageView>(R.id.weather_icon)
+            des.text = data.description
+            temp.text = data.temp.toString()
+            humid.text = data.humid.toString()
+            icon.setImageDrawable(getWeatherIcon(data.description, context))
+        }
     }
 }

@@ -36,6 +36,11 @@ class DrawView : View {
         }
     }
 
+    fun changeBackground(bitmap : Bitmap){
+        mBitmap = bitmap
+        mCanvas = Canvas(mBitmap!!)
+    }
+
     constructor(context: Context?) : super(context){
         c = context
         mPath = Path()

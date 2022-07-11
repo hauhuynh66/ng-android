@@ -10,7 +10,6 @@ import com.app.data.ConfirmDialogData
 import com.app.ngn.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.io.File
-import java.util.*
 
 class FileActionDialog(private val paths : List<String>, val listener : Listener) : BottomSheetDialogFragment() {
     override fun onCreateView(
@@ -71,7 +70,6 @@ class FileActionDialog(private val paths : List<String>, val listener : Listener
                         ).show(requireActivity().supportFragmentManager, "EDIT")
                     }
                 }
-
             }
         }
     }
