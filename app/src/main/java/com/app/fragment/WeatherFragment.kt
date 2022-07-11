@@ -25,6 +25,7 @@ import com.app.data.WeatherData
 import com.app.dialog.GraphDialog
 import com.app.ngn.R
 import com.app.util.Animation.Companion.crossfade
+import com.app.util.Format.Companion.formatWeatherDate
 import com.app.util.Generator.Companion.getWeatherIcon
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -40,7 +41,7 @@ class WeatherFragment(): Fragment(){
     private lateinit var contentLayout: View
     private lateinit var location:Location
     private var forecast:ForecastData? = null
-    private val cnt = 7
+    private val cnt = 40
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fg_weather, container, false)
     }
@@ -91,6 +92,7 @@ class WeatherFragment(): Fragment(){
     private fun updateUI(forecastData:ForecastData, v:View){
         val cityName = v.findViewById<TextView>(R.id.city_name)
         val description = v.findViewById<TextView>(R.id.weather_des)
+        val time = v.findViewById<TextView>(R.id.com_weather_time)
         val temp = v.findViewById<TextView>(R.id.main_temp)
         val humid = v.findViewById<TextView>(R.id.main_humid)
         val icon = v.findViewById<ImageView>(R.id.weather_icon)
@@ -100,6 +102,7 @@ class WeatherFragment(): Fragment(){
         temp.text = data.temp.toString()
         humid.text = data.humid.toString()
         icon.setImageDrawable(getWeatherIcon(data.description, this.requireContext()))
+        time.text = formatWeatherDate(data.time)
     }
 
     private fun processWeatherAPI(responseJSON: String):ForecastData{
@@ -110,12 +113,13 @@ class WeatherFragment(): Fragment(){
             val data = weatherList.getJSONObject(i)
             val weather = data.getJSONObject("main")
             val weatherArr = data.getJSONArray("weather")
+            val type = weatherArr.getJSONObject(0).getString("main")
             val des = WordUtils.capitalize(weatherArr.getJSONObject(0).getString("description"))
-            val d = Date(data.getLong("dt"))
+            val d = Date(data.getLong("dt") * 1000)
             val df = DecimalFormat("##,##")
             val temp = df.format(weather.getDouble("temp") - 273.15).toDouble()
             list.add(
-                WeatherData(temp, weather.getLong("humidity"),des, d))
+                WeatherData(temp, weather.getLong("humidity"),des, d, type))
         }
         val name = json.getJSONObject("city").getString("name")
 

@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.data.WeatherData
 import com.app.ngn.R
+import com.app.util.Format.Companion.formatWeatherDate
 import com.app.util.Generator.Companion.getWeatherIcon
 
 class WeatherAdapter(private val context:Context, var data:ArrayList<WeatherData>):
@@ -35,10 +36,12 @@ class WeatherAdapter(private val context:Context, var data:ArrayList<WeatherData
             val temp = v.findViewById<TextView>(R.id.sub_temp)
             val humid = v.findViewById<TextView>(R.id.sub_humid)
             val icon = v.findViewById<ImageView>(R.id.weather_icon)
+            val time = v.findViewById<TextView>(R.id.com_weather_dx)
+            time.text = formatWeatherDate(data.time)
             des.text = data.description
             temp.text = data.temp.toString()
             humid.text = data.humid.toString()
-            icon.setImageDrawable(getWeatherIcon(data.description, context))
+            icon.setImageDrawable(getWeatherIcon(data.type, context))
         }
     }
 }

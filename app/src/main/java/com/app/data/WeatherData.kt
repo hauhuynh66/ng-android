@@ -2,5 +2,5 @@ package com.app.data
 
 import java.util.*
 
-class WeatherData(var temp: Double, var humid: Long, var description: String, var time: Date) {
+class WeatherData(val temp: Double, val humid: Long, val description: String, val time: Date, val type : String) {
 }

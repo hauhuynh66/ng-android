@@ -13,9 +13,7 @@
         android:visibility="invisible"/>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:minHeight="1000dp"
-        android:maxHeight="1200dp"
+        android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/contentLayout">
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,6 +21,7 @@
             android:layout_height="wrap_content"
             android:minHeight="400dp"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/sub_layout"
             android:layout_marginVertical="10dp"
             android:id="@+id/main_layout">
             <Button
@@ -83,7 +82,7 @@
                 app:layout_constraintTop_toBottomOf="@id/weather_des"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/com_weather_time"
                 android:orientation="horizontal"
                 android:weightSum="2"
                 android:id="@+id/weather_data">
@@ -110,6 +109,19 @@
                     android:text="HUMID"
                     android:textColor="@color/blue"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
+            <TextView
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.8"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/weather_data"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="60dp"
+                android:id="@+id/com_weather_time"
+                android:gravity="center"
+                android:fontFamily="@font/audiowide"
+                android:textStyle="bold"
+                android:textSize="25dp"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

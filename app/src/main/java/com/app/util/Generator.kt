@@ -17,10 +17,20 @@ class Generator {
             return sb.toString()
         }
 
-        fun getWeatherIcon(des: String, context: Context): Drawable {
-            when{
+        fun getWeatherIcon(des: String, context: Context): Drawable? {
+            return when(des){
+                "Rain"->{
+                    ContextCompat.getDrawable(context, R.drawable.ic_light_rain)
+                }
+                "Drizzle"->{
+                    ContextCompat.getDrawable(context, R.drawable.ic_heavy_rain)
+                }
+                "Clouds"->{
+                    ContextCompat.getDrawable(context, R.drawable.ic_cloudy)
+                }
+
                 else -> {
-                    return ContextCompat.getDrawable(context, R.drawable.ic_wb_sunny)!!
+                    ContextCompat.getDrawable(context, R.drawable.ic_wb_sunny)
                 }
             }
         }
