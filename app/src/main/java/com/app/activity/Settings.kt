@@ -7,7 +7,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.preference.PreferenceFragmentCompat
 import com.app.ngn.R
 
-class SettingsActivity : AppCompatActivity() {
+class Settings : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

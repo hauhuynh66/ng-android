@@ -56,12 +56,13 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:18.0.2'
     implementation platform('com.google.firebase:firebase-bom:30.1.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
-    implementation 'com.google.firebase:firebase-messaging:23.0.5'
+    implementation 'com.google.firebase:firebase-messaging:23.0.6'
+    implementation 'com.google.firebase:firebase-database-ktx'
     implementation 'androidx.room:room-runtime:2.4.2'
     implementation 'androidx.room:room-ktx:2.4.2'
     implementation 'org.apache.commons:commons-collections4:4.4'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc02'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-rc02'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.0-alpha01'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0-alpha01'
     implementation 'androidx.room:room-rxjava3:2.4.2'
     kapt 'androidx.room:room-compiler:2.4.2'
     implementation project(":opencv")

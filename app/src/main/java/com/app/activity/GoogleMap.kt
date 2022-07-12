@@ -12,7 +12,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
-class MapActivity:AppCompatActivity(), OnMapReadyCallback {
+class GoogleMap:AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var data:MutableMap<String, Double>
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -16,7 +16,7 @@ import com.app.fragment.cv.ORB
 import com.app.ngn.R
 import com.app.util.Utils
 
-class CVActivity() : AppCompatActivity(){
+class ComputerVision() : AppCompatActivity(){
     private val dir = Environment.getExternalStorageDirectory().absolutePath + "/DCIM/Camera"
     private lateinit var cameraResult : ActivityResultLauncher<Uri>
     private var photoURI : Uri? = null
@@ -45,7 +45,7 @@ class CVActivity() : AppCompatActivity(){
                     }
                 }
             }else{
-                Toast.makeText(this@CVActivity, "Cancelled", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ComputerVision, "Cancelled", Toast.LENGTH_SHORT).show()
             }
         }
     }

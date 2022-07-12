@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.activity.FileListViewActivity
+import com.app.activity.Filelist
 import com.app.adapter.MiscAdapter
 import com.app.data.MiscData
 import com.app.ngn.R
@@ -28,7 +28,7 @@ class EXGroup : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         data = arrayListOf()
         for( i in 0 until 8){
-            val intent = Intent(requireContext(), FileListViewActivity::class.java)
+            val intent = Intent(requireContext(), Filelist::class.java)
             when(i){
                 0->{
                     data.add(MiscData(null, object : MiscData.Listener{

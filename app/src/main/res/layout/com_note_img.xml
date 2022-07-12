@@ -10,6 +10,7 @@
         android:layout_height="300dp"
         android:padding="20dp"
         app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="fitXY"
         android:id="@+id/com_note_img_src"/>
     <Button
         android:layout_width="50dp"

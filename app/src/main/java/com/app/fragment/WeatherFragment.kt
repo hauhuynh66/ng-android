@@ -18,7 +18,7 @@ import com.android.volley.RequestQueue
 import com.android.volley.TimeoutError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.app.activity.MapActivity
+import com.app.activity.GoogleMap
 import com.app.adapter.WeatherAdapter
 import com.app.data.ForecastData
 import com.app.data.WeatherData
@@ -34,7 +34,7 @@ import org.json.JSONObject
 import java.text.DecimalFormat
 import java.util.*
 
-class WeatherFragment(): Fragment(){
+class WeatherFragment : Fragment(){
     private lateinit var requestQueue:RequestQueue
     private lateinit var progressBar: ProgressBar
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -61,7 +61,7 @@ class WeatherFragment(): Fragment(){
         }
 
         map.setOnClickListener {
-            val intent = Intent(requireActivity(), MapActivity::class.java)
+            val intent = Intent(requireActivity(), GoogleMap::class.java)
             intent.putExtra("lon", location.longitude)
             intent.putExtra("lat", location.latitude)
             startActivity(intent)

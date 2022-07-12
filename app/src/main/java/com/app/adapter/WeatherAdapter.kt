@@ -23,6 +23,7 @@ class WeatherAdapter(private val context:Context, var data:ArrayList<WeatherData
     override fun onBindViewHolder(holder: WeatherViewHolder, position: Int) {
         val metric = context.resources.displayMetrics
         holder.v.layoutParams.width = metric.widthPixels/3
+
         holder.bind(data[position], context)
     }
 
@@ -42,6 +43,9 @@ class WeatherAdapter(private val context:Context, var data:ArrayList<WeatherData
             temp.text = data.temp.toString()
             humid.text = data.humid.toString()
             icon.setImageDrawable(getWeatherIcon(data.type, context))
+            v.setOnClickListener {
+                println(time.text)
+            }
         }
     }
 }

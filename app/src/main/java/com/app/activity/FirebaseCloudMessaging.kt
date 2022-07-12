@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.app.ngn.R
 import com.google.firebase.messaging.RemoteMessage
 
-class FCMActivity : AppCompatActivity() {
+class FirebaseCloudMessaging : AppCompatActivity() {
     private lateinit var data:ArrayList<RemoteMessage?>
 
     override fun onCreate(savedInstanceState: Bundle?) {

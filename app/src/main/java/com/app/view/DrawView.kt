@@ -36,9 +36,9 @@ class DrawView : View {
         }
     }
 
-    fun changeBackground(bitmap : Bitmap){
-        mBitmap = bitmap
-        mCanvas = Canvas(mBitmap!!)
+    fun changeBackground(bitmap: Bitmap){
+        val stretched = Bitmap.createScaledBitmap(bitmap, width, height, false)
+        mCanvas!!.drawBitmap(stretched, 0f, 0f, mBitmapPaint)
     }
 
     constructor(context: Context?) : super(context){

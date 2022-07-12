@@ -16,26 +16,31 @@
             android:layout_marginTop="20dp"
             android:min="25"
             android:max="50"/>
-        <ImageView
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="200dp"
-            android:layout_margin="20dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/ac_cv_camera_pic2"
             app:layout_constraintTop_toBottomOf="@+id/ac_cv_orb_distance"
             app:layout_constraintBottom_toTopOf="@id/ac_cv_pic_transformed"
-            android:id="@+id/ac_cv_camera_pic1"/>
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:minHeight="200dp"
-            android:layout_margin="20dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/ac_cv_camera_pic1"
-            app:layout_constraintTop_toBottomOf="@+id/ac_cv_orb_distance"
-            app:layout_constraintBottom_toTopOf="@id/ac_cv_pic_transformed"
-            android:id="@+id/ac_cv_camera_pic2"/>
+            android:id="@+id/ac_cv_src_group">
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:minHeight="200dp"
+                android:layout_margin="20dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/ac_cv_camera_pic2"
+                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/ac_cv_camera_pic1"/>
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:minHeight="200dp"
+                android:layout_margin="20dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/ac_cv_camera_pic1"
+                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/ac_cv_camera_pic2"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,7 +48,7 @@
             android:layout_margin="20dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ac_cv_camera_pic1"
+            app:layout_constraintTop_toBottomOf="@id/ac_cv_src_group"
             app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/ac_cv_pic_transformed"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

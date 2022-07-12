@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.activity.CVActivity
-import com.app.activity.FCMActivity
-import com.app.activity.FileExplorerActivity
-import com.app.activity.ItemActivity
+import com.app.activity.ComputerVision
+import com.app.activity.FirebaseCloudMessaging
+import com.app.activity.FileExplorer
+import com.app.activity.Shopping
 import com.app.adapter.MiscAdapter
 import com.app.data.MiscData
 import com.app.dialog.OptionBottomSheet
@@ -33,19 +33,19 @@ class MiscFragment : Fragment() {
         data = arrayListOf()
         data.add(MiscData(null, object : MiscData.Listener{
             override fun onClick() {
-                val intent = Intent(requireActivity(), ItemActivity::class.java)
+                val intent = Intent(requireActivity(), Shopping::class.java)
                 startActivity(intent)
             }
         }))
         data.add(MiscData(null, object : MiscData.Listener{
             override fun onClick() {
-                val intent = Intent(requireActivity(), FCMActivity::class.java)
+                val intent = Intent(requireActivity(), FirebaseCloudMessaging::class.java)
                 startActivity(intent)
             }
         }))
         data.add(MiscData(null, object : MiscData.Listener{
             override fun onClick() {
-                val intent = Intent(requireActivity(), FileExplorerActivity::class.java)
+                val intent = Intent(requireActivity(), FileExplorer::class.java)
                 startActivity(intent)
             }
         }))
@@ -59,7 +59,7 @@ class MiscFragment : Fragment() {
                     opts.add(OptionBottomSheet.BottomSheetData(options[i], true, options[i]))
                     val cb = object : OptionBottomSheet.Listener{
                         override fun onClick(option: String?) {
-                            val intent = Intent(requireActivity(), CVActivity::class.java)
+                            val intent = Intent(requireActivity(), ComputerVision::class.java)
                             intent.putExtra("mode", options[i])
                             startActivity(intent)
                         }

@@ -15,7 +15,7 @@ import com.app.task.FileDataCallable
 import com.app.task.TaskRunner
 import com.app.util.Animation.Companion.crossfade
 
-class FileListViewActivity() : AppCompatActivity() {
+class Filelist() : AppCompatActivity() {
     private lateinit var data: ArrayList<FileData>
     private lateinit var type: String
     private lateinit var extensionList : ArrayList<String>
@@ -57,9 +57,9 @@ class FileListViewActivity() : AppCompatActivity() {
         runner.execute(FileDataCallable(extensionList, Environment.getExternalStorageDirectory().absolutePath),
             object : TaskRunner.Callback<ArrayList<FileData>>{
             override fun onComplete(result: ArrayList<FileData>) {
-                this@FileListViewActivity.data = result
-                list.layoutManager = GridLayoutManager(this@FileListViewActivity, 4)
-                list.adapter = EXListAdapter(this@FileListViewActivity, data, isGrid = true)
+                this@Filelist.data = result
+                list.layoutManager = GridLayoutManager(this@Filelist, 4)
+                list.adapter = EXListAdapter(this@Filelist, data, isGrid = true)
                 crossfade(arrayListOf(list), arrayListOf(progress), duration = 1000)
             }
         })

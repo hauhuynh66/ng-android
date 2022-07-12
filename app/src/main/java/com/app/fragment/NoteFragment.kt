@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
-import com.app.activity.DrawActivity
+import com.app.activity.Draw
 import com.app.adapter.NoteAdapter
 import com.app.dialog.NoteDialog
 import com.app.helper.OneColumnListHelperCallback
@@ -109,7 +109,7 @@ class NoteFragment:Fragment(), NoteDialogListener {
         itemHelper.attachToRecyclerView(noteList)
         val draw = view.findViewById<FloatingActionButton>(R.id.fg_note_draw)
         draw.setOnClickListener {
-            val intent = Intent(this.requireContext(), DrawActivity::class.java)
+            val intent = Intent(this.requireContext(), Draw::class.java)
             drawLauncher.launch(intent)
         }
     }

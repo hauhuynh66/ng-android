@@ -10,7 +10,7 @@ import com.google.android.material.tabs.TabLayout
 import kotlin.math.abs
 import kotlin.math.max
 
-class FileExplorerActivity : AppCompatActivity() {
+class FileExplorer : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_flx)

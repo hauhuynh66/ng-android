@@ -25,7 +25,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlin.system.exitProcess
 
-class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
+class Navigator : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var auth:FirebaseAuth
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
@@ -94,7 +94,7 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                         transaction.addToBackStack("MISC")
                     }
                     R.id.nav_menu_setting->{
-                        val intent = Intent(this@NavigationActivity, SettingsActivity::class.java)
+                        val intent = Intent(this@Navigator, Settings::class.java)
                         startActivity(intent)
                     }
                     else->{

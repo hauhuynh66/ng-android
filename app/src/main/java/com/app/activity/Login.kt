@@ -14,7 +14,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 
-class LoginActivity: AppCompatActivity() {
+class Login: AppCompatActivity() {
     private lateinit var password:EditText
     private lateinit var email:EditText
     private lateinit var auth:FirebaseAuth
@@ -25,7 +25,7 @@ class LoginActivity: AppCompatActivity() {
         auth = Firebase.auth
         val user = auth.currentUser
         if(user!=null){
-            val mainIntent = Intent(this, NavigationActivity::class.java)
+            val mainIntent = Intent(this, Navigator::class.java)
             startActivity(mainIntent)
         }
         password = findViewById(R.id.password)
@@ -39,7 +39,7 @@ class LoginActivity: AppCompatActivity() {
             password.text.clear()
             n++
             if (n>5) {
-                val skip = Intent(this, NavigationActivity::class.java)
+                val skip = Intent(this, Navigator::class.java)
                 startActivity(skip)
             }
         }
@@ -51,7 +51,7 @@ class LoginActivity: AppCompatActivity() {
                 .addOnCompleteListener(this){
                     task->run{
                         if(task.isSuccessful){
-                            val mainIntent = Intent(this, NavigationActivity::class.java)
+                            val mainIntent = Intent(this, Navigator::class.java)
                             startActivity(mainIntent)
                         }else{
                             clearBtn.performClick()

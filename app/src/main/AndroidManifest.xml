@@ -25,11 +25,11 @@
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true">
         <activity
-            android:name="com.app.activity.SettingsActivity"
+            android:name="com.app.activity.Settings"
             android:exported="false"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name="com.app.activity.LoginActivity"
+            android:name="com.app.activity.Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,33 +39,33 @@
         </activity>
 
         <activity
-            android:name="com.app.activity.NavigationActivity"
+            android:name="com.app.activity.Navigator"
             android:exported="true"/>
 
         <activity
-            android:name="com.app.activity.MapActivity"
+            android:name="com.app.activity.GoogleMap"
             android:exported="true"/>
 
         <activity
-            android:name="com.app.activity.FCMActivity"
+            android:name="com.app.activity.FirebaseCloudMessaging"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.FileExplorerActivity"
+        <activity android:name="com.app.activity.FileExplorer"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.DiaryActivity"
+        <activity android:name="com.app.activity.Diary"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.FileListViewActivity"
+        <activity android:name="com.app.activity.Filelist"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.CVActivity"
+        <activity android:name="com.app.activity.ComputerVision"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.ItemActivity"
+        <activity android:name="com.app.activity.Shopping"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.DrawActivity"
+        <activity android:name="com.app.activity.Draw"
             android:exported="true"/>
         
         <activity android:name="com.app.activity.MediaViewer"
