@@ -19,9 +19,16 @@ class DrawView : View {
     private var mX = 0f
     private  var mY = 0f
     private val tolerance = 4f
+    private val savedPath : ArrayList<PathData> = arrayListOf()
 
-    fun reset(){
+    fun prev(){
+        if(savedPath.size > 0){
+            savedPath.removeAt(savedPath.size-1)
+        }
         mCanvas!!.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
+        for (p : PathData in savedPath){
+            mCanvas!!.drawPath(p.path, p.paint)
+        }
     }
 
     fun changeColor(color : Int){
@@ -38,7 +45,12 @@ class DrawView : View {
 
     fun changeBackground(bitmap: Bitmap){
         val stretched = Bitmap.createScaledBitmap(bitmap, width, height, false)
-        mCanvas!!.drawBitmap(stretched, 0f, 0f, mBitmapPaint)
+        mCanvas!!.apply {
+            this.drawBitmap(stretched, 0f, 0f, mBitmapPaint)
+            for(p: PathData in savedPath){
+                this.drawPath(p.path, p.paint)
+            }
+        }
     }
 
     constructor(context: Context?) : super(context){
@@ -125,6 +137,11 @@ class DrawView : View {
         circlePath.reset()
         // commit the path to our offscreen
         mCanvas!!.drawPath(mPath!!, mPaint)
+        val savedPaint = Paint(mPaint)
+        if(mPaint.color == Color.WHITE){
+            savedPaint.color = Color.TRANSPARENT
+        }
+        savedPath.add(PathData(Path(mPath), savedPaint))
         // kill this so we don't double draw
         mPath!!.reset()
     }
@@ -148,4 +165,6 @@ class DrawView : View {
         }
         return true
     }
+
+    class PathData(val path: Path, val paint: Paint)
 }

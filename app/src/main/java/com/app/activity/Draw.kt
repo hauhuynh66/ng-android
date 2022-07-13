@@ -66,7 +66,7 @@ class Draw : AppCompatActivity() {
         }
 
         btn.setOnClickListener {
-            draw.reset()
+            draw.prev()
         }
 
         val colorList = findViewById<RecyclerView>(R.id.ac_draw_color)
@@ -133,7 +133,6 @@ class Draw : AppCompatActivity() {
                     DrawUtilAdapter.DrawUtilData(Color.BLUE),
                     DrawUtilAdapter.DrawUtilData(Color.GREEN, true),
                     DrawUtilAdapter.DrawUtilData(Color.BLACK),
-                    DrawUtilAdapter.DrawUtilData(Color.WHITE),
                     DrawUtilAdapter.DrawUtilData(Color.YELLOW),
                 )
             }
