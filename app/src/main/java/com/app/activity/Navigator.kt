@@ -82,24 +82,28 @@ class Navigator : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLi
                     R.anim.flip_left_out
             )
             supportActionBar!!.apply {
+                val currentFragment = supportFragmentManager.findFragmentById(R.id.container)
                 when(item.itemId){
                     R.id.nav_note->{
                         this.title = "Note"
-                        transaction.replace(R.id.container,  NoteFragment(), "NOTE").commit()
-                        transaction.addToBackStack("NOTE")
+                        if(currentFragment !is NoteFragment){
+                            transaction.replace(R.id.container,  NoteFragment(), "NOTE").commit()
+                            transaction.addToBackStack("NOTE")
+                        }
                     }
                     R.id.nav_menu_misc->{
                         this.title = "Others"
-                        transaction.replace(R.id.container,  MiscFragment(), "MISC").commit()
-                        transaction.addToBackStack("MISC")
+                        if(currentFragment !is MiscFragment) {
+                            transaction.replace(R.id.container, MiscFragment(), "MISC").commit()
+                            transaction.addToBackStack("MISC")
+                        }
                     }
                     R.id.nav_menu_setting->{
                         val intent = Intent(this@Navigator, Settings::class.java)
                         startActivity(intent)
                     }
                     else->{
-                        val f = supportFragmentManager.findFragmentById(R.id.container)
-                        if(f !is WeatherFragment){
+                        if(currentFragment !is WeatherFragment){
                             supportActionBar!!.title = "Weather"
                             transaction.replace(R.id.container,  WeatherFragment(), "WEATHER").commit()
                             transaction.addToBackStack("WEATHER")
