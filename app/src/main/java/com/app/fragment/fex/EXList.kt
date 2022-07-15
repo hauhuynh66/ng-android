@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.EXListAdapter
@@ -32,13 +32,14 @@ class EXList(val listener : Listener) : Fragment(), EXListListener {
     private lateinit var adapter : EXListAdapter
     private lateinit var list : RecyclerView
     private lateinit var pathView : TextView
-    private lateinit var pathGroup: LinearLayoutCompat
+    private lateinit var pathGroup: ConstraintLayout
     private lateinit var bottomBar: ConstraintLayout
     private lateinit var topBar: ConstraintLayout
     private var isMultiple = false
     private var selected: MutableList<String> = mutableListOf()
     private lateinit var num: TextView
     private var isCheckAll = false
+    private var count = 0;
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,9 +62,10 @@ class EXList(val listener : Listener) : Fragment(), EXListListener {
         val dismissBottomBar = view.findViewById<Button>(R.id.fg_ex_list_back)
         val more = view.findViewById<Button>(R.id.fg_ex_list_more)
         val check = view.findViewById<Button>(R.id.fg_ex_list_check)
+        val changeLayout = view.findViewById<ImageButton>(R.id.fg_ex_list_changeLayout)
 
         data = getFileList(path)
-        val itemListener = object : EXListAdapter.Listener{
+        val linearListener = object : EXListAdapter.Listener{
             override fun onCheck(path : String) {
                 if(!isMultiple){
                     isMultiple = true
@@ -118,14 +120,95 @@ class EXList(val listener : Listener) : Fragment(), EXListListener {
                     selected.add(path)
                     isCheckAll = adapter.data.size == 1
                     onSelectionChange()
+                    adapter.isMultiple = true
+                    adapter.data.filter {
+                        it.path == path
+                    }[0].checked = true
+                    adapter.notifyDataSetChanged()
                 }
             }
         }
 
-        adapter = EXListAdapter(requireActivity(), data, isGrid = false, itemListener)
+        val gridListener = object : EXListAdapter.Listener{
+            override fun onCheck(path : String) {
+                if(!isMultiple){
+                    isMultiple = true
+                    crossfade(arrayListOf(bottomBar, topBar), arrayListOf(pathGroup))
+                    listener.onMultipleChanged(isMultiple)
+                }
+                if(!selected.contains(path)){
+                    selected.add(path)
+                }
+                isCheckAll = selected.size == adapter.data.size
+                onSelectionChange()
+            }
+
+            override fun onUnCheck(path : String) {
+                if(selected.contains(path)){
+                    selected.remove(path)
+                }
+                onSelectionChange()
+                isCheckAll = false
+            }
+
+            override fun onClick(path: String, isChecked: Boolean, position : Int) {
+                if(!isMultiple){
+                    if(adapter.data[position].type =="DIR"){
+                        adapter.data = getFileList(path)
+                        adapter.notifyDataSetChanged()
+                        pathView.text = path
+                        onPathChanged(path)
+                    }
+                }else{
+                    if(!isChecked){
+                        if(!selected.contains(path)){
+                            selected.add(path)
+                        }
+                    }else{
+                        if(selected.contains(path)){
+                            selected.remove(path)
+                        }
+                    }
+                    adapter.data[position].checked = !isChecked
+                    adapter.notifyItemChanged(position)
+                    onSelectionChange()
+                }
+            }
+
+            override fun onLongClick(path: String) {
+                if(!isMultiple){
+                    isMultiple = true
+                    crossfade(arrayListOf(bottomBar, topBar), arrayListOf(pathGroup))
+                    listener.onMultipleChanged(isMultiple)
+                    selected.add(path)
+                    isCheckAll = adapter.data.size == 1
+                    onSelectionChange()
+                    adapter.data.filter {
+                        it.path == path
+                    }[0].checked = true
+                    adapter.isMultiple = true
+                    adapter.notifyDataSetChanged()
+                }
+            }
+        }
+
+        adapter = EXListAdapter(requireActivity(), data, isGrid = false, linearListener)
         list.layoutManager = LinearLayoutManager(requireContext())
         list.adapter = adapter
         pathView.text = path
+
+        changeLayout.setOnClickListener{
+            data = getFileList(this.path)
+            if(count%2==0){
+                list.layoutManager = GridLayoutManager(requireContext(), 3)
+                adapter = EXListAdapter(requireActivity(), data, isGrid = true, gridListener)
+            }else{
+                list.layoutManager = LinearLayoutManager(requireContext())
+                adapter = EXListAdapter(requireActivity(), data, isGrid = false, linearListener)
+            }
+            list.adapter = adapter
+            count++
+        }
 
         dismissBottomBar.setOnClickListener {
             isMultiple = false
@@ -136,6 +219,8 @@ class EXList(val listener : Listener) : Fragment(), EXListListener {
             }
             adapter.notifyDataSetChanged()
             crossfade(arrayListOf(pathGroup),arrayListOf(bottomBar, topBar), duration = 0)
+            adapter.isMultiple = false
+            adapter.notifyDataSetChanged()
         }
 
         more.setOnClickListener {

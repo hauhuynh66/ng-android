@@ -48,7 +48,7 @@ class FileExplorer : AppCompatActivity() {
                             scaleY = scaleFactor
 
                             alpha = (minAlpha +
-                                    (((scaleFactor - minScale) / (1 - minScale)) * (1 - minScale)))
+                                    (((scaleFactor - minScale) / (1 - minScale)) * (1 - minAlpha)))
                         }
                         else -> {
                             alpha = 0f

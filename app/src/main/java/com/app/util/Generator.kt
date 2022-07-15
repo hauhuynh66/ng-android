@@ -30,7 +30,7 @@ class Generator {
                 }
 
                 else -> {
-                    ContextCompat.getDrawable(context, R.drawable.ic_wb_sunny)
+                    ContextCompat.getDrawable(context, R.drawable.ic_sunny)
                 }
             }
         }
