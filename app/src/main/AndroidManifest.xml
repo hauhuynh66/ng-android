@@ -68,7 +68,7 @@
         <activity android:name="com.app.activity.Draw"
             android:exported="true"/>
         
-        <activity android:name="com.app.activity.MediaViewer"
+        <activity android:name="com.app.activity.MusicPlayer"
             android:exported="true"/>
 
         <service
@@ -78,6 +78,20 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <service android:name="com.app.service.MediaPlaybackService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
+
+        <receiver android:name="androidx.media.session.MediaButtonReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"

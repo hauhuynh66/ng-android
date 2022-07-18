@@ -8,10 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.activity.ComputerVision
-import com.app.activity.FirebaseCloudMessaging
-import com.app.activity.FileExplorer
-import com.app.activity.Shopping
+import com.app.activity.*
 import com.app.adapter.MiscAdapter
 import com.app.data.MiscData
 import com.app.dialog.OptionBottomSheet
@@ -39,7 +36,7 @@ class MiscFragment : Fragment() {
         }))
         data.add(MiscData(null, object : MiscData.Listener{
             override fun onClick() {
-                val intent = Intent(requireActivity(), FirebaseCloudMessaging::class.java)
+                val intent = Intent(requireActivity(), MusicPlayer::class.java)
                 startActivity(intent)
             }
         }))

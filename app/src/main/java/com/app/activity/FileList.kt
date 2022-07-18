@@ -42,7 +42,7 @@ class FileList() : AppCompatActivity() {
             "VIDEO"->{
                 extensionList.addAll(listOf("mp4", "flv"))
             }
-            "DOC"->{
+            "FILES"->{
                 extensionList.addAll(listOf("csv, pdf, txt"))
             }
             else->{
