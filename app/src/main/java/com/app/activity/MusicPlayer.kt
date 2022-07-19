@@ -16,6 +16,8 @@ import com.app.service.MediaPlaybackService
 class MusicPlayer : AppCompatActivity() {
     private lateinit var mediaBrowser : MediaBrowserCompat
     private lateinit var playPause : ImageButton
+    private lateinit var next : ImageButton
+    private lateinit var prev : ImageButton
     private val connectionCallbacks = object : MediaBrowserCompat.ConnectionCallback(){
         override fun onConnected() {
             super.onConnected()
@@ -78,10 +80,23 @@ class MusicPlayer : AppCompatActivity() {
             }
         }
 
+        next = findViewById<ImageButton?>(R.id.ac_mp_next).apply {
+            setOnClickListener{
+                mediaController.transportControls.skipToNext()
+            }
+        }
+
+        prev = findViewById<ImageButton?>(R.id.ac_mp_prev).apply {
+            setOnClickListener{
+                mediaController.transportControls.skipToPrevious()
+            }
+        }
+
         val metadata = mediaController.metadata
         val pbState = mediaController.playbackState
         mediaController.registerCallback(controllerCallback)
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){

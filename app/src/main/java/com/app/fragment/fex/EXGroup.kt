@@ -33,7 +33,7 @@ class EXGroup : Fragment() {
                 0->{
                     data.add(MiscData(null, object : MiscData.Listener{
                         override fun onClick() {
-                            intent.putExtra("TYPE", "PICTURE")
+                            intent.putExtra("TYPE", 1)
                             startActivity(intent)
                         }
                     }))
@@ -41,7 +41,7 @@ class EXGroup : Fragment() {
                 1->{
                     data.add(MiscData(null, object : MiscData.Listener{
                         override fun onClick() {
-                            intent.putExtra("TYPE", "VIDEO")
+                            intent.putExtra("TYPE", 2)
                             startActivity(intent)
                         }
                     }))
@@ -49,7 +49,7 @@ class EXGroup : Fragment() {
                 2->{
                     data.add(MiscData(null, object : MiscData.Listener{
                         override fun onClick() {
-                            intent.putExtra("TYPE", "MUSIC")
+                            intent.putExtra("TYPE", 3)
                             startActivity(intent)
                         }
                     }))
@@ -57,7 +57,7 @@ class EXGroup : Fragment() {
                 3->{
                     data.add(MiscData(null, object : MiscData.Listener{
                         override fun onClick() {
-                            intent.putExtra("TYPE", "DOC")
+                            intent.putExtra("TYPE", 4)
                             startActivity(intent)
                         }
                     }))

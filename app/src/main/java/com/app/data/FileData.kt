@@ -8,5 +8,4 @@ class FileData(
     val size: Long?,
     val path: String,
     val type: String,
-    var checked : Boolean = false) {
-}
+    var checked : Boolean = false)

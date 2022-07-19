@@ -2,6 +2,7 @@ package com.app.activity
 
 import android.os.Bundle
 import android.os.Environment
+import android.provider.MediaStore
 import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
@@ -14,11 +15,12 @@ import com.app.ngn.R
 import com.app.task.FileDataCallable
 import com.app.task.TaskRunner
 import com.app.util.Animation.Companion.crossfade
+import java.util.*
+import kotlin.collections.ArrayList
 
 class FileList() : AppCompatActivity() {
     private lateinit var data: ArrayList<FileData>
-    private lateinit var type: String
-    private lateinit var extensionList : ArrayList<String>
+    private var type: Int = 1
     private lateinit var list: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,29 +28,8 @@ class FileList() : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         val bundle = intent.extras
-        type = if(bundle!=null){
-            bundle.getString("TYPE")!!
-        }else{
-            "ALL"
-        }
-        extensionList = arrayListOf()
-        when(type){
-            "PICTURE"->{
-                extensionList.addAll(listOf("png","jpeg", "jpg"))
-            }
-            "MUSIC"->{
-                extensionList.addAll(listOf("mp3"))
-            }
-            "VIDEO"->{
-                extensionList.addAll(listOf("mp4", "flv"))
-            }
-            "FILES"->{
-                extensionList.addAll(listOf("csv, pdf, txt"))
-            }
-            else->{
+        type = bundle?.getInt("TYPE") ?: 1
 
-            }
-        }
         val progress = findViewById<ProgressBar>(R.id.progress)
         progress.visibility = View.VISIBLE
         list = findViewById(R.id.ac_file_list_list)
@@ -71,7 +52,7 @@ class FileList() : AppCompatActivity() {
 
             }
         }
-        runner.execute(FileDataCallable(extensionList, Environment.getExternalStorageDirectory().absolutePath),
+        runner.execute(FileDataCallable(contentResolver, type),
             object : TaskRunner.Callback<ArrayList<FileData>>{
             override fun onComplete(result: ArrayList<FileData>) {
                 this@FileList.data = result
