@@ -14,10 +14,10 @@ class AppInit : AppCompatActivity() {
         auth = Firebase.auth
         val currentUser = auth.currentUser
         if(currentUser==null){
-            val loginIntent = Intent(this, Login::class.java)
-            startActivity(loginIntent)
+            val loginActivityIntent = Intent(this, LoginActivity::class.java)
+            startActivity(loginActivityIntent)
         }else{
-            val appIntent = Intent(this, Navigator::class.java)
+            val appIntent = Intent(this, NavigatorActivity::class.java)
             startActivity(appIntent)
         }
     }

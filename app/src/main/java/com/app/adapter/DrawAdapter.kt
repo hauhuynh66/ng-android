@@ -11,7 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ngn.R
 
-class DrawUtilAdapter(val context : Context, val data : ArrayList<DrawUtilData>, val type : Int, val listener: Listener) :
+class DrawAdapter(val context : Context, val data : ArrayList<DrawUtilData>, val type : Int, val listener: Listener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater

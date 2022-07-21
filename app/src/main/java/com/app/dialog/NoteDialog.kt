@@ -9,7 +9,6 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import com.app.data.NoteData
 import com.app.listener.NoteDialogListener
 import com.app.model.Note
 import com.app.ngn.R
@@ -17,7 +16,7 @@ import com.app.util.Format.Companion.parseDate
 import java.text.DecimalFormat
 import java.util.*
 
-class NoteDialog(private val dialogListener: NoteDialogListener, data: NoteData?):DialogFragment() {
+class NoteDialog(private val dialogListener: NoteDialogListener):DialogFragment() {
     private lateinit var dp:Button
     private lateinit var tp:Button
     private lateinit var title:EditText

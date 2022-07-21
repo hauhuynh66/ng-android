@@ -4,11 +4,11 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.app.fragment.fex.EXGroup
-import com.app.fragment.fex.EXList
+import com.app.fragment.fex.EXGroupFragment
+import com.app.fragment.fex.EXListFragment
 import com.google.android.material.tabs.TabLayout
 
-class EXFragmentAdapter(fm: FragmentManager, val tab: TabLayout) : FragmentPagerAdapter(fm) {
+class ExplorerFragmentAdapter(fm: FragmentManager, val tab: TabLayout) : FragmentPagerAdapter(fm) {
     private val count = 2
     override fun getCount(): Int {
         return count;
@@ -17,7 +17,7 @@ class EXFragmentAdapter(fm: FragmentManager, val tab: TabLayout) : FragmentPager
     override fun getItem(position: Int): Fragment {
         return when(position){
             1->{
-                EXList(object : EXList.Listener{
+                EXListFragment(object : EXListFragment.Listener{
                     override fun onMultipleChanged(isMultiple: Boolean) {
                         if(isMultiple){
                             tab.visibility = View.GONE
@@ -28,7 +28,7 @@ class EXFragmentAdapter(fm: FragmentManager, val tab: TabLayout) : FragmentPager
                 })
             }
             else->{
-                EXGroup()
+                EXGroupFragment()
             }
         }
 

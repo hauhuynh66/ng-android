@@ -2,7 +2,6 @@ package com.app.activity
 
 import android.Manifest
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageView
@@ -12,12 +11,11 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.app.fragment.MainFragment
 import com.app.fragment.MiscFragment
-import com.app.fragment.NoteFragment
-import com.app.fragment.WeatherFragment
+import com.app.fragment.nt.NoteFragment
+import com.app.fragment.wf.WeatherFragment
 import com.app.ngn.R
-import com.app.task.ImageCallable
-import com.app.task.TaskRunner
 import com.app.util.Check.Companion.checkPermissions
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -25,7 +23,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlin.system.exitProcess
 
-class Navigator : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
+class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var auth:FirebaseAuth
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
@@ -48,14 +46,7 @@ class Navigator : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLi
         val displayImg = navigationView.getHeaderView(0).findViewById<ImageView>(R.id.nav_header_img)
         displayName.text = user.displayName ?: "User"
         displayEmail.text = user.email
-        if(user.photoUrl!=null) {
-            val taskRunner = TaskRunner()
-            taskRunner.execute(ImageCallable(user.photoUrl.toString()), object: TaskRunner.Callback<Bitmap?>{
-                override fun onComplete(result: Bitmap?) {
-                    displayImg.setImageBitmap(result)
-                }
-            })
-        }
+
         navigationView.setNavigationItemSelectedListener(this)
         this.drawerLayout = findViewById(R.id.drawer_layout)
         val drawerToggle = ActionBarDrawerToggle(this, drawerLayout,
@@ -66,8 +57,8 @@ class Navigator : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLi
         drawerToggle.syncState()
 
         if(savedInstanceState==null){
-            supportFragmentManager.beginTransaction().replace(R.id.container,  WeatherFragment(), "WEATHER").commit()
-            supportActionBar!!.title = "Weather"
+            supportFragmentManager.beginTransaction().replace(R.id.container,  MainFragment(), "MAIN").commit()
+            supportActionBar!!.title = "Main"
         }
     }
 
@@ -81,9 +72,17 @@ class Navigator : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLi
                     R.anim.flip_left_in,
                     R.anim.flip_left_out
             )
+
             supportActionBar!!.apply {
                 val currentFragment = supportFragmentManager.findFragmentById(R.id.container)
                 when(item.itemId){
+                    R.id.nav_forecast->{
+                        this.title = "Forecast"
+                        if(currentFragment !is WeatherFragment){
+                            transaction.replace(R.id.container,  WeatherFragment(), "WEATHER").commit()
+                            transaction.addToBackStack("WEATHER")
+                        }
+                    }
                     R.id.nav_note->{
                         this.title = "Note"
                         if(currentFragment !is NoteFragment){
@@ -99,14 +98,14 @@ class Navigator : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLi
                         }
                     }
                     R.id.nav_menu_setting->{
-                        val intent = Intent(this@Navigator, Settings::class.java)
+                        val intent = Intent(this@NavigatorActivity, SettingsActivity::class.java)
                         startActivity(intent)
                     }
                     else->{
-                        if(currentFragment !is WeatherFragment){
-                            supportActionBar!!.title = "Weather"
-                            transaction.replace(R.id.container,  WeatherFragment(), "WEATHER").commit()
-                            transaction.addToBackStack("WEATHER")
+                        if(currentFragment !is MainFragment){
+                            supportActionBar!!.title = "Main"
+                            transaction.replace(R.id.container,  MainFragment(), "MAIN").commit()
+                            transaction.addToBackStack("MAIN")
                         }
                     }
                 }
@@ -128,24 +127,16 @@ class Navigator : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLi
 
     private fun permissionCheck(){
         val permissions = arrayListOf<String>()
-        permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION)
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION)
-        permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE)
         if(!checkPermissions(this, permissions)){
             val requestPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
                 permission -> run {
                     when{
-                        permission.getOrDefault(Manifest.permission.READ_EXTERNAL_STORAGE, false)->{
-
-                        }
                         permission.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false)->{
 
                         }
                         permission.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false)->{
-
-                        }
-                        permission.getOrDefault(Manifest.permission.WRITE_EXTERNAL_STORAGE, false)->{
 
                         }
                         else->{
@@ -155,8 +146,6 @@ class Navigator : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLi
                 }
             }
             requestPermissions.launch(arrayOf(
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ))

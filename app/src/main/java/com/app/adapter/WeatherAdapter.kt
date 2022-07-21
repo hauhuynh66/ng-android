@@ -12,19 +12,19 @@ import com.app.ngn.R
 import com.app.util.Format.Companion.formatWeatherDate
 import com.app.util.Generator.Companion.getWeatherIcon
 
-class WeatherAdapter(private val context:Context, var data:ArrayList<WeatherData>):
-    RecyclerView.Adapter<WeatherAdapter.WeatherViewHolder>() {
+class WeatherAdapter(private val context:Context, var data:ArrayList<WeatherData>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         return WeatherViewHolder(inflater.inflate(R.layout.com_weather, parent, false))
     }
 
-    override fun onBindViewHolder(holder: WeatherViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val metric = context.resources.displayMetrics
-        holder.v.layoutParams.width = metric.widthPixels/3
-
-        holder.bind(data[position], context)
+        (holder as WeatherViewHolder).apply {
+            v.layoutParams.width = metric.widthPixels/3
+            bind(data[position], context)
+        }
     }
 
     override fun getItemCount(): Int {

@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import com.app.ngn.R
 import com.app.util.CVUtils.Companion.featureMatching
 
-class ORB : Fragment() {
+class ORBFragment : Fragment() {
     private lateinit var original1 : ImageView
     private lateinit var original2 : ImageView
     private lateinit var transformed : ImageView

@@ -9,14 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.data.MiscData
 import com.app.ngn.R
 
-class MiscAdapter(val context : Context, val data:ArrayList<MiscData>):RecyclerView.Adapter<MiscAdapter.MiscViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MiscViewHolder {
+class MiscAdapter(val context : Context, val data:ArrayList<MiscData>):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         return MiscViewHolder(inflater.inflate(R.layout.com_misc,parent, false))
     }
 
-    override fun onBindViewHolder(holder: MiscViewHolder, position: Int) {
-        holder.bind(this.data[position])
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        (holder as MiscViewHolder).bind(this.data[position])
     }
 
     override fun getItemCount(): Int {

@@ -25,11 +25,11 @@
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true">
         <activity
-            android:name="com.app.activity.Settings"
+            android:name="com.app.activity.SettingsActivity"
             android:exported="false"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name="com.app.activity.Login"
+            android:name="com.app.activity.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,36 +39,36 @@
         </activity>
 
         <activity
-            android:name="com.app.activity.Navigator"
+            android:name="com.app.activity.NavigatorActivity"
             android:exported="true"/>
 
         <activity
-            android:name="com.app.activity.GoogleMap"
+            android:name="com.app.activity.GoogleMapActivity"
             android:exported="true"/>
 
         <activity
-            android:name="com.app.activity.FirebaseCloudMessaging"
+            android:name="com.app.activity.FCMActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.FileExplorer"
+        <activity android:name="com.app.activity.FileExplorerActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.Diary"
+        <activity android:name="com.app.activity.FileListActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.FileList"
+        <activity android:name="com.app.activity.CVActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.ComputerVision"
+        <activity android:name="com.app.activity.ShoppingActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.Shopping"
-            android:exported="true"/>
-
-        <activity android:name="com.app.activity.Draw"
+        <activity android:name="com.app.activity.DrawActivity"
             android:exported="true"/>
         
-        <activity android:name="com.app.activity.MusicPlayer"
+        <activity android:name="com.app.activity.MusicPlayerActivity"
+            android:exported="true"/>
+
+        <activity android:name="com.app.activity.MusicBrowserActivity"
             android:exported="true"/>
 
         <service
@@ -91,6 +91,15 @@
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.app.receiver.WidgetProvider"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider" />
         </receiver>
 
         <meta-data

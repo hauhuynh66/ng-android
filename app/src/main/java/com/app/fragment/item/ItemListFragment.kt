@@ -27,13 +27,13 @@ class ItemListFragment:Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         itemList = generatePseudoItem(10)
-        val itemListener = object : ItemAdapter.Listener{
+        val itemAdapterListener = object : ItemAdapter.Listener{
             override fun onClick(data: ItemData) {
                 requireActivity().findNavController(R.id.ac_item_nav_host).navigate(R.id.itemDetailFragment)
             }
         }
 
-        val adapter = ItemAdapter(requireActivity(), itemList, itemListener)
+        val adapter = ItemAdapter(requireActivity(), itemList, itemAdapterListener)
         val layoutManager = GridLayoutManager(requireContext(), 2)
 
         val list = view.findViewById<RecyclerView>(R.id.fg_item_list)

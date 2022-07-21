@@ -12,7 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.adapter.DrawUtilAdapter
+import com.app.adapter.DrawAdapter
 import com.app.helper.SpanLinearLayoutManager
 import com.app.ngn.R
 import com.app.util.Utils
@@ -22,7 +22,7 @@ import java.io.File
 import java.io.FileOutputStream
 
 
-class Draw : AppCompatActivity() {
+class DrawActivity : AppCompatActivity() {
     private val requestImage = 1
     private val path = Environment.getExternalStorageDirectory().absolutePath + "/photo"
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,20 +75,20 @@ class Draw : AppCompatActivity() {
             SpanLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         sizeList.layoutManager =
             SpanLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        colorList.adapter = DrawUtilAdapter(this,
+        colorList.adapter = DrawAdapter(this,
             getArray(1),
             0,
-            object : DrawUtilAdapter.Listener {
+            object : DrawAdapter.Listener {
                 override fun onClick(value: Int) {
                     draw.changeColor(value)
                 }
             }
         )
 
-        sizeList.adapter = DrawUtilAdapter(this,
+        sizeList.adapter = DrawAdapter(this,
             getArray(2),
             1,
-            object : DrawUtilAdapter.Listener {
+            object : DrawAdapter.Listener {
                 override fun onClick(value: Int) {
                     draw.changePathWidth(value.toFloat())
                 }
@@ -125,24 +125,24 @@ class Draw : AppCompatActivity() {
         }
     }
 
-    private fun getArray(mode : Int) : ArrayList<DrawUtilAdapter.DrawUtilData>{
+    private fun getArray(mode : Int) : ArrayList<DrawAdapter.DrawUtilData>{
         when(mode){
             1->{
                 return arrayListOf(
-                    DrawUtilAdapter.DrawUtilData(Color.RED),
-                    DrawUtilAdapter.DrawUtilData(Color.BLUE),
-                    DrawUtilAdapter.DrawUtilData(Color.GREEN, true),
-                    DrawUtilAdapter.DrawUtilData(Color.BLACK),
-                    DrawUtilAdapter.DrawUtilData(Color.YELLOW),
+                    DrawAdapter.DrawUtilData(Color.RED),
+                    DrawAdapter.DrawUtilData(Color.BLUE),
+                    DrawAdapter.DrawUtilData(Color.GREEN, true),
+                    DrawAdapter.DrawUtilData(Color.BLACK),
+                    DrawAdapter.DrawUtilData(Color.YELLOW),
                 )
             }
             2->{
                 return arrayListOf(
-                    DrawUtilAdapter.DrawUtilData(6),
-                    DrawUtilAdapter.DrawUtilData(12, true),
-                    DrawUtilAdapter.DrawUtilData(36),
-                    DrawUtilAdapter.DrawUtilData(48),
-                    DrawUtilAdapter.DrawUtilData(72)
+                    DrawAdapter.DrawUtilData(6),
+                    DrawAdapter.DrawUtilData(12, true),
+                    DrawAdapter.DrawUtilData(36),
+                    DrawAdapter.DrawUtilData(48),
+                    DrawAdapter.DrawUtilData(72)
                 )
             }
             else->{

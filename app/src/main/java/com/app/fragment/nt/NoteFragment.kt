@@ -1,4 +1,4 @@
-package com.app.fragment
+package com.app.fragment.nt
 
 import android.app.Activity
 import android.content.Intent
@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
-import com.app.activity.Draw
+import com.app.activity.DrawActivity
 import com.app.adapter.NoteAdapter
 import com.app.dialog.NoteDialog
 import com.app.helper.OneColumnListHelperCallback
@@ -29,8 +29,8 @@ import java.util.*
 
 class NoteFragment:Fragment(), NoteDialogListener {
     private lateinit var fb:FloatingActionButton
-    private lateinit var adapter:NoteAdapter
-    private lateinit var data:ArrayList<Note>
+    private lateinit var adapter: NoteAdapter
+    private lateinit var data:ArrayList<com.app.model.Note>
     private lateinit var db: AppDatabase
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -45,7 +45,7 @@ class NoteFragment:Fragment(), NoteDialogListener {
                 if(result.resultCode== Activity.RESULT_OK) {
                     val path = result.data!!.extras!!.getString("bmp")
 
-                    val note = Note(
+                    val note = com.app.model.Note(
                         title = System.currentTimeMillis().toString(),
                         content = null,
                         displayDate = Date(),
@@ -78,7 +78,7 @@ class NoteFragment:Fragment(), NoteDialogListener {
             }
         }
 
-        adapter = NoteAdapter(this.requireActivity(), data, object : NoteAdapter.Callback{
+        adapter = NoteAdapter(requireActivity(), data, object : NoteAdapter.Callback{
             override fun onItemClick(note: Note) {
 
             }
@@ -102,19 +102,19 @@ class NoteFragment:Fragment(), NoteDialogListener {
         noteList.adapter = adapter
         fb = view.findViewById(R.id.addBtn)
         fb.setOnClickListener {
-            NoteDialog(this, null).show(requireActivity().supportFragmentManager, "NewNote")
+            NoteDialog(this).show(requireActivity().supportFragmentManager, "NewNote")
         }
         val itemCallback = OneColumnListHelperCallback(adapter)
         val itemHelper = ItemTouchHelper(itemCallback)
         itemHelper.attachToRecyclerView(noteList)
         val draw = view.findViewById<FloatingActionButton>(R.id.fg_note_draw)
         draw.setOnClickListener {
-            val intent = Intent(this.requireContext(), Draw::class.java)
+            val intent = Intent(this.requireContext(), DrawActivity::class.java)
             drawLauncher.launch(intent)
         }
     }
 
-    override fun onAdd(note: Note) {
+    override fun onAdd(note: com.app.model.Note) {
         /**/
         try{
             var success: Long?
@@ -133,7 +133,7 @@ class NoteFragment:Fragment(), NoteDialogListener {
         }
     }
 
-    override fun onCancel(temp: Note) {
+    override fun onCancel(temp: com.app.model.Note) {
         /**/
     }
 }

@@ -7,8 +7,8 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minHeight="80dp"
-        android:minWidth="80dp"
+        android:minHeight="60dp"
+        android:minWidth="60dp"
         android:src="@drawable/ic_baseline_person"
         android:scaleType="fitCenter"
         app:layout_constraintTop_toTopOf="parent"

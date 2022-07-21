@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.app.ngn.R
 import com.app.service.MediaPlaybackService
 
-class MusicPlayer : AppCompatActivity() {
+class MusicPlayerActivity : AppCompatActivity() {
     private lateinit var mediaBrowser : MediaBrowserCompat
     private lateinit var playPause : ImageButton
     private lateinit var next : ImageButton
@@ -22,8 +22,8 @@ class MusicPlayer : AppCompatActivity() {
         override fun onConnected() {
             super.onConnected()
             mediaBrowser.sessionToken.also { token ->
-                val mediaController = MediaControllerCompat(this@MusicPlayer, token)
-                MediaControllerCompat.setMediaController(this@MusicPlayer, mediaController)
+                val mediaController = MediaControllerCompat(this@MusicPlayerActivity, token)
+                MediaControllerCompat.setMediaController(this@MusicPlayerActivity, mediaController)
             }
             buildTransportControls()
         }
@@ -58,6 +58,7 @@ class MusicPlayer : AppCompatActivity() {
         supportActionBar!!.apply {
             title = "Music Player"
             setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_downward)
         }
         mediaBrowser = MediaBrowserCompat(
             this,
@@ -69,7 +70,7 @@ class MusicPlayer : AppCompatActivity() {
 
     private fun buildTransportControls(){
         val mediaController = MediaControllerCompat.getMediaController(this)
-        playPause = findViewById<ImageButton?>(R.id.ac_mp_play).apply {
+        playPause = findViewById<ImageButton?>(R.id.btn_play).apply {
             setOnClickListener {
                 val pbState = mediaController.playbackState.state
                 if(pbState == PlaybackStateCompat.STATE_PLAYING){
@@ -80,13 +81,13 @@ class MusicPlayer : AppCompatActivity() {
             }
         }
 
-        next = findViewById<ImageButton?>(R.id.ac_mp_next).apply {
+        next = findViewById<ImageButton?>(R.id.btn_next).apply {
             setOnClickListener{
                 mediaController.transportControls.skipToNext()
             }
         }
 
-        prev = findViewById<ImageButton?>(R.id.ac_mp_prev).apply {
+        prev = findViewById<ImageButton?>(R.id.btn_prev).apply {
             setOnClickListener{
                 mediaController.transportControls.skipToPrevious()
             }
@@ -96,7 +97,6 @@ class MusicPlayer : AppCompatActivity() {
         val pbState = mediaController.playbackState
         mediaController.registerCallback(controllerCallback)
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){

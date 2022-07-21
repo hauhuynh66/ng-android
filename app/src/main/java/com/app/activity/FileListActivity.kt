@@ -1,8 +1,6 @@
 package com.app.activity
 
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
 import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
@@ -15,10 +13,9 @@ import com.app.ngn.R
 import com.app.task.FileDataCallable
 import com.app.task.TaskRunner
 import com.app.util.Animation.Companion.crossfade
-import java.util.*
 import kotlin.collections.ArrayList
 
-class FileList() : AppCompatActivity() {
+class FileListActivity() : AppCompatActivity() {
     private lateinit var data: ArrayList<FileData>
     private var type: Int = 1
     private lateinit var list: RecyclerView
@@ -55,9 +52,9 @@ class FileList() : AppCompatActivity() {
         runner.execute(FileDataCallable(contentResolver, type),
             object : TaskRunner.Callback<ArrayList<FileData>>{
             override fun onComplete(result: ArrayList<FileData>) {
-                this@FileList.data = result
-                list.layoutManager = GridLayoutManager(this@FileList, 3)
-                list.adapter = EXListAdapter(this@FileList, data, listener = listener, isGrid = true)
+                this@FileListActivity.data = result
+                list.layoutManager = GridLayoutManager(this@FileListActivity, 3)
+                list.adapter = EXListAdapter(this@FileListActivity, data, listener = listener, isGrid = true)
                 crossfade(arrayListOf(list), arrayListOf(progress), duration = 1000)
             }
         })

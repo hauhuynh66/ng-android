@@ -12,11 +12,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.FileProvider
-import com.app.fragment.cv.ORB
+import com.app.fragment.cv.ORBFragment
 import com.app.ngn.R
 import com.app.util.Utils
 
-class ComputerVision() : AppCompatActivity(){
+class CVActivity() : AppCompatActivity(){
     private val dir = Environment.getExternalStorageDirectory().absolutePath + "/DCIM/Camera"
     private lateinit var cameraResult : ActivityResultLauncher<Uri>
     private var photoURI : Uri? = null
@@ -30,7 +30,7 @@ class ComputerVision() : AppCompatActivity(){
         val mode = intent.extras!!.getString("mode")
         when(mode){
             "Orb"->{
-                supportFragmentManager.beginTransaction().replace(R.id.ac_cv_container, ORB()).commit()
+                supportFragmentManager.beginTransaction().replace(R.id.ac_cv_container, ORBFragment()).commit()
             }
         }
 
@@ -41,11 +41,11 @@ class ComputerVision() : AppCompatActivity(){
                 val currentFragment = supportFragmentManager.findFragmentById(R.id.ac_cv_container);
                 when(mode){
                     "Orb"->{
-                        (currentFragment as ORB).process(bitmap)
+                        (currentFragment as ORBFragment).process(bitmap)
                     }
                 }
             }else{
-                Toast.makeText(this@ComputerVision, "Cancelled", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@CVActivity, "Cancelled", Toast.LENGTH_SHORT).show()
             }
         }
     }

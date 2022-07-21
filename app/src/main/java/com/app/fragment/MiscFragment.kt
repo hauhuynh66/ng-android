@@ -8,14 +8,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.activity.*
+import com.app.activity.CVActivity
+import com.app.activity.FileExplorerActivity
+import com.app.activity.MusicBrowserActivity
+import com.app.activity.ShoppingActivity
 import com.app.adapter.MiscAdapter
 import com.app.data.MiscData
 import com.app.dialog.OptionBottomSheet
 import com.app.ngn.R
 
 class MiscFragment : Fragment() {
-    private lateinit var data: ArrayList<MiscData>
+    private lateinit var data: ArrayList<com.app.data.MiscData>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -28,25 +31,25 @@ class MiscFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         data = arrayListOf()
-        data.add(MiscData(null, object : MiscData.Listener{
+        data.add(com.app.data.MiscData(null, object : MiscData.Listener{
             override fun onClick() {
-                val intent = Intent(requireActivity(), Shopping::class.java)
+                val intent = Intent(requireActivity(), ShoppingActivity::class.java)
                 startActivity(intent)
             }
         }))
-        data.add(MiscData(null, object : MiscData.Listener{
+        data.add(com.app.data.MiscData(null, object : MiscData.Listener{
             override fun onClick() {
-                val intent = Intent(requireActivity(), MusicPlayer::class.java)
+                val intent = Intent(requireActivity(), MusicBrowserActivity::class.java)
                 startActivity(intent)
             }
         }))
-        data.add(MiscData(null, object : MiscData.Listener{
+        data.add(com.app.data.MiscData(null, object : MiscData.Listener{
             override fun onClick() {
-                val intent = Intent(requireActivity(), FileExplorer::class.java)
+                val intent = Intent(requireActivity(), FileExplorerActivity::class.java)
                 startActivity(intent)
             }
         }))
-        data.add(MiscData(null, object : MiscData.Listener{
+        data.add(com.app.data.MiscData(null, object : MiscData.Listener{
             override fun onClick() {
                 val options = arrayListOf("Orb")
                 val opts = arrayListOf<OptionBottomSheet.BottomSheetData>()
@@ -56,7 +59,7 @@ class MiscFragment : Fragment() {
                     opts.add(OptionBottomSheet.BottomSheetData(options[i], true, options[i]))
                     val cb = object : OptionBottomSheet.Listener{
                         override fun onClick(option: String?) {
-                            val intent = Intent(requireActivity(), ComputerVision::class.java)
+                            val intent = Intent(requireActivity(), CVActivity::class.java)
                             intent.putExtra("mode", options[i])
                             startActivity(intent)
                         }

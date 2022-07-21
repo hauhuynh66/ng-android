@@ -15,7 +15,7 @@ import com.app.ngn.R
 import com.app.util.Format.Companion.formatDate
 import java.io.File
 
-class NoteAdapter(val context: Context,val data:List<Note>, private val callback: NoteAdapter.Callback?)
+class NoteAdapter(val context: Context, val data:List<Note>, private val callback: Callback?)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -53,7 +53,7 @@ class NoteAdapter(val context: Context,val data:List<Note>, private val callback
     }
 
     class NoteViewHolder(private val v: View) : RecyclerView.ViewHolder(v){
-        fun bind(note:Note, callback: Callback?){
+        fun bind(note: Note, callback: Callback?){
             val title = v.findViewById<TextView>(R.id.com_note_title)
             val content = v.findViewById<TextView>(R.id.com_note_content)
             val date = v.findViewById<TextView>(R.id.com_note_displayDate)
@@ -73,7 +73,7 @@ class NoteAdapter(val context: Context,val data:List<Note>, private val callback
     }
 
     class NoteImgViewHolder(val v: View) : RecyclerView.ViewHolder(v){
-        fun bind(note:Note, callback: Callback?, context: Context) {
+        fun bind(note: Note, callback: Callback?, context: Context) {
             val img = v.findViewById<ImageView>(R.id.com_note_img_src)
             val del = v.findViewById<Button>(R.id.com_note_img_del)
             val file = File(note.extra!!)
@@ -93,7 +93,7 @@ class NoteAdapter(val context: Context,val data:List<Note>, private val callback
     }
 
     interface Callback{
-        fun onItemClick(note:Note)
+        fun onItemClick(note: Note)
         fun onDelete(note: Note)
     }
 }

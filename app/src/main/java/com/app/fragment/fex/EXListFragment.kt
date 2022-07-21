@@ -25,7 +25,7 @@ import java.nio.file.attribute.BasicFileAttributes
 import java.util.*
 import java.util.stream.Collectors
 
-class EXList(val listener : Listener) : Fragment(), EXListListener {
+class EXListFragment(val listener : Listener) : Fragment(), EXListListener {
     private lateinit var data: ArrayList<FileData>
     private val rootPath : String = Environment.getExternalStorageDirectory().absolutePath
     private var path : String = rootPath

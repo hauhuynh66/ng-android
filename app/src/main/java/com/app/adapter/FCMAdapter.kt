@@ -1,6 +1,5 @@
 package com.app.adapter
 
-import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.ngn.R
 import com.google.firebase.messaging.RemoteMessage
 
-class FCMMessageAdapter(val context : Context,val data: ArrayList<RemoteMessage>)
-    : RecyclerView.Adapter<FCMMessageAdapter.FCMViewHolder>() {
+class FCMAdapter(val context : Context, val data: ArrayList<RemoteMessage>)
+    : RecyclerView.Adapter<FCMAdapter.FCMViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FCMViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater

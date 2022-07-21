@@ -4,11 +4,11 @@
         android:title="Home"
         android:id="@+id/nav_home"/>
     <item
+        android:title="Forecast"
+        android:id="@+id/nav_forecast"/>
+    <item
         android:title="Note"
         android:id="@+id/nav_note"/>
-    <item
-        android:title="Test"
-        android:id="@+id/nav_test"/>
     <item
         android:title="Misc"
         android:id="@+id/nav_menu_misc"/>

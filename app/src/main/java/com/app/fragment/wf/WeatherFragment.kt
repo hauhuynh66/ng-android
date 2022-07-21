@@ -1,14 +1,14 @@
-package com.app.fragment
+package com.app.fragment.wf
 
-import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,63 +18,57 @@ import com.android.volley.RequestQueue
 import com.android.volley.TimeoutError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.app.activity.GoogleMap
-import com.app.adapter.WeatherAdapter
+import com.app.activity.GoogleMapActivity
 import com.app.data.ForecastData
-import com.app.data.WeatherData
 import com.app.dialog.GraphDialog
 import com.app.ngn.R
 import com.app.util.Animation.Companion.crossfade
-import com.app.util.Format.Companion.formatWeatherDate
-import com.app.util.Generator.Companion.getWeatherIcon
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import org.apache.commons.text.WordUtils
 import org.json.JSONObject
 import java.text.DecimalFormat
 import java.util.*
+import com.app.adapter.WeatherAdapter as WeatherAdapter
 
 class WeatherFragment : Fragment(){
     private lateinit var requestQueue:RequestQueue
     private lateinit var progressBar: ProgressBar
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private lateinit var contentLayout: View
-    private lateinit var location:Location
-    private var forecast:ForecastData? = null
+    private lateinit var contentLayout : View
+    private lateinit var location: Location
+    private lateinit var forecastData: ForecastData
     private val cnt = 40
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fg_weather, container, false)
     }
 
-    @SuppressLint("MissingPermission")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         contentLayout = view.findViewById(R.id.contentLayout)
         contentLayout.visibility = View.INVISIBLE
         this.progressBar = view.findViewById(R.id.progress)
         this.progressBar.visibility = View.VISIBLE
         this.requestQueue = Volley.newRequestQueue(this.requireContext())
-
+        forecastData = ForecastData(arrayListOf(),"")
         val graph = view.findViewById<Button>(R.id.graph)
         val map = view.findViewById<Button>(R.id.map)
         graph.setOnClickListener{
-            GraphDialog(forecast).show(requireActivity().supportFragmentManager, "Graph")
+            GraphDialog(forecastData).show(requireActivity().supportFragmentManager, "Graph")
         }
 
         map.setOnClickListener {
-            val intent = Intent(requireActivity(), GoogleMap::class.java)
+            val intent = Intent(requireActivity(), GoogleMapActivity::class.java)
             intent.putExtra("lon", location.longitude)
             intent.putExtra("lat", location.latitude)
             startActivity(intent)
         }
         val key = "1f21f91e5b111cf398a465df830c423b"
-        var url = "https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={key}&cnt={cnt}"
+        var url = "https://api.openweathermap.org/data/2.5/{forecast}?lat={lat}&lon={lon}&appid={key}&cnt={cnt}"
         url = url.replace("{key}", key)
         url = url.replace("{cnt}", cnt.toString())
 
         this.fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this.requireContext())
-        val requiredPermissions = arrayListOf<String>()
-        requiredPermissions.add(Manifest.permission.ACCESS_FINE_LOCATION)
-        requiredPermissions.add(Manifest.permission.ACCESS_COARSE_LOCATION)
+
         fusedLocationProviderClient.lastLocation.addOnSuccessListener {
             run{
                 if(it!=null){
@@ -89,25 +83,9 @@ class WeatherFragment : Fragment(){
         }
     }
 
-    private fun updateUI(forecastData:ForecastData, v:View){
-        val cityName = v.findViewById<TextView>(R.id.city_name)
-        val description = v.findViewById<TextView>(R.id.weather_des)
-        val time = v.findViewById<TextView>(R.id.com_weather_time)
-        val temp = v.findViewById<TextView>(R.id.main_temp)
-        val humid = v.findViewById<TextView>(R.id.main_humid)
-        val icon = v.findViewById<ImageView>(R.id.weather_icon)
-        val data = forecastData.data[0]
-        cityName.text = forecastData.name
-        description.text = data.description
-        temp.text = data.temp.toString()
-        humid.text = data.humid.toString()
-        icon.setImageDrawable(getWeatherIcon(data.description, this.requireContext()))
-        time.text = formatWeatherDate(data.time)
-    }
-
     private fun processWeatherAPI(responseJSON: String):ForecastData{
         val json = JSONObject(responseJSON)
-        val list = ArrayList<WeatherData>()
+        val list = ArrayList<com.app.data.WeatherData>()
         val weatherList = json.getJSONArray("list")
         for (i in 0 until cnt){
             val data = weatherList.getJSONObject(i)
@@ -119,7 +97,8 @@ class WeatherFragment : Fragment(){
             val df = DecimalFormat("##,##")
             val temp = df.format(weather.getDouble("temp") - 273.15).toDouble()
             list.add(
-                WeatherData(temp, weather.getLong("humidity"),des, d, type))
+                com.app.data.WeatherData(temp, weather.getLong("humidity"),des, d, type)
+            )
         }
         val name = json.getJSONObject("city").getString("name")
 
@@ -135,11 +114,10 @@ class WeatherFragment : Fragment(){
         val forecastRequest = StringRequest(Request.Method.GET, url,
             {
                     response-> run {
-                    forecast = processWeatherAPI(response)
-                    updateUI(forecast!!, view)
+                    forecastData = processWeatherAPI(response)
                     val listView:RecyclerView = view.findViewById(R.id.weather_list)
                     listView.layoutManager = LinearLayoutManager(this.requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                    listView.adapter = WeatherAdapter(this.requireActivity(), forecast!!.data)
+                    listView.adapter = WeatherAdapter(requireActivity(), forecastData.data)
                     crossfade(arrayListOf(contentLayout), arrayListOf(progressBar), duration = 800)
                 }
             }, { error-> run {
@@ -153,5 +131,4 @@ class WeatherFragment : Fragment(){
             DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
         requestQueue.add(forecastRequest)
     }
-
 }
