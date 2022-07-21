@@ -11,7 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ngn.R
 
-class DrawAdapter(val context : Context, val data : ArrayList<DrawUtilData>, val type : Int, val listener: Listener) :
+class DrawAdapter(val context : Context, var data : ArrayList<DrawUtilData>, val type : Int, val listener: Listener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -42,6 +42,9 @@ class DrawAdapter(val context : Context, val data : ArrayList<DrawUtilData>, val
 
     class ColorHolder(val v: View) : RecyclerView.ViewHolder(v){
         fun bind(data : DrawUtilData, listener: Listener, context: Context){
+            if(data.selected){
+                v.background = context.getDrawable(R.drawable.bg1)
+            }
             val btn = v.findViewById<Button>(R.id.com_draw_color_action)
             btn.setBackgroundColor(data.value)
             btn.setOnClickListener {
@@ -52,6 +55,9 @@ class DrawAdapter(val context : Context, val data : ArrayList<DrawUtilData>, val
 
     class LineHolder(val v: View) : RecyclerView.ViewHolder(v){
         fun bind(data : DrawUtilData, listener: Listener, context: Context){
+            if(data.selected){
+                v.background = context.getDrawable(R.drawable.bg1)
+            }
             val sz = v.findViewById<TextView>(R.id.com_draw_path_action)
             sz.text = data.value.toString()
             sz.setOnClickListener {
@@ -64,5 +70,5 @@ class DrawAdapter(val context : Context, val data : ArrayList<DrawUtilData>, val
         fun onClick(value : Int)
     }
 
-    open class DrawUtilData(val value : Int, val selected : Boolean = false)
+    open class DrawUtilData(val value : Int, var selected : Boolean = false)
 }

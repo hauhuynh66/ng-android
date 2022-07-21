@@ -23,8 +23,9 @@ import java.io.FileOutputStream
 
 
 class DrawActivity : AppCompatActivity() {
-    private val requestImage = 1
     private val path = Environment.getExternalStorageDirectory().absolutePath + "/photo"
+    private lateinit var colorAdapter : DrawAdapter
+    private lateinit var sizeAdapter: DrawAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_draw)
@@ -69,31 +70,42 @@ class DrawActivity : AppCompatActivity() {
             draw.prev()
         }
 
-        val colorList = findViewById<RecyclerView>(R.id.ac_draw_color)
-        val sizeList = findViewById<RecyclerView>(R.id.ac_draw_size)
-        colorList.layoutManager =
-            SpanLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        sizeList.layoutManager =
-            SpanLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        colorList.adapter = DrawAdapter(this,
+        colorAdapter = DrawAdapter(this,
             getArray(1),
             0,
             object : DrawAdapter.Listener {
                 override fun onClick(value: Int) {
                     draw.changeColor(value)
+                    val pos = colorAdapter.data.indexOf(colorAdapter.data.filter { it.value==value }[0])
+                    colorAdapter.data.filter { it.value==value }[0].selected = true
+                    colorAdapter.notifyItemChanged(pos)
                 }
             }
         )
 
-        sizeList.adapter = DrawAdapter(this,
+        sizeAdapter = DrawAdapter(this,
             getArray(2),
             1,
             object : DrawAdapter.Listener {
                 override fun onClick(value: Int) {
                     draw.changePathWidth(value.toFloat())
+                    val pos = colorAdapter.data.indexOf(colorAdapter.data.filter { it.value==value }[0])
+                    colorAdapter.data.filter { it.value==value }[0].selected = true
+                    colorAdapter.notifyItemChanged(pos)
                 }
             }
         )
+
+        val colorList = findViewById<RecyclerView>(R.id.ac_draw_color)
+        val sizeList = findViewById<RecyclerView>(R.id.ac_draw_size)
+
+        colorList.layoutManager =
+            SpanLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        sizeList.layoutManager =
+            SpanLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        colorList.adapter = colorAdapter
+
+        sizeList.adapter = sizeAdapter
 
         val save = findViewById<Button>(R.id.ac_draw_save)
         save.setOnClickListener {
@@ -108,19 +120,6 @@ class DrawActivity : AppCompatActivity() {
                 intent.putExtra("bmp", path)
                 setResult(Activity.RESULT_OK, intent)
                 finish()
-            }
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when(requestCode){
-            requestImage->{
-                val uri = data!!.data
-                println(uri)
-            }
-            else->{
-
             }
         }
     }
