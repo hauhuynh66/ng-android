@@ -17,7 +17,6 @@
             android:id="@+id/com_note_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/audiowide"
             android:gravity="center_vertical"
             android:padding="5dp"
             android:paddingStart="20dp"
@@ -54,7 +53,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/com_note_title_group"
         app:layout_constraintBottom_toTopOf="@id/com_note_displayDate"
-        android:fontFamily="@font/audiowide"
         android:textSize="8pt"
         android:minHeight="100dp"
         android:text="Content"
@@ -64,7 +62,6 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/audiowide"
         android:textSize="8pt"
         android:gravity="right"
         android:text="1998-28-08 10:00"

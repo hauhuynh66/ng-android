@@ -10,7 +10,6 @@
         android:textSize="8pt"
         android:id="@+id/dlg_ex_detail_title"
         app:layout_constraintTop_toTopOf="parent"
-        android:fontFamily="@font/audiowide"
         android:gravity="center"
         android:text="Title Goes Here"
         android:background="@color/design_default_color_primary"/>

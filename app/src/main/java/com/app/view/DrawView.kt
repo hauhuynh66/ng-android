@@ -25,7 +25,9 @@ class DrawView : View {
         if(savedPath.size > 0){
             savedPath.removeAt(savedPath.size-1)
         }
+
         mCanvas!!.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
+
         for (p : PathData in savedPath){
             mCanvas!!.drawPath(p.path, p.paint)
         }

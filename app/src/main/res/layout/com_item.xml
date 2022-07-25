@@ -21,7 +21,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/itemName"
             android:gravity="left"
-            android:fontFamily="@font/audiowide"
             android:textSize="8pt"/>
         <TextView
             android:layout_width="0dp"
@@ -29,7 +28,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/itemPrice"
             android:gravity="right"
-            android:fontFamily="@font/audiowide"
             android:textSize="8pt"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
     <ImageView

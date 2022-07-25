@@ -9,7 +9,6 @@
         android:layout_height="wrap_content"
         android:textSize="12pt"
         android:text="Topic"
-        android:fontFamily="@font/audiowide"
         android:textStyle="bold|italic"
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/com_fmc_topic"
@@ -20,7 +19,6 @@
         android:minHeight="100dp"
         android:textSize="12pt"
         android:text="Content"
-        android:fontFamily="@font/audiowide"
         app:layout_constraintTop_toBottomOf="@id/com_fmc_topic"
         android:id="@+id/com_fmc_message"
         android:padding="10dp"/>

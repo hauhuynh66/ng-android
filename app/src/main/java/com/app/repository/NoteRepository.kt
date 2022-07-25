@@ -8,7 +8,7 @@ import com.app.model.Note
 import java.util.*
 
 @Dao
-interface NoteDAO {
+interface NoteRepository {
     @Query("select * from note")
     fun getAll(): Array<Note>
 

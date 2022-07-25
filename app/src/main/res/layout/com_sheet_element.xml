@@ -8,7 +8,6 @@
         android:layout_height="60dp"
         android:gravity="center"
         android:textSize="8pt"
-        android:fontFamily="@font/audiowide"
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/com_sheet_element_display"
         android:text="Action"/>

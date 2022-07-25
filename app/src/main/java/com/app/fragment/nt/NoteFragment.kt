@@ -56,7 +56,7 @@ class NoteFragment:Fragment(), NoteDialogListener {
 
                     runBlocking {
                         withContext(Dispatchers.IO){
-                            id = db.noteDAO().insert(note)
+                            id = db.noteRepository().insert(note)
                         }
                     }
 
@@ -73,7 +73,7 @@ class NoteFragment:Fragment(), NoteDialogListener {
 
         runBlocking {
             withContext(Dispatchers.IO){
-                val d = db.noteDAO().getAll()
+                val d = db.noteRepository().getAll()
                 data = d.toCollection(ArrayList())
             }
         }
@@ -87,7 +87,7 @@ class NoteFragment:Fragment(), NoteDialogListener {
                 var success = false
                 runBlocking {
                     withContext(Dispatchers.IO){
-                        success = db.noteDAO().delete(note) == 1
+                        success = db.noteRepository().delete(note) == 1
                     }
                 }
                 if(success){
@@ -120,7 +120,7 @@ class NoteFragment:Fragment(), NoteDialogListener {
             var success: Long?
             runBlocking {
                 withContext(Dispatchers.IO){
-                    success = db.noteDAO().insert(note)
+                    success = db.noteRepository().insert(note)
                 }
             }
             if(success!=null){

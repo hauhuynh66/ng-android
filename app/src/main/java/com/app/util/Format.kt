@@ -22,14 +22,5 @@ class Format {
                 Date()
             }
         }
-
-        fun formatWeatherDate(date: Date) : String{
-            val sf = SimpleDateFormat("dd HH:mm", Locale.getDefault())
-            return try {
-                sf.format(date)
-            }catch (e:Exception){
-                ""
-            }
-        }
     }
 }

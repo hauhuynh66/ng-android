@@ -15,7 +15,6 @@
             android:textSize="10pt"
             android:text="Types"
             app:layout_constraintTop_toTopOf="parent"
-            android:fontFamily="@font/audiowide"
             android:id="@+id/fg_ex_group1_title"
             android:paddingLeft="10dp"/>
         <androidx.recyclerview.widget.RecyclerView

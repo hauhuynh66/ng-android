@@ -1,12 +1,10 @@
 package com.app.activity
 
-import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -14,9 +12,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.app.fragment.MainFragment
 import com.app.fragment.MiscFragment
 import com.app.fragment.nt.NoteFragment
-import com.app.fragment.wf.WeatherFragment
 import com.app.ngn.R
-import com.app.util.Check.Companion.checkPermissions
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -34,7 +30,6 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_navigation)
-        permissionCheck()
         auth = Firebase.auth
         val user = auth.currentUser ?: exitProcess(0)
         toolbar = findViewById(R.id.toolbar)
@@ -76,13 +71,6 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             supportActionBar!!.apply {
                 val currentFragment = supportFragmentManager.findFragmentById(R.id.container)
                 when(item.itemId){
-                    R.id.nav_forecast->{
-                        this.title = "Forecast"
-                        if(currentFragment !is WeatherFragment){
-                            transaction.replace(R.id.container,  WeatherFragment(), "WEATHER").commit()
-                            transaction.addToBackStack("WEATHER")
-                        }
-                    }
                     R.id.nav_note->{
                         this.title = "Note"
                         if(currentFragment !is NoteFragment){
@@ -123,33 +111,6 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun permissionCheck(){
-        val permissions = arrayListOf<String>()
-        permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION)
-        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION)
-        if(!checkPermissions(this, permissions)){
-            val requestPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
-                permission -> run {
-                    when{
-                        permission.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false)->{
-
-                        }
-                        permission.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false)->{
-
-                        }
-                        else->{
-                            exitProcess(0)
-                        }
-                    }
-                }
-            }
-            requestPermissions.launch(arrayOf(
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ))
-        }
     }
 
     override fun onBackPressed() {

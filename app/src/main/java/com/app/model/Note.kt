@@ -11,6 +11,6 @@ data class Note (
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "content") val content: String?,
     @ColumnInfo(name = "display_date") val displayDate: Date = Date(),
-    @ColumnInfo(name = "extra") val extra: String? = null,){
+    @ColumnInfo(name = "extra") val extra: String? = null){
     @PrimaryKey(autoGenerate = true) var id : Int = 0
 }

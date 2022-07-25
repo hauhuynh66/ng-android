@@ -76,9 +76,16 @@ class DrawActivity : AppCompatActivity() {
             object : DrawAdapter.Listener {
                 override fun onClick(value: Int) {
                     draw.changeColor(value)
-                    val pos = colorAdapter.data.indexOf(colorAdapter.data.filter { it.value==value }[0])
-                    colorAdapter.data.filter { it.value==value }[0].selected = true
-                    colorAdapter.notifyItemChanged(pos)
+
+                    for (color in colorAdapter.data){
+                        color.selected = false
+                    }
+
+                    colorAdapter.data.filter {
+                        it.value == value
+                    }[0].selected = true
+
+                    colorAdapter.notifyDataSetChanged()
                 }
             }
         )
@@ -89,9 +96,15 @@ class DrawActivity : AppCompatActivity() {
             object : DrawAdapter.Listener {
                 override fun onClick(value: Int) {
                     draw.changePathWidth(value.toFloat())
-                    val pos = colorAdapter.data.indexOf(colorAdapter.data.filter { it.value==value }[0])
-                    colorAdapter.data.filter { it.value==value }[0].selected = true
-                    colorAdapter.notifyItemChanged(pos)
+                    for (size in sizeAdapter.data){
+                        size.selected = false
+                    }
+
+                    sizeAdapter.data.filter {
+                        it.value == value
+                    }[0].selected = true
+
+                    sizeAdapter.notifyDataSetChanged()
                 }
             }
         )

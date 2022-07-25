@@ -4,9 +4,6 @@
         android:title="Home"
         android:id="@+id/nav_home"/>
     <item
-        android:title="Forecast"
-        android:id="@+id/nav_forecast"/>
-    <item
         android:title="Note"
         android:id="@+id/nav_note"/>
     <item

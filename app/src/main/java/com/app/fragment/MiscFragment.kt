@@ -6,19 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.activity.CVActivity
-import com.app.activity.FileExplorerActivity
-import com.app.activity.MusicBrowserActivity
-import com.app.activity.ShoppingActivity
+import com.app.activity.*
 import com.app.adapter.MiscAdapter
 import com.app.data.MiscData
 import com.app.dialog.OptionBottomSheet
+import com.app.helper.SpanGridLayoutManager
 import com.app.ngn.R
 
 class MiscFragment : Fragment() {
-    private lateinit var data: ArrayList<com.app.data.MiscData>
+    private lateinit var data: ArrayList<MiscData>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,25 +28,31 @@ class MiscFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         data = arrayListOf()
-        data.add(com.app.data.MiscData(null, object : MiscData.Listener{
+        data.add(MiscData(null, object : MiscData.Listener{
             override fun onClick() {
-                val intent = Intent(requireActivity(), ShoppingActivity::class.java)
+                val intent = Intent(requireActivity(), TestActivity::class.java)
                 startActivity(intent)
             }
         }))
-        data.add(com.app.data.MiscData(null, object : MiscData.Listener{
+        data.add(MiscData(null, object : MiscData.Listener{
             override fun onClick() {
                 val intent = Intent(requireActivity(), MusicBrowserActivity::class.java)
                 startActivity(intent)
             }
         }))
-        data.add(com.app.data.MiscData(null, object : MiscData.Listener{
+        data.add(MiscData(null, object : MiscData.Listener{
             override fun onClick() {
                 val intent = Intent(requireActivity(), FileExplorerActivity::class.java)
                 startActivity(intent)
             }
         }))
-        data.add(com.app.data.MiscData(null, object : MiscData.Listener{
+        data.add(MiscData(null, object : MiscData.Listener{
+            override fun onClick() {
+                val intent = Intent(requireActivity(), WeatherActivity::class.java)
+                startActivity(intent)
+            }
+        }))
+        data.add(MiscData(null, object : MiscData.Listener{
             override fun onClick() {
                 val options = arrayListOf("Orb")
                 val opts = arrayListOf<OptionBottomSheet.BottomSheetData>()
@@ -74,7 +77,7 @@ class MiscFragment : Fragment() {
         }))
 
         val list = view.findViewById<RecyclerView>(R.id.fg_misc_list)
-        list.layoutManager = GridLayoutManager(requireContext(), 2)
+        list.layoutManager = SpanGridLayoutManager(requireContext(), 2)
         list.adapter = MiscAdapter(requireContext(), data)
     }
 }

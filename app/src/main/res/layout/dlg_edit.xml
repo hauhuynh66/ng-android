@@ -8,7 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:lines="1"
-        android:fontFamily="@font/audiowide"
         android:textSize="8pt"
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/dlg_edit_text"/>

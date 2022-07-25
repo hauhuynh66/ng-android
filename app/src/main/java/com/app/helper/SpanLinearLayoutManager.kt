@@ -5,8 +5,7 @@ import android.util.AttributeSet
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
-
+import kotlin.math.roundToInt
 
 
 class SpanLinearLayoutManager : LinearLayoutManager {
@@ -36,7 +35,7 @@ class SpanLinearLayoutManager : LinearLayoutManager {
         return spanLayoutSize(super.generateLayoutParams(c, attrs))
     }
 
-    override fun generateLayoutParams(lp: ViewGroup.LayoutParams?): RecyclerView.LayoutParams? {
+    override fun generateLayoutParams(lp: ViewGroup.LayoutParams?): RecyclerView.LayoutParams {
         return spanLayoutSize(super.generateLayoutParams(lp))
     }
 
@@ -44,11 +43,11 @@ class SpanLinearLayoutManager : LinearLayoutManager {
         return super.checkLayoutParams(lp)
     }
 
-    private fun spanLayoutSize(layoutParams: RecyclerView.LayoutParams): RecyclerView.LayoutParams? {
+    private fun spanLayoutSize(layoutParams: RecyclerView.LayoutParams): RecyclerView.LayoutParams {
         if (orientation == HORIZONTAL) {
-            layoutParams.width = Math.round(getHorizontalSpace() / itemCount.toDouble()).toInt()
+            layoutParams.width = (getHorizontalSpace() / itemCount.toDouble()).roundToInt()
         } else if (orientation == VERTICAL) {
-            layoutParams.height = Math.round(getVerticalSpace() / itemCount.toDouble()).toInt()
+            layoutParams.height = (getVerticalSpace() / itemCount.toDouble()).roundToInt()
         }
         return layoutParams
     }

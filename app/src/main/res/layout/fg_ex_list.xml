@@ -82,7 +82,6 @@
             app:layout_constraintLeft_toRightOf="@id/fg_ex_list_back"
             app:layout_constraintWidth_percent="0.5"
             android:id="@+id/fg_ex_list_num_selected"
-            android:fontFamily="@font/audiowide"
             android:text="selected"
             android:gravity="center"
             android:textSize="8pt"/>

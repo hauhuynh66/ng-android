@@ -1,13 +1,12 @@
 package com.app.adapter
 
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ngn.R
 
@@ -42,8 +41,11 @@ class DrawAdapter(val context : Context, var data : ArrayList<DrawUtilData>, val
 
     class ColorHolder(val v: View) : RecyclerView.ViewHolder(v){
         fun bind(data : DrawUtilData, listener: Listener, context: Context){
+            val holder = v.findViewById<ConstraintLayout>(R.id.holder)
             if(data.selected){
-                v.background = context.getDrawable(R.drawable.bg1)
+                holder.background = context.getDrawable(R.drawable.bg1)
+            }else{
+                holder.setBackgroundResource(0)
             }
             val btn = v.findViewById<Button>(R.id.com_draw_color_action)
             btn.setBackgroundColor(data.value)
@@ -55,8 +57,11 @@ class DrawAdapter(val context : Context, var data : ArrayList<DrawUtilData>, val
 
     class LineHolder(val v: View) : RecyclerView.ViewHolder(v){
         fun bind(data : DrawUtilData, listener: Listener, context: Context){
+            val holder = v.findViewById<ConstraintLayout>(R.id.holder)
             if(data.selected){
-                v.background = context.getDrawable(R.drawable.bg1)
+                holder.background = context.getDrawable(R.drawable.bg1)
+            }else{
+                holder.setBackgroundResource(0)
             }
             val sz = v.findViewById<TextView>(R.id.com_draw_path_action)
             sz.text = data.value.toString()
