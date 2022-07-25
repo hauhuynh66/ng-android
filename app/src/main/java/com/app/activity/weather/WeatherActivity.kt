@@ -1,4 +1,4 @@
-package com.app.activity
+package com.app.activity.weather
 
 import android.Manifest
 import android.content.Intent
@@ -17,6 +17,7 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.app.activity.GoogleMapActivity
 import com.app.adapter.DetailAdapter
 import com.app.adapter.WeatherAdapter
 import com.app.data.DetailData
@@ -26,7 +27,7 @@ import com.app.helper.SpanGridLayoutManager
 import com.app.ngn.R
 import com.app.util.Animation.Companion.crossfade
 import com.app.util.Check.Companion.checkPermissions
-import com.app.view.GaugeView
+import com.app.view.SunPositionView
 import org.json.JSONObject
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -175,10 +176,10 @@ class WeatherActivity : AppCompatActivity() {
         forecastList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         forecastList.adapter = WeatherAdapter(this, forecastData.data)
 
-        val gaugeView = findViewById<GaugeView>(R.id.gauge)
-        gaugeView.sunrise = obj.getJSONObject("city").getLong("sunrise")
-        gaugeView.sunset = obj.getJSONObject("city").getLong("sunset")
-        gaugeView.reload(System.currentTimeMillis()/1000)
+        val sunPositionView = findViewById<SunPositionView>(R.id.gauge)
+        sunPositionView.sunrise = obj.getJSONObject("city").getLong("sunrise")
+        sunPositionView.sunset = obj.getJSONObject("city").getLong("sunset")
+        sunPositionView.reload(System.currentTimeMillis()/1000)
 
         crossfade(arrayListOf(contentView), arrayListOf(progressBar), 1000)
     }

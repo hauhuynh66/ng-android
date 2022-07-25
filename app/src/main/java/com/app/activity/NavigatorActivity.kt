@@ -11,7 +11,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.app.fragment.MainFragment
 import com.app.fragment.MiscFragment
-import com.app.fragment.nt.NoteFragment
+import com.app.fragment.note.NoteFragment
 import com.app.ngn.R
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth

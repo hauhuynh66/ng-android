@@ -50,10 +50,10 @@
             android:name="com.app.activity.FCMActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.FileExplorerActivity"
+        <activity android:name="com.app.activity.ex.FileExplorerActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.FileListActivity"
+        <activity android:name="com.app.activity.ex.FileListActivity"
             android:exported="true"/>
 
         <activity android:name="com.app.activity.CVActivity"
@@ -65,13 +65,13 @@
         <activity android:name="com.app.activity.DrawActivity"
             android:exported="true"/>
         
-        <activity android:name="com.app.activity.MusicPlayerActivity"
+        <activity android:name="com.app.activity.mp.MusicPlayerActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.MusicBrowserActivity"
+        <activity android:name="com.app.activity.mp.MusicBrowserActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.WeatherActivity"
+        <activity android:name="com.app.activity.weather.WeatherActivity"
             android:exported="true"/>
 
         <service

@@ -1,4 +1,4 @@
-package com.app.fragment.fex
+package com.app.fragment.ex
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.activity.FileListActivity
+import com.app.activity.ex.FileListActivity
 import com.app.adapter.MiscAdapter
 import com.app.data.MiscData
 import com.app.ngn.R

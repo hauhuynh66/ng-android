@@ -1,4 +1,4 @@
-package com.app.activity
+package com.app.activity.mp
 
 import android.content.Intent
 import android.os.Bundle

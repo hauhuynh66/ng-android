@@ -1,4 +1,4 @@
-package com.app.activity
+package com.app.activity.mp
 
 import android.content.ComponentName
 import android.media.AudioManager

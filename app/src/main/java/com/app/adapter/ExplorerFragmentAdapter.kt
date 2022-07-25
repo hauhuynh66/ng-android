@@ -4,8 +4,8 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.app.fragment.fex.EXGroupFragment
-import com.app.fragment.fex.EXListFragment
+import com.app.fragment.ex.EXGroupFragment
+import com.app.fragment.ex.EXListFragment
 import com.google.android.material.tabs.TabLayout
 
 class ExplorerFragmentAdapter(fm: FragmentManager, val tab: TabLayout) : FragmentPagerAdapter(fm) {

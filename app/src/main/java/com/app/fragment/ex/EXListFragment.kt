@@ -1,4 +1,4 @@
-package com.app.fragment.fex
+package com.app.fragment.ex
 
 import android.os.Bundle
 import android.os.Environment

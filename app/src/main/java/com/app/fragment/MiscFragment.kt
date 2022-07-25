@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.app.activity.*
+import com.app.activity.ex.FileExplorerActivity
+import com.app.activity.mp.MusicBrowserActivity
+import com.app.activity.weather.WeatherActivity
 import com.app.adapter.MiscAdapter
 import com.app.data.MiscData
 import com.app.dialog.OptionBottomSheet

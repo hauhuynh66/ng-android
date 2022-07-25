@@ -1,4 +1,4 @@
-package com.app.fragment.nt
+package com.app.fragment.note
 
 import android.app.Activity
 import android.content.Intent
