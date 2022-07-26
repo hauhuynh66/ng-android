@@ -2,7 +2,6 @@ package com.app.view
 
 import android.content.Context
 import android.graphics.*
-import android.icu.util.Calendar
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
@@ -17,6 +16,10 @@ class AnalogClock : View {
     private var linePaint : Paint = Paint()
     private var textPaint : Paint = Paint()
     private var pointPaint : Paint = Paint()
+    private var hourHandPaint : Paint = Paint()
+    private var minHandPaint : Paint = Paint()
+    private var secHandPaint : Paint = Paint()
+    val padding = 10f
 
     constructor(context: Context?) : super(context){
         linePaint.apply {
@@ -29,6 +32,27 @@ class AnalogClock : View {
         pointPaint.apply {
             color = Color.BLACK
             strokeWidth = 30f
+            style = Paint.Style.STROKE
+            isAntiAlias = true
+        }
+
+        hourHandPaint.apply {
+            color = Color.BLUE
+            strokeWidth = 20f
+            style = Paint.Style.STROKE
+            isAntiAlias = true
+        }
+
+        minHandPaint.apply {
+            color = Color.YELLOW
+            strokeWidth = 10f
+            style = Paint.Style.STROKE
+            isAntiAlias = true
+        }
+
+        secHandPaint.apply {
+            color = Color.RED
+            strokeWidth = 5f
             style = Paint.Style.STROKE
             isAntiAlias = true
         }
@@ -60,6 +84,27 @@ class AnalogClock : View {
             isAntiAlias = true
         }
 
+        hourHandPaint.apply {
+            color = Color.BLUE
+            strokeWidth = 20f
+            style = Paint.Style.STROKE
+            isAntiAlias = true
+        }
+
+        minHandPaint.apply {
+            color = Color.YELLOW
+            strokeWidth = 10f
+            style = Paint.Style.STROKE
+            isAntiAlias = true
+        }
+
+        secHandPaint.apply {
+            color = Color.RED
+            strokeWidth = 5f
+            style = Paint.Style.STROKE
+            isAntiAlias = true
+        }
+
         val size = 5f
         textPaint.color = Color.BLACK
         val textSize = TypedValue.applyDimension(
@@ -74,7 +119,6 @@ class AnalogClock : View {
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        val padding = 10f
         canvas!!.apply {
             val r = (min(width, height).toFloat()/2) - padding
             val cx = width.toFloat()/2
@@ -94,6 +138,38 @@ class AnalogClock : View {
                 drawLine(x1.toFloat(), y1.toFloat(), x2.toFloat(), y2.toFloat(), linePaint)
                 textPaint.getTextBounds(i.toString(), 0, i.toString().length, bounds)
             }
+            drawHands(canvas, System.currentTimeMillis(), Point(cx.toInt(), cy.toInt()))
+            postInvalidateDelayed(1000)
+
+        }
+    }
+
+    private fun drawHands(canvas: Canvas?, c : Long, center : Point){
+        canvas!!.apply {
+            val r = min(width, height)/2 - padding
+            val hDistance = r/2
+            val mDistance = 2*r/3
+            val sDistance = 3*r/4
+            val date = Date(c)
+            val p1 = -(date.hours/12.0)*360f - (date.minutes/60.0)*30f - 180f
+            val p2 = -(date.minutes/60.0)*360f - (date.seconds/60.0)*6f - 180f
+            val p3 = -(date.seconds/60.0)*360f - 180f
+            println(p1)
+            println(p2)
+            println(p3)
+            val hDeg = ((p1 * Math.PI)/180f).toFloat()
+            val mDeg = ((p2 * Math.PI)/180f).toFloat()
+            val sDeg = ((p3 * Math.PI)/180f).toFloat()
+
+            val x1 = center.x + sin(hDeg)*(hDistance)
+            val y1 = center.y + cos(hDeg)*(hDistance)
+            val x2 = center.x + sin(mDeg)*(mDistance)
+            val y2 = center.y + cos(mDeg)*(mDistance)
+            val x3 = center.x + sin(sDeg)*(sDistance)
+            val y3 = center.y + cos(sDeg)*(sDistance)
+            drawLine(center.x.toFloat(), center.y.toFloat(), x1, y1, hourHandPaint)
+            drawLine(center.x.toFloat(), center.y.toFloat(), x2, y2, minHandPaint)
+            drawLine(center.x.toFloat(), center.y.toFloat(), x3, y3, secHandPaint)
         }
     }
 }
