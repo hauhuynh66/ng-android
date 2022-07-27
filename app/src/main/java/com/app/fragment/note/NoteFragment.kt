@@ -30,7 +30,7 @@ import java.util.*
 class NoteFragment:Fragment(), NoteDialogListener {
     private lateinit var fb:FloatingActionButton
     private lateinit var adapter: NoteAdapter
-    private lateinit var data:ArrayList<com.app.model.Note>
+    private lateinit var data:ArrayList<Note>
     private lateinit var db: AppDatabase
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -45,7 +45,7 @@ class NoteFragment:Fragment(), NoteDialogListener {
                 if(result.resultCode== Activity.RESULT_OK) {
                     val path = result.data!!.extras!!.getString("bmp")
 
-                    val note = com.app.model.Note(
+                    val note = Note(
                         title = System.currentTimeMillis().toString(),
                         content = null,
                         displayDate = Date(),
@@ -114,7 +114,7 @@ class NoteFragment:Fragment(), NoteDialogListener {
         }
     }
 
-    override fun onAdd(note: com.app.model.Note) {
+    override fun onAdd(note: Note) {
         /**/
         try{
             var success: Long?
@@ -133,7 +133,7 @@ class NoteFragment:Fragment(), NoteDialogListener {
         }
     }
 
-    override fun onCancel(temp: com.app.model.Note) {
+    override fun onCancel(temp: Note) {
         /**/
     }
 }

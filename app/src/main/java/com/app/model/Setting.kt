@@ -5,8 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-class Location(
+class Setting(
     @PrimaryKey val name : String,
-    @ColumnInfo(name = "lon") val lon : Double,
-    @ColumnInfo(name = "lat") val lat : Double
+    @ColumnInfo(name = "value") val value : String
 )

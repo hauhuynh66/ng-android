@@ -59,7 +59,7 @@
         <activity android:name="com.app.activity.CVActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.ShoppingActivity"
+        <activity android:name="com.app.activity.weather.LocationListActivity"
             android:exported="true"/>
 
         <activity android:name="com.app.activity.DrawActivity"

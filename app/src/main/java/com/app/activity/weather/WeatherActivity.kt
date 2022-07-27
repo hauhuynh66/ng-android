@@ -13,21 +13,28 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.app.activity.GoogleMapActivity
+import com.app.activity.NavigatorActivity
 import com.app.adapter.DetailAdapter
 import com.app.adapter.WeatherAdapter
 import com.app.data.DetailData
 import com.app.data.ForecastData
 import com.app.data.WeatherData
 import com.app.helper.SpanGridLayoutManager
+import com.app.model.AppDatabase
+import com.app.model.Location
+import com.app.model.Setting
 import com.app.ngn.R
 import com.app.util.Animation.Companion.crossfade
 import com.app.util.Check.Companion.checkPermissions
 import com.app.view.SunPositionView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -37,12 +44,15 @@ import kotlin.system.exitProcess
 class WeatherActivity : AppCompatActivity() {
     private val key = "1f21f91e5b111cf398a465df830c423b"
     private var url = "https://api.openweathermap.org/data/2.5/{mode}?lat={lat}&lon={lon}&appid={key}"
-    private val lat = 10.76
-    private val lon = 106.66
+    private var lat:Double? = 10.76
+    private var lon:Double? = 106.66
+    private val default_lat = 10.76
+    private val default_lon = 106.66
     private lateinit var progressBar : ProgressBar
     private lateinit var contentView : ConstraintLayout
     private lateinit var requestQueue: RequestQueue
     private lateinit var forecastData: ForecastData
+    private lateinit var db: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,8 +65,31 @@ class WeatherActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.progress)
         contentView = findViewById(R.id.content_view)
         contentView.visibility = View.GONE
+        db = Room.databaseBuilder(this, AppDatabase::class.java, "db").fallbackToDestructiveMigration().build()
+        process()
         getWeather()
         getForecast()
+    }
+
+    private fun process(){
+        runBlocking {
+            withContext(Dispatchers.IO){
+                val setting = db.settingRepository().getProperty("current_city")
+                val location : Location? = if(setting ==null){
+                    db.locationRepository().getFirst()
+                }else{
+                    db.locationRepository().getByName(setting)
+                }
+
+                if(location==null){
+                    lat = default_lat
+                    lon = default_lon
+                }else{
+                    lat = location.lat
+                    lon = location.lon
+                }
+            }
+        }
     }
 
     private fun permissionsCheck(){
@@ -101,6 +134,23 @@ class WeatherActivity : AppCompatActivity() {
             }
         )
         requestQueue.add(weatherRequest)
+    }
+
+    private fun dbProcess(name : String){
+        runBlocking {
+            withContext(Dispatchers.IO){
+                val location = db.locationRepository().getByName(name)
+                if(location==null){
+                    db.locationRepository().insert(Location(name, lon!!, lat!!))
+                    val setting = db.settingRepository().getProperty("current_city")
+                    if(setting==null){
+                        db.settingRepository().insert(Setting("current_city", name))
+                    }else{
+                        db.settingRepository().update("current_city", name)
+                    }
+                }
+            }
+        }
     }
 
     private fun processWeather(json: String){
@@ -173,6 +223,8 @@ class WeatherActivity : AppCompatActivity() {
         val title = findViewById<TextView>(R.id.toolbar_title)
         title.text = forecastData.name
 
+        dbProcess(forecastData.name)
+
         forecastList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         forecastList.adapter = WeatherAdapter(this, forecastData.data)
 
@@ -192,15 +244,23 @@ class WeatherActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.add->{
-                val map = Intent(this, GoogleMapActivity::class.java)
+                val list = Intent(this, LocationListActivity::class.java)
+                startActivity(list)
+
+                /*val map = Intent(this, GoogleMapActivity::class.java)
                 map.putExtra("lon", lon)
                 map.putExtra("lat", lat)
-                startActivity(map)
+                startActivity(map)*/
             }
             else->{
 
             }
         }
         return true
+    }
+
+    override fun onBackPressed() {
+        val intent = Intent(this, NavigatorActivity::class.java)
+        startActivity(intent)
     }
 }

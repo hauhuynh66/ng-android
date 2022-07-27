@@ -9,11 +9,12 @@ import kotlin.math.abs
 
 class DrawView : View {
     var mBitmap: Bitmap? = null
+    var bg : Bitmap? = null
     private var mCanvas: Canvas? = null
     private var mPath: Path? = null
-    private var mBitmapPaint: Paint? = null
-    private var circlePaint: Paint
-    private val mPaint: Paint
+    private var mBitmapPaint = Paint(Paint.DITHER_FLAG)
+    private var circlePaint =  Paint()
+    private val mPaint = Paint()
     private var circlePath: Path
     private var c : Context? = null
     private var mX = 0f
@@ -27,6 +28,10 @@ class DrawView : View {
         }
 
         mCanvas!!.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
+
+        if(bg!=null){
+            mCanvas!!.drawBitmap(bg!!, 0f, 0f, mBitmapPaint)
+        }
 
         for (p : PathData in savedPath){
             mCanvas!!.drawPath(p.path, p.paint)
@@ -45,8 +50,19 @@ class DrawView : View {
         }
     }
 
+    fun clearBackground(){
+        bg = null
+        mCanvas!!.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
+        mCanvas!!.apply {
+            for(p: PathData in savedPath){
+                this.drawPath(p.path, p.paint)
+            }
+        }
+    }
+
     fun changeBackground(bitmap: Bitmap){
         val stretched = Bitmap.createScaledBitmap(bitmap, width, height, false)
+        bg = stretched
         mCanvas!!.apply {
             this.drawBitmap(stretched, 0f, 0f, mBitmapPaint)
             for(p: PathData in savedPath){
@@ -60,20 +76,25 @@ class DrawView : View {
         mPath = Path()
         mBitmapPaint = Paint(Paint.DITHER_FLAG)
         circlePaint = Paint()
-        mPaint = Paint()
-        mPaint.isAntiAlias = true
-        mPaint.isDither = true
-        mPaint.color = Color.GREEN
-        mPaint.style = Paint.Style.STROKE
-        mPaint.strokeJoin = Paint.Join.ROUND
-        mPaint.strokeCap = Paint.Cap.ROUND
-        mPaint.strokeWidth = 12f
         circlePath = Path()
-        circlePaint.isAntiAlias = true
-        circlePaint.color = Color.BLUE
-        circlePaint.style = Paint.Style.STROKE
-        circlePaint.strokeJoin = Paint.Join.MITER
-        circlePaint.strokeWidth = 4f
+
+        mPaint.apply {
+            isAntiAlias = true
+            isDither = true
+            color = Color.GREEN
+            style = Paint.Style.STROKE
+            strokeJoin = Paint.Join.ROUND
+            strokeCap = Paint.Cap.ROUND
+            strokeWidth = 12f
+        }
+
+        circlePaint.apply {
+            isAntiAlias = true
+            color = Color.BLUE
+            style = Paint.Style.STROKE
+            strokeJoin = Paint.Join.MITER
+            strokeWidth = 4f
+        }
     }
 
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs){
@@ -81,20 +102,25 @@ class DrawView : View {
         mPath = Path()
         mBitmapPaint = Paint(Paint.DITHER_FLAG)
         circlePaint = Paint()
-        mPaint = Paint()
-        mPaint.isAntiAlias = true
-        mPaint.isDither = true
-        mPaint.color = Color.GREEN
-        mPaint.style = Paint.Style.STROKE
-        mPaint.strokeJoin = Paint.Join.ROUND
-        mPaint.strokeCap = Paint.Cap.ROUND
-        mPaint.strokeWidth = 12f
         circlePath = Path()
-        circlePaint.isAntiAlias = true
-        circlePaint.color = Color.BLUE
-        circlePaint.style = Paint.Style.STROKE
-        circlePaint.strokeJoin = Paint.Join.MITER
-        circlePaint.strokeWidth = 4f
+
+        mPaint.apply {
+            isAntiAlias = true
+            isDither = true
+            color = Color.GREEN
+            style = Paint.Style.STROKE
+            strokeJoin = Paint.Join.ROUND
+            strokeCap = Paint.Cap.ROUND
+            strokeWidth = 12f
+        }
+
+        circlePaint.apply {
+            isAntiAlias = true
+            color = Color.BLUE
+            style = Paint.Style.STROKE
+            strokeJoin = Paint.Join.MITER
+            strokeWidth = 4f
+        }
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {

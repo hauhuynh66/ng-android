@@ -66,6 +66,13 @@ class DrawActivity : AppCompatActivity() {
             lc.launch(chooserIntent)
         }
 
+        changeBg.setOnLongClickListener {
+            if(draw.bg!=null){
+                draw.clearBackground()
+            }
+            true
+        }
+
         btn.setOnClickListener {
             draw.prev()
         }

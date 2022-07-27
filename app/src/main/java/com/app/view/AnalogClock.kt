@@ -154,9 +154,6 @@ class AnalogClock : View {
             val p1 = -(date.hours/12.0)*360f - (date.minutes/60.0)*30f - 180f
             val p2 = -(date.minutes/60.0)*360f - (date.seconds/60.0)*6f - 180f
             val p3 = -(date.seconds/60.0)*360f - 180f
-            println(p1)
-            println(p2)
-            println(p3)
             val hDeg = ((p1 * Math.PI)/180f).toFloat()
             val mDeg = ((p2 * Math.PI)/180f).toFloat()
             val sDeg = ((p3 * Math.PI)/180f).toFloat()
