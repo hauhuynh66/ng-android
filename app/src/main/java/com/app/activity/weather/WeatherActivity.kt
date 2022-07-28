@@ -44,8 +44,8 @@ import kotlin.system.exitProcess
 class WeatherActivity : AppCompatActivity() {
     private val key = "1f21f91e5b111cf398a465df830c423b"
     private var url = "https://api.openweathermap.org/data/2.5/{mode}?lat={lat}&lon={lon}&appid={key}"
-    private var lat:Double? = 10.76
-    private var lon:Double? = 106.66
+    private var lat : Double = 10.76
+    private var lon : Double = 106.66
     private val default_lat = 10.76
     private val default_lon = 106.66
     private lateinit var progressBar : ProgressBar
@@ -141,7 +141,10 @@ class WeatherActivity : AppCompatActivity() {
             withContext(Dispatchers.IO){
                 val location = db.locationRepository().getByName(name)
                 if(location==null){
-                    db.locationRepository().insert(Location(name, lon!!, lat!!))
+                    val currentName = db.locationRepository().getByCoordinate(lat, lon)
+                    if(currentName==null){
+                        db.locationRepository().insert(Location(name, lon, lat))
+                    }
                     val setting = db.settingRepository().getProperty("current_city")
                     if(setting==null){
                         db.settingRepository().insert(Setting("current_city", name))

@@ -8,9 +8,12 @@ import android.media.AudioAttributes
 import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.media.MediaPlayer
+import android.media.browse.MediaBrowser
 import android.os.Bundle
 import android.service.media.MediaBrowserService
 import android.support.v4.media.MediaBrowserCompat
+import android.support.v4.media.MediaDescriptionCompat
+import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import androidx.media.MediaBrowserServiceCompat
@@ -26,7 +29,7 @@ class MediaPlaybackService : MediaBrowserServiceCompat(), MediaPlayer.OnPrepared
     private lateinit var musicList: ArrayList<AudioData>
     private val intentFilter = IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY)
     private lateinit var db: AppDatabase
-    private var currentPlaying : String? = null
+    private var currentPlaying : Int = 0
     private val myNoisyAudioStreamReceiver = object : BroadcastReceiver(){
         override fun onReceive(p0: Context?, p1: Intent?) {
 
@@ -49,13 +52,20 @@ class MediaPlaybackService : MediaBrowserServiceCompat(), MediaPlayer.OnPrepared
                 build()
             }
             val result = am.requestAudioFocus(audioFocusRequest)
+
             if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
                 startService(Intent(applicationContext, MediaBrowserService::class.java))
-                player.start()
+                player.prepareAsync()
+                val current = musicList[currentPlaying]
                 mediaSession!!.apply {
                     isActive = true
                     setPlaybackState(PlaybackStateCompat.Builder().setState(PlaybackStateCompat.STATE_PLAYING,
                         player.currentPosition.toLong(), player.playbackParams.speed).build())
+                    val metadata = MediaMetadataCompat.Builder()
+                        .putText(MediaMetadataCompat.METADATA_KEY_TITLE, current.title)
+                        .putText(MediaMetadataCompat.METADATA_KEY_ARTIST, current.artist)
+                        .build()
+                    setMetadata(metadata)
                 }
                 registerReceiver(myNoisyAudioStreamReceiver, intentFilter)
             }
@@ -78,10 +88,37 @@ class MediaPlaybackService : MediaBrowserServiceCompat(), MediaPlayer.OnPrepared
 
         override fun onSkipToNext() {
             super.onSkipToNext()
+
+            if(currentPlaying < musicList.size){
+                currentPlaying ++
+            }else{
+                currentPlaying = 0
+            }
+
+            val current = musicList[currentPlaying]
+            mediaSession!!.apply {
+                isActive = true
+                setPlaybackState(PlaybackStateCompat.Builder().setState(PlaybackStateCompat.STATE_PLAYING,
+                    player.currentPosition.toLong(), player.playbackParams.speed).build())
+                val metadata = MediaMetadataCompat.Builder()
+                    .putText(MediaMetadataCompat.METADATA_KEY_TITLE, current.title)
+                    .putText(MediaMetadataCompat.METADATA_KEY_ARTIST, current.artist)
+                    .build()
+                setMetadata(metadata)
+            }
+            player.stop()
+            player.reset()
+            player.setDataSource(musicList[currentPlaying].uri.path)
+            player.prepareAsync()
         }
 
         override fun onSkipToPrevious() {
             super.onSkipToPrevious()
+            if(currentPlaying > 0){
+                currentPlaying --
+            }else{
+                currentPlaying = musicList.size - 1
+            }
         }
     }
 
@@ -89,18 +126,18 @@ class MediaPlaybackService : MediaBrowserServiceCompat(), MediaPlayer.OnPrepared
         super.onCreate()
         musicList = getInternalAudioList(contentResolver)
         player = MediaPlayer()
-        player.setDataSource(musicList[0].uri.path)
-        player.prepareAsync()
+        player.setDataSource(musicList[currentPlaying].uri.path)
         mediaSession = MediaSessionCompat(baseContext, "MEDIA_TAG").apply {
-            setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS
-                    or MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS
-            )
             stateBuilder = PlaybackStateCompat.Builder()
                 .setActions(PlaybackStateCompat.ACTION_PLAY
                         or PlaybackStateCompat.ACTION_PLAY_PAUSE
                 )
             setPlaybackState(stateBuilder.build())
-
+            val metadata = MediaMetadataCompat.Builder()
+                .putText(MediaMetadataCompat.METADATA_KEY_TITLE, musicList[currentPlaying].title)
+                .putText(MediaMetadataCompat.METADATA_KEY_ARTIST, musicList[currentPlaying].artist)
+                .build()
+            setMetadata(metadata)
             setCallback(sessionCallback)
 
             setSessionToken(sessionToken)
@@ -121,17 +158,20 @@ class MediaPlaybackService : MediaBrowserServiceCompat(), MediaPlayer.OnPrepared
         result: Result<MutableList<MediaBrowserCompat.MediaItem>>
     ) {
         val mediaItems = arrayListOf<MediaBrowserCompat.MediaItem>()
-
-        if (MY_MEDIA_ROOT_ID == parentId) {
-
-        } else {
-
+        for((c, i) in musicList.withIndex()){
+            val des = MediaDescriptionCompat.Builder()
+                .setMediaId(i.title)
+                .setMediaUri(i.uri)
+                .setTitle(i.title)
+                .setSubtitle(i.artist).build()
+            val item : MediaBrowserCompat.MediaItem = MediaBrowserCompat.MediaItem(des, MediaBrowser.MediaItem.FLAG_BROWSABLE)
+            mediaItems.add(c, item)
         }
 
         result.sendResult(mediaItems)
     }
 
     override fun onPrepared(p0: MediaPlayer?) {
-
+        p0!!.start()
     }
 }

@@ -19,9 +19,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
-import org.json.JSONObject
 
-class ChipGroupFragment(val data: ArrayList<String>) : Fragment() {
+class ChipGroupFragment(val data: ArrayList<String>, val listener : Listener) : Fragment() {
     private val key = "1f21f91e5b111cf398a465df830c423b"
     private var url = "http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={key}"
 
@@ -69,10 +68,19 @@ class ChipGroupFragment(val data: ArrayList<String>) : Fragment() {
         val name = obj.getString("name")
         val lat = obj.getDouble("lat")
         val lon = obj.getDouble("lon")
+        var isSuccess = 0
         runBlocking {
             withContext(Dispatchers.IO){
-                db.locationRepository().insert(Location(name, lon, lat))
+                isSuccess = db.locationRepository().checkInsert(Location(name, lon, lat))
             }
         }
+
+        if(isSuccess==1){
+            listener.onAdded()
+        }
+    }
+
+    interface Listener{
+        fun onAdded()
     }
 }

@@ -8,7 +8,9 @@ import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.app.ngn.R
 import com.app.service.MediaPlaybackService
@@ -18,6 +20,7 @@ class MusicPlayerActivity : AppCompatActivity() {
     private lateinit var playPause : ImageButton
     private lateinit var next : ImageButton
     private lateinit var prev : ImageButton
+    private lateinit var displayView : View
     private val connectionCallbacks = object : MediaBrowserCompat.ConnectionCallback(){
         override fun onConnected() {
             super.onConnected()
@@ -40,10 +43,14 @@ class MusicPlayerActivity : AppCompatActivity() {
     private val controllerCallback = object : MediaControllerCompat.Callback(){
         override fun onMetadataChanged(metadata: MediaMetadataCompat?) {
             super.onMetadataChanged(metadata)
+            if(metadata!=null){
+                changeLayout(displayView, metadata)
+            }
         }
 
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
             super.onPlaybackStateChanged(state)
+            println(state!!.state)
         }
 
         override fun onSessionDestroyed() {
@@ -55,11 +62,15 @@ class MusicPlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_music_player)
         setSupportActionBar(findViewById(R.id.toolbar))
+        displayView = findViewById(R.id.group1)
         supportActionBar!!.apply {
-            title = "Music Player"
+            title = ""
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_downward)
         }
+
+        findViewById<TextView>(R.id.toolbar_title).text = "Music Player"
+
         mediaBrowser = MediaBrowserCompat(
             this,
             ComponentName(this, MediaPlaybackService::class.java),
@@ -74,8 +85,10 @@ class MusicPlayerActivity : AppCompatActivity() {
             setOnClickListener {
                 val pbState = mediaController.playbackState.state
                 if(pbState == PlaybackStateCompat.STATE_PLAYING){
+                    playPause.setImageDrawable(getDrawable(R.drawable.ic_baseline_play_arrow))
                     mediaController.transportControls.pause()
                 }else{
+                    playPause.setImageDrawable(getDrawable(R.drawable.ic_baseline_pause))
                     mediaController.transportControls.play()
                 }
             }
@@ -94,7 +107,13 @@ class MusicPlayerActivity : AppCompatActivity() {
         }
 
         val metadata = mediaController.metadata
+
+        if(metadata!=null){
+            changeLayout(displayView, metadata)
+        }
+
         val pbState = mediaController.playbackState
+        // PlaybackState handler here
         mediaController.registerCallback(controllerCallback)
     }
 
@@ -110,6 +129,14 @@ class MusicPlayerActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         mediaBrowser.connect()
+        mediaBrowser.subscribe("test", object : MediaBrowserCompat.SubscriptionCallback(){
+            override fun onChildrenLoaded(
+                parentId: String,
+                children: MutableList<MediaBrowserCompat.MediaItem>
+            ) {
+
+            }
+        })
     }
 
     override fun onResume() {
@@ -121,5 +148,12 @@ class MusicPlayerActivity : AppCompatActivity() {
         super.onStop()
         MediaControllerCompat.getMediaController(this).unregisterCallback(controllerCallback)
         mediaBrowser.disconnect()
+    }
+
+    private fun changeLayout(mainView : View, metadata: MediaMetadataCompat){
+        val title = mainView.findViewById<TextView>(R.id.audio_title)
+        val subtitle = mainView.findViewById<TextView>(R.id.audio_subtitle)
+        title.text = metadata.getText(MediaMetadataCompat.METADATA_KEY_TITLE)
+        subtitle.text = metadata.getText(MediaMetadataCompat.METADATA_KEY_ARTIST)
     }
 }

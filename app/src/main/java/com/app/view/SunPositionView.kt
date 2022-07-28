@@ -18,8 +18,6 @@ class SunPositionView : View {
     private var dashedLinePaint : Paint = Paint()
     private var linePaint : Paint = Paint()
     private var textPaint : Paint = Paint()
-    private var bitmapPaint : Paint = Paint(Paint.DITHER_FLAG)
-    private var bitmap : Bitmap? = null
     private val padding = 20f
 
     constructor(context: Context?) : super(context){
@@ -27,7 +25,7 @@ class SunPositionView : View {
         dashedLinePaint.strokeWidth = 6f
         dashedLinePaint.style = Paint.Style.STROKE
         dashedLinePaint.isAntiAlias = true
-        dashedLinePaint.pathEffect = DashPathEffect(floatArrayOf(10f, 20f), 0f)
+        dashedLinePaint.pathEffect = DashPathEffect(floatArrayOf(30f, 10f), 0f)
 
         linePaint.color = Color.YELLOW
         linePaint.strokeWidth = 10f

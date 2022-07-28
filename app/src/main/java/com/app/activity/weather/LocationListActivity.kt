@@ -14,7 +14,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class LocationListActivity : AppCompatActivity() {
-    private val locations : ArrayList<String> = arrayListOf()
+    private val locations : ArrayList<String> = arrayListOf("Ho Chi Minh","London","Paris","Berlin","Prague","New York","Hanoi","Moscow")
     private var addLocations : ArrayList<String> = arrayListOf()
     private lateinit var db: AppDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,15 +31,6 @@ class LocationListActivity : AppCompatActivity() {
                 addLocations = db.locationRepository().getAll().map { it.name }.toCollection(ArrayList())
             }
         }
-        //
-        locations.add("London")
-        locations.add("Paris")
-        locations.add("Berlin")
-        locations.add("Prague")
-        locations.add("New York")
-        locations.add("Hanoi")
-        locations.add("Tokyo")
-        locations.add("Moscow")
 
         val search = findViewById<SearchView>(R.id.search_view)
         supportFragmentManager
@@ -47,7 +38,14 @@ class LocationListActivity : AppCompatActivity() {
 
         search.setOnSearchClickListener {
             supportFragmentManager
-                .beginTransaction().replace(R.id.container, ChipGroupFragment(locations)).commit()
+                .beginTransaction().replace(R.id.container, ChipGroupFragment(locations, object : ChipGroupFragment.Listener{
+                    override fun onAdded() {
+                        search.onActionViewCollapsed()
+                        supportFragmentManager
+                            .beginTransaction().replace(R.id.container, LocationListFragment()).commit()
+
+                    }
+                })).commit()
         }
 
         search.setOnCloseListener {
@@ -56,6 +54,16 @@ class LocationListActivity : AppCompatActivity() {
                 .beginTransaction().replace(R.id.container, LocationListFragment()).commit()
             true
         }
+
+        search.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                return false
+            }
+        })
 
     }
 

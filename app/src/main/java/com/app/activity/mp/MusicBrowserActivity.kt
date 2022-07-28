@@ -23,7 +23,6 @@ class MusicBrowserActivity : AppCompatActivity() {
         val mp = findViewById<ConstraintLayout>(R.id.player_fm)
         mp.setOnClickListener {
             val mpIntent = Intent(this, MusicPlayerActivity::class.java)
-            val options =
             startActivity(mpIntent)
         }
     }

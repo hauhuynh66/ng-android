@@ -53,25 +53,19 @@ class ORBFragment : Fragment() {
     }
 
     fun process(src : Bitmap){
-        when (src1) {
-            null -> {
-                src1 = src
-            }
-            else -> {
-                when(src2){
-                    null->{
-
-                    }
-                    else->{
-                        src1 = src2
-                    }
-                }
+        if (src1 == null) {
+            src1 = src
+        }else{
+            if(src2 == null) {
                 src2 = src
-                distance.isEnabled = true
-                original2.setImageBitmap(src2)
-                transformed.setImageBitmap(featureMatching(src1!!, src2!!, distance.progress.toDouble()/50))
+            }else{
+                src1 = src2
+                src2 = src
             }
+            distance.isEnabled = true
+            original2.setImageBitmap(src2)
+            transformed.setImageBitmap(featureMatching(src1!!, src2!!, distance.progress.toDouble()/50))
         }
-        original1.setImageBitmap(src)
+        original1.setImageBitmap(src1)
     }
 }

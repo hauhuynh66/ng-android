@@ -51,8 +51,8 @@
             android:layout_height="80dp"
             android:layout_marginHorizontal="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:background="#c7c2c1"
-            android:id="@+id/player_fm">
+            android:id="@+id/player_fm"
+            android:background="@drawable/bg4">
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
