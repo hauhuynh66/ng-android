@@ -38,7 +38,6 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         val displayName = navigationView.getHeaderView(0).findViewById<TextView>(R.id.nav_header_name)
         val displayEmail = navigationView.getHeaderView(0).findViewById<TextView>(R.id.nav_header_email)
-        val displayImg = navigationView.getHeaderView(0).findViewById<ImageView>(R.id.nav_header_img)
         displayName.text = user.displayName ?: "User"
         displayEmail.text = user.email
 
@@ -51,10 +50,23 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         drawerLayout.addDrawerListener(drawerToggle)
         drawerToggle.syncState()
 
-        if(savedInstanceState==null){
-            supportFragmentManager.beginTransaction().replace(R.id.container,  MainFragment(), "MAIN").commit()
-            supportActionBar!!.title = "Main"
+        if(intent.extras!=null){
+            when(intent.extras!!.getString("from")){
+                "weather"->{
+                    supportFragmentManager.beginTransaction().replace(R.id.container,  MiscFragment(), "MISC").commit()
+                    supportActionBar!!.title = "Others"
+                }
+                else->{
+
+                }
+            }
+        }else{
+            if(savedInstanceState==null){
+                supportFragmentManager.beginTransaction().replace(R.id.container,  MainFragment(), "MAIN").commit()
+                supportActionBar!!.title = "Main"
+            }
         }
+
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

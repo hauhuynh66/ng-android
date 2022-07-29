@@ -10,6 +10,7 @@ import android.support.v4.media.session.PlaybackStateCompat
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageButton
+import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.app.ngn.R
@@ -21,6 +22,8 @@ class MusicPlayerActivity : AppCompatActivity() {
     private lateinit var next : ImageButton
     private lateinit var prev : ImageButton
     private lateinit var displayView : View
+    private var pos : Long = 0
+    private var max : Long = 0
     private val connectionCallbacks = object : MediaBrowserCompat.ConnectionCallback(){
         override fun onConnected() {
             super.onConnected()
@@ -50,7 +53,9 @@ class MusicPlayerActivity : AppCompatActivity() {
 
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
             super.onPlaybackStateChanged(state)
-            println(state!!.state)
+            if(state!=null){
+                changeLayout(displayView, state)
+            }
         }
 
         override fun onSessionDestroyed() {
@@ -85,10 +90,8 @@ class MusicPlayerActivity : AppCompatActivity() {
             setOnClickListener {
                 val pbState = mediaController.playbackState.state
                 if(pbState == PlaybackStateCompat.STATE_PLAYING){
-                    playPause.setImageDrawable(getDrawable(R.drawable.ic_baseline_play_arrow))
                     mediaController.transportControls.pause()
                 }else{
-                    playPause.setImageDrawable(getDrawable(R.drawable.ic_baseline_pause))
                     mediaController.transportControls.play()
                 }
             }
@@ -113,7 +116,10 @@ class MusicPlayerActivity : AppCompatActivity() {
         }
 
         val pbState = mediaController.playbackState
-        // PlaybackState handler here
+        if(pbState!=null){
+            changeLayout(displayView, pbState)
+        }
+
         mediaController.registerCallback(controllerCallback)
     }
 
@@ -150,10 +156,40 @@ class MusicPlayerActivity : AppCompatActivity() {
         mediaBrowser.disconnect()
     }
 
+    private fun changeLayout(mainView: View, state : PlaybackStateCompat){
+        when(state.state){
+            PlaybackStateCompat.STATE_PLAYING->{
+                playPause.setImageDrawable(getDrawable(R.drawable.ic_baseline_pause))
+            }
+            PlaybackStateCompat.STATE_PAUSED->{
+                playPause.setImageDrawable(getDrawable(R.drawable.ic_baseline_play_arrow))
+
+                val current = mainView.findViewById<TextView>(R.id.current_time)
+                val sb = mainView.findViewById<SeekBar>(R.id.audio_progress)
+                pos = state.position / 1000
+                sb.progress = ((pos.toDouble()/max.toDouble()) * 100).toInt()
+                current.text = convertToTime(pos)
+            }
+        }
+    }
+
     private fun changeLayout(mainView : View, metadata: MediaMetadataCompat){
         val title = mainView.findViewById<TextView>(R.id.audio_title)
         val subtitle = mainView.findViewById<TextView>(R.id.audio_subtitle)
+        val duration = mainView.findViewById<TextView>(R.id.duration)
         title.text = metadata.getText(MediaMetadataCompat.METADATA_KEY_TITLE)
         subtitle.text = metadata.getText(MediaMetadataCompat.METADATA_KEY_ARTIST)
+        this.max = metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION)/1000
+        duration.text = convertToTime(this.max)
+    }
+
+    private fun convertToTime(m : Long) : String {
+        val sb = StringBuilder()
+        val n = 2
+        val min: Int = m.toInt() / 60
+        sb.append(min.toString().padStart(n, '0'))
+        sb.append(":")
+        sb.append((m.toInt() - min * 60).toString().padStart(2, '0'))
+        return sb.toString()
     }
 }

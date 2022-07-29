@@ -17,7 +17,6 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlin.system.exitProcess
 
 class GoogleMapActivity:AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
@@ -36,8 +35,8 @@ class GoogleMapActivity:AppCompatActivity(), OnMapReadyCallback {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         fusedLocationProviderClient.lastLocation.addOnSuccessListener {
             location = it
+            mapFragment.getMapAsync(this)
         }
-        mapFragment.getMapAsync(this)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {

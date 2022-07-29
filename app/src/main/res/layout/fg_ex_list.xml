@@ -36,7 +36,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/fg_ex_list_changeLayout"
                 app:layout_constraintRight_toRightOf="parent"
-                android:src="@drawable/ic_baseline_menu"
+                android:src="@drawable/ic_baseline_apps"
                 android:background="@color/white"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout

@@ -1,5 +1,6 @@
 package com.app.fragment.weather
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.room.Room
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.app.activity.GoogleMapActivity
 import com.app.model.AppDatabase
 import com.app.model.Location
 import com.app.ngn.R
@@ -43,6 +45,10 @@ class ChipGroupFragment(val data: ArrayList<String>, val listener : Listener) : 
         val currentChip = Chip(requireContext())
         currentChip.text = "Current Location"
         currentChip.chipIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_location_on)
+        currentChip.setOnClickListener {
+            val map = Intent(requireContext(), GoogleMapActivity::class.java)
+            startActivity(map)
+        }
         chips.addView(currentChip)
         url = url.replace("{key}", key)
 

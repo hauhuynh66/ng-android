@@ -249,11 +249,6 @@ class WeatherActivity : AppCompatActivity() {
             R.id.add->{
                 val list = Intent(this, LocationListActivity::class.java)
                 startActivity(list)
-
-                /*val map = Intent(this, GoogleMapActivity::class.java)
-                map.putExtra("lon", lon)
-                map.putExtra("lat", lat)
-                startActivity(map)*/
             }
             else->{
 
@@ -264,6 +259,7 @@ class WeatherActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         val intent = Intent(this, NavigatorActivity::class.java)
+        intent.putExtra("from", "weather")
         startActivity(intent)
     }
 }

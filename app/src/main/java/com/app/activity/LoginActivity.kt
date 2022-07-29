@@ -38,7 +38,7 @@ class LoginActivity: AppCompatActivity() {
             email.text.clear()
             password.text.clear()
             n++
-            if (n>5) {
+            if ( n > 5) {
                 val skip = Intent(this, NavigatorActivity::class.java)
                 startActivity(skip)
             }

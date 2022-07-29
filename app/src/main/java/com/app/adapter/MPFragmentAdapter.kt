@@ -5,9 +5,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.app.fragment.mp.AudioListFragment
 
-class MusicFragmentAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+class MPFragmentAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getCount(): Int {
-        return 5
+        return 3
     }
 
     override fun getItem(position: Int): Fragment {

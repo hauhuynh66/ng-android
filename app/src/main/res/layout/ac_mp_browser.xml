@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -48,12 +49,34 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="?attr/actionBarSize"
             android:layout_marginHorizontal="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/player_fm"
-            android:background="@drawable/bg4">
-
+            android:background="@drawable/bg4"
+            android:transitionName="player">
+            <TextView
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/audio_subtitle"
+                android:id="@+id/audio_title"
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.8"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_height="wrap_content"
+                android:textSize="8pt"
+                android:gravity="left|center_vertical" />
+            <TextView
+                app:layout_constraintTop_toBottomOf="@id/audio_title"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/audio_subtitle"
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.8"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_height="wrap_content"
+                android:textSize="6pt"
+                android:gravity="left|center_vertical" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

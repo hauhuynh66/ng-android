@@ -22,7 +22,7 @@ import com.app.model.AppDatabase
 import com.app.util.Resolver.Companion.getInternalAudioList
 
 
-class MediaPlaybackService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedListener{
+class MediaPlaybackService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener{
     private val MY_MEDIA_ROOT_ID = "media_root_id"
     private var mediaSession: MediaSessionCompat? = null
     private lateinit var stateBuilder: PlaybackStateCompat.Builder
@@ -30,6 +30,8 @@ class MediaPlaybackService : MediaBrowserServiceCompat(), MediaPlayer.OnPrepared
     private val intentFilter = IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY)
     private lateinit var db: AppDatabase
     private var currentPlaying : Int = 0
+    private lateinit var previousState : PlaybackStateCompat
+
     private val myNoisyAudioStreamReceiver = object : BroadcastReceiver(){
         override fun onReceive(p0: Context?, p1: Intent?) {
 
@@ -55,15 +57,18 @@ class MediaPlaybackService : MediaBrowserServiceCompat(), MediaPlayer.OnPrepared
 
             if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
                 startService(Intent(applicationContext, MediaBrowserService::class.java))
-                player.prepareAsync()
+                player.start()
                 val current = musicList[currentPlaying]
                 mediaSession!!.apply {
                     isActive = true
-                    setPlaybackState(PlaybackStateCompat.Builder().setState(PlaybackStateCompat.STATE_PLAYING,
-                        player.currentPosition.toLong(), player.playbackParams.speed).build())
+                    val state = PlaybackStateCompat.Builder().setState(PlaybackStateCompat.STATE_PLAYING,
+                        player.currentPosition.toLong(), player.playbackParams.speed).build()
+                    previousState = state
+                    setPlaybackState(state)
                     val metadata = MediaMetadataCompat.Builder()
                         .putText(MediaMetadataCompat.METADATA_KEY_TITLE, current.title)
                         .putText(MediaMetadataCompat.METADATA_KEY_ARTIST, current.artist)
+                        .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, current.duration)
                         .build()
                     setMetadata(metadata)
                 }
@@ -74,8 +79,10 @@ class MediaPlaybackService : MediaBrowserServiceCompat(), MediaPlayer.OnPrepared
         override fun onPause() {
             super.onPause()
             player.pause()
-            mediaSession!!.setPlaybackState(PlaybackStateCompat.Builder().setState(PlaybackStateCompat.STATE_PAUSED,
-                player.currentPosition.toLong(), player.playbackParams.speed).build())
+            val state = PlaybackStateCompat.Builder().setState(PlaybackStateCompat.STATE_PAUSED,
+                player.currentPosition.toLong(), player.playbackParams.speed).build()
+            previousState = state
+            mediaSession!!.setPlaybackState(state)
         }
 
         override fun onStop() {
@@ -98,18 +105,25 @@ class MediaPlaybackService : MediaBrowserServiceCompat(), MediaPlayer.OnPrepared
             val current = musicList[currentPlaying]
             mediaSession!!.apply {
                 isActive = true
-                setPlaybackState(PlaybackStateCompat.Builder().setState(PlaybackStateCompat.STATE_PLAYING,
+                setPlaybackState(PlaybackStateCompat.Builder().setState(PlaybackStateCompat.STATE_SKIPPING_TO_NEXT,
                     player.currentPosition.toLong(), player.playbackParams.speed).build())
                 val metadata = MediaMetadataCompat.Builder()
                     .putText(MediaMetadataCompat.METADATA_KEY_TITLE, current.title)
                     .putText(MediaMetadataCompat.METADATA_KEY_ARTIST, current.artist)
+                    .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, current.duration)
                     .build()
                 setMetadata(metadata)
             }
             player.stop()
             player.reset()
             player.setDataSource(musicList[currentPlaying].uri.path)
-            player.prepareAsync()
+            player.prepare()
+
+            if(previousState.state == PlaybackStateCompat.STATE_PLAYING){
+                player.start()
+            }
+            mediaSession!!.setPlaybackState(
+                PlaybackStateCompat.Builder().setState(previousState.state, 0, player.playbackParams.speed).build())
         }
 
         override fun onSkipToPrevious() {
@@ -119,14 +133,44 @@ class MediaPlaybackService : MediaBrowserServiceCompat(), MediaPlayer.OnPrepared
             }else{
                 currentPlaying = musicList.size - 1
             }
+
+            val current = musicList[currentPlaying]
+            mediaSession!!.apply {
+                isActive = true
+                setPlaybackState(PlaybackStateCompat.Builder().setState(PlaybackStateCompat.STATE_SKIPPING_TO_PREVIOUS,
+                    player.currentPosition.toLong(), player.playbackParams.speed).build())
+                val metadata = MediaMetadataCompat.Builder()
+                    .putText(MediaMetadataCompat.METADATA_KEY_TITLE, current.title)
+                    .putText(MediaMetadataCompat.METADATA_KEY_ARTIST, current.artist)
+                    .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, current.duration)
+                    .build()
+                setMetadata(metadata)
+            }
+            player.stop()
+            player.reset()
+            player.setDataSource(musicList[currentPlaying].uri.path)
+            player.prepare()
+
+            if(previousState.state == PlaybackStateCompat.STATE_PLAYING){
+                player.start()
+            }
+            mediaSession!!.setPlaybackState(
+                PlaybackStateCompat.Builder().setState(previousState.state, 0, player.playbackParams.speed).build())
         }
+
+
     }
 
     override fun onCreate() {
         super.onCreate()
         musicList = getInternalAudioList(contentResolver)
         player = MediaPlayer()
+        player.setOnCompletionListener(this)
+        player.setOnPreparedListener(this)
         player.setDataSource(musicList[currentPlaying].uri.path)
+        player.prepareAsync()
+
+        previousState = PlaybackStateCompat.Builder().setState(PlaybackStateCompat.STATE_PAUSED, 0, player.playbackParams.speed).build()
         mediaSession = MediaSessionCompat(baseContext, "MEDIA_TAG").apply {
             stateBuilder = PlaybackStateCompat.Builder()
                 .setActions(PlaybackStateCompat.ACTION_PLAY
@@ -136,6 +180,7 @@ class MediaPlaybackService : MediaBrowserServiceCompat(), MediaPlayer.OnPrepared
             val metadata = MediaMetadataCompat.Builder()
                 .putText(MediaMetadataCompat.METADATA_KEY_TITLE, musicList[currentPlaying].title)
                 .putText(MediaMetadataCompat.METADATA_KEY_ARTIST, musicList[currentPlaying].artist)
+                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, musicList[currentPlaying].duration)
                 .build()
             setMetadata(metadata)
             setCallback(sessionCallback)
@@ -172,6 +217,10 @@ class MediaPlaybackService : MediaBrowserServiceCompat(), MediaPlayer.OnPrepared
     }
 
     override fun onPrepared(p0: MediaPlayer?) {
-        p0!!.start()
+
+    }
+
+    override fun onCompletion(p0: MediaPlayer?) {
+
     }
 }

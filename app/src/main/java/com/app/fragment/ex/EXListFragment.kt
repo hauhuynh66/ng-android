@@ -202,9 +202,11 @@ class EXListFragment(val listener : Listener) : Fragment(), EXListListener {
             if(count%2==0){
                 list.layoutManager = GridLayoutManager(requireContext(), 3)
                 adapter = EXListAdapter(requireActivity(), data, isGrid = true, gridListener)
+                changeLayout.setImageDrawable(requireContext().getDrawable(R.drawable.ic_baseline_menu))
             }else{
                 list.layoutManager = LinearLayoutManager(requireContext())
                 adapter = EXListAdapter(requireActivity(), data, isGrid = false, linearListener)
+                changeLayout.setImageDrawable(requireContext().getDrawable(R.drawable.ic_baseline_apps))
             }
             list.adapter = adapter
             count++
