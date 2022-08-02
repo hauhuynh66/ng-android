@@ -22,6 +22,17 @@ class FileExplorerActivity : AppCompatActivity() {
         pager.adapter = ExplorerFragmentAdapter(supportFragmentManager, tabs)
         pager.setPageTransformer(true, Utils.Companion.ZoomOutPageTransformer())
         tabs.setupWithViewPager(pager)
+        for (i in 0 until tabs.tabCount){
+            val icon = when(i){
+                0->{
+                    getDrawable(R.drawable.ic_baseline_apps)
+                }
+                else->{
+                    getDrawable(R.drawable.ic_baseline_menu)
+                }
+            }
+            tabs.getTabAt(i)!!.icon = icon
+        }
     }
 
     private fun checkPermissions(){

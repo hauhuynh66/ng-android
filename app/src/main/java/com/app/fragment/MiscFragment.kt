@@ -33,7 +33,7 @@ class MiscFragment : Fragment() {
         data = arrayListOf()
         data.add(MiscData(null, object : MiscData.Listener{
             override fun onClick() {
-                val intent = Intent(requireActivity(), TestActivity::class.java)
+                val intent = Intent(requireActivity(), MessageActivity::class.java)
                 startActivity(intent)
             }
         }))

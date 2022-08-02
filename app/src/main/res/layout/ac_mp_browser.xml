@@ -8,19 +8,20 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/toolbar"
-        android:paddingHorizontal="20dp">
+        android:id="@+id/toolbar">
         <androidx.appcompat.widget.SearchView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:layout_constraintLeft_toLeftOf="parent"/>
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:id="@+id/search_view"/>
         <Button
             android:layout_width="30dp"
             android:layout_height="30dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:background="@drawable/ic_baseline_settings" />
+            android:background="@drawable/ic_baseline_settings"
+            android:layout_marginRight="20dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

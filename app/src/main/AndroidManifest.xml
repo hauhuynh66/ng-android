@@ -71,10 +71,13 @@
         <activity android:name="com.app.activity.mp.MusicBrowserActivity"
             android:exported="true"/>
 
+        <activity android:name="com.app.activity.mp.MusicSearchActivity"
+            android:exported="true"/>
+
         <activity android:name="com.app.activity.weather.WeatherActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.TestActivity"
+        <activity android:name="com.app.activity.MessageActivity"
             android:exported="true"/>
 
         <service

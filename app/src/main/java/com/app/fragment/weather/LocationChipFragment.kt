@@ -22,7 +22,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 
-class ChipGroupFragment(val data: ArrayList<String>, val listener : Listener) : Fragment() {
+class LocationChipFragment(val data: ArrayList<String>, val listener : Listener) : Fragment() {
     private val key = "1f21f91e5b111cf398a465df830c423b"
     private var url = "http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={key}"
 

@@ -13,6 +13,8 @@ import android.widget.ImageButton
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Room
+import com.app.model.AppDatabase
 import com.app.ngn.R
 import com.app.service.MediaPlaybackService
 
@@ -22,6 +24,7 @@ class MusicPlayerActivity : AppCompatActivity() {
     private lateinit var next : ImageButton
     private lateinit var prev : ImageButton
     private lateinit var displayView : View
+    private lateinit var db : AppDatabase
     private var pos : Long = 0
     private var max : Long = 0
     private val connectionCallbacks = object : MediaBrowserCompat.ConnectionCallback(){
@@ -60,6 +63,7 @@ class MusicPlayerActivity : AppCompatActivity() {
 
         override fun onSessionDestroyed() {
             mediaBrowser.disconnect()
+
         }
     }
 
@@ -67,6 +71,7 @@ class MusicPlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_music_player)
         setSupportActionBar(findViewById(R.id.toolbar))
+        db = Room.databaseBuilder(this, AppDatabase::class.java, "db").fallbackToDestructiveMigration().build()
         displayView = findViewById(R.id.group1)
         supportActionBar!!.apply {
             title = ""

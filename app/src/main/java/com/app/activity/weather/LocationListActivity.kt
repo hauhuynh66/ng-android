@@ -5,7 +5,7 @@ import android.view.MenuItem
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
-import com.app.fragment.weather.ChipGroupFragment
+import com.app.fragment.weather.LocationChipFragment
 import com.app.fragment.weather.LocationListFragment
 import com.app.model.AppDatabase
 import com.app.ngn.R
@@ -38,7 +38,7 @@ class LocationListActivity : AppCompatActivity() {
 
         search.setOnSearchClickListener {
             supportFragmentManager
-                .beginTransaction().replace(R.id.container, ChipGroupFragment(locations, object : ChipGroupFragment.Listener{
+                .beginTransaction().replace(R.id.container, LocationChipFragment(locations, object : LocationChipFragment.Listener{
                     override fun onAdded() {
                         search.onActionViewCollapsed()
                         supportFragmentManager

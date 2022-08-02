@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Pair
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewpager.widget.ViewPager
 import com.app.adapter.MPFragmentAdapter
@@ -30,6 +31,12 @@ class MusicBrowserActivity : AppCompatActivity() {
                     Pair(findViewById(R.id.player_fm), "player")
             )
             startActivity(mpIntent, option.toBundle())
+        }
+
+        val search = findViewById<SearchView>(R.id.search_view)
+        search.setOnSearchClickListener {
+            val intent = Intent(this, MusicSearchActivity::class.java)
+            startActivity(intent)
         }
     }
 }
