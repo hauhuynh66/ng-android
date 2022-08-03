@@ -25,10 +25,10 @@ class FileExplorerActivity : AppCompatActivity() {
         for (i in 0 until tabs.tabCount){
             val icon = when(i){
                 0->{
-                    getDrawable(R.drawable.ic_baseline_apps)
+                    getDrawable(R.drawable.ic_baseline_access_time)
                 }
                 else->{
-                    getDrawable(R.drawable.ic_baseline_menu)
+                    getDrawable(R.drawable.ic_baseline_folder_open)
                 }
             }
             tabs.getTabAt(i)!!.icon = icon

@@ -54,6 +54,9 @@ class MessageActivity : AppCompatActivity() {
                 val ms : Message? = snapshot.getValue(Message::class.java)
                 if(fragment is MessageFragment && ms!=null){
                     fragment.add(ms)
+                    if(!fragment.isActivated){
+                        fragment.activate()
+                    }
                 }
             }
 
@@ -62,10 +65,9 @@ class MessageActivity : AppCompatActivity() {
             }
 
             override fun onChildRemoved(snapshot: DataSnapshot) {
-                val removed = snapshot.getValue(Message::class.java)
+                val removed : Message? = snapshot.getValue(Message::class.java)
                 val fragment = supportFragmentManager.findFragmentById(R.id.container)
                 if(fragment is MessageFragment && removed!=null){
-                    println(removed.content)
                     fragment.remove(removed)
                 }
             }

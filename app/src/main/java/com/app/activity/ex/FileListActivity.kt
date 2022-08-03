@@ -7,7 +7,7 @@ import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.adapter.EXListAdapter
+import com.app.adapter.ExplorerListAdapter
 import com.app.data.FileData
 import com.app.ngn.R
 import com.app.task.FileDataCallable
@@ -32,7 +32,7 @@ class FileListActivity() : AppCompatActivity() {
         list = findViewById(R.id.ac_file_list_list)
         list.visibility = View.INVISIBLE
         val runner = TaskRunner()
-        val listener = object : EXListAdapter.Listener{
+        val listener = object : ExplorerListAdapter.Listener{
             override fun onCheck(path: String) {
 
             }
@@ -54,7 +54,7 @@ class FileListActivity() : AppCompatActivity() {
             override fun onComplete(result: ArrayList<FileData>) {
                 this@FileListActivity.data = result
                 list.layoutManager = GridLayoutManager(this@FileListActivity, 3)
-                list.adapter = EXListAdapter(this@FileListActivity, data, listener = listener, isGrid = true)
+                list.adapter = ExplorerListAdapter(this@FileListActivity, data, listener = listener, isGrid = true)
                 crossfade(arrayListOf(list), arrayListOf(progress), duration = 1000)
             }
         })

@@ -4,15 +4,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.MessageAdapter
 import com.app.data.Message
 import com.app.ngn.R
+import com.app.util.Animation.Companion.crossfade
 
 class MessageFragment(var messages : ArrayList<Message>) : Fragment() {
     private lateinit var adapter: MessageAdapter
+    private lateinit var progressBar: ProgressBar
+    private lateinit var contentLayout : ConstraintLayout
+    private lateinit var list : RecyclerView
+    var isActivated = false
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -24,7 +31,11 @@ class MessageFragment(var messages : ArrayList<Message>) : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val list = view.findViewById<RecyclerView>(R.id.item_list)
+        list = view.findViewById(R.id.item_list)
+        progressBar = view.findViewById(R.id.progress)
+        contentLayout = view.findViewById(R.id.contentLayout)
+        progressBar.visibility = View.VISIBLE
+        contentLayout.visibility = View.INVISIBLE
         adapter = MessageAdapter(requireContext(), messages)
         list.adapter = adapter
         list.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -32,11 +43,18 @@ class MessageFragment(var messages : ArrayList<Message>) : Fragment() {
 
     fun add(message : Message){
         messages.add(message)
-        adapter.notifyDataSetChanged()
+        adapter.notifyItemInserted(messages.size - 1)
+        list.scrollToPosition(messages.size - 1)
     }
 
     fun remove(message: Message){
+        val pos = messages.indexOf(message)
         messages.remove(message)
-        adapter.notifyDataSetChanged()
+        adapter.notifyItemRemoved(pos)
+    }
+
+    fun activate(){
+        crossfade(arrayListOf(contentLayout), arrayListOf(progressBar), 1000)
+        isActivated = true
     }
 }

@@ -33,15 +33,4 @@ class ExplorerFragmentAdapter(fm: FragmentManager, val tab: TabLayout) : Fragmen
         }
 
     }
-
-    override fun getPageTitle(position: Int): CharSequence? {
-        return when(position){
-            1->{
-                "Files"
-            }
-            else->{
-                "Groups"
-            }
-        }
-    }
 }

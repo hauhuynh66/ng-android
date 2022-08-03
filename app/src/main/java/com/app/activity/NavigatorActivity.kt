@@ -3,7 +3,6 @@ package com.app.activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -103,7 +102,7 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                     }
                     else->{
                         if(currentFragment !is MainFragment){
-                            supportActionBar!!.title = "Main"
+                            this.title = "Others"
                             transaction.replace(R.id.container,  MainFragment(), "MAIN").commit()
                             transaction.addToBackStack("MAIN")
                         }

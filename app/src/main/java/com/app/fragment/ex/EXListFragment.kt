@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.adapter.EXListAdapter
+import com.app.adapter.ExplorerListAdapter
 import com.app.data.FileData
 import com.app.dialog.FileActionDialog
 import com.app.listener.EXListListener
@@ -29,7 +29,7 @@ class EXListFragment(val listener : Listener) : Fragment(), EXListListener {
     private lateinit var data: ArrayList<FileData>
     private val rootPath : String = Environment.getExternalStorageDirectory().absolutePath
     private var path : String = rootPath
-    private lateinit var adapter : EXListAdapter
+    private lateinit var adapter : ExplorerListAdapter
     private lateinit var list : RecyclerView
     private lateinit var pathView : TextView
     private lateinit var pathGroup: ConstraintLayout
@@ -65,7 +65,7 @@ class EXListFragment(val listener : Listener) : Fragment(), EXListListener {
         val changeLayout = view.findViewById<ImageButton>(R.id.fg_ex_list_changeLayout)
 
         data = getFileList(path)
-        val linearListener = object : EXListAdapter.Listener{
+        val linearListener = object : ExplorerListAdapter.Listener{
             override fun onCheck(path : String) {
                 if(!isMultiple){
                     isMultiple = true
@@ -129,7 +129,7 @@ class EXListFragment(val listener : Listener) : Fragment(), EXListListener {
             }
         }
 
-        val gridListener = object : EXListAdapter.Listener{
+        val gridListener = object : ExplorerListAdapter.Listener{
             override fun onCheck(path : String) {
                 if(!isMultiple){
                     isMultiple = true
@@ -192,7 +192,7 @@ class EXListFragment(val listener : Listener) : Fragment(), EXListListener {
             }
         }
 
-        adapter = EXListAdapter(requireActivity(), data, isGrid = false, linearListener)
+        adapter = ExplorerListAdapter(requireActivity(), data, isGrid = false, linearListener)
         list.layoutManager = LinearLayoutManager(requireContext())
         list.adapter = adapter
         pathView.text = path
@@ -201,11 +201,11 @@ class EXListFragment(val listener : Listener) : Fragment(), EXListListener {
             data = getFileList(this.path)
             if(count%2==0){
                 list.layoutManager = GridLayoutManager(requireContext(), 3)
-                adapter = EXListAdapter(requireActivity(), data, isGrid = true, gridListener)
+                adapter = ExplorerListAdapter(requireActivity(), data, isGrid = true, gridListener)
                 changeLayout.setImageDrawable(requireContext().getDrawable(R.drawable.ic_baseline_menu))
             }else{
                 list.layoutManager = LinearLayoutManager(requireContext())
-                adapter = EXListAdapter(requireActivity(), data, isGrid = false, linearListener)
+                adapter = ExplorerListAdapter(requireActivity(), data, isGrid = false, linearListener)
                 changeLayout.setImageDrawable(requireContext().getDrawable(R.drawable.ic_baseline_apps))
             }
             list.adapter = adapter
