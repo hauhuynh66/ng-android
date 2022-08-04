@@ -9,5 +9,5 @@ data class SearchHistory(
     @ColumnInfo(name = "activity") val activity : String,
     @ColumnInfo(name = "text") val text : String
 ) {
-    @PrimaryKey(autoGenerate = true) val id : Long = 0
+    @PrimaryKey(autoGenerate = true) var id : Long = 0
 }

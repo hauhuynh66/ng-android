@@ -24,6 +24,6 @@ class MusicSearchActivity : AppCompatActivity() {
             }
         }
 
-        supportFragmentManager.beginTransaction().replace(R.id.container, HistoryChipGroupFragment()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.container, HistoryChipGroupFragment("")).commit()
     }
 }

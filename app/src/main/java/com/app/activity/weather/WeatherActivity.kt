@@ -11,6 +11,8 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
@@ -51,7 +53,7 @@ class WeatherActivity : AppCompatActivity() {
     private lateinit var progressBar : ProgressBar
     private lateinit var contentView : ConstraintLayout
     private lateinit var requestQueue: RequestQueue
-    private lateinit var forecastData: ForecastData
+    private var forecastData: LiveData<ForecastData> = MutableLiveData(ForecastData(arrayListOf(), ""))
     private lateinit var db: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +62,6 @@ class WeatherActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar!!.title = ""
         permissionsCheck()
-        forecastData = ForecastData(arrayListOf(),"")
         requestQueue = Volley.newRequestQueue(this)
         progressBar = findViewById(R.id.progress)
         contentView = findViewById(R.id.content_view)
@@ -219,17 +220,17 @@ class WeatherActivity : AppCompatActivity() {
                 wind.getInt("deg"),
                 wind.getDouble("speed")
             )
-            forecastData.data.add(data)
+            forecastData.value!!.data.add(data)
         }
-        forecastData.name = obj.getJSONObject("city").getString("name")
+        forecastData.value!!.name = obj.getJSONObject("city").getString("name")
 
         val title = findViewById<TextView>(R.id.toolbar_title)
-        title.text = forecastData.name
+        title.text = forecastData.value!!.name
 
-        dbProcess(forecastData.name)
+        dbProcess(forecastData.value!!.name)
 
         forecastList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        forecastList.adapter = WeatherAdapter(this, forecastData.data)
+        forecastList.adapter = WeatherAdapter(this, forecastData.value!!.data)
 
         val sunPositionView = findViewById<SunPositionView>(R.id.gauge)
         sunPositionView.sunrise = obj.getJSONObject("city").getLong("sunrise")
