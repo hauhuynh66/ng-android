@@ -13,6 +13,7 @@ import android.widget.ImageButton
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.room.Room
 import com.app.model.AppDatabase
 import com.app.ngn.R
@@ -79,7 +80,7 @@ class MusicPlayerActivity : AppCompatActivity() {
             setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_downward)
         }
 
-        findViewById<TextView>(R.id.toolbar_title).text = "Music Player"
+        findViewById<TextView>(R.id.toolbar_title).text = getString(R.string.music_player)
 
         mediaBrowser = MediaBrowserCompat(
             this,
@@ -162,18 +163,20 @@ class MusicPlayerActivity : AppCompatActivity() {
     }
 
     private fun changeLayout(mainView: View, state : PlaybackStateCompat){
+        val current = mainView.findViewById<TextView>(R.id.current_time)
+        val sb = mainView.findViewById<SeekBar>(R.id.audio_progress)
+        pos = state.position / 1000
+        sb.progress = ((pos.toDouble()/max.toDouble()) * 100).toInt()
+        current.text = convertToTime(pos)
         when(state.state){
             PlaybackStateCompat.STATE_PLAYING->{
-                playPause.setImageDrawable(getDrawable(R.drawable.ic_baseline_pause))
+                playPause.setImageDrawable(ContextCompat.getDrawable(this ,R.drawable.ic_baseline_pause))
             }
             PlaybackStateCompat.STATE_PAUSED->{
-                playPause.setImageDrawable(getDrawable(R.drawable.ic_baseline_play_arrow))
+                playPause.setImageDrawable(ContextCompat.getDrawable(this ,R.drawable.ic_baseline_play_arrow))
+            }
+            else->{
 
-                val current = mainView.findViewById<TextView>(R.id.current_time)
-                val sb = mainView.findViewById<SeekBar>(R.id.audio_progress)
-                pos = state.position / 1000
-                sb.progress = ((pos.toDouble()/max.toDouble()) * 100).toInt()
-                current.text = convertToTime(pos)
             }
         }
     }

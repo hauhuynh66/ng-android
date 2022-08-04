@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.AudioListAdapter
 import com.app.data.AudioData
 import com.app.ngn.R
-import com.app.util.Resolver.Companion.getExternalAudioList
-import com.app.util.Resolver.Companion.getInternalAudioList
+import com.app.util.Resolver.Companion.getAudioList
 
 class AudioListFragment(val i : Int) : Fragment() {
     private lateinit var data : ArrayList<AudioData>
@@ -28,10 +27,16 @@ class AudioListFragment(val i : Int) : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         data = when(i){
             0->{
-                getExternalAudioList(requireContext().contentResolver)
+                getAudioList(requireContext().contentResolver)
             }
             1->{
-                getInternalAudioList(requireContext().contentResolver)
+                arrayListOf()
+            }
+            2->{
+                arrayListOf()
+            }
+            3->{
+                arrayListOf()
             }
             else->{
                 arrayListOf()

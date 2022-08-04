@@ -21,4 +21,8 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
     <string name="widget_description">Description</string>
+
+    <string name="google_client_id">529876654956-8fbpjlo62rsr2d73k4sl6jafgnnpecji.apps.googleusercontent.com</string>
+
+    <string name="music_player">"Music Player"</string>
 </resources>

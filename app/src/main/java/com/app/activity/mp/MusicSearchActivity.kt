@@ -3,7 +3,7 @@ package com.app.activity.mp
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import com.app.fragment.ChipGroupFragment
+import com.app.fragment.HistoryChipGroupFragment
 import com.app.ngn.R
 
 class MusicSearchActivity : AppCompatActivity() {
@@ -18,8 +18,12 @@ class MusicSearchActivity : AppCompatActivity() {
             isIconified = false;
             clearFocus();
             requestFocusFromTouch();
+            setOnCloseListener {
+                super.onBackPressed()
+                true
+            }
         }
 
-        supportFragmentManager.beginTransaction().replace(R.id.container, ChipGroupFragment()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.container, HistoryChipGroupFragment()).commit()
     }
 }

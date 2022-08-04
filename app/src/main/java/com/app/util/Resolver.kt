@@ -1,14 +1,15 @@
 package com.app.util
 
+import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.net.Uri
 import android.provider.MediaStore
 import com.app.data.AudioData
-import kotlin.collections.ArrayList
 
 class Resolver {
     companion object {
-        fun getInternalAudioList(resolver: ContentResolver ) : ArrayList<AudioData>{
+        @SuppressLint("Range")
+        fun getInternalAudioList(resolver: ContentResolver) : ArrayList<AudioData>{
             val list = arrayListOf<AudioData>()
             val musicUri = MediaStore.Audio.Media.INTERNAL_CONTENT_URI
             val cursor = resolver.query(musicUri,
@@ -33,7 +34,8 @@ class Resolver {
             return list
         }
 
-        fun getExternalAudioList(resolver: ContentResolver ) : ArrayList<AudioData>{
+        @SuppressLint("Range")
+        fun getExternalAudioList(resolver: ContentResolver) : ArrayList<AudioData>{
             val list = arrayListOf<AudioData>()
             val musicUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
             val cursor = resolver.query(musicUri,
@@ -56,6 +58,13 @@ class Resolver {
                 }
             }
             return list
+        }
+
+        fun getAudioList(resolver: ContentResolver) : ArrayList<AudioData>{
+            val list1 = getInternalAudioList(resolver)
+            val list2 = getExternalAudioList(resolver)
+            list1.addAll(list2)
+            return list1
         }
     }
 }

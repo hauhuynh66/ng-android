@@ -7,6 +7,7 @@ import android.util.Pair
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.app.adapter.MPFragmentAdapter
 import com.app.ngn.R
@@ -23,14 +24,15 @@ class MusicBrowserActivity : AppCompatActivity() {
         pager.setPageTransformer(true, Utils.Companion.ZoomOutPageTransformer())
         tabs.setupWithViewPager(pager)
 
-        val mp = findViewById<ConstraintLayout>(R.id.player_fm)
-        mp.setOnClickListener {
-            val mpIntent = Intent(this, MusicPlayerActivity::class.java)
-            val option = ActivityOptions.makeSceneTransitionAnimation(
-                this,
-                    Pair(findViewById(R.id.player_fm), "player")
-            )
-            startActivity(mpIntent, option.toBundle())
+        findViewById<ConstraintLayout>(R.id.player_fm).apply {
+            setOnClickListener {
+                val mpIntent = Intent(this@MusicBrowserActivity, MusicPlayerActivity::class.java)
+                val option = ActivityOptions.makeSceneTransitionAnimation(
+                    this@MusicBrowserActivity,
+                    Pair(this, "player")
+                )
+                startActivity(mpIntent, option.toBundle())
+            }
         }
 
         val search = findViewById<SearchView>(R.id.search_view)

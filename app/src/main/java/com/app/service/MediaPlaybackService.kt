@@ -1,5 +1,6 @@
 package com.app.service
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -18,7 +19,6 @@ import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import androidx.media.MediaBrowserServiceCompat
 import com.app.data.AudioData
-import com.app.model.AppDatabase
 import com.app.util.Resolver.Companion.getInternalAudioList
 
 
@@ -28,7 +28,6 @@ class MediaPlaybackService : MediaBrowserServiceCompat(), MediaPlayer.OnPrepared
     private lateinit var stateBuilder: PlaybackStateCompat.Builder
     private lateinit var musicList: ArrayList<AudioData>
     private val intentFilter = IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY)
-    private lateinit var db: AppDatabase
     private var currentPlaying : Int = 0
     private lateinit var previousState : PlaybackStateCompat
 
@@ -198,6 +197,7 @@ class MediaPlaybackService : MediaBrowserServiceCompat(), MediaPlayer.OnPrepared
         return BrowserRoot(MY_MEDIA_ROOT_ID, null)
     }
 
+    @SuppressLint("WrongConstant")
     override fun onLoadChildren(
         parentId: String,
         result: Result<MutableList<MediaBrowserCompat.MediaItem>>

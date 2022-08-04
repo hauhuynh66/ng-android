@@ -26,7 +26,9 @@ class LoginOptionFragment : Fragment() {
             }
         }
         val gg = view.findViewById<Button>(R.id.lg_gg).apply {
+            setOnClickListener {
 
+            }
         }
         val gh = view.findViewById<Button>(R.id.lg_gh).apply {
 
