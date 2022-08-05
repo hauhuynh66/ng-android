@@ -3,17 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.viewpager.widget.ViewPager
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/pager">
-        <com.google.android.material.tabs.TabLayout
+        android:layout_marginHorizontal="10dp"
+        android:id="@+id/holder">
+        <Button
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:id="@+id/tabs"
-            app:tabTextColor="@color/white"
-            app:tabIndicatorColor="@color/red"
-            app:tabIconTint="@color/white"
-            android:background="@color/design_default_color_primary"/>
-    </androidx.viewpager.widget.ViewPager>
+            android:layout_height="match_parent"
+            android:id="@+id/com_draw_color_action"
+            android:layout_margin="5dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

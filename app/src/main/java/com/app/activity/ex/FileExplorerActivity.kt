@@ -2,37 +2,45 @@ package com.app.activity.ex
 
 import android.Manifest
 import android.os.Bundle
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.viewpager.widget.ViewPager
+import androidx.core.content.ContextCompat
+import androidx.viewpager2.widget.ViewPager2
 import com.app.adapter.ExplorerFragmentAdapter
+import com.app.fragment.ex.EXListFragment
 import com.app.ngn.R
 import com.app.util.Check.Companion.checkPermissions
 import com.app.util.Utils
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import kotlin.system.exitProcess
 
-class FileExplorerActivity : AppCompatActivity() {
+class FileExplorerActivity : AppCompatActivity(), EXListFragment.Listener{
+    private lateinit var tabs : TabLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         checkPermissions()
-        setContentView(R.layout.ac_flx)
-        val pager = findViewById<ViewPager>(R.id.pager)
-        val tabs = findViewById<TabLayout>(R.id.tabs)
-        pager.adapter = ExplorerFragmentAdapter(supportFragmentManager, tabs)
-        pager.setPageTransformer(true, Utils.Companion.ZoomOutPageTransformer())
-        tabs.setupWithViewPager(pager)
-        for (i in 0 until tabs.tabCount){
-            val icon = when(i){
-                0->{
-                    getDrawable(R.drawable.ic_baseline_access_time)
-                }
-                else->{
-                    getDrawable(R.drawable.ic_baseline_folder_open)
+        setContentView(R.layout.ac_file_explorer)
+        val pager = findViewById<ViewPager2>(R.id.pager)
+        tabs = findViewById(R.id.tabs)
+        pager.adapter = ExplorerFragmentAdapter(supportFragmentManager, lifecycle)
+        pager.setPageTransformer(Utils.Companion.ZoomOutPageTransformer())
+        TabLayoutMediator(tabs, pager){
+            tab, pos -> run{
+                when(pos){
+                    0->{
+                        tab.icon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_access_time)
+                    }
+                    1->{
+                        tab.icon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_folder_open)
+                    }
+                    else->{
+
+                    }
                 }
             }
-            tabs.getTabAt(i)!!.icon = icon
-        }
+        }.attach()
     }
 
     private fun checkPermissions(){
@@ -64,6 +72,14 @@ class FileExplorerActivity : AppCompatActivity() {
                     Manifest.permission.READ_EXTERNAL_STORAGE
                 )
             )
+        }
+    }
+
+    override fun onMultipleChanged(isMultiple: Boolean) {
+        if(isMultiple){
+            tabs.visibility = View.GONE
+        }else{
+            tabs.visibility = View.VISIBLE
         }
     }
 }

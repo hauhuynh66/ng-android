@@ -12,8 +12,16 @@ import com.app.data.AudioData
 import com.app.ngn.R
 import com.app.util.Resolver.Companion.getAudioList
 
-class AudioListFragment(val i : Int) : Fragment() {
+class AudioListFragment() : Fragment() {
     private lateinit var data : ArrayList<AudioData>
+    private var i : Int = 0
+    fun newInstance(i : Int): Fragment{
+        val args = Bundle()
+        args.putInt("index", i)
+        val fragment = AudioListFragment()
+        fragment.arguments = args
+        return fragment
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,6 +33,8 @@ class AudioListFragment(val i : Int) : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val args = arguments
+        i = args!!.getInt("index", 0)
         data = when(i){
             0->{
                 getAudioList(requireContext().contentResolver)

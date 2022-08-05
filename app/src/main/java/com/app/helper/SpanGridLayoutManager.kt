@@ -36,14 +36,20 @@ class SpanGridLayoutManager :  GridLayoutManager{
     }
 
     private fun spanLayoutSize(layoutParams: RecyclerView.LayoutParams): RecyclerView.LayoutParams {
+        val min = 100
         var rows = (itemCount/spanCount)
         val left = itemCount%spanCount
+
         if ( left > 0){
-            rows++;
+            rows++
         }
+        
+        println(getHorizontalSpace())
         println(getVerticalSpace())
+
         layoutParams.width = (getHorizontalSpace() / spanCount.toDouble()).roundToInt()
-        layoutParams.height = (getVerticalSpace() / rows.toDouble()).roundToInt()
+        val height = if(((getVerticalSpace() / rows.toDouble()).roundToInt())< min) min else (getVerticalSpace() / rows.toDouble()).roundToInt()
+        layoutParams.height = height
         return layoutParams
     }
 
@@ -60,7 +66,7 @@ class SpanGridLayoutManager :  GridLayoutManager{
     }
 
     override fun canScrollVertically(): Boolean {
-        return false
+        return true
     }
 
     override fun canScrollHorizontally(): Boolean {

@@ -2,6 +2,7 @@ package com.app.util
 
 import android.view.View
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -32,7 +33,7 @@ class Utils {
             }
         }
 
-        class ZoomOutPageTransformer: ViewPager.PageTransformer{
+        class ZoomOutPageTransformer: ViewPager2.PageTransformer{
             private val minScale = 0.85f
             private val minAlpha = 0.5f
             override fun transformPage(page: View, position: Float) {

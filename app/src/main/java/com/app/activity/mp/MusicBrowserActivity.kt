@@ -7,22 +7,43 @@ import android.util.Pair
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.ViewPager
-import com.app.adapter.MPFragmentAdapter
+import androidx.viewpager2.widget.ViewPager2
+import com.app.adapter.MusicBrowserFragmentAdapter
 import com.app.ngn.R
 import com.app.util.Utils
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 
 class MusicBrowserActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_mp_browser)
-        val pager = findViewById<ViewPager>(R.id.pager)
+        val pager = findViewById<ViewPager2>(R.id.pager)
         val tabs = findViewById<TabLayout>(R.id.tabs)
-        pager.adapter = MPFragmentAdapter(supportFragmentManager)
-        pager.setPageTransformer(true, Utils.Companion.ZoomOutPageTransformer())
-        tabs.setupWithViewPager(pager)
+        pager.adapter = MusicBrowserFragmentAdapter(supportFragmentManager, lifecycle)
+        pager.setPageTransformer(Utils.Companion.ZoomOutPageTransformer())
+        TabLayoutMediator(tabs, pager){
+            tab, pos -> run{
+                tab.view.minimumWidth = 300
+                when(pos){
+                    0->{
+                        tab.text = "SONG"
+                    }
+                    1->{
+                        tab.text = "ALBUM"
+                    }
+                    2->{
+                        tab.text = "ARTIST"
+                    }
+                    3->{
+                        tab.text = "FOLDER"
+                    }
+                    else->{
+
+                    }
+                }
+            }
+        }.attach()
 
         findViewById<ConstraintLayout>(R.id.player_fm).apply {
             setOnClickListener {

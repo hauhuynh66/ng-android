@@ -1,5 +1,7 @@
 package com.app.fragment.ex
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
@@ -9,6 +11,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,7 +28,7 @@ import java.nio.file.attribute.BasicFileAttributes
 import java.util.*
 import java.util.stream.Collectors
 
-class EXListFragment(val listener : Listener) : Fragment(), EXListListener {
+class EXListFragment : Fragment(), EXListListener {
     private lateinit var data: ArrayList<FileData>
     private val rootPath : String = Environment.getExternalStorageDirectory().absolutePath
     private var path : String = rootPath
@@ -39,7 +42,8 @@ class EXListFragment(val listener : Listener) : Fragment(), EXListListener {
     private var selected: MutableList<String> = mutableListOf()
     private lateinit var num: TextView
     private var isCheckAll = false
-    private var count = 0;
+    private lateinit var listener : Listener
+    private var count = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,6 +52,11 @@ class EXListFragment(val listener : Listener) : Fragment(), EXListListener {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         return inflater.inflate(R.layout.fg_ex_list, container, false)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        this.listener = context as Listener
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -128,70 +137,6 @@ class EXListFragment(val listener : Listener) : Fragment(), EXListListener {
                 }
             }
         }
-
-        val gridListener = object : ExplorerListAdapter.Listener{
-            override fun onCheck(path : String) {
-                if(!isMultiple){
-                    isMultiple = true
-                    crossfade(arrayListOf(bottomBar, topBar), arrayListOf(pathGroup))
-                    listener.onMultipleChanged(isMultiple)
-                }
-                if(!selected.contains(path)){
-                    selected.add(path)
-                }
-                isCheckAll = selected.size == adapter.data.size
-                onSelectionChange()
-            }
-
-            override fun onUnCheck(path : String) {
-                if(selected.contains(path)){
-                    selected.remove(path)
-                }
-                onSelectionChange()
-                isCheckAll = false
-            }
-
-            override fun onClick(path: String, isChecked: Boolean, position : Int) {
-                if(!isMultiple){
-                    if(adapter.data[position].type =="DIR"){
-                        adapter.data = getFileList(path)
-                        adapter.notifyDataSetChanged()
-                        pathView.text = path
-                        onPathChanged(path)
-                    }
-                }else{
-                    if(!isChecked){
-                        if(!selected.contains(path)){
-                            selected.add(path)
-                        }
-                    }else{
-                        if(selected.contains(path)){
-                            selected.remove(path)
-                        }
-                    }
-                    adapter.data[position].checked = !isChecked
-                    adapter.notifyItemChanged(position)
-                    onSelectionChange()
-                }
-            }
-
-            override fun onLongClick(path: String) {
-                if(!isMultiple){
-                    isMultiple = true
-                    crossfade(arrayListOf(bottomBar, topBar), arrayListOf(pathGroup))
-                    listener.onMultipleChanged(isMultiple)
-                    selected.add(path)
-                    isCheckAll = adapter.data.size == 1
-                    onSelectionChange()
-                    adapter.data.filter {
-                        it.path == path
-                    }[0].checked = true
-                    adapter.isMultiple = true
-                    adapter.notifyDataSetChanged()
-                }
-            }
-        }
-
         adapter = ExplorerListAdapter(requireActivity(), data, isGrid = false, linearListener)
         list.layoutManager = LinearLayoutManager(requireContext())
         list.adapter = adapter
@@ -201,12 +146,12 @@ class EXListFragment(val listener : Listener) : Fragment(), EXListListener {
             data = getFileList(this.path)
             if(count%2==0){
                 list.layoutManager = GridLayoutManager(requireContext(), 3)
-                adapter = ExplorerListAdapter(requireActivity(), data, isGrid = true, gridListener)
-                changeLayout.setImageDrawable(requireContext().getDrawable(R.drawable.ic_baseline_menu))
+                adapter = ExplorerListAdapter(requireActivity(), data, isGrid = true, linearListener)
+                changeLayout.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_menu))
             }else{
                 list.layoutManager = LinearLayoutManager(requireContext())
                 adapter = ExplorerListAdapter(requireActivity(), data, isGrid = false, linearListener)
-                changeLayout.setImageDrawable(requireContext().getDrawable(R.drawable.ic_baseline_apps))
+                changeLayout.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_apps))
             }
             list.adapter = adapter
             count++
