@@ -43,13 +43,12 @@ class SpanGridLayoutManager :  GridLayoutManager{
         if ( left > 0){
             rows++
         }
-        
-        println(getHorizontalSpace())
-        println(getVerticalSpace())
 
         layoutParams.width = (getHorizontalSpace() / spanCount.toDouble()).roundToInt()
+
         val height = if(((getVerticalSpace() / rows.toDouble()).roundToInt())< min) min else (getVerticalSpace() / rows.toDouble()).roundToInt()
         layoutParams.height = height
+
         return layoutParams
     }
 

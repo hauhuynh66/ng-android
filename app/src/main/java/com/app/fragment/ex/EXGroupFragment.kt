@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.activity.ex.FileListActivity
 import com.app.adapter.MiscAdapter
 import com.app.data.MiscData
+import com.app.helper.SpanLinearLayoutManager
 import com.app.ngn.R
 
 class EXGroupFragment : Fragment() {
@@ -65,7 +67,7 @@ class EXGroupFragment : Fragment() {
             }
         }
         val iconList = view.findViewById<RecyclerView>(R.id.fg_ex_group1_list)
-        val layoutManager = GridLayoutManager(requireContext(), 4)
+        val layoutManager = SpanLinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         val adapter = MiscAdapter(requireActivity(), data)
         iconList.layoutManager = layoutManager
         iconList.adapter = adapter

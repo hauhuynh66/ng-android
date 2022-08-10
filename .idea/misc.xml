@@ -52,8 +52,12 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/ac_file_explorer.xml" value="0.12213403880070546" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/ac_mp_browser.xml" value="0.11067019400352733" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/ac_navigation.xml" value="0.11067019400352733" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_device_analog.xml" value="0.10978835978835978" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_device_digital.xml" value="0.10978835978835978" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_misc.xml" value="0.12213403880070546" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/fg_ex_group.xml" value="0.12213403880070546" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/fg_ex_list.xml" value="0.12213403880070546" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/fg_main.xml" value="0.1" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/fg_misc.xml" value="0.11067019400352733" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_broadcast.xml" value="0.10190217391304347" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_cv.xml" value="0.13020833333333334" />
@@ -74,6 +78,8 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_detail.xml" value="0.22735507246376813" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_detail2.xml" value="0.176" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_detail3.xml" value="0.20854700854700856" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_device_analog.xml" value="0.13072916666666667" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_device_digital.xml" value="0.1296875" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_draw_color.xml" value="0.15833333333333333" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_draw_path.xml" value="0.15833333333333333" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_ex_grid.xml" value="0.264" />
@@ -110,6 +116,7 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_ex_group.xml" value="0.176" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_ex_list.xml" value="0.2" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_harris.xml" value="0.22735507246376813" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_image.xml" value="0.14427083333333332" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_item.xml" value="0.11354166666666667" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_item_confirm.xml" value="0.22735507246376813" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_item_detail.xml" value="0.10190217391304347" />
@@ -125,10 +132,11 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_weather.xml" value="0.10190217391304347" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/nav_header.xml" value="0.264" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/menu/cv_menu.xml" value="0.2" />
-        <entry key="..\:/psnpj/ng-android/app/src/main/res/menu/nav_menu.xml" value="0.11354166666666667" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/menu/nav_menu.xml" value="0.1" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/menu/weather_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/xml/provider_paths.xml" value="0.11354166666666667" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/xml/root_preferences.xml" value="0.22554347826086957" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/xml/scene_01.xml" value="0.14427083333333332" />
       </map>
     </option>
   </component>
