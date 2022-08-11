@@ -1,5 +1,11 @@
 package com.app.data
 
-class Light(d: DeviceImpl) : Device by DeviceImpl() {
+class Light : Device(){
+    override fun interact(vararg values: Any) {
 
+    }
+
+    override fun update() {
+
+    }
 }

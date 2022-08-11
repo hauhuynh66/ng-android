@@ -10,6 +10,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.app.fragment.MainFragment
 import com.app.fragment.MiscFragment
+import com.app.fragment.mc.DeviceListFragment
 import com.app.fragment.note.NoteFragment
 import com.app.ngn.R
 import com.google.android.material.navigation.NavigationView
@@ -66,6 +67,14 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             }
         }
 
+        findViewById<TextView>(R.id.logout).apply {
+            setOnClickListener {
+                auth.signOut()
+                val intent = Intent(this@NavigatorActivity, LoginActivity::class.java)
+                startActivity(intent)
+            }
+        }
+
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -99,6 +108,13 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                     R.id.nav_menu_setting->{
                         val intent = Intent(this@NavigatorActivity, SettingsActivity::class.java)
                         startActivity(intent)
+                    }
+                    R.id.nav_controller->{
+                        this.title = "Devices"
+                        if(currentFragment !is DeviceListFragment){
+                            transaction.replace(R.id.container,  DeviceListFragment(), "DEVICES").commit()
+                            transaction.addToBackStack("DEVICES")
+                        }
                     }
                     else->{
                         if(currentFragment !is MainFragment){

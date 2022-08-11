@@ -2,21 +2,18 @@ package com.app.data
 
 class DeviceFactory {
     enum class DeviceType{
-        LIGHT, FAN, SPRINKLER, THERMOMETER
+        LIGHT, SENSOR, ACTUATOR
     }
-    fun getDevice(type : DeviceType) : DeviceImpl {
+    fun getDevice(type : DeviceType) : Device{
         return when(type){
             DeviceType.LIGHT->{
                 Light()
             }
-            DeviceType.FAN->{
-                Fan()
+            DeviceType.SENSOR->{
+                Sensor()
             }
-            DeviceType.SPRINKLER->{
-                Sprinkler()
-            }
-            DeviceType.THERMOMETER->{
-                Thermometer()
+            DeviceType.ACTUATOR->{
+                Actuator()
             }
         }
     }
