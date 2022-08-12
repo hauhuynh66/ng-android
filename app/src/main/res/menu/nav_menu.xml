@@ -17,4 +17,7 @@
             android:title="Setting"
             android:id="@+id/nav_menu_setting"/>
     </group>
+    <item
+        android:title="Logout"
+        android:id="@+id/nav_logout"/>
 </menu>

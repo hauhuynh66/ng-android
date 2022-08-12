@@ -8,6 +8,34 @@
         <OnSwipe
             app:touchAnchorId="@id/content"
             app:dragDirection="dragUp"/>
+        <KeyFrameSet >
+            <KeyAttribute
+                app:motionTarget="@+id/image"
+                app:framePosition="0"
+                android:alpha="1.0" />
+            <KeyAttribute
+                app:motionTarget="@+id/image"
+                app:framePosition="100"
+                android:alpha="0.0" />
+        </KeyFrameSet>
+    </Transition>
+
+    <Transition
+        app:constraintSetStart="@id/end"
+        app:constraintSetEnd="@+id/start">
+        <OnSwipe
+            app:touchAnchorId="@id/content"
+            app:dragDirection="dragDown"/>
+        <KeyFrameSet >
+            <KeyAttribute
+                app:motionTarget="@+id/image"
+                app:framePosition="0"
+                android:alpha="0.0" />
+            <KeyAttribute
+                app:motionTarget="@+id/image"
+                app:framePosition="100"
+                android:alpha="1.0" />
+        </KeyFrameSet>
     </Transition>
 
     <ConstraintSet android:id="@+id/start">

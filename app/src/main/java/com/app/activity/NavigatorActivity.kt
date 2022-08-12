@@ -66,15 +66,6 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 supportActionBar!!.title = "Main"
             }
         }
-
-        findViewById<TextView>(R.id.logout).apply {
-            setOnClickListener {
-                auth.signOut()
-                val intent = Intent(this@NavigatorActivity, LoginActivity::class.java)
-                startActivity(intent)
-            }
-        }
-
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -115,6 +106,11 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                             transaction.replace(R.id.container,  DeviceListFragment(), "DEVICES").commit()
                             transaction.addToBackStack("DEVICES")
                         }
+                    }
+                    R.id.nav_logout->{
+                        auth.signOut()
+                        val intent = Intent(this@NavigatorActivity, LoginActivity::class.java)
+                        startActivity(intent)
                     }
                     else->{
                         if(currentFragment !is MainFragment){

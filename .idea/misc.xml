@@ -50,8 +50,9 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/drawable/test.xml" value="0.1345" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/ac_cv.xml" value="0.11067019400352733" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/ac_file_explorer.xml" value="0.12213403880070546" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/ac_fragment_holder.xml" value="0.1" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/ac_mp_browser.xml" value="0.11067019400352733" />
-        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/ac_navigation.xml" value="0.11067019400352733" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/ac_navigation.xml" value="0.152" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_device_analog.xml" value="0.10978835978835978" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_device_digital.xml" value="0.10978835978835978" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_misc.xml" value="0.12213403880070546" />
@@ -61,6 +62,7 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/fg_login_options.xml" value="0.11067019400352733" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/fg_main.xml" value="0.1" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/fg_misc.xml" value="0.11067019400352733" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/fg_test.xml" value="0.1" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_broadcast.xml" value="0.10190217391304347" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_cv.xml" value="0.13020833333333334" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_draw.xml" value="0.16799999999999998" />
@@ -129,7 +131,7 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_lg_options.xml" value="0.14322916666666666" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_list.xml" value="0.1" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_login_options.xml" value="0.1296875" />
-        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_main.xml" value="0.1" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_main.xml" value="0.136" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_misc.xml" value="0.22554347826086957" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_modal_file_action.xml" value="0.12916666666666668" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_note.xml" value="0.2" />
