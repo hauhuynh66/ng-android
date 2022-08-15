@@ -30,7 +30,7 @@ class CVActivity() : AppCompatActivity(){
         val mode = intent.extras!!.getString("mode")
         when(mode){
             "Orb"->{
-                supportFragmentManager.beginTransaction().replace(R.id.ac_cv_container, ORBFragment()).commit()
+                supportFragmentManager.beginTransaction().replace(R.id.container, ORBFragment()).commit()
             }
         }
 
@@ -38,7 +38,7 @@ class CVActivity() : AppCompatActivity(){
         cameraResult = registerForActivityResult(ActivityResultContracts.TakePicture()) {
             if (it == true) {
                 val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, photoURI)
-                val currentFragment = supportFragmentManager.findFragmentById(R.id.ac_cv_container);
+                val currentFragment = supportFragmentManager.findFragmentById(R.id.container);
                 when(mode){
                     "Orb"->{
                         (currentFragment as ORBFragment).process(bitmap)

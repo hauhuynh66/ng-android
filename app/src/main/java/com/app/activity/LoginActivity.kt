@@ -14,7 +14,7 @@ class LoginActivity: AppCompatActivity() {
     private val viewModel : Login by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.ac_fragment_holder)
+        setContentView(R.layout.fragment_holder)
         if(viewModel.auth.currentUser!=null){
             val intent = Intent(this, NavigatorActivity::class.java)
             startActivity(intent)

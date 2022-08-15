@@ -11,8 +11,5 @@
         android:id="@+id/toolbar"
         app:title="CV"
         android:background="@color/design_default_color_primary"/>
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/ac_cv_container"/>
+    <include layout="@layout/fragment_holder"/>
 </androidx.appcompat.widget.LinearLayoutCompat>

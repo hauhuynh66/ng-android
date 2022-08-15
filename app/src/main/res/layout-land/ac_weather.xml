@@ -5,20 +5,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-    <androidx.appcompat.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="#b721bf"
-        android:id="@+id/toolbar">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/toolbar_title"
-            android:textSize="12pt"
-            android:textStyle="bold"
-            android:layout_gravity="center"/>
-    </androidx.appcompat.widget.Toolbar>
+    <include
+        layout="@layout/custom_title"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
