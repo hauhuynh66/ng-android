@@ -20,7 +20,7 @@ class MessageActivity : AppCompatActivity() {
     private val auth = Firebase.auth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.ac_test)
+        setContentView(R.layout.ac_message)
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar!!.apply {
             title = "Message"

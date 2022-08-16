@@ -7,9 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.app.activity.*
+import com.app.activity.CVActivity
+import com.app.activity.MessageActivity
 import com.app.activity.ex.FileExplorerActivity
 import com.app.activity.mp.MusicBrowserActivity
+import com.app.activity.sport.SportMainActivity
 import com.app.activity.weather.WeatherActivity
 import com.app.adapter.MiscAdapter
 import com.app.data.MiscData
@@ -76,6 +78,13 @@ class MiscFragment : Fragment() {
                 val bottomSheet = OptionBottomSheet(opts, cbs)
                 bottomSheet.isCancelable = true
                 bottomSheet.show(requireActivity().supportFragmentManager, "CV_OPTIONS")
+            }
+        }))
+
+        data.add(MiscData(null, object : MiscData.Listener{
+            override fun onClick() {
+                val intent = Intent(requireActivity(), SportMainActivity::class.java)
+                startActivity(intent)
             }
         }))
 

@@ -224,7 +224,7 @@ class WeatherActivity : AppCompatActivity() {
         }
         forecastData.value!!.name = obj.getJSONObject("city").getString("name")
 
-        val title = findViewById<TextView>(R.id.toolbar_title)
+        val title = findViewById<TextView>(R.id.title)
         title.text = forecastData.value!!.name
 
         dbProcess(forecastData.value!!.name)

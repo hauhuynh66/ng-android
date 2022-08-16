@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ngn.R
 
-class TextListAdapter(val context : Context, var data : ArrayList<String>, val mode : Int, val listener: Listener)
+class TextListAdapter(val context : Context, var data : ArrayList<String>, val listener: Listener)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater

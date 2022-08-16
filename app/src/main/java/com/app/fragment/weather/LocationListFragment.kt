@@ -41,7 +41,7 @@ class LocationListFragment : Fragment() {
         }
 
         val list = view.findViewById<RecyclerView>(R.id.item_list)
-        adapter = TextListAdapter(requireContext(), arr,1, object : TextListAdapter.Listener{
+        adapter = TextListAdapter(requireContext(), arr, object : TextListAdapter.Listener{
             override fun onClick(data: String) {
                 runBlocking {
                     withContext(Dispatchers.IO){
