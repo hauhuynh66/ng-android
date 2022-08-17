@@ -25,11 +25,7 @@ class SportListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val data = arrayListOf(
-            "Football",
-            "Basketball",
-            "Formula 1"
-        )
+        val data : ArrayList<String> = resources.getStringArray(R.array.sports).toCollection(ArrayList())
         val list = view.findViewById<RecyclerView>(R.id.item_list)
         list.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

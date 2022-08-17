@@ -13,6 +13,7 @@ import com.app.listener.NoteDialogListener
 import com.app.model.Note
 import com.app.ngn.R
 import com.app.util.Format.Companion.parseDate
+import com.app.util.Utils
 import java.text.DecimalFormat
 import java.util.*
 
@@ -38,7 +39,7 @@ class NoteDialog(private val dialogListener: NoteDialogListener):DialogFragment(
                 calendar.set(Calendar.YEAR, year)
                 calendar.set(Calendar.MONTH, month)
                 calendar.set(Calendar.DATE, day)
-                date.setText(getText(calendar, 1))
+                date.setText(Utils.getText(calendar, 1, '/'))
             }
         }
 
@@ -46,7 +47,7 @@ class NoteDialog(private val dialogListener: NoteDialogListener):DialogFragment(
             run{
                 calendar.set(Calendar.HOUR, hour)
                 calendar.set(Calendar.MINUTE, minute)
-                time.setText(getText(calendar, 2))
+                time.setText(Utils.getText(calendar, 2, '/'))
             }
         }
 
@@ -99,27 +100,6 @@ class NoteDialog(private val dialogListener: NoteDialogListener):DialogFragment(
             }
         }
         return builder.create()
-    }
-
-    private fun getText(cl:Calendar, mode:Int) : String {
-        val sb:StringBuilder = StringBuilder()
-        val f = DecimalFormat("00")
-        when(mode){
-            1->{
-                sb.append(cl.get(Calendar.YEAR))
-                sb.append("/")
-                sb.append(f.format(cl.get(Calendar.MONTH)))
-                sb.append("/")
-                sb.append(f.format(cl.get(Calendar.DATE)))
-            }
-            2->{
-                sb.append(f.format(cl.get(Calendar.HOUR)))
-                sb.append(":")
-                sb.append(f.format(cl.get(Calendar.MINUTE)))
-            }
-
-        }
-        return sb.toString()
     }
 
 }

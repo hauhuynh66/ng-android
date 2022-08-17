@@ -1,9 +1,16 @@
 package com.app.util
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.view.View
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import java.io.File
+import java.io.IOException
+import java.io.InputStream
+import java.net.HttpURLConnection
+import java.net.URL
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
@@ -99,6 +106,40 @@ class Utils {
                     }
                 }
             }
+        }
+
+        fun getBitmapFromURL(src: String?): Bitmap? {
+            return try {
+                val url = URL(src)
+                val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
+                connection.doInput = true
+                connection.connect()
+                val input: InputStream = connection.inputStream
+                BitmapFactory.decodeStream(input)
+            } catch (e: IOException) {
+                null
+            }
+        }
+
+        fun getText(cl:Calendar, mode:Int, separator : Char) : String {
+            val sb:StringBuilder = StringBuilder()
+            val f = DecimalFormat("00")
+            when(mode){
+                1->{
+                    sb.append(cl.get(Calendar.YEAR))
+                    sb.append(separator.toString())
+                    sb.append(f.format(cl.get(Calendar.MONTH)+1))
+                    sb.append(separator.toString())
+                    sb.append(f.format(cl.get(Calendar.DATE)))
+                }
+                2->{
+                    sb.append(f.format(cl.get(Calendar.HOUR)))
+                    sb.append(":")
+                    sb.append(f.format(cl.get(Calendar.MINUTE)))
+                }
+
+            }
+            return sb.toString()
         }
     }
 }
