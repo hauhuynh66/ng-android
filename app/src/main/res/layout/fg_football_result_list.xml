@@ -10,18 +10,18 @@
         android:id="@+id/selectors">
         <Spinner
             android:layout_width="0dp"
-            app:layout_constraintWidth_percent="0.7"
+            app:layout_constraintWidth_percent="0.5"
             android:layout_height="match_parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:id="@+id/league"/>
-        <Button
-            android:layout_width="60dp"
+            android:id="@+id/league"
+            app:layout_constraintRight_toLeftOf="@id/round"/>
+        <Spinner
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.5"
             android:layout_height="match_parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/league"
-            android:id="@+id/date_picker_actions"
-            app:layout_constraintHorizontal_bias="0.5"
-            android:background="@drawable/ic_baseline_calendar_today"/>
+            android:id="@+id/round"
+            app:layout_constraintLeft_toRightOf="@id/league"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

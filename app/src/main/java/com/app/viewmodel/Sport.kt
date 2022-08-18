@@ -2,24 +2,13 @@ package com.app.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.app.data.FootballResult
-import java.text.SimpleDateFormat
-import java.util.*
+import com.app.activity.sport.SportMainActivity
+import com.app.data.FootballTeam
 
 class Sport : ViewModel() {
-    val state = MutableLiveData(0)
-    val arg = MutableLiveData("")
-    val selectedDate = MutableLiveData(format(Date()))
-    //val season = MutableLiveData(Int)
-    val results = MutableLiveData(arrayListOf<FootballResult>())
-    val isDisplay = MutableLiveData(0)
-
-    private fun format(date : Date) : String{
-        val sf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        return try {
-            sf.format(date)
-        }catch (e:Exception){
-            ""
-        }
-    }
+    val state = MutableLiveData(SportMainActivity.SportStates.SportList)
+    val baseUrl : String = "https://v3.football.api-sports.io"
+    val apiKey : String = "207de13e407253dfbe98859d90d378ce"
+    val apiHost : String = "v3.football.api-sports.io"
+    val selectedClub : MutableLiveData<FootballTeam?> = MutableLiveData(null)
 }

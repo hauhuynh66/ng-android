@@ -1,5 +1,6 @@
 package com.app.task
 
+import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.provider.MediaStore
 import com.app.data.FileData
@@ -24,6 +25,7 @@ class FileDataCallable(private val contentResolver: ContentResolver, private val
         }
     }
 
+    @SuppressLint("Range")
     private fun getImageFileData(contentResolver : ContentResolver) : ArrayList<FileData> {
         val ret = arrayListOf<FileData>()
         //EXTERNAL
@@ -38,10 +40,10 @@ class FileDataCallable(private val contentResolver: ContentResolver, private val
             null, null, null)
         with(cursor!!){
             while(this.moveToNext()){
-                val name = cursor.getString(cursor.getColumnIndex(android.provider.MediaStore.Images.Media.DISPLAY_NAME))
-                val size = cursor.getLong(cursor.getColumnIndex(android.provider.MediaStore.Images.Media.SIZE))
+                val name = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME))
+                val size = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media.SIZE))
                 val date = Date(cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media.DATE_ADDED)))
-                val path = cursor.getString(cursor.getColumnIndex(android.provider.MediaStore.Images.Media.DATA))
+                val path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA))
                 ret.add(FileData(name,date, size, path, "IMAGE"))
             }
         }
@@ -57,16 +59,17 @@ class FileDataCallable(private val contentResolver: ContentResolver, private val
             null, null, null)
         with(cursorI!!){
             while(this.moveToNext()){
-                val name = cursorI.getString(cursorI.getColumnIndex(android.provider.MediaStore.Images.Media.DISPLAY_NAME))
-                val size = cursorI.getLong(cursorI.getColumnIndex(android.provider.MediaStore.Images.Media.SIZE))
+                val name = cursorI.getString(cursorI.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME))
+                val size = cursorI.getLong(cursorI.getColumnIndex(MediaStore.Images.Media.SIZE))
                 val date = Date(cursorI.getLong(cursorI.getColumnIndex(MediaStore.Images.Media.DATE_ADDED)))
-                val path = cursorI.getString(cursorI.getColumnIndex(android.provider.MediaStore.Images.Media.DATA))
+                val path = cursorI.getString(cursorI.getColumnIndex(MediaStore.Images.Media.DATA))
                 ret.add(FileData(name,date, size, path, "IMAGE"))
             }
         }
         return ret
     }
 
+    @SuppressLint("Range")
     private fun getVideoFileData(contentResolver : ContentResolver) : ArrayList<FileData> {
         val ret = arrayListOf<FileData>()
         //EXTERNAL
@@ -81,10 +84,10 @@ class FileDataCallable(private val contentResolver: ContentResolver, private val
             null, null, null)
         with(cursorE!!){
             while(this.moveToNext()){
-                val name = cursorE.getString(cursorE.getColumnIndex(android.provider.MediaStore.Images.Media.DISPLAY_NAME))
-                val size = cursorE.getLong(cursorE.getColumnIndex(android.provider.MediaStore.Images.Media.SIZE))
+                val name = cursorE.getString(cursorE.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME))
+                val size = cursorE.getLong(cursorE.getColumnIndex(MediaStore.Images.Media.SIZE))
                 val date = Date(cursorE.getLong(cursorE.getColumnIndex(MediaStore.Images.Media.DATE_ADDED)))
-                val path = cursorE.getString(cursorE.getColumnIndex(android.provider.MediaStore.Images.Media.DATA))
+                val path = cursorE.getString(cursorE.getColumnIndex(MediaStore.Images.Media.DATA))
                 ret.add(FileData(name,date, size, path, "Video"))
             }
         }
@@ -101,16 +104,17 @@ class FileDataCallable(private val contentResolver: ContentResolver, private val
             null, null, null)
         with(cursorI!!){
             while(this.moveToNext()){
-                val name = cursorI.getString(cursorI.getColumnIndex(android.provider.MediaStore.Images.Media.DISPLAY_NAME))
-                val size = cursorI.getLong(cursorI.getColumnIndex(android.provider.MediaStore.Images.Media.SIZE))
+                val name = cursorI.getString(cursorI.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME))
+                val size = cursorI.getLong(cursorI.getColumnIndex(MediaStore.Images.Media.SIZE))
                 val date = Date(cursorI.getLong(cursorI.getColumnIndex(MediaStore.Images.Media.DATE_ADDED)))
-                val path = cursorI.getString(cursorI.getColumnIndex(android.provider.MediaStore.Images.Media.DATA))
+                val path = cursorI.getString(cursorI.getColumnIndex(MediaStore.Images.Media.DATA))
                 ret.add(FileData(name,date, size, path, "Video"))
             }
         }
         return ret
     }
 
+    @SuppressLint("Range")
     private fun getAudioFileData(contentResolver : ContentResolver) : ArrayList<FileData> {
         val ret = arrayListOf<FileData>()
         //EXTERNAL
@@ -125,10 +129,10 @@ class FileDataCallable(private val contentResolver: ContentResolver, private val
             null, null, null)
         with(cursorE!!){
             while(this.moveToNext()){
-                val name = cursorE.getString(cursorE.getColumnIndex(android.provider.MediaStore.Images.Media.DISPLAY_NAME))
-                val size = cursorE.getLong(cursorE.getColumnIndex(android.provider.MediaStore.Images.Media.SIZE))
+                val name = cursorE.getString(cursorE.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME))
+                val size = cursorE.getLong(cursorE.getColumnIndex(MediaStore.Images.Media.SIZE))
                 val date = Date(cursorE.getLong(cursorE.getColumnIndex(MediaStore.Images.Media.DATE_ADDED)))
-                val path = cursorE.getString(cursorE.getColumnIndex(android.provider.MediaStore.Images.Media.DATA))
+                val path = cursorE.getString(cursorE.getColumnIndex(MediaStore.Images.Media.DATA))
                 ret.add(FileData(name,date, size, path, "Audio"))
             }
         }
@@ -144,16 +148,17 @@ class FileDataCallable(private val contentResolver: ContentResolver, private val
             null, null, null)
         with(cursorI!!){
             while(this.moveToNext()){
-                val name = cursorI.getString(cursorI.getColumnIndex(android.provider.MediaStore.Images.Media.DISPLAY_NAME))
-                val size = cursorI.getLong(cursorI.getColumnIndex(android.provider.MediaStore.Images.Media.SIZE))
+                val name = cursorI.getString(cursorI.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME))
+                val size = cursorI.getLong(cursorI.getColumnIndex(MediaStore.Images.Media.SIZE))
                 val date = Date(cursorI.getLong(cursorI.getColumnIndex(MediaStore.Images.Media.DATE_ADDED)))
-                val path = cursorI.getString(cursorI.getColumnIndex(android.provider.MediaStore.Images.Media.DATA))
+                val path = cursorI.getString(cursorI.getColumnIndex(MediaStore.Images.Media.DATA))
                 ret.add(FileData(name,date, size, path, "Audio"))
             }
         }
         return ret
     }
 
+    @SuppressLint("Range")
     private fun getDownloadFileData(contentResolver : ContentResolver) : ArrayList<FileData> {
         val ret = arrayListOf<FileData>()
         val uriI = MediaStore.Downloads.INTERNAL_CONTENT_URI
@@ -167,10 +172,10 @@ class FileDataCallable(private val contentResolver: ContentResolver, private val
             null, null, null)
         with(cursorI!!){
             while(this.moveToNext()){
-                val name = cursorI.getString(cursorI.getColumnIndex(android.provider.MediaStore.Images.Media.DISPLAY_NAME))
-                val size = cursorI.getLong(cursorI.getColumnIndex(android.provider.MediaStore.Images.Media.SIZE))
+                val name = cursorI.getString(cursorI.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME))
+                val size = cursorI.getLong(cursorI.getColumnIndex(MediaStore.Images.Media.SIZE))
                 val date = Date(cursorI.getLong(cursorI.getColumnIndex(MediaStore.Images.Media.DATE_ADDED)))
-                val path = cursorI.getString(cursorI.getColumnIndex(android.provider.MediaStore.Images.Media.DATA))
+                val path = cursorI.getString(cursorI.getColumnIndex(MediaStore.Images.Media.DATA))
                 ret.add(FileData(name,date, size, path, "DOWNLOAD"))
             }
         }
@@ -186,10 +191,10 @@ class FileDataCallable(private val contentResolver: ContentResolver, private val
             null, null, null)
         with(cursorE!!){
             while(this.moveToNext()){
-                val name = cursorE.getString(cursorE.getColumnIndex(android.provider.MediaStore.Images.Media.DISPLAY_NAME))
-                val size = cursorE.getLong(cursorE.getColumnIndex(android.provider.MediaStore.Images.Media.SIZE))
+                val name = cursorE.getString(cursorE.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME))
+                val size = cursorE.getLong(cursorE.getColumnIndex(MediaStore.Images.Media.SIZE))
                 val date = Date(cursorE.getLong(cursorE.getColumnIndex(MediaStore.Images.Media.DATE_ADDED)))
-                val path = cursorE.getString(cursorE.getColumnIndex(android.provider.MediaStore.Images.Media.DATA))
+                val path = cursorE.getString(cursorE.getColumnIndex(MediaStore.Images.Media.DATA))
                 ret.add(FileData(name,date, size, path, "DOWNLOAD"))
             }
         }

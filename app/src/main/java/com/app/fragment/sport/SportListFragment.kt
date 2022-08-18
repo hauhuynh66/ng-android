@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.app.activity.sport.SportMainActivity
 import com.app.adapter.TextListAdapter
 import com.app.ngn.R
 import com.app.viewmodel.Sport
@@ -31,8 +32,15 @@ class SportListFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = TextListAdapter(requireContext(), data, object : TextListAdapter.Listener{
                 override fun onClick(data: String) {
-                    stateModel.arg.value = data
-                    stateModel.state.value = 1
+                    val value = when(data){
+                        "Football"->{
+                            SportMainActivity.SportStates.FootballResultList
+                        }
+                        else->{
+                            SportMainActivity.SportStates.SportList
+                        }
+                    }
+                    stateModel.state.value = value
                 }
 
                 override fun onLongClick(data: String) {

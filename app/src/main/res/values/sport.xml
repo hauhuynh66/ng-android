@@ -9,7 +9,6 @@
 
     <string-array name="sports">
         <item>Football</item>
-        <item>Soccer</item>
         <item>Volleyball</item>
         <item>Basketball</item>
     </string-array>
