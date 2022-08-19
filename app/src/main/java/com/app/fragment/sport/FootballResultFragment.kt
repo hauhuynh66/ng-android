@@ -108,6 +108,7 @@ class FootballResultFragment : Fragment() {
         val roundSpinner = view.findViewById<Spinner>(R.id.round)
         roundSpinner.adapter = NumberArrayAdapter(requireActivity(),R.layout.com_text, R.id.text ,
             arrayListOf(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38))
+
         roundSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 p1!!.apply {
@@ -133,7 +134,6 @@ class FootballResultFragment : Fragment() {
             when(it){
                 true->{
                     crossfade(arrayListOf(list), arrayListOf(progress), 1000)
-                    println(result.size)
                     list.adapter = FootballResultAdapter(requireContext(), result, object : FootballResultAdapter.Callback{
                         override fun onTeamClick(team: FootballTeam) {
                             model.selectedClub.value = team
