@@ -18,7 +18,6 @@ import com.app.util.Animation.Companion.crossfade
 import com.app.viewmodel.Sport
 
 class FootballTeamDetailFragment : Fragment() {
-    private lateinit var requestQueue: RequestQueue
     private val model : Sport by activityViewModels()
     private val postfix : String = "/teams"
     private var teamDetail : FootballTeamDetail? = null
@@ -34,7 +33,6 @@ class FootballTeamDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requestQueue = Volley.newRequestQueue(requireContext())
         val content = view.findViewById<ConstraintLayout>(R.id.content)
         val progress = view.findViewById<ProgressBar>(R.id.progress)
         this.isDisplay.observe(requireActivity()){
@@ -71,7 +69,7 @@ class FootballTeamDetailFragment : Fragment() {
             }
         }
         teamRequest.tag = "FB-TEAM"
-        this.requestQueue.add(teamRequest)
+        model.requestQueue.add(teamRequest)
     }
 
     fun processTeamDetailGeneral(json : String){

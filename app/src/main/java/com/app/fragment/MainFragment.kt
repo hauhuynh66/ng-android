@@ -29,15 +29,12 @@ class MainFragment : Fragment() {
             R.drawable.bryce_canyon
         )
         val carousel = view.findViewById<Carousel>(R.id.carousel)
-        println(carousel.currentIndex)
         carousel.setAdapter(object : Carousel.Adapter{
             override fun count(): Int {
                 return images.size
             }
 
             override fun populate(view: View?, index: Int) {
-                println(index)
-                println(carousel.currentIndex)
                 (view as ImageView).setImageResource(images[index])
             }
 

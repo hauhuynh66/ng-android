@@ -14,7 +14,7 @@ import com.app.ngn.R
 import com.app.task.ImageCallable
 import com.app.task.TaskRunner
 
-class FootballResultAdapter(val context : Context, val data : ArrayList<FootballResult>, val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class FootballResultAdapter(val context : Context, var data : ArrayList<FootballResult>, val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         return FootballViewHolder(inflater.inflate(R.layout.com_football_result, parent, false))
@@ -38,7 +38,7 @@ class FootballResultAdapter(val context : Context, val data : ArrayList<Football
                 callback.onTeamClick(data.homeTeam)
             }
 
-            logo1.setOnClickListener {
+            logo2.setOnClickListener {
                 callback.onTeamClick(data.awayTeam)
             }
 

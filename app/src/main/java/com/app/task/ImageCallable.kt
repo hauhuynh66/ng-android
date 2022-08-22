@@ -14,6 +14,5 @@ class ImageCallable(private val url : String) : Callable<Bitmap?> {
         }catch (e : Exception){
             null
         }
-
     }
 }

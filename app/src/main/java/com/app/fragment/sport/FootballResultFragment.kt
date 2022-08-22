@@ -10,36 +10,35 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.RequestQueue
 import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.app.activity.sport.SportMainActivity
 import com.app.adapter.FootballResultAdapter
 import com.app.adapter.NumberArrayAdapter
 import com.app.data.FootballResult
 import com.app.data.FootballTeam
 import com.app.ngn.R
-import com.app.util.Animation.Companion.crossfade
+import com.app.util.Animation
 import com.app.viewmodel.Sport
 import org.json.JSONObject
 
 class FootballResultFragment : Fragment() {
-    private lateinit var requestQueue: RequestQueue
     private val model : Sport by activityViewModels()
     private val postfix : String = "/fixtures"
-    private val isDisplay = MutableLiveData(true)
     private val round = MutableLiveData(1)
-    private var result = arrayListOf<FootballResult>()
+    private lateinit var result : ArrayList<FootballResult>
+    private lateinit var progress : ProgressBar
+    private lateinit var list : RecyclerView
+    private lateinit var adapter: FootballResultAdapter
 
     private fun getResultByRound(round : Int, strLeagueId : String){
-        this.isDisplay.value = false
         val url = model.baseUrl + postfix + "?league=" + strLeagueId + "&round=Regular Season - " + round + "&season=" + 2022
         val fbRequest = object : StringRequest(
             Method.GET, url,
             {
+                adapter.data = processFootballResult(it)
+                adapter.notifyDataSetChanged()
                 println(it)
-                result = processFootballResult(it)
-                this.isDisplay.value = true
+                //Animation.crossfade(arrayListOf(list), arrayListOf(progress), 1000)
             },
             {
                 println(it.message)
@@ -53,7 +52,7 @@ class FootballResultFragment : Fragment() {
             }
         }
         fbRequest.tag = "FB-LIST"
-        requestQueue.add(fbRequest)
+        model.requestQueue.add(fbRequest)
     }
 
     private fun processFootballResult(json : String) : ArrayList<FootballResult>{
@@ -61,7 +60,7 @@ class FootballResultFragment : Fragment() {
         val arr = arrayListOf<FootballResult>()
         for(i in 0 until resArray.length()){
             val obj = resArray.getJSONObject(i)
-            val referee = obj.getJSONObject("fixture").getString("referee")
+            val referee = obj.getJSONObject("fixture").getString("referee").substringBefore(",")
             val teams = obj.getJSONObject("teams")
             val homeTeam = FootballTeam(teams.getJSONObject("home").getInt("id"),
                 teams.getJSONObject("home").getString("name"),
@@ -69,7 +68,6 @@ class FootballResultFragment : Fragment() {
             val awayTeam = FootballTeam(teams.getJSONObject("away").getInt("id"),
                 teams.getJSONObject("away").getString("name"),
                 teams.getJSONObject("away").getString("logo"))
-
             val homeScore = if(obj.getJSONObject("goals").isNull("home")){
                 null
             }else{
@@ -97,9 +95,13 @@ class FootballResultFragment : Fragment() {
         return inflater.inflate(R.layout.fg_football_result_list, container, false)
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requestQueue = Volley.newRequestQueue(requireContext())
+        result = arrayListOf()
         val leagueSpinner = view.findViewById<Spinner>(R.id.league)
         val leagueSpinnerAdapter = ArrayAdapter.createFromResource(requireContext(),R.array.fbl, android.R.layout.simple_spinner_item)
         leagueSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -124,27 +126,22 @@ class FootballResultFragment : Fragment() {
             }
         }
 
-        val list = view.findViewById<RecyclerView>(R.id.item_list)
-        val progress = view.findViewById<ProgressBar>(R.id.progress)
-        list.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        this.round.observe(requireActivity()){
-            getResultByRound(this.round.value!!, "39")
-        }
-        this.isDisplay.observe(requireActivity()){
-            when(it){
-                true->{
-                    crossfade(arrayListOf(list), arrayListOf(progress), 1000)
-                    list.adapter = FootballResultAdapter(requireContext(), result, object : FootballResultAdapter.Callback{
-                        override fun onTeamClick(team: FootballTeam) {
-                            model.selectedClub.value = team
-                            model.state.value = SportMainActivity.SportStates.FootballTeamDetail
-                        }
-                    })
-                }
-                false->{
-                    crossfade(arrayListOf(progress), arrayListOf(list), 1000)
-                }
+        list = view.findViewById(R.id.item_list)
+        progress = view.findViewById(R.id.progress)
+        
+        adapter = FootballResultAdapter(requireContext(), result, object : FootballResultAdapter.Callback{
+            override fun onTeamClick(team: FootballTeam) {
+                model.state.value = SportMainActivity.SportStates.FootballTeamDetail
+                model.selectedClub.value = team
             }
+        })
+
+        list.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        list.adapter = adapter
+
+        this.round.observe(requireActivity()){
+            //Animation.crossfade(arrayListOf(progress), arrayListOf(list), 1000)
+            getResultByRound(this.round.value!!, "39")
         }
     }
 }

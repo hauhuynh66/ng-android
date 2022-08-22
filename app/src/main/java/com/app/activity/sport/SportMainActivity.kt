@@ -25,6 +25,7 @@ class SportMainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.title).apply {
             text = "Sport"
         }
+        stateModel.init(this)
 
         stateModel.state.observe(this){
             when(it){

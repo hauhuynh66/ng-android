@@ -7,7 +7,7 @@ import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
 class TaskRunner() {
-    private val executor:Executor = Executors.newSingleThreadExecutor()
+    private val executor = Executors.newSingleThreadExecutor()
     private val handler:Handler = Handler(Looper.getMainLooper())
 
     interface Callback<T>{
@@ -15,11 +15,12 @@ class TaskRunner() {
     }
 
     fun <T> execute(call:Callable<T>, callback:Callback<T>){
-        executor.execute {
+        val future = executor.submit{
             val result = call.call()
             handler.post {
                 callback.onComplete(result)
             }
         }
+
     }
 }
