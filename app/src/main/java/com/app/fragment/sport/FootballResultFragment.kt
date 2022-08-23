@@ -37,8 +37,8 @@ class FootballResultFragment : Fragment() {
             {
                 adapter.data = processFootballResult(it)
                 adapter.notifyDataSetChanged()
-                println(it)
-                //Animation.crossfade(arrayListOf(list), arrayListOf(progress), 1000)
+                progress.visibility = View.GONE
+                list.visibility = View.VISIBLE
             },
             {
                 println(it.message)
@@ -99,6 +99,11 @@ class FootballResultFragment : Fragment() {
         super.onResume()
     }
 
+    override fun onPause() {
+        super.onPause()
+        println(round.value)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         result = arrayListOf()
@@ -140,7 +145,8 @@ class FootballResultFragment : Fragment() {
         list.adapter = adapter
 
         this.round.observe(requireActivity()){
-            //Animation.crossfade(arrayListOf(progress), arrayListOf(list), 1000)
+            progress.visibility = View.VISIBLE
+            list.visibility = View.GONE
             getResultByRound(this.round.value!!, "39")
         }
     }

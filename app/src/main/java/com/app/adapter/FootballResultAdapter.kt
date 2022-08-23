@@ -29,61 +29,66 @@ class FootballResultAdapter(val context : Context, var data : ArrayList<Football
     }
 
     class FootballViewHolder(val v: View) : RecyclerView.ViewHolder(v){
-        fun bind(data : FootballResult, callback: Callback){
-            val runner = TaskRunner()
-            val logo1 = v.findViewById<ImageView>(R.id.team_icon)
-            val logo2 = v.findViewById<ImageView>(R.id.team_icon2)
+        private var result : FootballResult? = null
+        fun bind(data : FootballResult, callback: Callback, ){
+            if(result == null || data !=result){
+                println(data.homeTeam.name)
+                result = data
+                val runner = TaskRunner()
+                val logo1 = v.findViewById<ImageView>(R.id.team_icon)
+                val logo2 = v.findViewById<ImageView>(R.id.team_icon2)
 
-            logo1.setOnClickListener {
-                callback.onTeamClick(data.homeTeam)
-            }
+                logo1.setOnClickListener {
+                    callback.onTeamClick(data.homeTeam)
+                }
 
-            logo2.setOnClickListener {
-                callback.onTeamClick(data.awayTeam)
-            }
+                logo2.setOnClickListener {
+                    callback.onTeamClick(data.awayTeam)
+                }
 
-            runner.execute(ImageCallable(data.homeTeam.iconUrl), object : TaskRunner.Callback<Bitmap?>{
-                override fun onComplete(result: Bitmap?) {
-                    if (result!=null){
-                        logo1.setImageBitmap(result)
+                runner.execute(ImageCallable(data.homeTeam.iconUrl), object : TaskRunner.Callback<Bitmap?>{
+                    override fun onComplete(result: Bitmap?) {
+                        if (result!=null){
+                            logo1.setImageBitmap(result)
+                        }
+                    }
+                })
+
+                runner.execute(ImageCallable(data.awayTeam.iconUrl), object : TaskRunner.Callback<Bitmap?>{
+                    override fun onComplete(result: Bitmap?) {
+                        if (result!=null){
+                            logo2.setImageBitmap(result)
+                        }
+                    }
+                })
+
+                v.findViewById<TextView>(R.id.score1).apply {
+                    text = if(data.homeGoal!=null){
+                        data.homeGoal.toString()
+                    }else{
+                        "_"
                     }
                 }
-            })
 
-            runner.execute(ImageCallable(data.awayTeam.iconUrl), object : TaskRunner.Callback<Bitmap?>{
-                override fun onComplete(result: Bitmap?) {
-                    if (result!=null){
-                        logo2.setImageBitmap(result)
+                v.findViewById<TextView>(R.id.score2).apply {
+                    text = if(data.awayGoal!=null){
+                        data.awayGoal.toString()
+                    }else{
+                        "_"
                     }
                 }
-            })
 
-            v.findViewById<TextView>(R.id.score1).apply {
-                text = if(data.homeGoal!=null){
-                    data.homeGoal.toString()
-                }else{
-                    "_"
+                v.findViewById<TextView>(R.id.teamName).apply {
+                    text = data.homeTeam.name
                 }
-            }
 
-            v.findViewById<TextView>(R.id.score2).apply {
-                text = if(data.awayGoal!=null){
-                    data.awayGoal.toString()
-                }else{
-                    "_"
+                v.findViewById<TextView>(R.id.teamName2).apply {
+                    text = data.awayTeam.name
                 }
-            }
 
-            v.findViewById<TextView>(R.id.teamName).apply {
-                text = data.homeTeam.name
-            }
-
-            v.findViewById<TextView>(R.id.teamName2).apply {
-                text = data.awayTeam.name
-            }
-
-            v.findViewById<TextView>(R.id.referee).apply {
-                text = data.referee
+                v.findViewById<TextView>(R.id.referee).apply {
+                    text = data.referee
+                }
             }
         }
     }

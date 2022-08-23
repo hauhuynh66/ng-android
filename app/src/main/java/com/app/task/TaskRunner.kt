@@ -3,7 +3,6 @@ package com.app.task
 import android.os.Handler
 import android.os.Looper
 import java.util.concurrent.Callable
-import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
 class TaskRunner() {
@@ -15,12 +14,11 @@ class TaskRunner() {
     }
 
     fun <T> execute(call:Callable<T>, callback:Callback<T>){
-        val future = executor.submit{
+        executor.submit{
             val result = call.call()
             handler.post {
                 callback.onComplete(result)
             }
         }
-
     }
 }

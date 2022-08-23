@@ -15,10 +15,12 @@ class LoginActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_holder)
+
         if(viewModel.auth.currentUser!=null){
             val intent = Intent(this, NavigatorActivity::class.java)
             startActivity(intent)
         }
+
         supportFragmentManager.beginTransaction().replace(R.id.container, LoginOptionsFragment()).commit()
         viewModel.currentState.observe(this) {
             when (it) {

@@ -17,7 +17,6 @@ import com.app.util.Animation.Companion.crossfade
 class MessageFragment(var messages : ArrayList<Message>) : Fragment() {
     private lateinit var adapter: MessageAdapter
     private lateinit var progressBar: ProgressBar
-    private lateinit var contentLayout : ConstraintLayout
     private lateinit var list : RecyclerView
     var isActivated = false
     override fun onCreateView(
@@ -33,9 +32,7 @@ class MessageFragment(var messages : ArrayList<Message>) : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         list = view.findViewById(R.id.item_list)
         progressBar = view.findViewById(R.id.progress)
-        contentLayout = view.findViewById(R.id.contentLayout)
         progressBar.visibility = View.VISIBLE
-        contentLayout.visibility = View.INVISIBLE
         adapter = MessageAdapter(requireContext(), messages)
         list.adapter = adapter
         list.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -54,7 +51,7 @@ class MessageFragment(var messages : ArrayList<Message>) : Fragment() {
     }
 
     fun activate(){
-        crossfade(arrayListOf(contentLayout), arrayListOf(progressBar), 1000)
+        crossfade(arrayListOf(list), arrayListOf(progressBar), 1000)
         isActivated = true
     }
 }
