@@ -35,6 +35,6 @@ class OneColumnListHelperCallback(private val adapter: NoteAdapter) : ItemTouchH
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        TODO("Not yet implemented")
+
     }
 }

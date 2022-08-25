@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.activity.CVActivity
 import com.app.activity.MessageActivity
@@ -33,31 +34,31 @@ class MiscFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         data = arrayListOf()
-        data.add(MiscData(null, object : MiscData.Listener{
+        data.add(MiscData(R.drawable.chat, "Message", object : MiscData.Listener{
             override fun onClick() {
                 val intent = Intent(requireActivity(), MessageActivity::class.java)
                 startActivity(intent)
             }
         }))
-        data.add(MiscData(null, object : MiscData.Listener{
+        data.add(MiscData(R.drawable.dj, "Music Player", object : MiscData.Listener{
             override fun onClick() {
                 val intent = Intent(requireActivity(), MusicBrowserActivity::class.java)
                 startActivity(intent)
             }
         }))
-        data.add(MiscData(null, object : MiscData.Listener{
+        data.add(MiscData(R.drawable.folder, "File Explorer", object : MiscData.Listener{
             override fun onClick() {
                 val intent = Intent(requireActivity(), FileExplorerActivity::class.java)
                 startActivity(intent)
             }
         }))
-        data.add(MiscData(null, object : MiscData.Listener{
+        data.add(MiscData(R.drawable.cloudy, "Weather",object : MiscData.Listener{
             override fun onClick() {
                 val intent = Intent(requireActivity(), WeatherActivity::class.java)
                 startActivity(intent)
             }
         }))
-        data.add(MiscData(null, object : MiscData.Listener{
+        data.add(MiscData(R.drawable.vision, "OpenCV", object : MiscData.Listener{
             override fun onClick() {
                 val options = arrayListOf("Orb")
                 val opts = arrayListOf<OptionBottomSheet.BottomSheetData>()
@@ -81,7 +82,7 @@ class MiscFragment : Fragment() {
             }
         }))
 
-        data.add(MiscData(null, object : MiscData.Listener{
+        data.add(MiscData(R.drawable.sports, "Sport", object : MiscData.Listener{
             override fun onClick() {
                 val intent = Intent(requireActivity(), SportMainActivity::class.java)
                 startActivity(intent)
@@ -89,7 +90,7 @@ class MiscFragment : Fragment() {
         }))
 
         val list = view.findViewById<RecyclerView>(R.id.fg_misc_list)
-        list.layoutManager = SpanGridLayoutManager(requireContext(), 2)
-        list.adapter = MiscAdapter(requireContext(), data)
+        list.layoutManager = GridLayoutManager(requireContext(), 2)
+        list.adapter = MiscAdapter(requireContext(), data, 1)
     }
 }

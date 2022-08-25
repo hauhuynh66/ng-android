@@ -4,9 +4,9 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ngn.R
 
@@ -16,10 +16,10 @@ class DrawAdapter(val context : Context, var data : ArrayList<DrawUtilData>, val
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         return when(type){
             0->{
-                ColorHolder(inflater.inflate(R.layout.com_draw_color, parent, false))
+                ColorHolder(inflater.inflate(R.layout.com_draw, parent, false))
             }
             else->{
-                LineHolder(inflater.inflate(R.layout.com_draw_path, parent, false))
+                LineHolder(inflater.inflate(R.layout.com_draw, parent, false))
             }
         }
     }
@@ -47,10 +47,11 @@ class DrawAdapter(val context : Context, var data : ArrayList<DrawUtilData>, val
             }else{
                 holder.setBackgroundResource(0)
             }
-            val btn = v.findViewById<Button>(R.id.com_draw_color_action)
-            btn.setBackgroundColor(data.value)
-            btn.setOnClickListener {
-                listener.onClick(data.value)
+            v.findViewById<TextView>(R.id.display).apply {
+                setBackgroundColor(data.value)
+                setOnClickListener {
+                    listener.onClick(data.value)
+                }
             }
         }
     }
@@ -63,10 +64,12 @@ class DrawAdapter(val context : Context, var data : ArrayList<DrawUtilData>, val
             }else{
                 holder.setBackgroundResource(0)
             }
-            val sz = v.findViewById<TextView>(R.id.com_draw_path_action)
-            sz.text = data.value.toString()
-            sz.setOnClickListener {
-                listener.onClick(data.value)
+            v.findViewById<TextView>(R.id.display).apply{
+                setBackgroundColor(ContextCompat.getColor(context, R.color.green_1))
+                text = data.value.toString()
+                setOnClickListener {
+                    listener.onClick(data.value)
+                }
             }
         }
     }

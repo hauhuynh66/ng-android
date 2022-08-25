@@ -4,41 +4,38 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.toolbox.StringRequest
-import com.app.activity.sport.SportMainActivity
 import com.app.adapter.FootballResultAdapter
-import com.app.adapter.NumberArrayAdapter
 import com.app.data.FootballResult
 import com.app.data.FootballTeam
 import com.app.ngn.R
-import com.app.util.Animation
-import com.app.viewmodel.Sport
+import com.app.util.Animation.Companion.crossfade
+import com.app.viewmodel.Football
 import org.json.JSONObject
 
 class FootballResultFragment : Fragment() {
-    private val model : Sport by activityViewModels()
+    private val model : Football by activityViewModels()
     private val postfix : String = "/fixtures"
-    private val round = MutableLiveData(1)
     private lateinit var result : ArrayList<FootballResult>
     private lateinit var progress : ProgressBar
     private lateinit var list : RecyclerView
     private lateinit var adapter: FootballResultAdapter
 
-    private fun getResultByRound(round : Int, strLeagueId : String){
-        val url = model.baseUrl + postfix + "?league=" + strLeagueId + "&round=Regular Season - " + round + "&season=" + 2022
+    private fun getResult(strLeagueId : String){
+        crossfade(arrayListOf(progress), arrayListOf(list))
+        val date = "2022-08-20"
+        val url = model.baseUrl + postfix + "?league=" + strLeagueId + "&season=" + 2022 + "&date=" + date
         val fbRequest = object : StringRequest(
             Method.GET, url,
             {
                 adapter.data = processFootballResult(it)
                 adapter.notifyDataSetChanged()
-                progress.visibility = View.GONE
-                list.visibility = View.VISIBLE
+                crossfade(arrayListOf(list), arrayListOf(progress))
             },
             {
                 println(it.message)
@@ -92,51 +89,18 @@ class FootballResultFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        return inflater.inflate(R.layout.fg_football_result_list, container, false)
-    }
-
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        println(round.value)
+        return inflater.inflate(R.layout.fg_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         result = arrayListOf()
-        val leagueSpinner = view.findViewById<Spinner>(R.id.league)
-        val leagueSpinnerAdapter = ArrayAdapter.createFromResource(requireContext(),R.array.fbl, android.R.layout.simple_spinner_item)
-        leagueSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        leagueSpinner.adapter = leagueSpinnerAdapter
-
-        val roundSpinner = view.findViewById<Spinner>(R.id.round)
-        roundSpinner.adapter = NumberArrayAdapter(requireActivity(),R.layout.com_text, R.id.text ,
-            arrayListOf(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38))
-
-        roundSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                p1!!.apply {
-                    val value = findViewById<TextView>(R.id.text).text.toString().toInt()
-                    if(value!=this@FootballResultFragment.round.value){
-                        this@FootballResultFragment.round.value = value
-                    }
-                }
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-
-            }
-        }
-
         list = view.findViewById(R.id.item_list)
         progress = view.findViewById(R.id.progress)
         
         adapter = FootballResultAdapter(requireContext(), result, object : FootballResultAdapter.Callback{
             override fun onTeamClick(team: FootballTeam) {
-                model.state.value = SportMainActivity.SportStates.FootballTeamDetail
+                model.state.value = Football.State.TeamDetails
                 model.selectedClub.value = team
             }
         })
@@ -144,10 +108,6 @@ class FootballResultFragment : Fragment() {
         list.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         list.adapter = adapter
 
-        this.round.observe(requireActivity()){
-            progress.visibility = View.VISIBLE
-            list.visibility = View.GONE
-            getResultByRound(this.round.value!!, "39")
-        }
+        getResult("39")
     }
 }

@@ -42,6 +42,9 @@ class DrawView : View {
         mPaint.apply {
             this.color = color
         }
+        circlePaint.apply {
+            this.color = color
+        }
     }
 
     fun changePathWidth(width : Float){
@@ -64,6 +67,7 @@ class DrawView : View {
         val stretched = Bitmap.createScaledBitmap(bitmap, width, height, false)
         bg = stretched
         mCanvas!!.apply {
+            drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
             this.drawBitmap(stretched, 0f, 0f, mBitmapPaint)
             for(p: PathData in savedPath){
                 this.drawPath(p.path, p.paint)
@@ -90,7 +94,7 @@ class DrawView : View {
 
         circlePaint.apply {
             isAntiAlias = true
-            color = Color.BLUE
+            color = Color.GREEN
             style = Paint.Style.STROKE
             strokeJoin = Paint.Join.MITER
             strokeWidth = 4f
@@ -116,7 +120,7 @@ class DrawView : View {
 
         circlePaint.apply {
             isAntiAlias = true
-            color = Color.BLUE
+            color = Color.GREEN
             style = Paint.Style.STROKE
             strokeJoin = Paint.Join.MITER
             strokeWidth = 4f

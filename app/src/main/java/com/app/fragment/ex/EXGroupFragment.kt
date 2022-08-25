@@ -33,7 +33,7 @@ class EXGroupFragment : Fragment() {
             val intent = Intent(requireContext(), FileListActivity::class.java)
             when(i){
                 0->{
-                    data.add(MiscData(null, object : MiscData.Listener{
+                    data.add(MiscData(null, "Image" ,object : MiscData.Listener{
                         override fun onClick() {
                             intent.putExtra("TYPE", 1)
                             startActivity(intent)
@@ -41,7 +41,7 @@ class EXGroupFragment : Fragment() {
                     }))
                 }
                 1->{
-                    data.add(MiscData(null, object : MiscData.Listener{
+                    data.add(MiscData(null, "Video", object : MiscData.Listener{
                         override fun onClick() {
                             intent.putExtra("TYPE", 2)
                             startActivity(intent)
@@ -49,7 +49,7 @@ class EXGroupFragment : Fragment() {
                     }))
                 }
                 2->{
-                    data.add(MiscData(null, object : MiscData.Listener{
+                    data.add(MiscData(null, "Audio", object : MiscData.Listener{
                         override fun onClick() {
                             intent.putExtra("TYPE", 3)
                             startActivity(intent)
@@ -57,7 +57,7 @@ class EXGroupFragment : Fragment() {
                     }))
                 }
                 3->{
-                    data.add(MiscData(null, object : MiscData.Listener{
+                    data.add(MiscData(null, "Download", object : MiscData.Listener{
                         override fun onClick() {
                             intent.putExtra("TYPE", 4)
                             startActivity(intent)
@@ -68,7 +68,7 @@ class EXGroupFragment : Fragment() {
         }
         val iconList = view.findViewById<RecyclerView>(R.id.fg_ex_group1_list)
         val layoutManager = SpanLinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val adapter = MiscAdapter(requireActivity(), data)
+        val adapter = MiscAdapter(requireActivity(), data, 2)
         iconList.layoutManager = layoutManager
         iconList.adapter = adapter
     }

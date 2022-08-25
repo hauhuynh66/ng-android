@@ -6,6 +6,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -24,9 +25,14 @@ class CVActivity() : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.ac_cv)
+        setContentView(R.layout.ac_fragment_holder)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        findViewById<TextView>(R.id.title).apply {
+            text = "Computer Vision"
+        }
+
         val mode = intent.extras!!.getString("mode")
         when(mode){
             "Orb"->{

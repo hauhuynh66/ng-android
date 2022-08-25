@@ -73,6 +73,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_end="100dp"/>
+
     <androidx.constraintlayout.helper.widget.Carousel
         android:id="@+id/carousel"
         android:layout_width="wrap_content"

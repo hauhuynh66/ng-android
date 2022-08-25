@@ -4,15 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:layoutDescription="@xml/fg_main_scene">
-    <ImageView
+    app:layoutDescription="@xml/main_scene_land">
+    <include
         android:id="@+id/image"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/image_background_1"
-        app:layout_constraintHeight_percent="0.5"
-        app:layout_constraintTop_toTopOf="parent" />
+        layout="@layout/i_carousel" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/content"
@@ -20,6 +15,17 @@
         android:layout_height="0dp"
         app:layout_constraintHeight_percent="0.5"
         app:layout_constraintTop_toBottomOf="@id/image">
-
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="TITLE"
+            android:textSize="15pt"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.6" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.motion.widget.MotionLayout>

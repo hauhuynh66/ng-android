@@ -9,10 +9,9 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
@@ -34,6 +33,7 @@ import com.app.ngn.R
 import com.app.util.Animation.Companion.crossfade
 import com.app.util.Check.Companion.checkPermissions
 import com.app.view.SunPositionView
+import com.app.viewmodel.Weather
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -44,8 +44,7 @@ import java.util.*
 import kotlin.system.exitProcess
 
 class WeatherActivity : AppCompatActivity() {
-    private val key = "1f21f91e5b111cf398a465df830c423b"
-    private var url = "https://api.openweathermap.org/data/2.5/{mode}?lat={lat}&lon={lon}&appid={key}"
+    private val model : Weather by viewModels()
     private var lat : Double = 10.76
     private var lon : Double = 106.66
     private val default_lat = 10.76
@@ -53,7 +52,7 @@ class WeatherActivity : AppCompatActivity() {
     private lateinit var progressBar : ProgressBar
     private lateinit var contentView : ConstraintLayout
     private lateinit var requestQueue: RequestQueue
-    private var forecastData: LiveData<ForecastData> = MutableLiveData(ForecastData(arrayListOf(), ""))
+    private lateinit var forecastList : RecyclerView
     private lateinit var db: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,6 +64,7 @@ class WeatherActivity : AppCompatActivity() {
         requestQueue = Volley.newRequestQueue(this)
         progressBar = findViewById(R.id.progress)
         contentView = findViewById(R.id.content_view)
+        forecastList = findViewById(R.id.list1)
         contentView.visibility = View.GONE
         db = Room.databaseBuilder(this, AppDatabase::class.java, "db").fallbackToDestructiveMigration().build()
         process()
@@ -119,10 +119,10 @@ class WeatherActivity : AppCompatActivity() {
     }
 
     private fun getWeather(){
-        var weatherUrl = url.replace("{mode}", "weather")
+        var weatherUrl = model.url.replace("{mode}", "weather")
         weatherUrl = weatherUrl.replace("{lat}", lat.toString())
         weatherUrl = weatherUrl.replace("{lon}", lon.toString())
-        weatherUrl = weatherUrl.replace("{key}", key)
+        weatherUrl = weatherUrl.replace("{key}", model.key)
 
         println(weatherUrl)
 
@@ -184,10 +184,10 @@ class WeatherActivity : AppCompatActivity() {
     }
 
     private fun getForecast(){
-        var forecastUrl = url.replace("{mode}", "forecast")
+        var forecastUrl = model.url.replace("{mode}", "forecast")
         forecastUrl = forecastUrl.replace("{lat}", lat.toString())
         forecastUrl = forecastUrl.replace("{lon}", lon.toString())
-        forecastUrl = forecastUrl.replace("{key}", key)
+        forecastUrl = forecastUrl.replace("{key}", model.key)
         forecastUrl = forecastUrl.plus("&cnt=40")
         println(forecastUrl)
 
@@ -203,8 +203,8 @@ class WeatherActivity : AppCompatActivity() {
     }
 
     private fun processForecast(json: String){
-        val forecastList = findViewById<RecyclerView>(R.id.list1)
         val obj = JSONObject(json)
+        val list = arrayListOf<WeatherData>()
         val fcList = obj.getJSONArray("list")
         for(i in 0 until 40){
             val f = fcList.getJSONObject(i)
@@ -220,17 +220,27 @@ class WeatherActivity : AppCompatActivity() {
                 wind.getInt("deg"),
                 wind.getDouble("speed")
             )
-            forecastData.value!!.data.add(data)
+            list.add(data)
         }
-        forecastData.value!!.name = obj.getJSONObject("city").getString("name")
+        val cityName = obj.getJSONObject("city").getString("name")
+
+        if(model.forecast.value == null){
+            model.forecast.value = ForecastData(list, cityName)
+        }else{
+            model.forecast.value!!.apply {
+                data = list
+                name = cityName
+            }
+        }
+
 
         val title = findViewById<TextView>(R.id.title)
-        title.text = forecastData.value!!.name
+        title.text = model.forecast.value!!.name
 
-        dbProcess(forecastData.value!!.name)
+        dbProcess(model.forecast.value!!.name)
 
         forecastList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        forecastList.adapter = WeatherAdapter(this, forecastData.value!!.data)
+        forecastList.adapter = WeatherAdapter(this, model.forecast.value!!.data)
 
         val sunPositionView = findViewById<SunPositionView>(R.id.gauge)
         sunPositionView.sunrise = obj.getJSONObject("city").getLong("sunrise")

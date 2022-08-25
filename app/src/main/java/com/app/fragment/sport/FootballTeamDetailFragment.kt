@@ -1,24 +1,28 @@
 package com.app.fragment.sport
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
-import com.android.volley.RequestQueue
 import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.app.data.FootballTeamDetail
 import com.app.ngn.R
+import com.app.task.ImageCallable
+import com.app.task.TaskRunner
 import com.app.util.Animation.Companion.crossfade
-import com.app.viewmodel.Sport
+import com.app.viewmodel.Football
+import org.json.JSONObject
 
 class FootballTeamDetailFragment : Fragment() {
-    private val model : Sport by activityViewModels()
+    private val model : Football by activityViewModels()
     private val postfix : String = "/teams"
     private var teamDetail : FootballTeamDetail? = null
     private val isDisplay : MutableLiveData<Boolean> = MutableLiveData(true)
@@ -55,6 +59,10 @@ class FootballTeamDetailFragment : Fragment() {
             Method.GET, url,
             {
                 println(it)
+                teamDetail = processTeamDetailGeneral(it)
+                if(teamDetail!=null){
+                    display(teamDetail!!, view)
+                }
                 this.isDisplay.value = true
             },
             {
@@ -72,7 +80,43 @@ class FootballTeamDetailFragment : Fragment() {
         model.requestQueue.add(teamRequest)
     }
 
-    fun processTeamDetailGeneral(json : String){
+    fun processTeamDetailGeneral(json : String) : FootballTeamDetail?{
+        val obj = JSONObject(json)
+        return if(obj.getJSONArray("response").length()<1){
+            null
+        }else{
+            val res = obj.getJSONArray("response").getJSONObject(0)
+            val team = res.getJSONObject("team")
+            val venue = res.getJSONObject("venue")
+            FootballTeamDetail(
+                team.getString("name"),
+                team.getString("logo"),
+                team.getString("country"),
+                team.getInt("founded")
+            )
+        }
+    }
 
+    fun display(team : FootballTeamDetail, view : View?){
+        if(view!=null){
+            val runner = TaskRunner()
+            val icon = view.findViewById<ImageView>(R.id.team_icon)
+            runner.execute(ImageCallable(team.iconUrl), object : TaskRunner.Callback<Bitmap?>{
+                override fun onComplete(result: Bitmap?) {
+                    icon.setImageBitmap(result)
+                }
+            })
+            view.findViewById<TextView>(R.id.team_name).apply {
+                text = team.name
+            }
+
+            view.findViewById<TextView>(R.id.team_country).apply {
+                text = team.country
+            }
+
+            view.findViewById<TextView>(R.id.team_founded).apply {
+                text = team.founded.toString()
+            }
+        }
     }
 }

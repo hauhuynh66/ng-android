@@ -2,18 +2,26 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="20dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <Button
+    <ImageView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:minWidth="60dp"
-        android:minHeight="60dp"
-        app:layout_constraintWidth_percent="0.5"
-        app:layout_constraintDimensionRatio="w,1:1.3"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintWidth_percent="0.3"
+        app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:id="@+id/com_misc_actionBtn"/>
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/image"
+        android:padding="10dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="5pt"
+        android:gravity="center"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/text"
+        app:layout_constraintTop_toBottomOf="@id/image"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

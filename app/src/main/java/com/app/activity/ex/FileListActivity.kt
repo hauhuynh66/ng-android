@@ -32,6 +32,7 @@ class FileListActivity() : AppCompatActivity() {
         list = findViewById(R.id.ac_file_list_list)
         list.visibility = View.INVISIBLE
         val runner = TaskRunner()
+
         val listener = object : ExplorerListAdapter.Listener{
             override fun onCheck(path: String) {
 
@@ -49,6 +50,7 @@ class FileListActivity() : AppCompatActivity() {
 
             }
         }
+
         runner.execute(FileDataCallable(contentResolver, type),
             object : TaskRunner.Callback<ArrayList<FileData>>{
             override fun onComplete(result: ArrayList<FileData>) {

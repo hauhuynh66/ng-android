@@ -23,10 +23,10 @@ class ExplorerListAdapter(val context: Context, var data: ArrayList<FileData>,
         return if(!isGrid){
             when(viewType){
                 0->{
-                    EXListFileViewHolder(inflater.inflate(R.layout.com_ex_list_file,parent, false))
+                    EXListFileViewHolder(inflater.inflate(R.layout.com_item_holder,parent, false))
                 }
                 else->{
-                    EXListFolderViewHolder(inflater.inflate(R.layout.com_ex_list_dir,parent, false))
+                    EXListFolderViewHolder(inflater.inflate(R.layout.com_item_holder,parent, false))
                 }
             }
         }else{
@@ -67,7 +67,8 @@ class ExplorerListAdapter(val context: Context, var data: ArrayList<FileData>,
 
     class EXListFolderViewHolder(private val v: View) : RecyclerView.ViewHolder (v){
         fun bind(fileData: FileData, listener: Listener, position : Int, isMultiple: Boolean){
-            val chk = v.findViewById<CheckBox>(R.id.com_ex_list_check)
+            val chk = v.findViewById<CheckBox>(R.id.checkbox)
+            val chkGroup = v.findViewById<ConstraintLayout>(R.id.checkbox_group)
             chk.isChecked = fileData.checked
             chk.setOnClickListener {
                 if(chk.isChecked){
@@ -78,9 +79,9 @@ class ExplorerListAdapter(val context: Context, var data: ArrayList<FileData>,
                 fileData.checked = chk.isChecked
             }
 
-            chk.visibility = if(isMultiple) View.VISIBLE else View.GONE
+            chkGroup.visibility = if(isMultiple) View.VISIBLE else View.GONE
 
-            val next = v.findViewById<ConstraintLayout>(R.id.com_ex_list_info_group)
+            val next = v.findViewById<ConstraintLayout>(R.id.info_group)
             next.setOnClickListener{
                 listener.onClick(fileData.path, chk.isChecked, position)
             }
@@ -90,22 +91,32 @@ class ExplorerListAdapter(val context: Context, var data: ArrayList<FileData>,
                 true
             }
 
-            val name = v.findViewById<TextView>(R.id.com_ex_list_name)
-            val size = v.findViewById<TextView>(R.id.com_ex_list_size)
-            val createdDate = v.findViewById<TextView>(R.id.com_ex_list_date)
-            name.text = fileData.name
-
-            if(fileData.size!=null){
-                size.text = fileData.size.toString()
+            v.findViewById<TextView>(R.id.title).apply {
+                text = fileData.name
             }
 
-            createdDate.text = formatDate(fileData.createDate)
+            v.findViewById<TextView>(R.id.description2).apply {
+                if(fileData.size!=null){
+                    text = fileData.size.toString()
+                }
+            }
+
+            v.findViewById<TextView>(R.id.description1).apply {
+                text = formatDate(fileData.createDate)
+            }
+
+            v.findViewById<ImageView>(R.id.icon).apply {
+                setImageResource(R.drawable.ic_baseline_folder)
+            }
+
+
         }
     }
 
     class EXListFileViewHolder(private val v:View) : RecyclerView.ViewHolder(v){
         fun bind(fileData: FileData, listener: Listener, position : Int, isMultiple: Boolean){
-            val chk = v.findViewById<CheckBox>(R.id.com_ex_list_check)
+            val chk = v.findViewById<CheckBox>(R.id.checkbox)
+            val chkGroup = v.findViewById<ConstraintLayout>(R.id.checkbox_group)
             chk.isChecked = fileData.checked
             chk.setOnClickListener {
                 if(chk.isChecked){
@@ -116,9 +127,9 @@ class ExplorerListAdapter(val context: Context, var data: ArrayList<FileData>,
                 fileData.checked = chk.isChecked
             }
 
-            chk.visibility = if(isMultiple) View.VISIBLE else View.GONE
+            chkGroup.visibility = if(isMultiple) View.VISIBLE else View.GONE
 
-            val next = v.findViewById<ConstraintLayout>(R.id.com_ex_list_info_group)
+            val next = v.findViewById<ConstraintLayout>(R.id.info_group)
             next.setOnClickListener{
                 listener.onClick(fileData.path, chk.isChecked, position)
             }
@@ -128,14 +139,21 @@ class ExplorerListAdapter(val context: Context, var data: ArrayList<FileData>,
                 true
             }
 
-            val name = v.findViewById<TextView>(R.id.com_ex_list_name)
-            val size = v.findViewById<TextView>(R.id.com_ex_list_size)
-            val createdDate = v.findViewById<TextView>(R.id.com_ex_list_date)
-            name.text = fileData.name
-            if(fileData.size!=null){
-                size.text = fileData.size.toString()
+            v.findViewById<TextView>(R.id.title).apply {
+                text = fileData.name
             }
-            createdDate.text = formatDate(fileData.createDate)
+            v.findViewById<TextView>(R.id.description2).apply {
+                if(fileData.size!=null){
+                    text = fileData.size.toString()
+                }
+            }
+            v.findViewById<TextView>(R.id.description1).apply {
+                text = formatDate(fileData.createDate)
+            }
+
+            v.findViewById<ImageView>(R.id.icon).apply {
+                setImageResource(R.drawable.ic_baseline_description)
+            }
         }
     }
 

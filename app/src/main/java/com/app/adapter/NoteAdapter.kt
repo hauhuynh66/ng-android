@@ -54,10 +54,10 @@ class NoteAdapter(val context: Context, val data:List<Note>, private val callbac
 
     class NoteViewHolder(private val v: View) : RecyclerView.ViewHolder(v){
         fun bind(note: Note, callback: Callback?){
-            val title = v.findViewById<TextView>(R.id.com_note_title)
-            val content = v.findViewById<TextView>(R.id.com_note_content)
-            val date = v.findViewById<TextView>(R.id.com_note_displayDate)
-            val del = v.findViewById<Button>(R.id.com_note_delete)
+            val title = v.findViewById<TextView>(R.id.title)
+            val content = v.findViewById<TextView>(R.id.body_text)
+            val date = v.findViewById<TextView>(R.id.display_date)
+            val del = v.findViewById<Button>(R.id.delete_btn)
             title.text = note.title
             content.text = note.content
             date.text = formatDate(note.displayDate)
