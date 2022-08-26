@@ -4,8 +4,8 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.util.Pair
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewpager2.widget.ViewPager2
 import com.app.adapter.MusicBrowserFragmentAdapter
@@ -56,10 +56,11 @@ class MusicBrowserActivity : AppCompatActivity() {
             }
         }
 
-        val search = findViewById<SearchView>(R.id.search_view)
-        search.setOnSearchClickListener {
-            val intent = Intent(this, MusicSearchActivity::class.java)
-            startActivity(intent)
+        findViewById<ImageView>(R.id.search).apply {
+            setOnClickListener{
+                val intent = Intent(this@MusicBrowserActivity, MusicSearchActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 }

@@ -21,51 +21,65 @@ class SunPositionView : View {
     private val padding = 20f
 
     constructor(context: Context?) : super(context){
-        dashedLinePaint.color = Color.BLUE
-        dashedLinePaint.strokeWidth = 6f
-        dashedLinePaint.style = Paint.Style.STROKE
-        dashedLinePaint.isAntiAlias = true
-        dashedLinePaint.pathEffect = DashPathEffect(floatArrayOf(30f, 10f), 0f)
+        dashedLinePaint.apply {
+            color = Color.BLUE
+            strokeWidth = 6f
+            style = Paint.Style.STROKE
+            isAntiAlias = true
+            pathEffect = DashPathEffect(floatArrayOf(10f, 20f), 0f)
+        }
 
-        linePaint.color = Color.YELLOW
-        linePaint.strokeWidth = 10f
-        linePaint.style = Paint.Style.STROKE
-        linePaint.isAntiAlias = true
+        linePaint.apply {
+            color = Color.YELLOW
+            strokeWidth = 10f
+            style = Paint.Style.STROKE
+            isAntiAlias = true
+        }
 
         val size = 5f
-        textPaint.color = Color.BLACK
         val textSize = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_PT,
             size, resources.displayMetrics
         )
-        textPaint.textSize = textSize
         val customTypeface =
             ResourcesCompat.getCachedFont(context!!, R.font.audiowide)
-        textPaint.typeface = customTypeface
+
+        textPaint.apply {
+            color = Color.BLACK
+            this.textSize = textSize
+            typeface = customTypeface
+        }
     }
 
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs){
-        dashedLinePaint.color = Color.BLUE
-        dashedLinePaint.strokeWidth = 6f
-        dashedLinePaint.style = Paint.Style.STROKE
-        dashedLinePaint.isAntiAlias = true
-        dashedLinePaint.pathEffect = DashPathEffect(floatArrayOf(10f, 20f), 0f)
+        dashedLinePaint.apply {
+            color = Color.BLUE
+            strokeWidth = 6f
+            style = Paint.Style.STROKE
+            isAntiAlias = true
+            pathEffect = DashPathEffect(floatArrayOf(10f, 20f), 0f)
+        }
 
-        linePaint.color = Color.YELLOW
-        linePaint.strokeWidth = 10f
-        linePaint.style = Paint.Style.STROKE
-        linePaint.isAntiAlias = true
+        linePaint.apply {
+            color = Color.YELLOW
+            strokeWidth = 10f
+            style = Paint.Style.STROKE
+            isAntiAlias = true
+        }
 
         val size = 5f
-        textPaint.color = Color.BLACK
         val textSize = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_PT,
             size, resources.displayMetrics
         )
-        textPaint.textSize = textSize
         val customTypeface =
             ResourcesCompat.getCachedFont(context!!, R.font.audiowide)
-        textPaint.typeface = customTypeface
+
+        textPaint.apply {
+            color = Color.BLACK
+            this.textSize = textSize
+            typeface = customTypeface
+        }
     }
 
     fun reload(current : Long){

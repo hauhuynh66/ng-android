@@ -28,6 +28,10 @@ class FootballResultAdapter(val context : Context, var data : ArrayList<Football
     class FootballViewHolder(v : View) : RecyclerView.ViewHolder(v){
 
         fun bind(data : FootballResult, callback: Callback){
+            itemView.setOnClickListener {
+                callback.onClick(data)
+            }
+
             itemView.findViewById<ImageView>(R.id.team_icon).setOnClickListener {
                 callback.onTeamClick(data.homeTeam)
             }
@@ -68,5 +72,6 @@ class FootballResultAdapter(val context : Context, var data : ArrayList<Football
 
     interface Callback{
         fun onTeamClick(team : FootballTeam)
+        fun onClick(overview : FootballResult)
     }
 }

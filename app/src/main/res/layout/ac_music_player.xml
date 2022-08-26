@@ -6,7 +6,7 @@
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/design_default_color_primary"
+        android:background="@color/pink"
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/toolbar"
         android:transitionName="player">

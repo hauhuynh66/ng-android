@@ -3,6 +3,7 @@ package com.app.activity.mp
 import android.content.ComponentName
 import android.media.AudioManager
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
@@ -14,6 +15,7 @@ import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.MutableLiveData
 import androidx.room.Room
 import com.app.model.AppDatabase
 import com.app.ngn.R
@@ -26,8 +28,10 @@ class MusicPlayerActivity : AppCompatActivity() {
     private lateinit var prev : ImageButton
     private lateinit var displayView : View
     private lateinit var db : AppDatabase
-    private var pos : Long = 0
-    private var max : Long = 0
+    private lateinit var countDownTimer: CountDownTimer
+    private val current = MutableLiveData(0L)
+    private var pos : Long = 0L
+    private var max : Long = 0L
     private val connectionCallbacks = object : MediaBrowserCompat.ConnectionCallback(){
         override fun onConnected() {
             super.onConnected()
@@ -100,6 +104,7 @@ class MusicPlayerActivity : AppCompatActivity() {
                 }else{
                     mediaController.transportControls.play()
                 }
+
             }
         }
 

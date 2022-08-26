@@ -5,7 +5,7 @@ import java.util.*
 
 class Format {
     companion object{
-        fun formatDate(date: Date):String{
+        fun formatDate(date: Date) : String{
             val sf = SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault())
             return try {
                 sf.format(date)
@@ -20,6 +20,15 @@ class Format {
                 sf.parse(s)!!
             }catch (e:Exception){
                 Date()
+            }
+        }
+
+        fun formatDateV3(date : Date) : String{
+            val sf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            return try {
+                sf.format(date)
+            }catch (e:Exception){
+                ""
             }
         }
     }

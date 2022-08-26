@@ -13,7 +13,7 @@ class MusicSearchActivity : AppCompatActivity() {
 
         val search = findViewById<SearchView>(R.id.search_view)
         search.apply {
-            setIconifiedByDefault(true);
+            setIconifiedByDefault(true)
             isFocusable = true;
             isIconified = false;
             clearFocus();
