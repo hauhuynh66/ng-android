@@ -6,7 +6,6 @@ import android.app.NotificationManager
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
-import com.app.receiver.FirebaseMessageReceiver
 import com.google.firebase.messaging.RemoteMessage
 import org.opencv.android.OpenCVLoader
 
@@ -25,19 +24,6 @@ class App: Application() {
         OpenCVLoader.initDebug()
         println("OK")
         createNotificationChannel()
-        registerMessageReceiver()
-    }
-
-    private fun registerMessageReceiver() {
-        val listener: FirebaseMessageReceiver.Listener = object : FirebaseMessageReceiver.Listener{
-            override fun onReceive(remoteMessage: RemoteMessage?) {
-                messages.add(remoteMessage)
-                val intent = Intent(actionMessageReceived)
-                sendBroadcast(intent)
-            }
-        }
-        val receiver = FirebaseMessageReceiver(listener)
-        registerReceiver(receiver, IntentFilter(messageReceive))
     }
 
     private fun createNotificationChannel() {

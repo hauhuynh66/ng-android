@@ -1,4 +1,4 @@
-package com.app.view
+package com.app.util
 
 import androidx.room.TypeConverter
 import java.util.*

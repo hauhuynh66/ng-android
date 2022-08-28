@@ -12,9 +12,8 @@ import androidx.fragment.app.DialogFragment
 import com.app.listener.NoteDialogListener
 import com.app.model.Note
 import com.app.ngn.R
-import com.app.util.Format.Companion.parseDate
+import com.app.util.Formatter.Companion.parseDate
 import com.app.util.Utils
-import java.text.DecimalFormat
 import java.util.*
 
 class NoteDialog(private val dialogListener: NoteDialogListener):DialogFragment() {
@@ -78,7 +77,7 @@ class NoteDialog(private val dialogListener: NoteDialogListener):DialogFragment(
                         Note(
                             title =  this.title.text.toString(),
                             content = this.content.text.toString(),
-                            displayDate = parseDate(sb.toString()),
+                            displayDate = parseDate(sb.toString(), "yyyy/MM/dd HH:mm"),
                             null
                         )
                     )
@@ -93,7 +92,7 @@ class NoteDialog(private val dialogListener: NoteDialogListener):DialogFragment(
                     Note(
                         title = this.title.text.toString(),
                         content = this.content.text.toString(),
-                        displayDate = parseDate(sb.toString())
+                        displayDate = parseDate(sb.toString(), "yyyy/MM/dd HH:mm")
                     )
                 )
                 di.dismiss()

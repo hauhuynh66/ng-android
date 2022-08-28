@@ -1,7 +1,11 @@
 package com.app.util
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
 import android.view.View
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
@@ -108,19 +112,6 @@ class Utils {
             }
         }
 
-        fun getBitmapFromURL(src: String?): Bitmap? {
-            return try {
-                val url = URL(src)
-                val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
-                connection.doInput = true
-                connection.connect()
-                val input: InputStream = connection.inputStream
-                BitmapFactory.decodeStream(input)
-            } catch (e: IOException) {
-                null
-            }
-        }
-
         fun getText(cl:Calendar, mode:Int, separator : Char) : String {
             val sb:StringBuilder = StringBuilder()
             val f = DecimalFormat("00")
@@ -140,6 +131,21 @@ class Utils {
 
             }
             return sb.toString()
+        }
+
+        fun isNetworkConnected(context : Context) : Boolean{
+            var ret = false
+            val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val networkCapabilities = connectivityManager.activeNetwork ?: return false
+            val actNw =
+                connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+            ret = when {
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                else -> false
+            }
+            return ret
         }
     }
 }

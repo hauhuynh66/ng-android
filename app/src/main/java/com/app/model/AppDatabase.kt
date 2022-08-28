@@ -7,7 +7,7 @@ import com.app.repository.LocationRepository
 import com.app.repository.NoteRepository
 import com.app.repository.SearchHistoryRepository
 import com.app.repository.SettingRepository
-import com.app.view.DateConverter
+import com.app.util.DateConverter
 
 @Database(entities = [Note::class, Location::class, Setting::class, SearchHistory::class], version = 1)
 @TypeConverters(DateConverter::class)

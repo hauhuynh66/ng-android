@@ -3,6 +3,7 @@
     package="com.app.ngn">
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -29,7 +30,7 @@
             android:exported="false"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name="com.app.activity.LoginActivity"
+            android:name="com.app.activity.AppInit"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,10 +45,6 @@
 
         <activity
             android:name="com.app.activity.GoogleMapActivity"
-            android:exported="true"/>
-
-        <activity
-            android:name="com.app.activity.FCMActivity"
             android:exported="true"/>
 
         <activity android:name="com.app.activity.ex.FileExplorerActivity"
@@ -85,14 +82,6 @@
 
         <activity android:name="com.app.activity.sport.FootballMainActivity"
             android:exported="true"/>
-
-        <service
-            android:name="com.app.service.FCMService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
 
         <service android:name="com.app.service.MediaPlaybackService"
             android:exported="true">

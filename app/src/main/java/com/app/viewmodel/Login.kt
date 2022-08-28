@@ -13,6 +13,8 @@ import com.google.firebase.ktx.Firebase
 class Login : ViewModel(){
     val currentState: MutableLiveData<Int> = MutableLiveData(0)
     val auth: FirebaseAuth = Firebase.auth
+    val username = MutableLiveData<String>("hauhuynh66@gmail.com")
+    val password = MutableLiveData<String>("Hauhuynh1")
     private lateinit var client: SignInClient
     private lateinit var request: BeginSignInRequest
 

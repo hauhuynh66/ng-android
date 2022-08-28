@@ -22,6 +22,7 @@
         android:layout_height="50dp"
         app:fabCustomSize="50dp"
         android:layout_marginVertical="20dp"
+        android:layout_marginHorizontal="10dp"
         app:layout_constraintBottom_toTopOf="@id/ac_draw_size"
         android:id="@+id/ac_draw_change_picture"
         app:layout_constraintLeft_toLeftOf="parent"/>

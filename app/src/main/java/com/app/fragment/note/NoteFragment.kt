@@ -32,43 +32,50 @@ class NoteFragment:Fragment(), NoteDialogListener {
     private lateinit var adapter: NoteAdapter
     private lateinit var data:ArrayList<Note>
     private lateinit var db: AppDatabase
+    private val drawLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            result->
+        run{
+            if(result.resultCode== Activity.RESULT_OK) {
+                val path = result.data!!.extras!!.getString("bmp")
+
+                val note = Note(
+                    title = System.currentTimeMillis().toString(),
+                    content = null,
+                    displayDate = Date(),
+                    extra = path
+                )
+
+                var id : Long
+
+                runBlocking {
+                    withContext(Dispatchers.IO){
+                        id = db.noteRepository().insert(note)
+                    }
+                }
+
+                note.id = id.toInt()
+                data.add(note)
+                adapter.notifyItemInserted(data.size - 1)
+            }
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         return inflater.inflate(R.layout.fg_note, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val layoutManager = LinearLayoutManager(this.requireContext())
-        val drawLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-                result->
-            run{
-                if(result.resultCode== Activity.RESULT_OK) {
-                    val path = result.data!!.extras!!.getString("bmp")
-
-                    val note = Note(
-                        title = System.currentTimeMillis().toString(),
-                        content = null,
-                        displayDate = Date(),
-                        extra = path
-                    )
-
-                    var id : Long
-
-                    runBlocking {
-                        withContext(Dispatchers.IO){
-                            id = db.noteRepository().insert(note)
-                        }
-                    }
-
-                    note.id = id.toInt()
-                    data.add(note)
-                    adapter.notifyItemInserted(data.size - 1)
-                }
-            }
+        super.onViewCreated(view, savedInstanceState)
+        view.findViewById<FloatingActionButton>(R.id.fg_note_draw).setOnClickListener {
+            val intent = Intent(requireContext(), DrawActivity::class.java)
+            drawLauncher.launch(intent)
         }
+        val layoutManager = LinearLayoutManager(this.requireContext())
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         val noteList = view.findViewById<RecyclerView>(R.id.noteList)
         noteList.layoutManager = layoutManager
+
         db = Room.databaseBuilder(requireActivity().applicationContext, AppDatabase::class.java, "db").fallbackToDestructiveMigration().build()
 
         runBlocking {
@@ -107,11 +114,6 @@ class NoteFragment:Fragment(), NoteDialogListener {
         val itemCallback = OneColumnListHelperCallback(adapter)
         val itemHelper = ItemTouchHelper(itemCallback)
         itemHelper.attachToRecyclerView(noteList)
-        val draw = view.findViewById<FloatingActionButton>(R.id.fg_note_draw)
-        draw.setOnClickListener {
-            val intent = Intent(this.requireContext(), DrawActivity::class.java)
-            drawLauncher.launch(intent)
-        }
     }
 
     override fun onAdd(note: Note) {

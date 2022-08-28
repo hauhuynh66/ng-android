@@ -30,15 +30,15 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_navigation)
         auth = Firebase.auth
-        val user = auth.currentUser ?: exitProcess(0)
+        //val user = auth.currentUser ?: exitProcess(0)
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         val displayName = navigationView.getHeaderView(0).findViewById<TextView>(R.id.nav_header_name)
         val displayEmail = navigationView.getHeaderView(0).findViewById<TextView>(R.id.nav_header_email)
-        displayName.text = user.displayName ?: "User"
-        displayEmail.text = user.email
+        /*displayName.text = user.displayName ?: "User"
+        displayEmail.text = user.email*/
 
         navigationView.setNavigationItemSelectedListener(this)
         this.drawerLayout = findViewById(R.id.drawer_layout)

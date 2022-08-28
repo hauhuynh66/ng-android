@@ -13,12 +13,12 @@ class AppInit : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         auth = Firebase.auth
         val currentUser = auth.currentUser
-        if(currentUser==null){
+        /*if(currentUser==null){
             val loginActivityIntent = Intent(this, LoginActivity::class.java)
             startActivity(loginActivityIntent)
-        }else{
+        }else{*/
             val appIntent = Intent(this, NavigatorActivity::class.java)
             startActivity(appIntent)
-        }
+        //}
     }
 }

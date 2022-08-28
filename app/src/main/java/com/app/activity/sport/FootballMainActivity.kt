@@ -13,7 +13,7 @@ import com.app.fragment.sport.FootballFixtureFragment
 import com.app.fragment.sport.FootballMatchDetailFragment
 import com.app.fragment.sport.FootballTeamDetailFragment
 import com.app.ngn.R
-import com.app.util.Format.Companion.formatDateV3
+import com.app.util.Formatter.Companion.formatDate
 import com.app.viewmodel.Football
 import java.util.*
 
@@ -60,7 +60,7 @@ class FootballMainActivity : AppCompatActivity() {
             Football.State.Fixtures->{
                 model.currentDate.observe(this){
                     title.apply {
-                        text = formatDateV3(model.currentDate.value!!)
+                        text = formatDate(model.currentDate.value!!, "yyyy-MM-dd")
                     }
                 }
 

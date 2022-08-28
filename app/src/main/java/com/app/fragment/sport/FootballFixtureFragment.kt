@@ -15,7 +15,7 @@ import com.app.data.FootballResult
 import com.app.data.FootballTeam
 import com.app.ngn.R
 import com.app.util.Animation.Companion.crossfade
-import com.app.util.Format.Companion.formatDateV3
+import com.app.util.Formatter.Companion.formatDate
 import com.app.viewmodel.Football
 import org.json.JSONObject
 import java.util.*
@@ -118,7 +118,7 @@ class FootballFixtureFragment : Fragment() {
 
         model.currentDate.observe(requireActivity()){
             calendar.time = model.currentDate.value!!
-            getResult("39", formatDateV3(calendar.time))
+            getResult("39", formatDate(calendar.time, "yyyy/MM/dd"))
         }
 
         list.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

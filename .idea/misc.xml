@@ -3,7 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Projects/Android/ng-android/app/src/main/res/drawable/bg1.xml" value="0.1045" />
+        <entry key="..\:/Projects/Android/ng-android/app/src/main/res/drawable/bg3.xml" value="0.1045" />
+        <entry key="..\:/Projects/Android/ng-android/app/src/main/res/drawable/bg4.xml" value="0.1045" />
+        <entry key="..\:/Projects/Android/ng-android/app/src/main/res/layout-land/com_note.xml" value="0.10005350454788657" />
+        <entry key="..\:/Projects/Android/ng-android/app/src/main/res/layout-land/fg_email_password_login.xml" value="0.1" />
         <entry key="..\:/Projects/Android/ng-android/app/src/main/res/layout/ac_cv.xml" value="0.1" />
+        <entry key="..\:/Projects/Android/ng-android/app/src/main/res/layout/ac_draw.xml" value="0.22" />
+        <entry key="..\:/Projects/Android/ng-android/app/src/main/res/layout/com_football_standing.xml" value="0.14" />
+        <entry key="..\:/Projects/Android/ng-android/app/src/main/res/layout/com_note.xml" value="0.1" />
+        <entry key="..\:/Projects/Android/ng-android/app/src/main/res/layout/com_note_img.xml" value="0.1" />
+        <entry key="..\:/Projects/Android/ng-android/app/src/main/res/layout/fg_email_password_login.xml" value="0.1" />
+        <entry key="..\:/Projects/Android/ng-android/app/src/main/res/layout/fg_note.xml" value="0.1" />
         <entry key="..\:/Projects/Android/ng-android/app/src/main/res/layout/fg_weather.xml" value="0.1" />
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/drawable/bg.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/hauhp/AndroidStudioProjects/NGN/app/src/main/res/drawable/ic_wb_sunny.xml" value="0.14635416666666667" />

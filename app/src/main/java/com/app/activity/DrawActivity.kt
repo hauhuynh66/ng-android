@@ -26,6 +26,7 @@ class DrawActivity : AppCompatActivity() {
     private val path = Environment.getExternalStorageDirectory().absolutePath + "/photo"
     private lateinit var colorAdapter : DrawAdapter
     private lateinit var sizeAdapter: DrawAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_draw)
@@ -52,6 +53,7 @@ class DrawActivity : AppCompatActivity() {
 
         val btn = findViewById<Button>(R.id.ac_draw_clear)
         val changeBg = findViewById<FloatingActionButton>(R.id.ac_draw_change_picture)
+
         changeBg.setOnClickListener {
             val getIntent = Intent(Intent.ACTION_GET_CONTENT)
             getIntent.type = "image/*"

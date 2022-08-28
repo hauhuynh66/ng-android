@@ -12,7 +12,7 @@ import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.app.model.Note
 import com.app.ngn.R
-import com.app.util.Format.Companion.formatDate
+import com.app.util.Formatter.Companion.formatDate
 import java.io.File
 
 class NoteAdapter(val context: Context, val data:List<Note>, private val callback: Callback?)
@@ -57,16 +57,13 @@ class NoteAdapter(val context: Context, val data:List<Note>, private val callbac
             val title = v.findViewById<TextView>(R.id.title)
             val content = v.findViewById<TextView>(R.id.body_text)
             val date = v.findViewById<TextView>(R.id.display_date)
-            val del = v.findViewById<Button>(R.id.delete_btn)
+
             title.text = note.title
             content.text = note.content
-            date.text = formatDate(note.displayDate)
+            date.text = formatDate(note.displayDate, "yyyy/MM/dd HH:mm")
             if(callback!=null){
                 v.setOnClickListener{
                     callback.onItemClick(note)
-                }
-                del.setOnClickListener{
-                    callback.onDelete(note)
                 }
             }
         }

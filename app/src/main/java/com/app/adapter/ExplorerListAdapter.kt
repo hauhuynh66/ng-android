@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.app.data.FileData
 import com.app.ngn.R
-import com.app.util.Format.Companion.formatDate
+import com.app.util.Formatter.Companion.formatDate
 
 class ExplorerListAdapter(val context: Context, var data: ArrayList<FileData>,
                           var isGrid: Boolean, val listener: Listener? = null, var isMultiple: Boolean = false) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -102,7 +102,7 @@ class ExplorerListAdapter(val context: Context, var data: ArrayList<FileData>,
             }
 
             v.findViewById<TextView>(R.id.description1).apply {
-                text = formatDate(fileData.createDate)
+                text = formatDate(fileData.createDate, "yyyy/MM/dd HH:mm")
             }
 
             v.findViewById<ImageView>(R.id.icon).apply {
@@ -148,7 +148,7 @@ class ExplorerListAdapter(val context: Context, var data: ArrayList<FileData>,
                 }
             }
             v.findViewById<TextView>(R.id.description1).apply {
-                text = formatDate(fileData.createDate)
+                text = formatDate(fileData.createDate, "yyyy/MM/dd HH:mm")
             }
 
             v.findViewById<ImageView>(R.id.icon).apply {
