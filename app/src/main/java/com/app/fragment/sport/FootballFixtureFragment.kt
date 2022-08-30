@@ -10,11 +10,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.toolbox.StringRequest
-import com.app.adapter.FootballResultAdapter
+import com.app.adapter.FootballFixtureAdapter
 import com.app.data.FootballResult
 import com.app.data.FootballTeam
 import com.app.ngn.R
 import com.app.util.Animation.Companion.crossfade
+import com.app.util.FootballAPI
 import com.app.util.Formatter.Companion.formatDate
 import com.app.viewmodel.Football
 import org.json.JSONObject
@@ -26,7 +27,7 @@ class FootballFixtureFragment : Fragment() {
     private lateinit var result : ArrayList<FootballResult>
     private lateinit var progress : ProgressBar
     private lateinit var list : RecyclerView
-    private lateinit var adapter: FootballResultAdapter
+    private lateinit var adapter: FootballFixtureAdapter
     private val calendar = GregorianCalendar()
 
     private fun getResult(strLeagueId : String, strDate : String){
@@ -63,12 +64,8 @@ class FootballFixtureFragment : Fragment() {
             val referee = obj.getJSONObject("fixture").getString("referee").substringBefore(",")
             val matchId = obj.getJSONObject("fixture").getLong("id")
             val teams = obj.getJSONObject("teams")
-            val homeTeam = FootballTeam(teams.getJSONObject("home").getInt("id"),
-                teams.getJSONObject("home").getString("name"),
-                teams.getJSONObject("home").getString("logo"))
-            val awayTeam = FootballTeam(teams.getJSONObject("away").getInt("id"),
-                teams.getJSONObject("away").getString("name"),
-                teams.getJSONObject("away").getString("logo"))
+            val homeTeam = FootballAPI.getTeam(teams.getJSONObject("home"))
+            val awayTeam = FootballAPI.getTeam(teams.getJSONObject("away"))
             val homeScore = if(obj.getJSONObject("goals").isNull("home")){
                 null
             }else{
@@ -104,7 +101,7 @@ class FootballFixtureFragment : Fragment() {
         progress = view.findViewById(R.id.progress)
         result = arrayListOf()
 
-        adapter = FootballResultAdapter(requireContext(), result, object : FootballResultAdapter.Callback{
+        adapter = FootballFixtureAdapter(requireContext(), result, object : FootballFixtureAdapter.Callback{
             override fun onTeamClick(team: FootballTeam) {
                 model.state.value = Football.State.TeamDetails
                 model.selectedClub.value = team
@@ -118,7 +115,7 @@ class FootballFixtureFragment : Fragment() {
 
         model.currentDate.observe(requireActivity()){
             calendar.time = model.currentDate.value!!
-            getResult("39", formatDate(calendar.time, "yyyy/MM/dd"))
+            getResult("39", formatDate(calendar.time, "yyyy-MM-dd"))
         }
 
         list.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

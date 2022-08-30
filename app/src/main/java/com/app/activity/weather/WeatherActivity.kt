@@ -184,6 +184,7 @@ class WeatherActivity : AppCompatActivity() {
     }
 
     private fun getForecast(){
+        crossfade(arrayListOf(progressBar), arrayListOf(contentView), 1000)
         var forecastUrl = model.url.replace("{mode}", "forecast")
         forecastUrl = forecastUrl.replace("{lat}", lat.toString())
         forecastUrl = forecastUrl.replace("{lon}", lon.toString())

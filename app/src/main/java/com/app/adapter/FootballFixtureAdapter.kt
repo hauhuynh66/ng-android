@@ -1,6 +1,7 @@
 package com.app.adapter
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.data.FootballResult
 import com.app.data.FootballTeam
 import com.app.ngn.R
+import com.app.task.ImageCallable
+import com.app.task.TaskRunner
 
-class FootballResultAdapter(val context : Context, var data : ArrayList<FootballResult>, val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class FootballFixtureAdapter(val context : Context, var data : ArrayList<FootballResult>, val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         return FootballViewHolder(inflater.inflate(R.layout.com_football_result, parent, false))
@@ -32,13 +35,33 @@ class FootballResultAdapter(val context : Context, var data : ArrayList<Football
                 callback.onClick(data)
             }
 
-            itemView.findViewById<ImageView>(R.id.team_icon).setOnClickListener {
-                callback.onTeamClick(data.homeTeam)
+            val runner = TaskRunner()
+
+            itemView.findViewById<ImageView>(R.id.team_icon).apply {
+                setOnClickListener {
+                    callback.onTeamClick(data.homeTeam)
+                }
+                setImageBitmap(null)
             }
 
-            itemView.findViewById<ImageView>(R.id.team_icon2).setOnClickListener {
-                callback.onTeamClick(data.awayTeam)
+            itemView.findViewById<ImageView>(R.id.team_icon2).apply {
+                setOnClickListener {
+                    callback.onTeamClick(data.awayTeam)
+                }
+                setImageBitmap(null)
             }
+
+            runner.execute(ImageCallable(data.homeTeam.iconUrl), object : TaskRunner.Callback<Bitmap?>{
+                override fun onComplete(result: Bitmap?) {
+                    itemView.findViewById<ImageView>(R.id.team_icon).setImageBitmap(result!!)
+                }
+            })
+
+            runner.execute(ImageCallable(data.awayTeam.iconUrl), object : TaskRunner.Callback<Bitmap?>{
+                override fun onComplete(result: Bitmap?) {
+                    itemView.findViewById<ImageView>(R.id.team_icon2).setImageBitmap(result!!)
+                }
+            })
 
             itemView.findViewById<TextView>(R.id.score1).apply {
                 text = if(data.homeGoal!=null){

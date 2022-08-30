@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.app.fragment.sport.FootballFixtureFragment
 import com.app.fragment.sport.FootballMatchDetailFragment
+import com.app.fragment.sport.FootballStandingFragment
 import com.app.fragment.sport.FootballTeamDetailFragment
 import com.app.ngn.R
 import com.app.util.Formatter.Companion.formatDate
@@ -33,6 +34,9 @@ class FootballMainActivity : AppCompatActivity() {
                 }
                 Football.State.MatchDetails->{
                     FootballMatchDetailFragment()
+                }
+                Football.State.Table->{
+                    FootballStandingFragment()
                 }
                 else->{
                     FootballFixtureFragment()
