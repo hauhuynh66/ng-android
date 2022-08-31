@@ -1,5 +1,6 @@
 package com.app.fragment.sport
 
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater

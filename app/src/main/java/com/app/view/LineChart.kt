@@ -6,11 +6,13 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import kotlin.math.max
+import kotlin.math.min
 
 class LineChart : View{
-    data class Data(val x : Int, val y: Double)
+    data class Data(val y: Number)
 
     constructor(context: Context?) : super(context){
         init()
@@ -26,22 +28,21 @@ class LineChart : View{
     private lateinit var linePaint : Paint
 
     private var maxY : Double = 100.0
-    private var minY : Double = 0.0
     private var lineWidth : Float = 5f
 
     private var padding : Float = 10f
 
     var data: ArrayList<Data> = arrayListOf(
-        Data(1, 10.0),
-        Data(2, 20.0),
-        Data(3, 80.0),
-        Data(4, 20.0),
-        Data(5, 50.0),
-        Data(6, 11.0),
-        Data(7, 30.0),
-        Data(8, 44.0),
-        Data(9, 76.0),
-        Data(10, 120.0)
+        Data(10.0),
+        Data(20.0),
+        Data(80.0),
+        Data(20.0),
+        Data(50.0),
+        Data(11.0),
+        Data(30.0),
+        Data(44.0),
+        Data(76.0),
+        Data(120.0)
     )
     private fun init(){
         axPaint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -69,31 +70,22 @@ class LineChart : View{
 
     override fun onDraw(canvas: Canvas?) {
         data.maxByOrNull {
-            it.y
+            it.y.toDouble()
         }?.let {
-            maxY = it.y
+            maxY = it.y.toDouble()
         }
-
-        data.minByOrNull {
-            it.y
-        }?.let {
-            minY = it.y
-        }
-
-        println(maxY)
-        println(minY)
 
         var prevX : Float = padding
-        var prevY : Float = convertY(data[0].y, maxY - minY)
-        linePath.moveTo(padding, convertY(data[0].y, maxY - minY))
+        var prevY : Float = convertY(data[0].y.toDouble(), maxY)
+        linePath.moveTo(prevX, prevY)
         canvas!!.apply {
             canvas.drawLine(padding, padding, padding, height.toFloat() - padding, axPaint)
             canvas.drawLine(padding,height.toFloat()- padding , width.toFloat() - padding, height.toFloat()- padding, axPaint)
         }
 
         for(pos : Int in 0 until data.size){
-            val x = convertX(data[pos].x)
-            val y = convertY(data[pos].y, maxY - minY)
+            val x = convertX(pos)
+            val y = convertY(data[pos].y.toDouble(), maxY)
             canvas.drawPoint(
                 x,
                 y,
@@ -111,14 +103,14 @@ class LineChart : View{
         }
     }
 
-    private fun convertX(x : Int) : Float{
-        val ratio = (width-2*padding)/data.size
-        return (x * ratio)
+    private fun convertX(i : Int) : Float{
+        val x = (width-2*padding)/data.size
+        return padding + (i+1) * x
     }
 
     private fun convertY(y : Double, diffY : Double) : Float{
         val ratio = (height-2*padding)/diffY
-        return (height + padding - y * ratio).toFloat()
+        return (height - padding - y * ratio).toFloat()
     }
 
 }

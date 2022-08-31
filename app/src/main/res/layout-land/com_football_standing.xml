@@ -44,8 +44,17 @@
         app:layout_constraintTop_toTopOf="parent"
         android:gravity="center"
         android:text="38"
-        android:id="@+id/lose"
+        android:id="@+id/draw"
         app:layout_constraintStart_toEndOf="@id/win"/>
+    <TextView
+        android:padding="10dp"
+        android:layout_width="50dp"
+        android:layout_height="60dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        android:text="38"
+        android:id="@+id/lose"
+        app:layout_constraintStart_toEndOf="@id/draw"/>
     <TextView
         android:padding="10dp"
         android:layout_width="50dp"
@@ -74,11 +83,13 @@
         android:id="@+id/goal_conceded"
         app:layout_constraintStart_toEndOf="@id/goal_scored"/>
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="220dp"
+        android:layout_width="240dp"
         android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/goal_conceded"
+        app:layout_constraintHorizontal_bias="1"
         android:layout_marginVertical="5dp">
         <ImageView
             android:layout_width="50dp"

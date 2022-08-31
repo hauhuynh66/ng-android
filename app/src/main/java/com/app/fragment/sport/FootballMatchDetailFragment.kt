@@ -62,10 +62,10 @@ class FootballMatchDetailFragment : Fragment() {
             text = overview.awayTeam.name
         }
         holder.findViewById<TextView>(R.id.score1).apply {
-            text = overview.homeGoal.toString()
+            text = if(overview.homeGoal != null) overview.homeGoal.toString() else "-"
         }
         holder.findViewById<TextView>(R.id.score2).apply {
-            text = overview.awayGoal.toString()
+            text = if(overview.awayGoal != null) overview.awayGoal.toString() else "-"
         }
         holder.findViewById<TextView>(R.id.referee).apply {
             text = overview.referee
@@ -109,6 +109,9 @@ class FootballMatchDetailFragment : Fragment() {
         val ret = arrayListOf<StatLineData>()
         val obj = JSONObject(json)
         val arr = obj.getJSONArray("response")
+        if(arr.length()<1){
+            return ret
+        }
         val homeStat = arr.getJSONObject(0)
         val awayStat = arr.getJSONObject(1)
         for (i in 0 until stats.size){

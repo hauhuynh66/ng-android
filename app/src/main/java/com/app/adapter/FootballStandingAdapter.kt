@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.app.data.FootballStandingData
 import com.app.ngn.R
@@ -28,7 +29,7 @@ class FootballStandingAdapter(val context: Context, var data : ArrayList<Footbal
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if(position>0){
-            (holder as FootballStandingHolder).bind(data[position]!!)
+            (holder as FootballStandingHolder).bind(data[position]!!, context)
         }
     }
 
@@ -48,7 +49,7 @@ class FootballStandingAdapter(val context: Context, var data : ArrayList<Footbal
     }
 
     class FootballStandingHolder(v : View) : RecyclerView.ViewHolder(v){
-        fun bind(data : FootballStandingData?){
+        fun bind(data : FootballStandingData?, context: Context){
             itemView.findViewById<ImageView>(R.id.icon).apply {
                 setImageBitmap(null)
             }
@@ -86,6 +87,30 @@ class FootballStandingAdapter(val context: Context, var data : ArrayList<Footbal
                 }
             }
 
+            val formView = arrayListOf<ImageView>(
+                itemView.findViewById(R.id.form1),
+                itemView.findViewById(R.id.form2),
+                itemView.findViewById(R.id.form3),
+                itemView.findViewById(R.id.form4)
+            )
+
+            for(i in 0..3){
+                val res = when(data.form[i]){
+                    'W'->{
+                        ContextCompat.getDrawable(context, R.drawable.ic_baseline_check)
+                    }
+                    'L'->{
+                        ContextCompat.getDrawable(context, R.drawable.ic_baseline_close)
+                    }
+                    'D'->{
+                        ContextCompat.getDrawable(context, R.drawable.ic_baseline_remove)
+                    }
+                    else->{
+                        null
+                    }
+                }
+                formView[i].setImageDrawable(res)
+            }
         }
     }
 

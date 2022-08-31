@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <androidx.constraintlayout.widget.Guideline
         android:layout_width="0dp"
@@ -95,9 +95,11 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/goal_conceded"
+        app:layout_constraintRight_toRightOf="parent"
         android:gravity="center"
         android:text="Form"
+        app:layout_constraintLeft_toRightOf="@id/goal_conceded"
+        app:layout_constraintHorizontal_bias="1"
         android:layout_marginLeft="20dp">
     </TextView>
 </androidx.constraintlayout.widget.ConstraintLayout>

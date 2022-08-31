@@ -13,18 +13,11 @@ import com.app.ngn.R
 class MiscAdapter(val context : Context, val data:ArrayList<MiscData>, val selector : Int):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        return when(selector){
-            1->{
-                MiscViewHolder(inflater.inflate(R.layout.com_misc,parent, false))
-            }
-            else->{
-                MiscViewHolder(inflater.inflate(R.layout.com_misc_2,parent, false))
-            }
-        }
+        return MiscViewHolder(inflater.inflate(R.layout.com_misc,parent, false))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as MiscViewHolder).bind(this.data[position])
+        (holder as MiscViewHolder).bind(this.data[position] , selector)
     }
 
     override fun getItemCount(): Int {
@@ -32,12 +25,16 @@ class MiscAdapter(val context : Context, val data:ArrayList<MiscData>, val selec
     }
 
     class MiscViewHolder(v: View):RecyclerView.ViewHolder(v){
-        fun bind(data: MiscData){
+        fun bind(data: MiscData, selector: Int){
             itemView.findViewById<TextView>(R.id.text).apply {
                 text = data.text
             }
 
             itemView.findViewById<ImageView>(R.id.image).apply {
+                if(selector!=1){
+                    this.layoutParams.width = (60 * resources.displayMetrics.density).toInt()
+                    this.requestLayout()
+                }
                 if(data.resource!=null){
                     setImageResource(data.resource)
                 }

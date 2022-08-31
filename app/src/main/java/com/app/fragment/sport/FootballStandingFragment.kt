@@ -1,5 +1,6 @@
 package com.app.fragment.sport
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -34,6 +35,9 @@ class FootballStandingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
+        if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
+            return inflater.inflate(R.layout.fg_list, container, false)
+        }
         return inflater.inflate(R.layout.fg_hs_list, container, false)
     }
 
