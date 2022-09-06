@@ -11,7 +11,7 @@ class OneColumnListHelperCallback(private val adapter: NoteAdapter) : ItemTouchH
         viewHolder: RecyclerView.ViewHolder
     ): Int {
         return makeFlag(ItemTouchHelper.ACTION_STATE_DRAG,
-            ItemTouchHelper.DOWN or ItemTouchHelper.UP or ItemTouchHelper.START or ItemTouchHelper.END)
+            ItemTouchHelper.DOWN or ItemTouchHelper.UP or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT)
     }
 
     override fun onMove(

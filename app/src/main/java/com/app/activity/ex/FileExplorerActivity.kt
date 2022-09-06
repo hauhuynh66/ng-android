@@ -21,7 +21,7 @@ class FileExplorerActivity : AppCompatActivity(), EXListFragment.Listener{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         checkPermissions()
-        setContentView(R.layout.ac_file_explorer)
+        setContentView(R.layout.ac_viewpager)
         val pager = findViewById<ViewPager2>(R.id.pager)
         tabs = findViewById(R.id.tabs)
         pager.adapter = ExplorerFragmentAdapter(supportFragmentManager, lifecycle)

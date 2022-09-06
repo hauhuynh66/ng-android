@@ -7,6 +7,9 @@
         android:title="Note"
         android:id="@+id/nav_note"/>
     <item
+        android:title="RD"
+        android:id="@+id/nav_rd"/>
+    <item
         android:title="Misc"
         android:id="@+id/nav_menu_misc"/>
     <group>

@@ -10,6 +10,7 @@ import android.util.TypedValue
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import com.app.ngn.R
+import java.lang.Float.max
 
 class StatBar : View {
     private var bgPaint = Paint()
@@ -97,18 +98,19 @@ class StatBar : View {
         val textBounds = Rect()
 
         txtPaint.getTextBounds(vLeft.toString(),0,vLeft.toString().length, textBounds)
-        val bl = textBounds.width() + 20f
-        val h = textBounds.height()
         txtPaint.getTextBounds(vRight.toString(),0,vRight.toString().length, textBounds)
-        val br = textBounds.width() + 20f
+        val h = textBounds.height()
+        val b = 100f
+        val br = textBounds.width()
+
         canvas!!.apply {
-            val x1 = ((vLeft.toDouble() / total) * width.toFloat()/2).toFloat()
-            val x2 = ((vRight.toDouble() / total) * width.toFloat()/2).toFloat()
-            drawLine(width.toFloat() - br,height.toFloat()/2, bl,height.toFloat()/2, bgPaint)
-            drawLine((width.toFloat()-br-bl)/2, height.toFloat()/2, (width.toFloat()-br-bl)/2 - x1, height.toFloat()/2, lgPaint)
-            drawLine((width.toFloat()-br-bl)/2, height.toFloat()/2, (width.toFloat()-br-bl)/2 + x2, height.toFloat()/2, rgPaint)
+            val x1 = ((vLeft.toDouble() / total) * (width.toFloat()-2*b)/2).toFloat()
+            val x2 = ((vRight.toDouble() / total) * (width.toFloat()-2*b)/2).toFloat()
+            drawLine(width.toFloat() - b,height.toFloat()/2, b,height.toFloat()/2, bgPaint)
+            drawLine(width.toFloat()/2, height.toFloat()/2, width.toFloat()/2 - x1, height.toFloat()/2, lgPaint)
+            drawLine(width.toFloat()/2, height.toFloat()/2, width.toFloat()/2 + x2, height.toFloat()/2, rgPaint)
             drawText(vLeft.toString(), 10f, height.toFloat()/2 + h/2, txtPaint)
-            drawText(vRight.toString(),width.toFloat() - br + 10f , height.toFloat()/2 + h/2, txtPaint)
+            drawText(vRight.toString(),width.toFloat() - br - 15f , height.toFloat()/2 + h/2, txtPaint)
         }
     }
 

@@ -77,6 +77,9 @@
         <activity android:name="com.app.activity.MessageActivity"
             android:exported="true"/>
 
+        <activity android:name="com.app.activity.rd.RDMainActivity"
+            android:exported="true"/>
+
         <activity android:name="com.app.activity.sport.SportMainActivity"
             android:exported="true"/>
 

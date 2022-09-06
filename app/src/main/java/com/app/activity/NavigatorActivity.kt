@@ -8,6 +8,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.app.activity.rd.RDMainActivity
 import com.app.fragment.MainFragment
 import com.app.fragment.MiscFragment
 import com.app.fragment.note.NoteFragment
@@ -94,6 +95,10 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                             transaction.replace(R.id.container, MiscFragment(), "MISC").commit()
                             transaction.addToBackStack("MISC")
                         }
+                    }
+                    R.id.nav_rd->{
+                        val intent = Intent(this@NavigatorActivity, RDMainActivity::class.java)
+                        startActivity(intent)
                     }
                     R.id.nav_menu_setting->{
                         val intent = Intent(this@NavigatorActivity, SettingsActivity::class.java)
