@@ -15,7 +15,7 @@ import com.app.ngn.R
 import com.app.util.Formatter.Companion.formatDate
 import java.io.File
 
-class NoteAdapter(val context: Context, val data:List<Note>, private val callback: Callback?)
+class NoteAdapter(val context: Context, val data: MutableList<Note>, private val callback: Callback?)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -82,15 +82,23 @@ class NoteAdapter(val context: Context, val data:List<Note>, private val callbac
                 v.setOnClickListener{
                     callback.onItemClick(note)
                 }
-                del.setOnClickListener{
-                    callback.onDelete(note)
-                }
             }
         }
     }
 
+    fun removeItem(position: Int) : Note{
+        val item = data[position]
+        data.remove(item)
+        this.notifyItemRemoved(position)
+        return item
+    }
+
+    fun restoreItem(item : Note, position: Int){
+        data.add(position, item)
+        this.notifyItemInserted(position)
+    }
+
     interface Callback{
         fun onItemClick(note: Note)
-        fun onDelete(note: Note)
     }
 }
