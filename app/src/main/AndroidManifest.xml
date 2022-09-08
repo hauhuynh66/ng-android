@@ -80,9 +80,6 @@
         <activity android:name="com.app.activity.rd.RDMainActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.sport.SportMainActivity"
-            android:exported="true"/>
-
         <activity android:name="com.app.activity.sport.FootballMainActivity"
             android:exported="true"/>
 

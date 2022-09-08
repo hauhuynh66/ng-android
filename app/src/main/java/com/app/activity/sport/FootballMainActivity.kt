@@ -1,33 +1,78 @@
 package com.app.activity.sport
 
-import android.app.DatePickerDialog
-import android.icu.util.Calendar
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import com.app.fragment.sport.FootballFixtureFragment
-import com.app.fragment.sport.FootballMatchDetailFragment
-import com.app.fragment.sport.FootballStandingFragment
-import com.app.fragment.sport.FootballTeamDetailFragment
+import androidx.appcompat.widget.Toolbar
+import androidx.viewpager2.widget.ViewPager2
+import com.app.adapter.FootballFragmentAdapter
+import com.app.dialog.OptionBottomSheet
 import com.app.ngn.R
-import com.app.util.Formatter.Companion.formatDate
+import com.app.util.Utils
 import com.app.viewmodel.Football
-import java.util.*
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 
 class FootballMainActivity : AppCompatActivity() {
     private val model : Football by viewModels()
-    private lateinit var titleHolder : ConstraintLayout
+    private lateinit var titleHolder : Toolbar
+    private lateinit var title : TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.ac_fragment_holder)
+        setContentView(R.layout.ac_viewpager)
         model.init(this)
-        titleHolder = findViewById(R.id.title_holder)
+        titleHolder = findViewById(R.id.toolbar)
+        title = findViewById(R.id.title)
+        title.text = "Premier League"
+        val listener = object : OptionBottomSheet.Listener{
+            override fun onClick(option: String?) {
+                when(option){
+                    else->{
+                        model.league.value = 39
+                    }
+                }
+            }
+        }
 
-        model.state.observe(this){
+        titleHolder.visibility = View.VISIBLE
+        val pager = findViewById<ViewPager2>(R.id.pager)
+        val tabs = findViewById<TabLayout>(R.id.tabs)
+        pager.adapter = FootballFragmentAdapter(supportFragmentManager, lifecycle)
+        pager.setPageTransformer(Utils.Companion.ZoomOutPageTransformer())
+        TabLayoutMediator(tabs, pager){ tab, pos ->
+            run{
+                when(pos){
+                    0->{
+                        tab.text = "Fixture"
+                    }
+                    1->{
+                        tab.text = "Table"
+                    }
+                    2->{
+                        tab.text = "Stats"
+                    }
+                    3->{
+                        tab.text = "..."
+                    }
+                }
+            }
+        }.attach()
+
+        title.apply {
+            setOnClickListener {
+                val optionData = arrayListOf(
+                    OptionBottomSheet.Data("Premier League"),
+                    OptionBottomSheet.Data("Champion League"),
+                    OptionBottomSheet.Data("La Liga"),
+                    OptionBottomSheet.Data("Serie A")
+                )
+                OptionBottomSheet(optionData, listener).show(supportFragmentManager, "LEAGUE-SEL")
+            }
+        }
+
+        /*model.state.observe(this){
             val fragment = when(model.state.value!!){
                 Football.State.TeamDetails->{
                     FootballTeamDetailFragment()
@@ -45,9 +90,9 @@ class FootballMainActivity : AppCompatActivity() {
             changeTitleDisplay(titleHolder, model.state.value!!)
             supportFragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
             println(model.currentDate.value.toString())
-        }
+        }*/
     }
-    private fun changeTitleDisplay(titleBar : View, state : Football.State){
+    /*private fun changeTitleDisplay(titleBar : View, state : Football.State){
         val title = titleBar.findViewById<TextView>(R.id.title)
         val left = titleBar.findViewById<Button>(R.id.calendar_previous)
         val right = titleBar.findViewById<Button>(R.id.calendar_next)
@@ -95,9 +140,9 @@ class FootballMainActivity : AppCompatActivity() {
                 right.visibility = View.GONE
             }
         }
-    }
+    }*/
 
-    override fun onBackPressed() {
+    /*override fun onBackPressed() {
         when(model.state.value){
             Football.State.Fixtures->{
                 super.onBackPressed()
@@ -115,5 +160,5 @@ class FootballMainActivity : AppCompatActivity() {
                 model.state.value = Football.State.Fixtures
             }
         }
-    }
+    }*/
 }

@@ -18,6 +18,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/title_holder">
+        <Button
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/transparent"
+            android:background="@drawable/ic_baseline_chevron_left"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:visibility="gone"
+            android:id="@+id/calendar_previous"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,5 +37,13 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
+        <Button
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/transparent"
+            android:background="@drawable/ic_baseline_chevron_right"
+            app:layout_constraintRight_toRightOf="parent"
+            android:visibility="gone"
+            android:id="@+id/calendar_next"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.appcompat.widget.Toolbar>

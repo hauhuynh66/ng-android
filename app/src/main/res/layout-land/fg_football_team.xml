@@ -90,14 +90,5 @@
                 android:textStyle="bold"
                 android:layout_marginTop="20dp"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/guideline"
-            app:layout_constraintTop_toBottomOf="@id/guideline3"
-            app:layout_constraintBottom_toTopOf="@id/guideline4"
-            android:id="@+id/standing"
-            android:layout_marginHorizontal="50dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

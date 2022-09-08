@@ -90,7 +90,6 @@ class FootballFixtureFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-
         return inflater.inflate(R.layout.fg_list, container, false)
     }
 
@@ -103,13 +102,11 @@ class FootballFixtureFragment : Fragment() {
 
         adapter = FootballFixtureAdapter(requireContext(), result, object : FootballFixtureAdapter.Callback{
             override fun onTeamClick(team: FootballTeam) {
-                model.state.value = Football.State.TeamDetails
-                model.selectedClub.value = team
+
             }
 
             override fun onClick(overview: FootballResult) {
-                model.state.value = Football.State.MatchDetails
-                model.selectedMatchOverview.value = overview
+
             }
         })
 

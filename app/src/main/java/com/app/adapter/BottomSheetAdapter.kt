@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.dialog.OptionBottomSheet
 import com.app.ngn.R
 
-class BottomSheetAdapter(val context : Context, val data : ArrayList<OptionBottomSheet.BottomSheetData>, private val listeners : ArrayList<OptionBottomSheet.Listener>) :
+class BottomSheetAdapter(val context : Context, val data : ArrayList<OptionBottomSheet.Data>, val listener: OptionBottomSheet.Listener?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ElementHolder((context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(
@@ -18,7 +18,7 @@ class BottomSheetAdapter(val context : Context, val data : ArrayList<OptionBotto
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as ElementHolder).bind(data[position], listeners[position])
+        (holder as ElementHolder).bind(data[position], listener)
     }
 
     override fun getItemCount(): Int {
@@ -26,12 +26,12 @@ class BottomSheetAdapter(val context : Context, val data : ArrayList<OptionBotto
     }
 
     class ElementHolder(val v: View) : RecyclerView.ViewHolder(v){
-        fun bind(data : OptionBottomSheet.BottomSheetData, listener : OptionBottomSheet.Listener){
+        fun bind(data : OptionBottomSheet.Data, listener: OptionBottomSheet.Listener?){
             val text = v.findViewById<TextView>(R.id.com_sheet_element_display)
             text.text = data.display
             if(data.enable){
                 text.setOnClickListener {
-                    listener.onClick(data.option)
+                    listener?.onClick(data.option)
                 }
             }
         }

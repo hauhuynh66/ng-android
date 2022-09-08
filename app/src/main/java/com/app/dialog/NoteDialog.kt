@@ -5,8 +5,8 @@ import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.app.listener.NoteDialogListener
@@ -17,8 +17,8 @@ import com.app.util.Utils
 import java.util.*
 
 class NoteDialog(private val dialogListener: NoteDialogListener):DialogFragment() {
-    private lateinit var dp:Button
-    private lateinit var tp:Button
+    private lateinit var dp:ImageView
+    private lateinit var tp:ImageView
     private lateinit var title:EditText
     private lateinit var content:EditText
     private var calendar: Calendar = Calendar.getInstance()

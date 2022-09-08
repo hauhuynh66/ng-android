@@ -1,13 +1,9 @@
 package com.app.fragment.sport
 
-import android.content.res.Configuration
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -17,8 +13,6 @@ import androidx.lifecycle.MutableLiveData
 import com.android.volley.toolbox.StringRequest
 import com.app.data.FootballTeamDetail
 import com.app.ngn.R
-import com.app.task.ImageCallable
-import com.app.task.TaskRunner
 import com.app.util.Animation.Companion.crossfade
 import com.app.viewmodel.Football
 import org.json.JSONObject
@@ -49,11 +43,6 @@ class FootballTeamDetailFragment : Fragment() {
                 false->{
                     crossfade(arrayListOf(progress), arrayListOf(content), 1000)
                 }
-            }
-        }
-        view.findViewById<Button>(R.id.standing).apply {
-            setOnClickListener {
-                model.state.value = Football.State.Table
             }
         }
         getTeamDetail(model.selectedClub.value!!.id)
@@ -105,13 +94,6 @@ class FootballTeamDetailFragment : Fragment() {
 
     fun display(team : FootballTeamDetail, view : View?){
         if(view!=null){
-            val runner = TaskRunner()
-            val icon = view.findViewById<ImageView>(R.id.team_icon)
-            runner.execute(ImageCallable(team.iconUrl), object : TaskRunner.Callback<Bitmap?>{
-                override fun onComplete(result: Bitmap?) {
-                    icon.setImageBitmap(result)
-                }
-            })
             view.findViewById<TextView>(R.id.team_name).apply {
                 text = team.name
             }

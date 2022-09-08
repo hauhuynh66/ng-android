@@ -61,6 +61,7 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/ac_mp_browser.xml" value="0.11067019400352733" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/ac_navigation.xml" value="0.152" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/ac_tabs.xml" value="0.1" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/ac_viewpager.xml" value="0.21516754850088182" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/ac_weather.xml" value="0.1" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_device_analog.xml" value="0.10978835978835978" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_device_digital.xml" value="0.10978835978835978" />
@@ -114,6 +115,7 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_navigation.xml" value="0.25" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_tabs.xml" value="0.11302083333333333" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_test.xml" value="0.264" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_viewpager.xml" value="0.1721014492753623" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_weather.xml" value="0.136" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/calendar_title.xml" value="0.136" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_detail.xml" value="0.22735507246376813" />
@@ -159,7 +161,7 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/dlg_graph.xml" value="0.17300724637681159" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/dlg_image.xml" value="0.2" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/dlg_item_detail.xml" value="0.152" />
-        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/dlg_newnote.xml" value="0.11200000000000002" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/dlg_newnote.xml" value="0.264" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/dlg_weather_detail.xml" value="0.13072916666666667" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_chips.xml" value="0.20854700854700856" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_devices.xml" value="0.13072916666666667" />

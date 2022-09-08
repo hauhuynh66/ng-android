@@ -35,7 +35,6 @@ class NoteFragment:Fragment(), NoteDialogListener {
     private lateinit var data:ArrayList<Note>
     private lateinit var db: AppDatabase
     private lateinit var rootView : View
-    private var dbDeleteFlg = true
     private val drawLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             result->
         run{

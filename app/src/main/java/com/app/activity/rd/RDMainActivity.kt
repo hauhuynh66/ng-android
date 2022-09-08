@@ -17,17 +17,18 @@ class RDMainActivity : AppCompatActivity(){
         val tabs = findViewById<TabLayout>(R.id.tabs)
         pager.adapter = RDFragmentAdapter(supportFragmentManager, lifecycle)
         pager.setPageTransformer(Utils.Companion.ZoomOutPageTransformer())
-        TabLayoutMediator(tabs, pager){ tab, pos -> run{
-            tab.view.minimumWidth = 300
-            when(pos){
-                0->{
-                    tab.text = "1"
-                }
-                1->{
-                    tab.text = "POPULAR"
+        TabLayoutMediator(tabs, pager){ tab, pos ->
+            run{
+                tab.view.minimumWidth = 300
+                when(pos){
+                    0->{
+                        tab.text = "1"
+                    }
+                    1->{
+                        tab.text = "POPULAR"
+                    }
                 }
             }
-        }
         }.attach()
     }
 }

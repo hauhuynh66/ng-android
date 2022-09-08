@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +20,6 @@ import com.app.util.Animation.Companion.crossfade
 import com.app.util.FootballAPI
 import com.app.viewmodel.Football
 import org.json.JSONObject
-import java.util.HashMap
 
 class FootballStandingFragment : Fragment() {
     private val model : Football by activityViewModels()
@@ -29,6 +27,7 @@ class FootballStandingFragment : Fragment() {
     private lateinit var progress : ProgressBar
     private lateinit var adapter : FootballStandingAdapter
     private lateinit var list : RecyclerView
+    private var isLoaded = false
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,7 +48,7 @@ class FootballStandingFragment : Fragment() {
         list.adapter = adapter
         list.layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
 
-        getStandings("39", "2022")
+        getStandings(model.league.value.toString(), "2022")
     }
 
     private fun getStandings(strLeagueId : String, strSeason : String){
@@ -57,7 +56,7 @@ class FootballStandingFragment : Fragment() {
         val url = model.baseUrl + postfix + "?league=" + strLeagueId + "&season=" + strSeason
         val request = object : StringRequest(Request.Method.GET, url,
             {
-                println(it)
+                isLoaded = true
                 adapter.data = processStandingData(it)
                 adapter.notifyDataSetChanged()
                 crossfade(arrayListOf(list), arrayListOf(progress), 1000)
@@ -78,7 +77,9 @@ class FootballStandingFragment : Fragment() {
 
     private fun processStandingData(json : String) : ArrayList<FootballStandingData?>{
         val ret = arrayListOf<FootballStandingData?>()
+        //header
         ret.add(null)
+        //header
         val obj = JSONObject(json)
         val res = obj.getJSONArray("response")
         if(res.length()>0){

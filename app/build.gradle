@@ -71,6 +71,7 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
     implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
+    implementation 'com.squareup.picasso:picasso:2.8'
     kapt 'androidx.room:room-compiler:2.4.3'
     implementation project(":opencv")
 }

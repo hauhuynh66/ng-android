@@ -1,11 +1,9 @@
 package com.app.fragment.sport
 
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -16,8 +14,6 @@ import com.app.adapter.StatAdapter
 import com.app.data.FootballResult
 import com.app.data.StatLineData
 import com.app.ngn.R
-import com.app.task.ImageCallable
-import com.app.task.TaskRunner
 import com.app.viewmodel.Football
 import org.json.JSONObject
 
@@ -54,7 +50,6 @@ class FootballMatchDetailFragment : Fragment() {
     }
 
     private fun redisplayOverview(overview : FootballResult, holder: View){
-        val runner = TaskRunner()
         holder.findViewById<TextView>(R.id.team_name).apply {
             text = overview.homeTeam.name
         }
@@ -70,18 +65,6 @@ class FootballMatchDetailFragment : Fragment() {
         holder.findViewById<TextView>(R.id.referee).apply {
             text = overview.referee
         }
-
-        runner.execute(ImageCallable(overview.homeTeam.iconUrl), object : TaskRunner.Callback<Bitmap?>{
-            override fun onComplete(result: Bitmap?) {
-                holder.findViewById<ImageView>(R.id.team_icon).setImageBitmap(result!!)
-            }
-        })
-
-        runner.execute(ImageCallable(overview.awayTeam.iconUrl), object : TaskRunner.Callback<Bitmap?>{
-            override fun onComplete(result: Bitmap?) {
-                holder.findViewById<ImageView>(R.id.team_icon2).setImageBitmap(result!!)
-            }
-        })
     }
 
     private fun getMatchDetails(){
