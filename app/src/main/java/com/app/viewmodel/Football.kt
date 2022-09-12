@@ -19,7 +19,6 @@ class Football : ViewModel() {
     val league = MutableLiveData(39)
     val selectedClub : MutableLiveData<FootballTeam?> = MutableLiveData(null)
     val selectedMatchOverview = MutableLiveData<FootballResult>(null)
-    val currentStandingData = MutableLiveData<ArrayList<FootballStandingData>>(arrayListOf())
 
     lateinit var requestQueue : RequestQueue
 

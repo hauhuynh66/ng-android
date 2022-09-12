@@ -18,11 +18,9 @@ class PieChart : View {
     private lateinit var linePaint : Paint
     private lateinit var sweepPaint : Paint
     private lateinit var outerRectF: RectF
-    private lateinit var innerRectF: RectF
+//    private lateinit var innerRectF: RectF
     private var lineWidth = 10f
     private var padding = 20f
-    private var isDonut = false
-    private var donutWidth = 20f
     private var data : ArrayList<Data> = arrayListOf(
         Data(100),
         Data(200),
@@ -63,6 +61,7 @@ class PieChart : View {
         val sum : Double = data.reduce{
             a,b -> sum(a,b)
         }.value.toDouble()
+
         var currentArc = -90f
 
 
@@ -75,10 +74,9 @@ class PieChart : View {
                 currentArc += sweepArc
             }
         }
-        if(isDonut){
-            sweepPaint.color = Color.WHITE
-            canvas!!.drawArc(innerRectF, 0f, 360f, true, sweepPaint)
-        }
+
+//        sweepPaint.color = Color.WHITE
+//        canvas!!.drawArc(innerRectF, 0f, 360f, true, sweepPaint)
     }
 
     private fun randomColor() : String{

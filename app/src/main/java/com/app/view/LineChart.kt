@@ -6,10 +6,9 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
-import android.view.MotionEvent
 import android.view.View
+import com.app.ngn.R
 import kotlin.math.max
-import kotlin.math.min
 
 class LineChart : View{
     data class Data(val y: Number)
@@ -20,12 +19,22 @@ class LineChart : View{
 
     constructor(context: Context?, attributeSet: AttributeSet) : super(context, attributeSet){
         init()
+        context!!.theme.obtainStyledAttributes(attributeSet, R.styleable.LineChart, 0, 0).apply {
+            try {
+                showAxes = getBoolean(R.styleable.LineChart_showAxes, true)
+                showPoints = getBoolean(R.styleable.LineChart_showPoints, true)
+            }finally {
+                recycle()
+            }
+        }
     }
 
     private lateinit var axPaint: Paint
     private lateinit var pointPaint: Paint
     private lateinit var linePath : Path
     private lateinit var linePaint : Paint
+    private var showAxes = true
+    private var showPoints = true
 
     private var maxY : Double = 100.0
     private var lineWidth : Float = 5f
@@ -78,28 +87,33 @@ class LineChart : View{
         var prevX : Float = padding
         var prevY : Float = convertY(data[0].y.toDouble(), maxY)
         linePath.moveTo(prevX, prevY)
-        canvas!!.apply {
-            canvas.drawLine(padding, padding, padding, height.toFloat() - padding, axPaint)
-            canvas.drawLine(padding,height.toFloat()- padding , width.toFloat() - padding, height.toFloat()- padding, axPaint)
+        if(showAxes){
+            canvas!!.apply {
+                canvas.drawLine(padding, padding, padding, height.toFloat() - padding, axPaint)
+                canvas.drawLine(padding,height.toFloat()- padding , width.toFloat() - padding, height.toFloat()- padding, axPaint)
+            }
         }
+        canvas!!.apply {
+            for(pos : Int in 0 until data.size){
+                val x = convertX(pos)
+                val y = convertY(data[pos].y.toDouble(), maxY)
 
-        for(pos : Int in 0 until data.size){
-            val x = convertX(pos)
-            val y = convertY(data[pos].y.toDouble(), maxY)
-            canvas.drawPoint(
-                x,
-                y,
-                pointPaint
-            )
+                if(showPoints){
+                    canvas.drawPoint(
+                        x,
+                        y,
+                        pointPaint
+                    )
+                }
+                val controlX = (prevX + x)/2
+                val controlY = max(prevY, y)
 
-            val controlX = (prevX + x)/2
-            val controlY = max(prevY, y)
-
-            linePath.quadTo(controlX, controlY,x, y)
-            canvas.drawPath(linePath, linePaint)
-            linePath.moveTo(x, y)
-            prevX = x
-            prevY = y
+                linePath.quadTo(controlX, controlY,x, y)
+                canvas.drawPath(linePath, linePaint)
+                linePath.moveTo(x, y)
+                prevX = x
+                prevY = y
+            }
         }
     }
 

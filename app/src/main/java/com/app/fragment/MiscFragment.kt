@@ -26,7 +26,7 @@ class MiscFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        return inflater.inflate(R.layout.fg_misc, container, false)
+        return inflater.inflate(R.layout.fg_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -80,7 +80,7 @@ class MiscFragment : Fragment() {
             }
         }))
 
-        val list = view.findViewById<RecyclerView>(R.id.fg_misc_list)
+        val list = view.findViewById<RecyclerView>(R.id.item_list)
         list.layoutManager = GridLayoutManager(requireContext(), 2)
         list.adapter = MiscAdapter(requireContext(), data, 1)
     }

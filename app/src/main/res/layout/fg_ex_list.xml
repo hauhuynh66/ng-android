@@ -16,14 +16,14 @@
             <ImageButton
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
-                android:id="@+id/fg_ex_list_input_button"
+                android:id="@+id/previous"
                 android:src="@drawable/ic_baseline_arrow_upward"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:background="@android:color/transparent"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                app:layout_constraintLeft_toRightOf="@id/fg_ex_list_input_button"
+                app:layout_constraintLeft_toRightOf="@id/previous"
                 app:layout_constraintRight_toLeftOf="@id/fg_ex_list_changeLayout"
                 android:maxLines="1"
                 android:textSize="8pt"
@@ -51,9 +51,9 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:id="@+id/fg_ex_list_more"
+                android:id="@+id/more"
                 android:background="@drawable/ic_baseline_more_vert"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -72,7 +72,7 @@
         <ImageButton
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:id="@+id/fg_ex_list_back"
+            android:id="@+id/dismiss"
             android:background="@drawable/ic_baseline_arrow_back"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -82,7 +82,7 @@
             android:layout_height="match_parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/fg_ex_list_back"
+            app:layout_constraintLeft_toRightOf="@id/dismiss"
             app:layout_constraintWidth_percent="0.5"
             android:id="@+id/fg_ex_list_num_selected"
             android:text="selected"
@@ -92,7 +92,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             app:layout_constraintRight_toRightOf="parent"
-            android:id="@+id/fg_ex_list_check"
+            android:id="@+id/check_all"
             android:background="@drawable/ic_baseline_check_all"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>

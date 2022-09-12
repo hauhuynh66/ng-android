@@ -22,7 +22,7 @@ class RDMainActivity : AppCompatActivity(){
                 tab.view.minimumWidth = 300
                 when(pos){
                     0->{
-                        tab.text = "1"
+                        tab.text = "HOME"
                     }
                     1->{
                         tab.text = "POPULAR"

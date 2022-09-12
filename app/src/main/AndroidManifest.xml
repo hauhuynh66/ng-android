@@ -40,6 +40,10 @@
         </activity>
 
         <activity
+            android:name="com.app.activity.LoginActivity"
+            android:exported="true"/>
+
+        <activity
             android:name="com.app.activity.NavigatorActivity"
             android:exported="true"/>
 
@@ -83,11 +87,19 @@
         <activity android:name="com.app.activity.sport.FootballMainActivity"
             android:exported="true"/>
 
+        <activity android:name="com.app.activity.sport.FootballDisplayActivity"
+            android:exported="true"/>
+
         <service android:name="com.app.service.MediaPlaybackService"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
+        </service>
+
+        <service android:name="com.app.service.MyService"
+            android:exported="true">
+
         </service>
 
         <receiver android:name="androidx.media.session.MediaButtonReceiver"

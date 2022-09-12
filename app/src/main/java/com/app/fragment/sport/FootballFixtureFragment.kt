@@ -1,15 +1,19 @@
 package com.app.fragment.sport
 
+import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.toolbox.StringRequest
+import com.app.activity.sport.FootballDisplayActivity
 import com.app.adapter.FootballFixtureAdapter
 import com.app.data.FootballResult
 import com.app.data.FootballTeam
@@ -18,6 +22,7 @@ import com.app.util.Animation.Companion.crossfade
 import com.app.util.FootballAPI
 import com.app.util.Formatter.Companion.formatDate
 import com.app.viewmodel.Football
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.json.JSONObject
 import java.util.*
 
@@ -95,14 +100,38 @@ class FootballFixtureFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val flBtn = view.findViewById<FloatingActionButton>(R.id.option_button)
+        flBtn.apply {
+            visibility = View.VISIBLE
+            setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_calendar_today))
+            setOnClickListener {
+                val dpListener = DatePickerDialog.OnDateSetListener { _, y, m, d ->
+                    calendar.set(Calendar.YEAR, y)
+                    calendar.set(Calendar.MONTH, m)
+                    calendar.set(Calendar.DATE, d)
+                    model.currentDate.value = calendar.time
+                }
 
+                DatePickerDialog(requireContext(),
+                    dpListener,
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DATE)
+                ).show()
+            }
+        }
         list = view.findViewById(R.id.item_list)
         progress = view.findViewById(R.id.progress)
         result = arrayListOf()
 
         adapter = FootballFixtureAdapter(requireContext(), result, object : FootballFixtureAdapter.Callback{
             override fun onTeamClick(team: FootballTeam) {
-
+                val intent = Intent(requireActivity(), FootballDisplayActivity::class.java)
+                intent.extras!!.apply {
+                    putString("type", "td")
+                    putParcelable("team", team)
+                }
+                startActivity(intent)
             }
 
             override fun onClick(overview: FootballResult) {

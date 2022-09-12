@@ -8,7 +8,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewpager2.widget.ViewPager2
-import com.app.adapter.MusicBrowserFragmentAdapter
+import com.app.adapter.MusicFragmentAdapter
 import com.app.ngn.R
 import com.app.util.Utils
 import com.google.android.material.tabs.TabLayout
@@ -20,7 +20,7 @@ class MusicBrowserActivity : AppCompatActivity() {
         setContentView(R.layout.ac_mp_browser)
         val pager = findViewById<ViewPager2>(R.id.pager)
         val tabs = findViewById<TabLayout>(R.id.tabs)
-        pager.adapter = MusicBrowserFragmentAdapter(supportFragmentManager, lifecycle)
+        pager.adapter = MusicFragmentAdapter(supportFragmentManager, lifecycle)
         pager.setPageTransformer(Utils.Companion.ZoomOutPageTransformer())
         TabLayoutMediator(tabs, pager){
             tab, pos -> run{

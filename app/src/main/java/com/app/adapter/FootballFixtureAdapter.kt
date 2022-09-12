@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.data.FootballResult
 import com.app.data.FootballTeam
 import com.app.ngn.R
+import com.squareup.picasso.Picasso
 
 class FootballFixtureAdapter(val context : Context, var data : ArrayList<FootballResult>, val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -26,24 +27,27 @@ class FootballFixtureAdapter(val context : Context, var data : ArrayList<Footbal
     }
 
     class FootballViewHolder(v : View) : RecyclerView.ViewHolder(v){
-
         fun bind(data : FootballResult, callback: Callback){
             itemView.setOnClickListener {
                 callback.onClick(data)
             }
 
-            itemView.findViewById<ImageView>(R.id.team_icon).apply {
+            val homeIcon = itemView.findViewById<ImageView>(R.id.team_icon)
+            val awayIcon = itemView.findViewById<ImageView>(R.id.team_icon2)
+
+            Picasso.get().load(data.homeTeam.iconUrl).into(homeIcon)
+            Picasso.get().load(data.awayTeam.iconUrl).into(awayIcon)
+
+            homeIcon.apply {
                 setOnClickListener {
                     callback.onTeamClick(data.homeTeam)
                 }
-                setImageBitmap(null)
             }
 
-            itemView.findViewById<ImageView>(R.id.team_icon2).apply {
+            awayIcon.apply {
                 setOnClickListener {
                     callback.onTeamClick(data.awayTeam)
                 }
-                setImageBitmap(null)
             }
 
             itemView.findViewById<TextView>(R.id.score1).apply {
