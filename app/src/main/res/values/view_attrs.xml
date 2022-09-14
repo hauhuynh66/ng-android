@@ -8,4 +8,10 @@
         <attr name="donut" format="boolean"/>
         <attr name="shadow" format="boolean"/>
     </declare-styleable>
+    <declare-styleable name="Gauge">
+        <attr name="display" format="string"/>
+        <attr name="bgColor" format="color"/>
+        <attr name="pgColor" format="color"/>
+        <attr name="display_text" format="boolean"/>
+    </declare-styleable>
 </resources>

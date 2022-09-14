@@ -10,7 +10,10 @@
         android:id="@+id/header"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/stat_header1"
-        android:layout_marginVertical="10dp">
+        android:layout_marginVertical="10dp"
+        android:padding="10dp"
+        android:backgroundTint="@color/blue_1"
+        android:background="@drawable/bg1">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -49,7 +52,6 @@
         android:text="Summary"
         android:gravity="center"
         app:layout_constraintLeft_toLeftOf="parent"
-
         app:layout_constraintBottom_toTopOf="@id/statistic_list1"
         app:layout_constraintTop_toBottomOf="@id/header"
         android:id="@+id/stat_header1"/>

@@ -11,22 +11,23 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.FileProvider
 import com.app.fragment.cv.ORBFragment
 import com.app.ngn.R
 import com.app.util.Utils
 
-class CVActivity() : AppCompatActivity(){
+class CVActivity : AppCompatActivity(){
     private val dir = Environment.getExternalStorageDirectory().absolutePath + "/DCIM/Camera"
     private lateinit var cameraResult : ActivityResultLauncher<Uri>
     private var photoURI : Uri? = null
-    private var count:Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_fragment_holder)
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        val toolbarHolder = findViewById<LinearLayoutCompat>(R.id.toolbar_holder)
+        val toolbar = toolbarHolder.findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
         findViewById<TextView>(R.id.title).apply {
@@ -35,7 +36,7 @@ class CVActivity() : AppCompatActivity(){
 
         val mode = intent.extras!!.getString("mode")
         when(mode){
-            "Orb"->{
+            "ORB"->{
                 supportFragmentManager.beginTransaction().replace(R.id.container, ORBFragment()).commit()
             }
         }
@@ -46,7 +47,7 @@ class CVActivity() : AppCompatActivity(){
                 val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, photoURI)
                 val currentFragment = supportFragmentManager.findFragmentById(R.id.container);
                 when(mode){
-                    "Orb"->{
+                    "ORB"->{
                         (currentFragment as ORBFragment).process(bitmap)
                     }
                 }

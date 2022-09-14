@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.app.activity.CVActivity
 import com.app.activity.MessageActivity
 import com.app.activity.ex.FileExplorerActivity
 import com.app.activity.mp.MusicBrowserActivity
@@ -60,11 +61,14 @@ class MiscFragment : Fragment() {
             override fun onClick() {
                 val listener = object : OptionBottomSheet.Listener{
                     override fun onClick(option: String?) {
-
+                        val intent = Intent(requireActivity(), CVActivity::class.java)
+                        intent.putExtra("mode", option)
+                        startActivity(intent)
                     }
                 }
+
                 val optionData = arrayListOf(
-                    OptionBottomSheet.Data("Orb")
+                    OptionBottomSheet.Data("Orb", option = "ORB")
                 )
 
                 val bottomSheet = OptionBottomSheet(optionData, listener)

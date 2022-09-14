@@ -179,7 +179,7 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_football_result_list.xml" value="0.152" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_football_team.xml" value="0.1" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_harris.xml" value="0.22735507246376813" />
-        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_home.xml" value="0.253125" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_home.xml" value="0.176" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_hs_list.xml" value="0.152" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_image.xml" value="0.14427083333333332" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_item.xml" value="0.11354166666666667" />
@@ -198,10 +198,12 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_test.xml" value="0.1" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_weather.xml" value="0.10190217391304347" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fragment_holder.xml" value="0.11302083333333333" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/gauge_card.xml" value="0.176" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/i_carousel.xml" value="0.176" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/line_chart_card.xml" value="0.11302083333333333" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/list.xml" value="0.11197916666666667" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/nav_header.xml" value="0.264" />
-        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/pie_chart_card.xml" value="0.72" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/pie_chart_card.xml" value="0.176" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/menu/cv_menu.xml" value="0.2" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/menu/football_menu.xml" value="0.11302083333333333" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/menu/nav_menu.xml" value="0.1" />

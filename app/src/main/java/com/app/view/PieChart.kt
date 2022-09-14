@@ -1,32 +1,31 @@
 package com.app.view
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.RectF
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import com.app.data.ChartData
+import com.app.ngn.R
 import kotlin.math.min
 import kotlin.random.Random
 
 class PieChart : View {
-    data class Data(val value : Number)
-    private fun sum(a : Data, b : Data) : Data{
-        return Data(a.value.toDouble() + b.value.toDouble())
+    private fun sum(a : ChartData, b : ChartData) : ChartData{
+        return ChartData(a.value.toDouble() + b.value.toDouble())
     }
     private lateinit var linePaint : Paint
     private lateinit var sweepPaint : Paint
     private lateinit var outerRectF: RectF
-//    private lateinit var innerRectF: RectF
     private var lineWidth = 10f
     private var padding = 20f
-    private var data : ArrayList<Data> = arrayListOf(
-        Data(100),
-        Data(200),
-        Data(500),
-        Data(50),
+    private var data : ArrayList<ChartData> = arrayListOf(
+        ChartData(100),
+        ChartData(200),
+        ChartData(500),
+        ChartData(50),
     )
+    private var shadow = false
+    private var donut = false
     private lateinit var random : Random
 
     constructor(context: Context?) : super(context){
@@ -34,6 +33,14 @@ class PieChart : View {
     }
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs){
         init()
+        context!!.theme.obtainStyledAttributes(attrs, R.styleable.PieChart, 0, 0).apply {
+            try {
+                shadow = getBoolean(R.styleable.PieChart_shadow, false)
+                donut = getBoolean(R.styleable.PieChart_donut, false)
+            }finally {
+                recycle()
+            }
+        }
     }
 
     private fun init(){
@@ -43,28 +50,29 @@ class PieChart : View {
             strokeWidth = lineWidth
             style = Paint.Style.STROKE
         }
+        if(shadow){
+            linePaint.setShadowLayer(12f, 0f, 0f, Color.YELLOW)
+            setLayerType(LAYER_TYPE_SOFTWARE, linePaint)
+        }
 
         sweepPaint = Paint(Paint.ANTI_ALIAS_FLAG)
         sweepPaint.apply {
             color = Color.GREEN
             style = Paint.Style.FILL
         }
-
-        val centerX = width/2
-        val centerY = height/2
-        val r = min(width/2, height/2) - 2*padding
-        outerRectF = RectF(centerX - r, centerY - r, centerX + r, centerY + r)
     }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
+        val centerX = width/2
+        val centerY = height/2
+        val r = min(width/2, height/2) - 2*padding
+        outerRectF = RectF(centerX - r, centerY - r, centerX + r, centerY + r)
         val sum : Double = data.reduce{
             a,b -> sum(a,b)
         }.value.toDouble()
 
         var currentArc = -90f
-
-
         data.forEachIndexed {
             i, it -> run{
                 random = Random(i)
@@ -74,9 +82,9 @@ class PieChart : View {
                 currentArc += sweepArc
             }
         }
-
-//        sweepPaint.color = Color.WHITE
-//        canvas!!.drawArc(innerRectF, 0f, 360f, true, sweepPaint)
+        if(donut){
+            drawDonut(canvas, 2*r/3)
+        }
     }
 
     private fun randomColor() : String{
@@ -89,4 +97,15 @@ class PieChart : View {
         return ret.toString()
     }
 
+    private fun drawDonut(canvas: Canvas?, r : Float){
+        val centerX = width/2
+        val centerY = height/2
+        val innerRectF = RectF(centerX - r, centerY - r, centerX + r, centerY + r)
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        paint.apply {
+            color = Color.WHITE
+            xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
+        }
+        canvas!!.drawArc(innerRectF, 0f, 360f, true, paint)
+    }
 }
