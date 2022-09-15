@@ -7,7 +7,7 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
 import android.view.View
-import com.app.data.ChartData
+import com.app.data.chart.SingleValueData
 import com.app.ngn.R
 import kotlin.math.max
 
@@ -40,17 +40,17 @@ class LineChart : View{
 
     private var padding : Float = 10f
 
-    var data: ArrayList<ChartData> = arrayListOf(
-        ChartData(10.0),
-        ChartData(20.0),
-        ChartData(80.0),
-        ChartData(20.0),
-        ChartData(50.0),
-        ChartData(11.0),
-        ChartData(30.0),
-        ChartData(44.0),
-        ChartData(76.0),
-        ChartData(120.0)
+    var data: ArrayList<SingleValueData> = arrayListOf(
+        SingleValueData(10.0),
+        SingleValueData(20.0),
+        SingleValueData(80.0),
+        SingleValueData(20.0),
+        SingleValueData(50.0),
+        SingleValueData(11.0),
+        SingleValueData(30.0),
+        SingleValueData(44.0),
+        SingleValueData(76.0),
+        SingleValueData(120.0)
     )
     private fun init(){
         axPaint = Paint(Paint.ANTI_ALIAS_FLAG)

@@ -4,25 +4,25 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
-import com.app.data.ChartData
+import com.app.data.chart.SingleValueData
 import com.app.ngn.R
 import kotlin.math.min
 import kotlin.random.Random
 
 class PieChart : View {
-    private fun sum(a : ChartData, b : ChartData) : ChartData{
-        return ChartData(a.value.toDouble() + b.value.toDouble())
+    private fun sum(a : SingleValueData, b : SingleValueData) : SingleValueData {
+        return SingleValueData(a.value.toDouble() + b.value.toDouble())
     }
     private lateinit var linePaint : Paint
     private lateinit var sweepPaint : Paint
     private lateinit var outerRectF: RectF
     private var lineWidth = 10f
     private var padding = 20f
-    private var data : ArrayList<ChartData> = arrayListOf(
-        ChartData(100),
-        ChartData(200),
-        ChartData(500),
-        ChartData(50),
+    private var data : ArrayList<SingleValueData> = arrayListOf(
+        SingleValueData(100),
+        SingleValueData(200),
+        SingleValueData(500),
+        SingleValueData(50),
     )
     private var shadow = false
     private var donut = false
