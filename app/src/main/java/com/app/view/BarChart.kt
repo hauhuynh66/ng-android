@@ -5,6 +5,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import com.app.ngn.R
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.abs
@@ -36,6 +37,7 @@ class BarChart : View {
     private var distance : Float = 50f
 
     private var padding : Float = 20f
+    private var showAxes : Boolean = true
 
     private lateinit var linePath : Path
     private lateinit var random : Random
@@ -46,6 +48,13 @@ class BarChart : View {
 
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs){
         init()
+        context!!.theme.obtainStyledAttributes(attrs, R.styleable.BarChart, 0, 0).apply {
+            try {
+                showAxes = getBoolean(R.styleable.BarChart_bc_showAxes, false)
+            }finally {
+                recycle()
+            }
+        }
     }
 
     private fun init(){
@@ -85,9 +94,11 @@ class BarChart : View {
         barWidth = 3*((width - 2*padding)/data.size)/5
         distance = ((width - 2*padding)/data.size)/5
 
-        canvas!!.apply {
-            canvas.drawLine(padding, padding, padding, height.toFloat() - padding, axPaint)
-            canvas.drawLine(padding,height.toFloat()- padding , width.toFloat() - padding, height.toFloat()- padding, axPaint)
+        if(showAxes){
+            canvas!!.apply {
+                canvas.drawLine(padding, padding, padding, height.toFloat() - padding, axPaint)
+                canvas.drawLine(padding,height.toFloat()- padding , width.toFloat() - padding, height.toFloat()- padding, axPaint)
+            }
         }
 
         data.forEachIndexed{ i, d ->
@@ -99,7 +110,7 @@ class BarChart : View {
                 }
                 val x = convertX(i)
                 val y = convertY(d.value.toDouble(), maxY)
-                canvas.drawLine(x, height-padding, x , y, barPaint)
+                canvas!!.drawLine(x, height-padding, x , y, barPaint)
             }
         }
     }

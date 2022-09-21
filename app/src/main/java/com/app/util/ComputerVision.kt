@@ -10,7 +10,7 @@ import org.opencv.features2d.SIFT
 import org.opencv.imgproc.Imgproc
 
 
-class CVUtils {
+class ComputerVision {
     companion object{
         fun gaussianFilter(bitmap: Bitmap) : Bitmap {
             val ret = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)

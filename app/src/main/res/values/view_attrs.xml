@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="LineChart">
-        <attr name="showAxes" format="boolean"/>
-        <attr name="showPoints" format="boolean"/>
+        <attr name="lc_showAxes" format="boolean"/>
+        <attr name="lc_showPoints" format="boolean"/>
+    </declare-styleable>
+    <declare-styleable name="BarChart">
+        <attr name="bc_showAxes" format="boolean"/>
     </declare-styleable>
     <declare-styleable name="PieChart">
         <attr name="donut" format="boolean"/>

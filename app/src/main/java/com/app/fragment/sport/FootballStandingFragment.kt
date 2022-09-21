@@ -17,7 +17,7 @@ import com.app.adapter.FootballStandingAdapter
 import com.app.data.FootballStandingData
 import com.app.ngn.R
 import com.app.util.Animation.Companion.crossfade
-import com.app.util.FootballAPI
+import com.app.util.FootballJson
 import com.app.viewmodel.Football
 import org.json.JSONObject
 
@@ -88,9 +88,9 @@ class FootballStandingFragment : Fragment() {
                 for(i in 0 until standingsList.length()){
                     val data = standingsList.getJSONObject(i)
                     val form = data.getString("form")
-                    val team = FootballAPI.getTeam(data.getJSONObject("team"))
-                    val score = FootballAPI.getScore(data.getJSONObject("all").getJSONObject("goals"))
-                    val match = FootballAPI.getMatch(data.getJSONObject("all"))
+                    val team = FootballJson.getTeam(data.getJSONObject("team"))
+                    val score = FootballJson.getScore(data.getJSONObject("all").getJSONObject("goals"))
+                    val match = FootballJson.getMatch(data.getJSONObject("all"))
 
                     ret.add(FootballStandingData(team, match, score, data.getInt("points"), form))
                 }

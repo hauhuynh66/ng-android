@@ -1,5 +1,5 @@
 package com.app.data.chart
 
-class SingleValueData(val value : Number) {
-    
+data class SingleValueData(val value : Number) {
+
 }

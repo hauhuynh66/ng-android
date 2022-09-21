@@ -8,14 +8,14 @@
 
     <include
         android:id="@+id/image"
-        layout="@layout/i_carousel"/>
+        layout="@layout/i_carousel" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="400dp"
         app:layout_constraintTop_toBottomOf="@id/image">
-        <include
-            layout="@layout/fg_home"/>
+        <include layout="@layout/fg_home"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.motion.widget.MotionLayout>

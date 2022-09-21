@@ -18,8 +18,8 @@
             android:id="@+id/content_holder">
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/chart"
                 app:layout_constraintTop_toTopOf="parent"
@@ -27,26 +27,23 @@
                 android:textSize="10pt"
                 android:id="@+id/title"
                 android:text="TITLE"/>
-
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/chart"
                 app:layout_constraintTop_toBottomOf="@+id/title"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:id="@+id/subtitle"
                 android:text="TITLE"/>
-
-            <com.app.view.LineChart
+            <com.app.view.BarChart
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintDimensionRatio="h,1:1"
                 android:id="@+id/chart"
-                app:lc_showAxes="false"
-                app:lc_showPoints="false"/>
+                app:bc_showAxes="false"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

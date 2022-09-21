@@ -4,7 +4,7 @@ import com.app.data.FootballStandingData
 import com.app.data.FootballTeam
 import org.json.JSONObject
 
-class FootballAPI {
+class FootballJson {
     companion object{
         fun getTeam(teamObj : JSONObject) : FootballTeam{
             val id = teamObj.getInt("id")

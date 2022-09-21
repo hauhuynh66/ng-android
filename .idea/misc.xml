@@ -63,6 +63,7 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/ac_tabs.xml" value="0.1" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/ac_viewpager.xml" value="0.21516754850088182" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/ac_weather.xml" value="0.1" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/activity_scan.xml" value="0.10582010582010581" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_device_analog.xml" value="0.10978835978835978" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_device_digital.xml" value="0.10978835978835978" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_draw_color.xml" value="0.21516754850088182" />
@@ -117,6 +118,8 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_test.xml" value="0.264" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_viewpager.xml" value="0.1721014492753623" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_weather.xml" value="0.136" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/activity_scan.xml" value="0.12395833333333334" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/bar_chart_card.xml" value="0.2" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/calendar_title.xml" value="0.136" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/card_holder.xml" value="0.25416666666666665" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/card_holder_horizontal.xml" value="0.176" />
@@ -190,7 +193,7 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_list.xml" value="0.2" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_list_dec.xml" value="0.30823863636363635" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_login_options.xml" value="0.1296875" />
-        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_main.xml" value="0.16666666666666666" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_main.xml" value="0.264" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_misc.xml" value="0.22554347826086957" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_modal_file_action.xml" value="0.12916666666666668" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_note.xml" value="0.2" />
@@ -199,11 +202,19 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_weather.xml" value="0.10190217391304347" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fragment_holder.xml" value="0.11302083333333333" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/gauge_card.xml" value="0.176" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/horizontal_bar_chart_card.xml" value="0.536" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/horizontal_gauge_card.xml" value="0.536" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/horizontal_line_chart_card.xml" value="0.125" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/horizontal_pie_chart_card.xml" value="0.125" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/i_carousel.xml" value="0.176" />
-        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/line_chart_card.xml" value="0.11302083333333333" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/line_chart_card.xml" value="0.4" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/list.xml" value="0.11197916666666667" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/nav_header.xml" value="0.264" />
-        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/pie_chart_card.xml" value="0.176" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/pie_chart_card.xml" value="0.264" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/vertical_bar_chart_card.xml" value="0.125" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/vertical_gauge_card.xml" value="0.125" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/vertical_line_chart_card.xml" value="0.2" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/vertical_pie_chart_card.xml" value="0.2" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/menu/cv_menu.xml" value="0.2" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/menu/football_menu.xml" value="0.11302083333333333" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/menu/nav_menu.xml" value="0.1" />

@@ -19,7 +19,7 @@ import com.app.data.FootballResult
 import com.app.data.FootballTeam
 import com.app.ngn.R
 import com.app.util.Animation.Companion.crossfade
-import com.app.util.FootballAPI
+import com.app.util.FootballJson
 import com.app.util.Formatter.Companion.formatDate
 import com.app.viewmodel.Football
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -69,8 +69,8 @@ class FootballFixtureFragment : Fragment() {
             val referee = obj.getJSONObject("fixture").getString("referee").substringBefore(",")
             val matchId = obj.getJSONObject("fixture").getLong("id")
             val teams = obj.getJSONObject("teams")
-            val homeTeam = FootballAPI.getTeam(teams.getJSONObject("home"))
-            val awayTeam = FootballAPI.getTeam(teams.getJSONObject("away"))
+            val homeTeam = FootballJson.getTeam(teams.getJSONObject("home"))
+            val awayTeam = FootballJson.getTeam(teams.getJSONObject("away"))
             val homeScore = if(obj.getJSONObject("goals").isNull("home")){
                 null
             }else{

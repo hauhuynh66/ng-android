@@ -20,8 +20,8 @@ class LineChart : View{
         init()
         context!!.theme.obtainStyledAttributes(attributeSet, R.styleable.LineChart, 0, 0).apply {
             try {
-                showAxes = getBoolean(R.styleable.LineChart_showAxes, true)
-                showPoints = getBoolean(R.styleable.LineChart_showPoints, true)
+                showAxes = getBoolean(R.styleable.LineChart_lc_showAxes, true)
+                showPoints = getBoolean(R.styleable.LineChart_lc_showPoints, true)
             }finally {
                 recycle()
             }

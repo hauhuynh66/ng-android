@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import com.app.ngn.R
-import com.app.util.CVUtils.Companion.featureMatching
+import com.app.util.ComputerVision.Companion.featureMatching
 
 class ORBFragment : Fragment() {
     private lateinit var original1 : ImageView
