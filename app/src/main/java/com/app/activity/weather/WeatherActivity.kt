@@ -59,7 +59,10 @@ class WeatherActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_weather)
         setSupportActionBar(findViewById(R.id.toolbar))
-        supportActionBar!!.title = ""
+        supportActionBar!!.apply{
+            title = ""
+            setDisplayHomeAsUpEnabled(true)
+        }
         permissionsCheck()
         requestQueue = Volley.newRequestQueue(this)
         progressBar = findViewById(R.id.progress)

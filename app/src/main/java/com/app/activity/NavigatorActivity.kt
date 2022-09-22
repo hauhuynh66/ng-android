@@ -3,7 +3,9 @@ package com.app.activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -13,16 +15,17 @@ import com.app.fragment.MainFragment
 import com.app.fragment.MiscFragment
 import com.app.fragment.note.NoteFragment
 import com.app.ngn.R
+import com.app.viewmodel.Auth
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.squareup.picasso.Picasso
 import kotlin.system.exitProcess
 
 class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
+    private val model : Auth by viewModels()
     private lateinit var drawerLayout: DrawerLayout
-    private lateinit var auth:FirebaseAuth
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+    private lateinit var displayName : TextView
+    private lateinit var displayImage : ImageView
     private var count: Int = 0
     private var prev: Long = 0L
     private var curr: Long = 0L
@@ -30,16 +33,26 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_navigation)
-        auth = Firebase.auth
-        //val user = auth.currentUser ?: exitProcess(0)
+        val user = model.currentAuth.currentUser ?: exitProcess(0)
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
-        val displayName = navigationView.getHeaderView(0).findViewById<TextView>(R.id.nav_header_name)
+        displayName = navigationView.getHeaderView(0).findViewById<TextView>(R.id.nav_header_name)
         val displayEmail = navigationView.getHeaderView(0).findViewById<TextView>(R.id.nav_header_email)
-        /*displayName.text = user.displayName ?: "User"
-        displayEmail.text = user.email*/
+        displayImage = navigationView.getHeaderView(0).findViewById<ImageView>(R.id.nav_header_img)
+        navigationView.getHeaderView(0).findViewById<ImageView>(R.id.logout).apply {
+            setOnClickListener {
+                model.currentAuth.signOut()
+                val intent = Intent(this@NavigatorActivity, LoginActivity::class.java)
+                startActivity(intent)
+            }
+        }
+        displayName.text = user.displayName ?: "User"
+        displayEmail.text = user.email
+        if(user.photoUrl!=null){
+            Picasso.get().load(user.photoUrl).into(displayImage)
+        }
 
         navigationView.setNavigationItemSelectedListener(this)
         this.drawerLayout = findViewById(R.id.drawer_layout)
@@ -64,6 +77,16 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             if(savedInstanceState==null){
                 supportFragmentManager.beginTransaction().replace(R.id.container,  MainFragment(), "MAIN").commit()
                 supportActionBar!!.title = "Main"
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        model.currentAuth.currentUser!!.apply {
+            this@NavigatorActivity.displayName.text = this.displayName
+            if(this.photoUrl!=null){
+                Picasso.get().load(this.photoUrl).into(this@NavigatorActivity.displayImage)
             }
         }
     }
@@ -102,11 +125,6 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                     }
                     R.id.nav_menu_setting->{
                         val intent = Intent(this@NavigatorActivity, SettingsActivity::class.java)
-                        startActivity(intent)
-                    }
-                    R.id.nav_logout->{
-                        auth.signOut()
-                        val intent = Intent(this@NavigatorActivity, LoginActivity::class.java)
                         startActivity(intent)
                     }
                     else->{

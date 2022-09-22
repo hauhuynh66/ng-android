@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:title="Home"
-        android:id="@+id/nav_home"/>
-    <item
-        android:title="Note"
-        android:id="@+id/nav_note"/>
-    <item
-        android:title="RD"
-        android:id="@+id/nav_rd"/>
-    <item
-        android:title="Misc"
-        android:id="@+id/nav_menu_misc"/>
     <group>
-        <item
-            android:title="Setting"
-            android:id="@+id/nav_menu_setting"/>
+        <item android:title="Group1">
+            <menu>
+                <item
+                    android:title="Home"
+                    android:id="@+id/nav_home"/>
+                <item
+                    android:title="Note"
+                    android:id="@+id/nav_note"/>
+                <item
+                    android:title="RD"
+                    android:id="@+id/nav_rd"/>
+                <item
+                    android:title="Misc"
+                    android:id="@+id/nav_menu_misc"/>
+            </menu>
+        </item>
     </group>
-    <item
-        android:title="Logout"
-        android:id="@+id/nav_logout"/>
+    <group>
+        <item android:title="Group2">
+            <menu>
+                <item
+                    android:title="Setting"
+                    android:id="@+id/nav_menu_setting"/>
+            </menu>
+        </item>
+    </group>
 </menu>

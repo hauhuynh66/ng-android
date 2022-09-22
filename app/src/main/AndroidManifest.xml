@@ -47,6 +47,9 @@
             android:name="com.app.activity.NavigatorActivity"
             android:exported="true"/>
 
+        <activity android:name="com.app.activity.ProfileActivity"
+            android:exported="true"/>
+
         <activity
             android:name="com.app.activity.GoogleMapActivity"
             android:exported="true"/>

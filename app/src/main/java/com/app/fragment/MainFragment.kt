@@ -1,21 +1,31 @@
 package com.app.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.constraintlayout.helper.widget.Carousel
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.app.activity.ProfileActivity
 import com.app.adapter.CardAdapter
 import com.app.data.chart.SingleValueData
 import com.app.ngn.R
+import com.app.viewmodel.Auth
+import com.squareup.picasso.Picasso
 
 class MainFragment : Fragment() {
+    private val firebase : Auth by activityViewModels()
     private lateinit var summaryList : RecyclerView
     private lateinit var statList : RecyclerView
+    private lateinit var displayName : TextView
+    private lateinit var displayImage : ImageView
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -23,6 +33,16 @@ class MainFragment : Fragment() {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         return inflater.inflate(R.layout.fg_main, container, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        firebase.currentAuth.currentUser!!.apply {
+            this@MainFragment.displayName.text = "Welcome, $displayName"
+            if(photoUrl!=null){
+                Picasso.get().load(photoUrl!!).into(displayImage)
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -73,5 +93,12 @@ class MainFragment : Fragment() {
         )
         statList.adapter = CardAdapter(requireContext(), statData, LinearLayoutManager.HORIZONTAL)
 
+        displayName = view.findViewById(R.id.text1)
+        displayImage = view.findViewById(R.id.profile_icon)
+
+        view.findViewById<ConstraintLayout>(R.id.header).setOnClickListener {
+            val intent = Intent(requireActivity(), ProfileActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

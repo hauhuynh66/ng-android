@@ -50,16 +50,16 @@ class CardAdapter(val context : Context, val data : ArrayList<CardData>, val ori
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when(getItemViewType(position)){
             0->{
-                (holder as PieChartCard).bind(data[position])
+                (holder as PieChartCard).bind(data[position], orientation)
             }
             1->{
-                (holder as BarChartCard).bind(data[position])
+                (holder as BarChartCard).bind(data[position], orientation)
             }
             2->{
-                (holder as LineChartCard).bind(data[position])
+                (holder as LineChartCard).bind(data[position], orientation)
             }
             else->{
-                (holder as GaugeCard).bind(data[position])
+                (holder as GaugeCard).bind(data[position], orientation)
             }
         }
     }
@@ -93,25 +93,25 @@ class CardAdapter(val context : Context, val data : ArrayList<CardData>, val ori
     )
 
     class PieChartCard(v : View) : RecyclerView.ViewHolder(v){
-        fun bind(data : CardData){
+        fun bind(data : CardData, orientation: Int){
 
         }
     }
 
     class LineChartCard(v : View) : RecyclerView.ViewHolder(v){
-        fun bind(data : CardData){
+        fun bind(data : CardData, orientation: Int){
 
         }
     }
 
     class BarChartCard(v : View) : RecyclerView.ViewHolder(v){
-        fun bind(data : CardData){
+        fun bind(data : CardData, orientation: Int){
 
         }
     }
 
     class GaugeCard(v : View) : RecyclerView.ViewHolder(v){
-        fun bind(data : CardData){
+        fun bind(data : CardData, orientation: Int){
 
         }
     }
