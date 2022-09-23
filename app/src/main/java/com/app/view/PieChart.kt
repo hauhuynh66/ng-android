@@ -4,25 +4,18 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
-import com.app.data.chart.SingleValueData
 import com.app.ngn.R
 import kotlin.math.min
 import kotlin.random.Random
 
 class PieChart : View {
-    private fun sum(a : SingleValueData, b : SingleValueData) : SingleValueData {
-        return SingleValueData(a.value.toDouble() + b.value.toDouble())
-    }
     private lateinit var linePaint : Paint
     private lateinit var sweepPaint : Paint
     private lateinit var outerRectF: RectF
     private var lineWidth = 10f
     private var padding = 20f
-    private var data : ArrayList<SingleValueData> = arrayListOf(
-        SingleValueData(100),
-        SingleValueData(200),
-        SingleValueData(500),
-        SingleValueData(50),
+    private var data = arrayListOf<Number>(
+        100, 200, 300, 500, 20, 400
     )
     private var shadow = false
     private var donut = false
@@ -68,16 +61,17 @@ class PieChart : View {
         val centerY = height/2
         val r = min(width/2, height/2) - 2*padding
         outerRectF = RectF(centerX - r, centerY - r, centerX + r, centerY + r)
+
         val sum : Double = data.reduce{
-            a,b -> sum(a,b)
-        }.value.toDouble()
+            a,b -> a.toDouble() + b.toDouble()
+        }.toDouble()
 
         var currentArc = -90f
         data.forEachIndexed {
             i, it -> run{
                 random = Random(i)
                 sweepPaint.color = Color.parseColor(randomColor())
-                val sweepArc = ((it.value.toDouble()/sum)).toFloat() * 360f
+                val sweepArc = ((it.toDouble()/sum)).toFloat() * 360f
                 canvas!!.drawArc(outerRectF, currentArc, sweepArc, true, sweepPaint)
                 currentArc += sweepArc
             }
@@ -107,5 +101,10 @@ class PieChart : View {
             xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
         }
         canvas!!.drawArc(innerRectF, 0f, 360f, true, paint)
+    }
+
+    public fun setData(data : ArrayList<Number>){
+        this.data = data
+        invalidate()
     }
 }

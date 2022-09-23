@@ -265,6 +265,9 @@ class WeatherActivity : AppCompatActivity() {
                 val list = Intent(this, LocationListActivity::class.java)
                 startActivity(list)
             }
+            android.R.id.home->{
+                onBackPressed()
+            }
             else->{
 
             }
@@ -273,6 +276,7 @@ class WeatherActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        super.onBackPressed()
         val intent = Intent(this, NavigatorActivity::class.java)
         intent.putExtra("from", "weather")
         startActivity(intent)

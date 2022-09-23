@@ -7,7 +7,6 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
 import android.view.View
-import com.app.data.chart.SingleValueData
 import com.app.ngn.R
 import kotlin.math.max
 
@@ -40,17 +39,8 @@ class LineChart : View{
 
     private var padding : Float = 10f
 
-    var data: ArrayList<SingleValueData> = arrayListOf(
-        SingleValueData(10.0),
-        SingleValueData(20.0),
-        SingleValueData(80.0),
-        SingleValueData(20.0),
-        SingleValueData(50.0),
-        SingleValueData(11.0),
-        SingleValueData(30.0),
-        SingleValueData(44.0),
-        SingleValueData(76.0),
-        SingleValueData(120.0)
+    private var data = arrayListOf<Number>(
+        10, 20, 80, 30, 60, 40, 120, 30
     )
     private fun init(){
         axPaint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -77,14 +67,12 @@ class LineChart : View{
     }
 
     override fun onDraw(canvas: Canvas?) {
-        data.maxByOrNull {
-            it.value.toDouble()
-        }?.let {
-            maxY = it.value.toDouble()
+        maxY = data.maxOf {
+            it.toDouble()
         }
 
         var prevX : Float = padding
-        var prevY : Float = convertY(data[0].value.toDouble(), maxY)
+        var prevY : Float = convertY(data[0].toDouble(), maxY)
         linePath.moveTo(prevX, prevY)
         if(showAxes){
             canvas!!.apply {
@@ -95,7 +83,7 @@ class LineChart : View{
         canvas!!.apply {
             for(pos : Int in 0 until data.size){
                 val x = convertX(pos)
-                val y = convertY(data[pos].value.toDouble(), maxY)
+                val y = convertY(data[pos].toDouble(), maxY)
 
                 if(showPoints){
                     canvas.drawPoint(
@@ -126,4 +114,8 @@ class LineChart : View{
         return (height - padding - y * ratio).toFloat()
     }
 
+    fun setData(data : ArrayList<Number>){
+        this.data = data
+        invalidate()
+    }
 }

@@ -14,7 +14,7 @@ class Gauge : View {
         LINE,
         ARC
     }
-    var progress : Float = 40f
+    var progress : Number = 40
     private lateinit var bgPaint : Paint
     private lateinit var pgPaint : Paint
     private lateinit var textPaint: Paint
@@ -94,7 +94,7 @@ class Gauge : View {
         val bounds = Rect()
         canvas!!.apply {
             drawLine(padding, height/2f, width-2*padding, height/2f, bgPaint)
-            val x = (width-2*padding)*progress/100
+            val x = (width-2*padding)*progress.toFloat()/100
             drawLine(padding, height/2f, x, height/2f, pgPaint)
             if(displayText) {
                 val text = "$progress%"
@@ -112,7 +112,7 @@ class Gauge : View {
         val rectF = RectF(cx - r, cy-r, cx + r , cy+r)
         canvas!!.apply {
             drawArc(rectF, -180f, 180f, false, bgPaint)
-            val angle = 1.8f * progress
+            val angle = 1.8f * progress.toFloat()
             drawArc(rectF, -180f, angle, false, pgPaint)
             if(displayText) {
                 val text = "$progress%"
@@ -120,5 +120,10 @@ class Gauge : View {
                 drawText(text, width/2f - bounds.width()/2,  cy - 10f , textPaint)
             }
         }
+    }
+
+    fun setData(data : Number){
+        this.progress = data
+        invalidate()
     }
 }

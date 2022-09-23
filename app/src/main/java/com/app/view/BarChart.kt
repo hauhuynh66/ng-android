@@ -1,14 +1,13 @@
 package com.app.view
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Path
 import android.util.AttributeSet
-import android.view.MotionEvent
 import android.view.View
 import com.app.ngn.R
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.math.abs
 import kotlin.random.Random
 
 class BarChart : View {
@@ -16,17 +15,15 @@ class BarChart : View {
     private lateinit var linePaint: Paint
     private lateinit var axPaint: Paint
     private lateinit var barPaint : Paint
-    private var data : List<Data> = arrayListOf(
-        Data(80.0),
-        Data(100.0),
-        Data(50.0),
-        Data(40.0),
-        Data(90.0),
-        Data(50.0),
-        Data(70.0),
-        Data(20.0),
-        Data(80.0),
-        Data(80.0)
+    private var data = arrayListOf<Number>(
+        20,
+        10,
+        30,
+        50,
+        40,
+        80,
+        60,
+        90
     )
 
     private var maxY : Double = 100.0
@@ -85,10 +82,8 @@ class BarChart : View {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-        data.maxByOrNull {
-            it.value.toDouble()
-        }?.let {
-            maxY = it.value.toDouble()
+        maxY = data.maxOf {
+            it.toDouble()
         }
 
         barWidth = 3*((width - 2*padding)/data.size)/5
@@ -109,7 +104,7 @@ class BarChart : View {
                     color = Color.parseColor(randomColor())
                 }
                 val x = convertX(i)
-                val y = convertY(d.value.toDouble(), maxY)
+                val y = convertY(d.toDouble(), maxY)
                 canvas!!.drawLine(x, height-padding, x , y, barPaint)
             }
         }
@@ -136,7 +131,7 @@ class BarChart : View {
         return ret.toString()
     }
 
-    fun setData(data: ArrayList<Data>){
+    fun setData(data : ArrayList<Number>){
         this.data = data
         invalidate()
     }

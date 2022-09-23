@@ -4,9 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ngn.R
+import com.app.view.BarChart
+import com.app.view.Gauge
+import com.app.view.LineChart
+import com.app.view.PieChart
 
 class CardAdapter(val context : Context, val data : ArrayList<CardData>, val orientation : Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -86,33 +91,61 @@ class CardAdapter(val context : Context, val data : ArrayList<CardData>, val ori
     }
 
     data class CardData(
-        val data : Any,
-        val title : String,
+        val data : ArrayList<Number>,
+        val title : String? = null,
         val subtitle : String? = null,
         val type : String
     )
 
     class PieChartCard(v : View) : RecyclerView.ViewHolder(v){
         fun bind(data : CardData, orientation: Int){
+            if(orientation == LinearLayoutManager.VERTICAL){
+                itemView.findViewById<TextView>(R.id.title).text = data.title
+                itemView.findViewById<TextView>(R.id.subtitle).text = data.subtitle
+            }
 
+            itemView.findViewById<PieChart>(R.id.chart).apply {
+                this.setData(data.data)
+            }
         }
     }
 
     class LineChartCard(v : View) : RecyclerView.ViewHolder(v){
         fun bind(data : CardData, orientation: Int){
+            if(orientation == LinearLayoutManager.VERTICAL){
+                itemView.findViewById<TextView>(R.id.title).text = data.title
+                itemView.findViewById<TextView>(R.id.subtitle).text = data.subtitle
+            }
 
+            itemView.findViewById<LineChart>(R.id.chart).apply {
+                this.setData(data.data)
+            }
         }
     }
 
     class BarChartCard(v : View) : RecyclerView.ViewHolder(v){
         fun bind(data : CardData, orientation: Int){
+            if(orientation == LinearLayoutManager.VERTICAL){
+                itemView.findViewById<TextView>(R.id.title).text = data.title
+                itemView.findViewById<TextView>(R.id.subtitle).text = data.subtitle
+            }
 
+            itemView.findViewById<BarChart>(R.id.chart).apply {
+                this.setData(data.data)
+            }
         }
     }
 
     class GaugeCard(v : View) : RecyclerView.ViewHolder(v){
         fun bind(data : CardData, orientation: Int){
+            if(orientation == LinearLayoutManager.VERTICAL){
+                itemView.findViewById<TextView>(R.id.title).text = data.title
+                itemView.findViewById<TextView>(R.id.subtitle).text = data.subtitle
+            }
 
+            itemView.findViewById<Gauge>(R.id.chart).apply {
+                this.setData(data.data[0])
+            }
         }
     }
 }

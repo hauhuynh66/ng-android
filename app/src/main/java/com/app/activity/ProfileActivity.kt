@@ -114,7 +114,8 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun checkChange() : Boolean{
         firebase.currentAuth.currentUser!!.apply {
-            if(this.displayName!=this@ProfileActivity.displayName.text || this.photoUrl.toString()!=this@ProfileActivity.photoUrl.text){
+            if(this.displayName != this@ProfileActivity.displayName.text.toString() ||
+                this.photoUrl.toString() != this@ProfileActivity.photoUrl.text.toString()){
                 return true
             }
             return false
