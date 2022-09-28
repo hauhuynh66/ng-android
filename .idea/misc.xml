@@ -42,6 +42,8 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/drawable/border.xml" value="0.1355" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/drawable/com_detail2.xml" value="0.1345" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/drawable/custom_chk.xml" value="0.1355" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/drawable/ic_baseline_arrow_downward.xml" value="0.124" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/drawable/ic_baseline_arrow_upward.xml" value="0.124" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/drawable/ic_baseline_close.xml" value="0.213" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/drawable/ic_baseline_remove_red_eye.xml" value="0.1355" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/drawable/ic_light_rain.xml" value="0.1345" />
@@ -155,6 +157,8 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_mp_player.xml" value="0.264" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_note.xml" value="0.12" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_note_img.xml" value="0.176" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_rd_card.xml" value="0.2" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_rd_comment.xml" value="0.10400000000000001" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_search_card.xml" value="0.2" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_sheet_element.xml" value="0.1296875" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_statistic.xml" value="0.176" />
