@@ -9,7 +9,7 @@ import com.app.repository.SearchHistoryRepository
 import com.app.repository.SettingRepository
 import com.app.util.DateConverter
 
-@Database(entities = [Note::class, Location::class, Setting::class, SearchHistory::class], version = 1)
+@Database(entities = [Note::class, Location::class, Setting::class, SearchHistory::class], version = 2)
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun noteRepository(): NoteRepository

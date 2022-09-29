@@ -19,6 +19,7 @@ import com.app.ngn.R
 import com.app.viewmodel.Auth
 import com.squareup.picasso.Picasso
 
+
 class MainFragment : Fragment() {
     private val firebase : Auth by activityViewModels()
     private lateinit var summaryList : RecyclerView
@@ -99,5 +100,6 @@ class MainFragment : Fragment() {
             val intent = Intent(requireActivity(), ProfileActivity::class.java)
             startActivity(intent)
         }
+
     }
 }

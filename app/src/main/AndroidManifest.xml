@@ -24,7 +24,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NGN"
         android:usesCleartextTraffic="true"
-        android:requestLegacyExternalStorage="true">
+        android:requestLegacyExternalStorage="true"
+        android:networkSecurityConfig="@xml/network_config">
         <activity
             android:name="com.app.activity.SettingsActivity"
             android:exported="false"

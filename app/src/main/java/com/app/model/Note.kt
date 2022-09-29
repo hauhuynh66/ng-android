@@ -6,7 +6,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity(indices = [Index(value = ["title"], unique = true)])
+@Entity
 data class Note (
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "content") val content: String?,

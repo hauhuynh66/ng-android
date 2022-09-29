@@ -22,6 +22,7 @@ class LoginActivity: AppCompatActivity() {
         }
 
         supportFragmentManager.beginTransaction().replace(R.id.container, LoginOptionsFragment()).commit()
+
         viewModel.currentState.observe(this) {
             when (it) {
                 0->{
@@ -35,6 +36,10 @@ class LoginActivity: AppCompatActivity() {
                 2 -> {
                     viewModel.init(this)
                     viewModel.googleSignIn()
+                }
+                99 -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.container, EmailPasswordLoginFragment()).commit()
                 }
                 else -> {
 

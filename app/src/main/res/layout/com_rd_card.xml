@@ -83,6 +83,4 @@
             android:src="@drawable/ic_baseline_more_vert"
             android:padding="10dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

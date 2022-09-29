@@ -29,7 +29,7 @@ import kotlinx.coroutines.withContext
 import java.util.*
 
 
-class NoteFragment:Fragment(), NoteDialogListener {
+class NoteListFragment:Fragment(), NoteDialogListener {
     private lateinit var fb:FloatingActionButton
     private lateinit var adapter: NoteAdapter
     private lateinit var data:ArrayList<Note>
@@ -117,9 +117,14 @@ class NoteFragment:Fragment(), NoteDialogListener {
                     val item = adapter.removeItem(pos)
                     deleteNote(item)
                     val snackBar = Snackbar.make(requireContext(), rootView, "Note removed", Snackbar.LENGTH_LONG)
-                    snackBar.setAction("Undo") {
+                    snackBar.setAction("OK") {
                         adapter.restoreItem(item, pos)
-                        db.noteRepository().insert(item)
+                        runBlocking {
+                            withContext(Dispatchers.IO){
+                                db.noteRepository().insert(item)
+                            }
+                        }
+
                     }
                     snackBar.show()
                 }

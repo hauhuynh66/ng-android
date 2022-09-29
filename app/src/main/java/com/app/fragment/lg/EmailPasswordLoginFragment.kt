@@ -23,6 +23,8 @@ class EmailPasswordLoginFragment : Fragment() {
     private val viewModel : Login by activityViewModels()
     private lateinit var progressView : ProgressBar
     private lateinit var contentView : ConstraintLayout
+    private lateinit var email : EditText
+    private lateinit var password : EditText
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,42 +36,55 @@ class EmailPasswordLoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         progressView = view.findViewById(R.id.progress)
         contentView = view.findViewById(R.id.content)
-        val password = view.findViewById<EditText>(R.id.password)
-        val email = view.findViewById<EditText>(R.id.email)
-        email.setText("hauhuynh66@gmail.com")
-        password.setText("Hauhuynh")
-        val loginBtn = view.findViewById<Button>(R.id.loginBtn)
-        val clearBtn = view.findViewById<Button>(R.id.clearBtn)
-        clearBtn.setOnClickListener{
-            email.text.clear()
-            password.text.clear()
+        password = view.findViewById(R.id.password)
+        email = view.findViewById(R.id.email)
+
+        email.setText(viewModel.username.value)
+        password.setText(viewModel.password.value)
+
+        view.findViewById<Button>(R.id.loginBtn).apply {
+            setOnClickListener {
+                if (viewModel.isEmergency) {
+
+                } else {
+                    firebaseLogin(this)
+                }
+            }
         }
 
-        loginBtn.setOnClickListener {
-            if (email.text == null || password.text == null) {
-                //
-            } else {
-                Animation.crossfade(arrayListOf(progressView), arrayListOf(contentView), 1000)
-                val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(loginBtn.windowToken,0)
-                viewModel.auth.signInWithEmailAndPassword(email.text!!.toString(), password.text!!.toString())
-                    .addOnCompleteListener{
-                            task->run{
-                                if(task.isSuccessful){
-                                    val mainIntent = Intent(requireContext(), NavigatorActivity::class.java)
-                                    startActivity(mainIntent)
-                                }
-                            }
-                    }
-                    .addOnFailureListener { err ->
-                        run {
-                            Animation.crossfade(arrayListOf(contentView), arrayListOf(progressView), 1000)
-                            Toast.makeText(requireContext(), err.message, Toast.LENGTH_LONG).show()
-                        }
-                    }
+        view.findViewById<Button>(R.id.clearBtn).apply {
+            setOnClickListener {
+                email.text.clear()
+                password.text.clear()
             }
+        }
+    }
+
+    private fun firebaseLogin(loginBtn : Button){
+        if (email.text != null && password.text != null) {
+            Animation.crossfade(arrayListOf(progressView), arrayListOf(contentView), 1000)
+            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+            imm.hideSoftInputFromWindow(loginBtn.windowToken,0)
+
+            viewModel.auth.signInWithEmailAndPassword(email.text!!.toString(), password.text!!.toString())
+                .addOnCompleteListener{
+                        task->run{
+                    if(task.isSuccessful){
+                        val mainIntent = Intent(requireContext(), NavigatorActivity::class.java)
+                        startActivity(mainIntent)
+                    }
+                }
+                }
+                .addOnFailureListener { err ->
+                    run {
+                        Animation.crossfade(arrayListOf(contentView), arrayListOf(progressView), 1000)
+                        Toast.makeText(requireContext(), err.message, Toast.LENGTH_LONG).show()
+                    }
+                }
         }
     }
 }

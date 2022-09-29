@@ -13,7 +13,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.app.activity.rd.RDMainActivity
 import com.app.fragment.MainFragment
 import com.app.fragment.MiscFragment
-import com.app.fragment.note.NoteFragment
+import com.app.fragment.note.NoteListFragment
 import com.app.ngn.R
 import com.app.viewmodel.Auth
 import com.google.android.material.navigation.NavigationView
@@ -107,8 +107,8 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 when(item.itemId){
                     R.id.nav_note->{
                         this.title = "Note"
-                        if(currentFragment !is NoteFragment){
-                            transaction.replace(R.id.container,  NoteFragment(), "NOTE").commit()
+                        if(currentFragment !is NoteListFragment){
+                            transaction.replace(R.id.container,  NoteListFragment(), "NOTE").commit()
                             transaction.addToBackStack("NOTE")
                         }
                     }
