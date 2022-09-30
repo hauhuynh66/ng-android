@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.app.activity.rd.RDMainActivity
@@ -23,8 +24,9 @@ import kotlin.system.exitProcess
 class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
     private val model : Authentication by viewModels()
     private lateinit var drawerLayout: DrawerLayout
-    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+    private lateinit var toolbar: Toolbar
     private lateinit var displayName : TextView
+    private lateinit var displayEmail : TextView
     private lateinit var displayImage : ImageView
     private var count: Int = 0
     private var prev: Long = 0L
@@ -37,10 +39,12 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
-        displayName = navigationView.getHeaderView(0).findViewById<TextView>(R.id.nav_header_name)
-        val displayEmail = navigationView.getHeaderView(0).findViewById<TextView>(R.id.nav_header_email)
-        displayImage = navigationView.getHeaderView(0).findViewById<ImageView>(R.id.nav_header_img)
+        displayName = navigationView.getHeaderView(0).findViewById(R.id.nav_header_name)
+        displayEmail = navigationView.getHeaderView(0).findViewById(R.id.nav_header_email)
+        displayImage = navigationView.getHeaderView(0).findViewById(R.id.nav_header_img)
+
         navigationView.getHeaderView(0).findViewById<ImageView>(R.id.logout).apply {
             setOnClickListener {
                 model.firebaseAuth.signOut()
