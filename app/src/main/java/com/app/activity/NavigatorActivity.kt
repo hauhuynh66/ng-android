@@ -15,13 +15,13 @@ import com.app.fragment.MainFragment
 import com.app.fragment.MiscFragment
 import com.app.fragment.note.NoteListFragment
 import com.app.ngn.R
-import com.app.viewmodel.Auth
+import com.app.viewmodel.Authentication
 import com.google.android.material.navigation.NavigationView
 import com.squareup.picasso.Picasso
 import kotlin.system.exitProcess
 
 class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
-    private val model : Auth by viewModels()
+    private val model : Authentication by viewModels()
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
     private lateinit var displayName : TextView
@@ -33,7 +33,7 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_navigation)
-        val user = model.currentAuth.currentUser ?: exitProcess(0)
+        val user = model.firebaseAuth.currentUser ?: exitProcess(0)
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -43,7 +43,7 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         displayImage = navigationView.getHeaderView(0).findViewById<ImageView>(R.id.nav_header_img)
         navigationView.getHeaderView(0).findViewById<ImageView>(R.id.logout).apply {
             setOnClickListener {
-                model.currentAuth.signOut()
+                model.firebaseAuth.signOut()
                 val intent = Intent(this@NavigatorActivity, LoginActivity::class.java)
                 startActivity(intent)
             }
@@ -83,7 +83,7 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     override fun onResume() {
         super.onResume()
-        model.currentAuth.currentUser!!.apply {
+        model.firebaseAuth.currentUser!!.apply {
             this@NavigatorActivity.displayName.text = this.displayName
             if(this.photoUrl!=null){
                 Picasso.get().load(this.photoUrl).into(this@NavigatorActivity.displayImage)

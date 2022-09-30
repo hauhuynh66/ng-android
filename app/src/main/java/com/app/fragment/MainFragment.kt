@@ -16,12 +16,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.activity.ProfileActivity
 import com.app.adapter.CardAdapter
 import com.app.ngn.R
-import com.app.viewmodel.Auth
+import com.app.viewmodel.Authentication
 import com.squareup.picasso.Picasso
 
 
 class MainFragment : Fragment() {
-    private val firebase : Auth by activityViewModels()
+    private val firebase : Authentication by activityViewModels()
     private lateinit var summaryList : RecyclerView
     private lateinit var statList : RecyclerView
     private lateinit var displayName : TextView
@@ -37,7 +37,7 @@ class MainFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        firebase.currentAuth.currentUser!!.apply {
+        firebase.firebaseAuth.currentUser!!.apply {
             this@MainFragment.displayName.text = "Welcome, $displayName"
             if(photoUrl!=null){
                 Picasso.get().load(photoUrl!!).into(displayImage)

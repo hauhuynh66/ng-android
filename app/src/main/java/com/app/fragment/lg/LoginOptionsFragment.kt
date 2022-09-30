@@ -8,10 +8,10 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.app.ngn.R
-import com.app.viewmodel.Login
+import com.app.viewmodel.Authentication
 
 class LoginOptionsFragment : Fragment() {
-    private val viewModel : Login by activityViewModels()
+    private val viewModel : Authentication by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

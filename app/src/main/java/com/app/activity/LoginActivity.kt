@@ -7,16 +7,16 @@ import androidx.appcompat.app.AppCompatActivity
 import com.app.fragment.lg.EmailPasswordLoginFragment
 import com.app.fragment.lg.LoginOptionsFragment
 import com.app.ngn.R
-import com.app.viewmodel.Login
+import com.app.viewmodel.Authentication
 
 
 class LoginActivity: AppCompatActivity() {
-    private val viewModel : Login by viewModels()
+    private val viewModel : Authentication by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_login)
 
-        if(viewModel.auth.currentUser!=null){
+        if(viewModel.firebaseAuth.currentUser!=null){
             val intent = Intent(this, NavigatorActivity::class.java)
             startActivity(intent)
         }
@@ -32,10 +32,6 @@ class LoginActivity: AppCompatActivity() {
                 1 -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.container, EmailPasswordLoginFragment()).commit()
-                }
-                2 -> {
-                    viewModel.init(this)
-                    viewModel.googleSignIn()
                 }
                 99 -> {
                     supportFragmentManager.beginTransaction()

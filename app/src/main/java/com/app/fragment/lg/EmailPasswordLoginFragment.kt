@@ -16,15 +16,20 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.app.activity.NavigatorActivity
 import com.app.ngn.R
+import com.app.task.PostHttpTask
+import com.app.task.TaskRunner
 import com.app.util.Animation
-import com.app.viewmodel.Login
+import com.app.viewmodel.Authentication
+import org.json.JSONObject
+import java.net.URL
 
 class EmailPasswordLoginFragment : Fragment() {
-    private val viewModel : Login by activityViewModels()
+    private val auth : Authentication by activityViewModels()
     private lateinit var progressView : ProgressBar
     private lateinit var contentView : ConstraintLayout
     private lateinit var email : EditText
     private lateinit var password : EditText
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,13 +47,13 @@ class EmailPasswordLoginFragment : Fragment() {
         password = view.findViewById(R.id.password)
         email = view.findViewById(R.id.email)
 
-        email.setText(viewModel.username.value)
-        password.setText(viewModel.password.value)
+        email.setText(auth.username.value)
+        password.setText(auth.password.value)
 
         view.findViewById<Button>(R.id.loginBtn).apply {
             setOnClickListener {
-                if (viewModel.isEmergency) {
-
+                if (auth.isEmergency) {
+                    localLogin(this)
                 } else {
                     firebaseLogin(this)
                 }
@@ -70,7 +75,7 @@ class EmailPasswordLoginFragment : Fragment() {
 
             imm.hideSoftInputFromWindow(loginBtn.windowToken,0)
 
-            viewModel.auth.signInWithEmailAndPassword(email.text!!.toString(), password.text!!.toString())
+            auth.firebaseAuth.signInWithEmailAndPassword(email.text!!.toString(), password.text!!.toString())
                 .addOnCompleteListener{
                         task->run{
                     if(task.isSuccessful){
@@ -86,5 +91,26 @@ class EmailPasswordLoginFragment : Fragment() {
                     }
                 }
         }
+    }
+
+    private fun localLogin(loginBtn: Button){
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(loginBtn.windowToken,0)
+        val json = JSONObject()
+        json.put("username", email.text.toString())
+        json.put("password", password.text.toString())
+        val runner = TaskRunner()
+        runner.execute(PostHttpTask(
+            URL("http://10.0.2.2:8600/login"),
+            json,
+            PostHttpTask.RequestContent.Header,
+            "Access-Token"
+        ), object : TaskRunner.Callback<String>{
+            override fun onComplete(result: String) {
+                if (result != "No value"){
+
+                }
+            }
+        })
     }
 }

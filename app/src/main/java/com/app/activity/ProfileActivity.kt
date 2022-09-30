@@ -13,12 +13,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.appcompat.widget.Toolbar
 import com.app.ngn.R
-import com.app.viewmodel.Auth
+import com.app.viewmodel.Authentication
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.squareup.picasso.Picasso
 
 class ProfileActivity : AppCompatActivity() {
-    private val firebase : Auth by viewModels()
+    private val firebase : Authentication by viewModels()
     private lateinit var displayName : TextView
     private lateinit var photoUrl : TextView
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +34,7 @@ class ProfileActivity : AppCompatActivity() {
         displayName = findViewById(R.id.display_name)
         photoUrl = findViewById(R.id.photo_uri)
 
-        firebase.currentAuth.currentUser!!.apply {
+        firebase.firebaseAuth.currentUser!!.apply {
             findViewById<TextView>(R.id.email).text = email
             if(displayName!=null){
                 findViewById<EditText>(R.id.display_name).setText(displayName)
@@ -96,7 +96,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun updateProfile(displayName : String, photoUrl : String, listener : Listener) {
-        firebase.currentAuth.currentUser!!.apply {
+        firebase.firebaseAuth.currentUser!!.apply {
             val update = UserProfileChangeRequest.Builder()
                 .setDisplayName(displayName)
                 .setPhotoUri(Uri.parse(photoUrl))
@@ -113,7 +113,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun checkChange() : Boolean{
-        firebase.currentAuth.currentUser!!.apply {
+        firebase.firebaseAuth.currentUser!!.apply {
             if(this.displayName != this@ProfileActivity.displayName.text.toString() ||
                 this.photoUrl.toString() != this@ProfileActivity.photoUrl.text.toString()){
                 return true
