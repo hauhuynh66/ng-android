@@ -15,13 +15,14 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.app.activity.NavigatorActivity
+import com.app.data.HttpResponseData
 import com.app.ngn.R
+import com.app.task.GetHttpTask
 import com.app.task.PostHttpTask
 import com.app.task.TaskRunner
 import com.app.util.Animation
 import com.app.viewmodel.Authentication
 import org.json.JSONObject
-import java.net.URL
 
 class EmailPasswordLoginFragment : Fragment() {
     private val auth : Authentication by activityViewModels()
@@ -52,7 +53,7 @@ class EmailPasswordLoginFragment : Fragment() {
 
         view.findViewById<Button>(R.id.loginBtn).apply {
             setOnClickListener {
-                if (auth.isEmergency) {
+                if (auth.isLocal) {
                     localLogin(this)
                 } else {
                     firebaseLogin(this)
@@ -100,17 +101,36 @@ class EmailPasswordLoginFragment : Fragment() {
         json.put("username", email.text.toString())
         json.put("password", password.text.toString())
         val runner = TaskRunner()
-        runner.execute(PostHttpTask(
-            URL("http://10.0.2.2:8600/login"),
-            json,
-            PostHttpTask.RequestContent.Header,
-            "Access-Token"
-        ), object : TaskRunner.Callback<String>{
-            override fun onComplete(result: String) {
-                if (result != "No value"){
 
+        runner.execute(PostHttpTask("http://10.0.2.2:8600/login", json, extra = "Access-Token"),
+            object : TaskRunner.Callback<HttpResponseData>{
+                override fun onComplete(result: HttpResponseData) {
+                    if(result.extra != null){
+                        val headers = mutableMapOf<String, String>()
+                        headers["Authorization"] = "Bearer " + result.extra
+                        runner.execute(GetHttpTask("http://10.0.2.2:8600/api/profile", header = headers), object : TaskRunner.Callback<HttpResponseData>{
+                            override fun onComplete(result: HttpResponseData) {
+                                if(result.code == "200" && result.body!=null) {
+                                    auth.localUserProfile = getProfile(result.body)
+                                    val mainIntent = Intent(requireContext(), NavigatorActivity::class.java)
+                                    startActivity(mainIntent)
+                                }
+                            }
+                        })
+                    }
                 }
             }
-        })
+        )
+    }
+
+    private fun getProfile(jsonString : String) : Authentication.LocalUserProfile{
+        val json = JSONObject(jsonString)
+        json.apply {
+            return Authentication.LocalUserProfile(
+                this.getString("username"),
+                this.getString("email"),
+                this.getString("imageUrl")
+            )
+        }
     }
 }

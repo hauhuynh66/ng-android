@@ -1,5 +1,6 @@
 package com.app.task
 
+import com.app.data.HttpResponseData
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -7,39 +8,41 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.concurrent.Callable
 
-class PostHttpTask(
-    private val url: URL,
-    private val json : JSONObject,
-    private val requestContent : RequestContent,
-    private val headerName : String? = null
-) : Callable<String>{
-    enum class RequestContent{
-        Body,
-        Header
-    }
-    override fun call(): String {
-        val jsonString = json.toString()
-        val conn = url.openConnection() as HttpURLConnection
-        conn.requestMethod = "POST"
-        conn.setRequestProperty("Content-Type", "application/json")
-        conn.doOutput = true
-
+class PostHttpTask(private val url : String, private val postData : JSONObject, private val header : MutableMap<String, String>? = null, private val extra : String? = null) : Callable<HttpResponseData>{
+    override fun call(): HttpResponseData {
         try {
-            val input = jsonString.toByteArray(Charsets.UTF_8)
-            conn.outputStream.write(input)
+            val url = URL(url)
+            val conn = url.openConnection() as HttpURLConnection
+            val data = postData.toString().toByteArray(Charsets.UTF_8)
 
-            return if(requestContent == RequestContent.Header){
-                conn.getHeaderField(headerName)?:"No value"
-            }else{
-                val reader = BufferedReader(InputStreamReader(conn.inputStream))
-                val ret = StringBuilder()
-                reader.useLines {
-                    ret.append(it)
+            conn.requestMethod = "POST"
+            conn.setRequestProperty("Accept", "application/json")
+
+            header?.forEach{ (key, value) ->
+                run{
+                    conn.setRequestProperty(key, value)
                 }
-                ret.toString()
             }
-        }finally {
 
+            conn.doOutput = true
+
+            conn.outputStream.write(data)
+
+            val responseCode = conn.responseCode.toString()
+            val content = StringBuilder()
+            val bufferedReader = BufferedReader(InputStreamReader(conn.inputStream))
+            while (bufferedReader.lineSequence().iterator().hasNext()){
+                content.append(bufferedReader.lineSequence().iterator().next())
+            }
+
+            val ex = if(extra != null){
+                conn.getHeaderField(extra)
+            }else{
+                null
+            }
+            return HttpResponseData(responseCode, content.toString(), ex)
+        }catch (e : Exception){
+            return HttpResponseData("ERROR", null)
         }
     }
 }

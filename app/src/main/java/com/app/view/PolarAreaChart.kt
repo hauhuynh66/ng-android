@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
-import com.app.data.chart.TwoValueData
+import com.app.data.TwoValueData
 import kotlin.math.min
 
 class PolarAreaChart : View {

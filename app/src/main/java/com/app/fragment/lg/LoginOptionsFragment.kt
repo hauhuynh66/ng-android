@@ -27,7 +27,7 @@ class LoginOptionsFragment : Fragment() {
         view.findViewById<Button>(R.id.lg_ep).apply {
             setOnClickListener {
                 viewModel.setState(1)
-                viewModel.isEmergency = false
+                viewModel.isLocal = false
             }
         }
         view.findViewById<Button>(R.id.lg_gg).apply {
@@ -39,7 +39,7 @@ class LoginOptionsFragment : Fragment() {
         view.findViewById<Button>(R.id.lg_em).apply {
             setOnClickListener{
                 viewModel.setState(99)
-                viewModel.isEmergency = true
+                viewModel.isLocal = true
             }
         }
     }
