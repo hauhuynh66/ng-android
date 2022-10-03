@@ -8,15 +8,16 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.room.Room
-import com.android.volley.RequestQueue
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.app.activity.GoogleMapActivity
+import com.app.data.HttpResponseData
 import com.app.model.AppDatabase
 import com.app.model.Location
 import com.app.ngn.R
+import com.app.task.GetHttpTask
+import com.app.task.TaskRunner
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -27,7 +28,7 @@ class LocationChipFragment(val data: ArrayList<String>, val listener : Listener)
     private var url = "http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={key}"
 
     private lateinit var db: AppDatabase
-    private lateinit var requestQueue : RequestQueue
+    private lateinit var taskRunner: TaskRunner
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,7 +41,8 @@ class LocationChipFragment(val data: ArrayList<String>, val listener : Listener)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val chips = view.findViewById<ChipGroup>(R.id.chips)
-        requestQueue = Volley.newRequestQueue(requireContext())
+        taskRunner = TaskRunner()
+
         db = Room.databaseBuilder(requireContext(), AppDatabase::class.java, "db").fallbackToDestructiveMigration().build()
         val currentChip = Chip(requireContext())
         currentChip.text = "Current Location"
@@ -57,13 +59,15 @@ class LocationChipFragment(val data: ArrayList<String>, val listener : Listener)
             chip.text = d
             val currentUrl = url.replace("{city}", d)
             chip.setOnClickListener {
-                requestQueue.add(
-                    StringRequest(currentUrl, {
-                        processCity(it)
-                    },{
-                        println(it.message)
-                    })
-                )
+                taskRunner.execute(GetHttpTask(currentUrl), object : TaskRunner.Callback<HttpResponseData>{
+                    override fun onComplete(result: HttpResponseData) {
+                        if(result.code == 200 && result.body!=null){
+                            processCity(result.body)
+                        }else{
+                            Snackbar.make(requireView(), "No matching location", Snackbar.LENGTH_SHORT).show()
+                        }
+                    }
+                })
             }
             chips.addView(chip)
         }

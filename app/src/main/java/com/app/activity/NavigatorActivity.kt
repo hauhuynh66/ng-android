@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -73,14 +74,11 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                     supportFragmentManager.beginTransaction().replace(R.id.container,  MiscFragment(), "MISC").commit()
                     supportActionBar!!.title = "Others"
                 }
-                else->{
-
-                }
             }
         }else{
             if(savedInstanceState==null){
                 supportFragmentManager.beginTransaction().replace(R.id.container,  MainFragment(), "MAIN").commit()
-                supportActionBar!!.title = "Main"
+                supportActionBar!!.title = "Home"
             }
         }
     }
@@ -124,6 +122,7 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                         }
                     }
                     R.id.nav_rd->{
+                        this.title = "RD"
                         val intent = Intent(this@NavigatorActivity, RDMainActivity::class.java)
                         startActivity(intent)
                     }
@@ -133,7 +132,7 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                     }
                     else->{
                         if(currentFragment !is MainFragment){
-                            this.title = "Others"
+                            this.title = "Home"
                             transaction.replace(R.id.container,  MainFragment(), "MAIN").commit()
                             transaction.addToBackStack("MAIN")
                         }
@@ -161,6 +160,7 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 0->{
                     prev = System.currentTimeMillis()
                     count++
+                    Toast.makeText(this, "Press back one more time to exit", Toast.LENGTH_SHORT)
                 }
                 1->{
                     curr = System.currentTimeMillis()

@@ -14,7 +14,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class LocationListActivity : AppCompatActivity() {
-    private val locations : ArrayList<String> = arrayListOf("Ho Chi Minh","London","Paris","Berlin","Prague","New York","Hanoi","Moscow")
+    private val locations : ArrayList<String> = arrayListOf()
     private var addLocations : ArrayList<String> = arrayListOf()
     private lateinit var db: AppDatabase
     override fun onCreate(savedInstanceState: Bundle?) {

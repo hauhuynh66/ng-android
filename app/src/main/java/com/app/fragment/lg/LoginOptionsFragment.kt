@@ -27,19 +27,11 @@ class LoginOptionsFragment : Fragment() {
         view.findViewById<Button>(R.id.lg_ep).apply {
             setOnClickListener {
                 viewModel.setState(1)
-                viewModel.isLocal = false
             }
         }
         view.findViewById<Button>(R.id.lg_gg).apply {
             setOnClickListener{
                 viewModel.setState(2)
-            }
-        }
-
-        view.findViewById<Button>(R.id.lg_em).apply {
-            setOnClickListener{
-                viewModel.setState(99)
-                viewModel.isLocal = true
             }
         }
     }

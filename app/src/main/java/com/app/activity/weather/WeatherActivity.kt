@@ -15,21 +15,20 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
-import com.android.volley.Request
-import com.android.volley.RequestQueue
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.app.activity.NavigatorActivity
 import com.app.adapter.DetailAdapter
 import com.app.adapter.WeatherAdapter
 import com.app.data.DetailData
 import com.app.data.ForecastData
+import com.app.data.HttpResponseData
 import com.app.data.WeatherData
 import com.app.helper.SpanGridLayoutManager
 import com.app.model.AppDatabase
 import com.app.model.Location
 import com.app.model.Setting
 import com.app.ngn.R
+import com.app.task.GetHttpTask
+import com.app.task.TaskRunner
 import com.app.util.Animation.Companion.crossfade
 import com.app.util.Check.Companion.checkPermissions
 import com.app.view.SunPositionView
@@ -51,9 +50,9 @@ class WeatherActivity : AppCompatActivity() {
     private val default_lon = 106.66
     private lateinit var progressBar : ProgressBar
     private lateinit var contentView : ConstraintLayout
-    private lateinit var requestQueue: RequestQueue
     private lateinit var forecastList : RecyclerView
     private lateinit var db: AppDatabase
+    private lateinit var taskRunner: TaskRunner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +63,7 @@ class WeatherActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
         permissionsCheck()
-        requestQueue = Volley.newRequestQueue(this)
+        taskRunner = TaskRunner()
         progressBar = findViewById(R.id.progress)
         contentView = findViewById(R.id.content_view)
         forecastList = findViewById(R.id.list1)
@@ -127,17 +126,13 @@ class WeatherActivity : AppCompatActivity() {
         weatherUrl = weatherUrl.replace("{lon}", lon.toString())
         weatherUrl = weatherUrl.replace("{key}", model.key)
 
-        println(weatherUrl)
-
-        val weatherRequest = StringRequest(Request.Method.GET, weatherUrl,
-            {
-                processWeather(it)
-            },
-            {
-                println(it)
+        taskRunner.execute(GetHttpTask(weatherUrl), object : TaskRunner.Callback<HttpResponseData>{
+            override fun onComplete(result: HttpResponseData) {
+                if(result.code == 200 && result.body!=null){
+                    processWeather(result.body)
+                }
             }
-        )
-        requestQueue.add(weatherRequest)
+        })
     }
 
     private fun dbProcess(name : String){
@@ -193,17 +188,14 @@ class WeatherActivity : AppCompatActivity() {
         forecastUrl = forecastUrl.replace("{lon}", lon.toString())
         forecastUrl = forecastUrl.replace("{key}", model.key)
         forecastUrl = forecastUrl.plus("&cnt=40")
-        println(forecastUrl)
 
-        val forecastRequest = StringRequest(Request.Method.GET, forecastUrl,
-            {
-                processForecast(it)
-            },
-            {
-                println(it)
+        taskRunner.execute(GetHttpTask(forecastUrl), object : TaskRunner.Callback<HttpResponseData>{
+            override fun onComplete(result: HttpResponseData) {
+                if(result.code == 200 && result.body!=null){
+                    processForecast(result.body)
+                }
             }
-        )
-        requestQueue.add(forecastRequest)
+        })
     }
 
     private fun processForecast(json: String){

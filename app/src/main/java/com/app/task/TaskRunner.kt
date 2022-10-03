@@ -13,7 +13,7 @@ class TaskRunner() {
         fun onComplete(result:T)
     }
 
-    fun <T> execute(call:Callable<T>, callback:Callback<T>){
+    fun <T> execute(call:Callable<T>, callback: Callback<T>){
         executor.execute{
             val result = call.call()
             handler.post {

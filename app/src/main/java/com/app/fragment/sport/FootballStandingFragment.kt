@@ -11,11 +11,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.Request
-import com.android.volley.toolbox.StringRequest
 import com.app.adapter.FootballStandingAdapter
 import com.app.data.FootballStandingData
+import com.app.data.HttpResponseData
 import com.app.ngn.R
+import com.app.task.GetHttpTask
+import com.app.task.TaskRunner
 import com.app.util.Animation.Companion.crossfade
 import com.app.util.FootballJson
 import com.app.viewmodel.Football
@@ -27,7 +28,7 @@ class FootballStandingFragment : Fragment() {
     private lateinit var progress : ProgressBar
     private lateinit var adapter : FootballStandingAdapter
     private lateinit var list : RecyclerView
-    private var isLoaded = false
+    private lateinit var taskRunner : TaskRunner
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,37 +43,35 @@ class FootballStandingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        taskRunner = TaskRunner()
+
         progress = view.findViewById(R.id.progress)
         list = view.findViewById(R.id.item_list)
         adapter = FootballStandingAdapter(requireContext(), arrayListOf())
         list.adapter = adapter
         list.layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
 
-        getStandings(model.league.value.toString(), "2022")
+        getStandings(model.currentLeague.value.toString(), "2022")
     }
 
     private fun getStandings(strLeagueId : String, strSeason : String){
         crossfade(arrayListOf(progress), arrayListOf(list), 1000)
-        val url = model.baseUrl + postfix + "?league=" + strLeagueId + "&season=" + strSeason
-        val request = object : StringRequest(Request.Method.GET, url,
-            {
-                isLoaded = true
-                adapter.data = processStandingData(it)
-                adapter.notifyDataSetChanged()
-                crossfade(arrayListOf(list), arrayListOf(progress), 1000)
-            }, {
-                println(it.message)
+        val url = getString(R.string.football_api_url) + postfix + "?league=" + strLeagueId + "&season=" + strSeason
+
+        val headers = mutableMapOf(
+            "x-rapidapi-host" to getString(R.string.football_api_host),
+            "x-rapidapi-key" to getString(R.string.football_api_key)
+        )
+        val task = GetHttpTask(url, headers)
+        taskRunner.execute(task, object : TaskRunner.Callback<HttpResponseData>{
+            override fun onComplete(result: HttpResponseData) {
+                if(result.code == 200 && result.body!=null){
+                    adapter.data = processStandingData(result.body)
+                    adapter.notifyDataSetChanged()
+                    crossfade(arrayListOf(list), arrayListOf(progress))
+                }
             }
-        ){
-            override fun getHeaders(): MutableMap<String, String> {
-                val params: MutableMap<String, String> = HashMap()
-                params["x-rapidapi-host"] = model.apiHost
-                params["x-rapidapi-key"] = model.apiKey
-                return params
-            }
-        }
-        request.tag = "FB-STANDINGS"
-        model.requestQueue.add(request)
+        })
     }
 
     private fun processStandingData(json : String) : ArrayList<FootballStandingData?>{

@@ -4,24 +4,33 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.toolbox.StringRequest
 import com.app.adapter.StatAdapter
 import com.app.data.FootballResult
+import com.app.data.HttpResponseData
 import com.app.data.StatLineData
 import com.app.ngn.R
-import com.app.viewmodel.Football
+import com.app.task.GetHttpTask
+import com.app.task.TaskRunner
+import com.app.util.Animation
+import com.app.viewmodel.FootballDisplay
+import com.squareup.picasso.Picasso
 import org.json.JSONObject
 
 class FootballMatchDetailFragment : Fragment() {
-    private val model : Football by activityViewModels()
+    private val model : FootballDisplay by activityViewModels()
     private val postfix = "/fixtures/statistics"
     private lateinit var adapter : StatAdapter
     private lateinit var data : ArrayList<StatLineData>
+    private lateinit var taskRunner : TaskRunner
+    private lateinit var list : RecyclerView
+    private lateinit var progress : ProgressBar
     private val stats =
         arrayListOf(
             "Shots on Goal", "Shots off Goal", "Total Shots", "Blocked Shots", "Shots insidebox", "Shots outsidebox",
@@ -39,53 +48,63 @@ class FootballMatchDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        redisplayOverview(model.selectedMatchOverview.value!!, view.findViewById(R.id.overview_group))
+        redisplayOverview(model.matchOverview!!, view.findViewById(R.id.overview_group))
+        taskRunner = TaskRunner()
         data = arrayListOf()
         adapter = StatAdapter(requireContext(), data)
-        val list = view.findViewById<RecyclerView>(R.id.item_list)
+
+        list = view.findViewById(R.id.item_list)
         list.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         list.adapter = adapter
-        getMatchDetails()
 
+        progress = view.findViewById(R.id.progress)
+
+        getMatchDetails()
     }
 
     private fun redisplayOverview(overview : FootballResult, holder: View){
         holder.findViewById<TextView>(R.id.team_name).apply {
             text = overview.homeTeam.name
         }
+
         holder.findViewById<TextView>(R.id.team_name2).apply {
             text = overview.awayTeam.name
         }
+
         holder.findViewById<TextView>(R.id.score1).apply {
             text = if(overview.homeGoal != null) overview.homeGoal.toString() else "-"
         }
+
         holder.findViewById<TextView>(R.id.score2).apply {
             text = if(overview.awayGoal != null) overview.awayGoal.toString() else "-"
         }
+
         holder.findViewById<TextView>(R.id.referee).apply {
             text = overview.referee
         }
+
+        Picasso.get().load(overview.homeTeam.iconUrl).into(holder.findViewById<ImageView>(R.id.team_icon))
+        Picasso.get().load(overview.awayTeam.iconUrl).into(holder.findViewById<ImageView>(R.id.team_icon2))
     }
 
     private fun getMatchDetails(){
-        val url = model.baseUrl + postfix + "?fixture=" + model.selectedMatchOverview.value!!.matchId
-        val request = object : StringRequest(
-            Method.GET, url, {
-                adapter.data = processMatchDetails(it)
-                adapter.notifyDataSetChanged()
-            },{
-                println(it.message)
+        val url = getString(R.string.football_api_url) + postfix + "?fixture=" + model.matchOverview!!.matchId
+
+        val headers = mutableMapOf(
+            "x-rapidapi-host" to getString(R.string.football_api_host),
+            "x-rapidapi-key" to getString(R.string.football_api_key)
+        )
+        val task = GetHttpTask(url, headers)
+        taskRunner.execute(task, object : TaskRunner.Callback<HttpResponseData>{
+            override fun onComplete(result: HttpResponseData) {
+                if(result.code == 200 && result.body!=null){
+                    println(result.body)
+                    adapter.data = processMatchDetails(result.body)
+                    adapter.notifyDataSetChanged()
+                    Animation.crossfade(arrayListOf(list), arrayListOf(progress))
+                }
             }
-        ){
-            override fun getHeaders(): MutableMap<String, String> {
-                val params: MutableMap<String, String> = HashMap()
-                params["x-rapidapi-host"] = model.apiHost
-                params["x-rapidapi-key"] = model.apiKey
-                return params
-            }
-        }
-        request.tag = "FB-FIXTURE-STATS"
-        model.requestQueue.add(request)
+        })
     }
 
     private fun processMatchDetails(json : String) : ArrayList<StatLineData>{

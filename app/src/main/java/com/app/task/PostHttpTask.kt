@@ -28,7 +28,7 @@ class PostHttpTask(private val url : String, private val postData : JSONObject, 
 
             conn.outputStream.write(data)
 
-            val responseCode = conn.responseCode.toString()
+            val responseCode = conn.responseCode
             val content = StringBuilder()
             val bufferedReader = BufferedReader(InputStreamReader(conn.inputStream))
             while (bufferedReader.lineSequence().iterator().hasNext()){
@@ -42,7 +42,7 @@ class PostHttpTask(private val url : String, private val postData : JSONObject, 
             }
             return HttpResponseData(responseCode, content.toString(), ex)
         }catch (e : Exception){
-            return HttpResponseData("ERROR", null)
+            return HttpResponseData(-999, null)
         }
     }
 }

@@ -28,9 +28,9 @@ class GetHttpTask(private val url : String, private val header : MutableMap<Stri
                 content.append(iterator.next())
             }
 
-            return HttpResponseData(responseCode.toString(), content.toString())
+            return HttpResponseData(responseCode, content.toString())
         }catch (e : Exception){
-            return HttpResponseData("ERROR", null)
+            return HttpResponseData(-999, null)
         }
     }
 }

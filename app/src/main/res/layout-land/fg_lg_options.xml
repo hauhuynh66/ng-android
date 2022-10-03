@@ -3,12 +3,23 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:maxHeight="400dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_marginVertical="10dp"
+        android:text="Choose login method"
+        android:textSize="8pt"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/txt"/>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt">
         <Button
             android:layout_width="0dp"
             app:layout_constraintWidth_percent="0.6"
@@ -16,7 +27,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/lg_em"
+            app:layout_constraintBottom_toTopOf="@id/lg_gg"
             android:text="Firebase"
             android:backgroundTint="@color/firebase"
             android:textAllCaps="false"
@@ -28,17 +39,6 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/lg_ep"
-            app:layout_constraintBottom_toTopOf="@id/lg_gg"
-            android:text="Emergency"
-            android:textAllCaps="false"
-            android:id="@+id/lg_em"/>
-        <Button
-            android:layout_width="0dp"
-            app:layout_constraintWidth_percent="0.6"
-            android:layout_height="50dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/lg_em"
             app:layout_constraintBottom_toTopOf="@id/lg_gh"
             android:text="Google"
             android:textAllCaps="false"

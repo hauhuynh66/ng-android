@@ -4,24 +4,29 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
-import com.android.volley.toolbox.StringRequest
 import com.app.data.FootballTeamDetail
+import com.app.data.HttpResponseData
 import com.app.ngn.R
+import com.app.task.GetHttpTask
+import com.app.task.TaskRunner
 import com.app.util.Animation.Companion.crossfade
-import com.app.viewmodel.Football
+import com.app.viewmodel.FootballDisplay
+import com.squareup.picasso.Picasso
 import org.json.JSONObject
 
 class FootballTeamDetailFragment : Fragment() {
-    private val model : Football by activityViewModels()
+    private val model : FootballDisplay by activityViewModels()
     private val postfix : String = "/teams"
-    private var teamDetail : FootballTeamDetail? = null
     private val isDisplay : MutableLiveData<Boolean> = MutableLiveData(true)
+    private var teamDetail : FootballTeamDetail? = null
+    private lateinit var taskRunner: TaskRunner
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,6 +38,7 @@ class FootballTeamDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        taskRunner = TaskRunner()
         val content = view.findViewById<ConstraintLayout>(R.id.content)
         val progress = view.findViewById<ProgressBar>(R.id.progress)
         this.isDisplay.observe(requireActivity()){
@@ -45,44 +51,39 @@ class FootballTeamDetailFragment : Fragment() {
                 }
             }
         }
-        getTeamDetail(model.selectedClub.value!!.id)
+        getTeamDetail(model.team!!.id)
     }
 
     private fun getTeamDetail(teamId : Int){
-        val url = model.baseUrl + postfix + "?id=" + teamId
-        val teamRequest = object : StringRequest(
-            Method.GET, url,
-            {
-                println(it)
-                teamDetail = processTeamDetailGeneral(it)
-                if(teamDetail!=null){
-                    display(teamDetail!!, view)
+        val url = getString(R.string.football_api_url) + postfix + "?id=" + teamId
+
+        val headers = mutableMapOf(
+            "x-rapidapi-host" to getString(R.string.football_api_host),
+            "x-rapidapi-key" to getString(R.string.football_api_key)
+        )
+
+        val task = GetHttpTask(url, headers)
+        taskRunner.execute(task, object : TaskRunner.Callback<HttpResponseData>{
+            override fun onComplete(result: HttpResponseData) {
+                if(result.code == 200 && result.body!=null){
+                    teamDetail = processTeamDetailGeneral(result.body)
+                    if(teamDetail!=null){
+                        display(teamDetail!!, view)
+                    }
+                    this@FootballTeamDetailFragment.isDisplay.value = true
                 }
-                this.isDisplay.value = true
-            },
-            {
-                println(it.message)
             }
-        ){
-            override fun getHeaders(): MutableMap<String, String> {
-                val params: MutableMap<String, String> = HashMap()
-                params["x-rapidapi-host"] = model.apiHost
-                params["x-rapidapi-key"] = model.apiKey
-                return params
-            }
-        }
-        teamRequest.tag = "FB-TEAM"
-        model.requestQueue.add(teamRequest)
+        })
     }
 
     fun processTeamDetailGeneral(json : String) : FootballTeamDetail?{
         val obj = JSONObject(json)
-        return if(obj.getJSONArray("response").length()<1){
+        return if(obj.getJSONArray("errors").length() > 0){
             null
         }else{
             val res = obj.getJSONArray("response").getJSONObject(0)
             val team = res.getJSONObject("team")
-            val venue = res.getJSONObject("venue")
+            //val venue = res.getJSONObject("venue")
             FootballTeamDetail(
                 team.getString("name"),
                 team.getString("logo"),
@@ -105,6 +106,7 @@ class FootballTeamDetailFragment : Fragment() {
             view.findViewById<TextView>(R.id.team_founded).apply {
                 text = team.founded.toString()
             }
+            Picasso.get().load(team.iconUrl).into(view.findViewById<ImageView>(R.id.team_icon))
         }
     }
 }

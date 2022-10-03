@@ -25,4 +25,8 @@
     <string name="google_client_id">529876654956-8fbpjlo62rsr2d73k4sl6jafgnnpecji.apps.googleusercontent.com</string>
 
     <string name="music_player">"Music Player"</string>
+
+    <string name="football_api_url">https://v3.football.api-sports.io</string>
+    <string name="football_api_key">207de13e407253dfbe98859d90d378ce</string>
+    <string name="football_api_host">v3.football.api-sports.io</string>
 </resources>

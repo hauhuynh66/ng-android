@@ -17,26 +17,10 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class FootballMainActivity : AppCompatActivity() {
     private val model : Football by viewModels()
-    private lateinit var titleHolder : Toolbar
-    private lateinit var title : TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_viewpager)
-        model.init(this)
-        titleHolder = findViewById(R.id.toolbar)
-        title = findViewById(R.id.title)
-        title.text = "Premier League"
-        val listener = object : OptionBottomSheet.Listener{
-            override fun onClick(option: String?) {
-                when(option){
-                    else->{
-                        model.league.value = 39
-                    }
-                }
-            }
-        }
 
-        titleHolder.visibility = View.VISIBLE
         val pager = findViewById<ViewPager2>(R.id.pager)
         val tabs = findViewById<TabLayout>(R.id.tabs)
         pager.adapter = FootballFragmentAdapter(supportFragmentManager, lifecycle)
@@ -45,31 +29,19 @@ class FootballMainActivity : AppCompatActivity() {
             run{
                 when(pos){
                     0->{
-                        tab.text = "Fixture"
+                        tab.text = "1"
                     }
                     1->{
-                        tab.text = "Table"
+                        tab.text = "2"
                     }
                     2->{
-                        tab.text = "Stats"
+                        tab.text = "3"
                     }
                     3->{
-                        tab.text = "..."
+                        tab.text = "4"
                     }
                 }
             }
         }.attach()
-
-        title.apply {
-            setOnClickListener {
-                val optionData = arrayListOf(
-                    OptionBottomSheet.Data("Premier League"),
-                    OptionBottomSheet.Data("Champion League"),
-                    OptionBottomSheet.Data("La Liga"),
-                    OptionBottomSheet.Data("Serie A")
-                )
-                OptionBottomSheet(optionData, listener).show(supportFragmentManager, "LEAGUE-SEL")
-            }
-        }
     }
 }
