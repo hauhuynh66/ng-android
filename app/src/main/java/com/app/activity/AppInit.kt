@@ -9,6 +9,7 @@ import com.google.firebase.ktx.Firebase
 
 class AppInit : AppCompatActivity() {
     private lateinit var auth : FirebaseAuth
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = Firebase.auth

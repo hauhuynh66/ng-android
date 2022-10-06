@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.activity.ProfileActivity
 import com.app.adapter.CardAdapter
-import com.app.dialog.ColorSelectorDialog
 import com.app.ngn.R
 import com.app.viewmodel.Authentication
 import com.squareup.picasso.Picasso
@@ -55,12 +54,6 @@ class MainFragment : Fragment() {
             R.drawable.mt_rushmore,
             R.drawable.bryce_canyon
         )
-
-        ColorSelectorDialog(object : ColorSelectorDialog.Callback{
-            override fun onConfirm(color: String) {
-                println(color)
-            }
-        }).show(requireActivity().supportFragmentManager, "ABC")
 
         summaryList = view.findViewById(R.id.statistic_list1)
         statList = view.findViewById(R.id.statistic_list2)

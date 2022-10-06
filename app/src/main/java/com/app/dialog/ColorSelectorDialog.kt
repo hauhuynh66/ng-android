@@ -3,6 +3,7 @@ package com.app.dialog
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.EditText
@@ -22,45 +23,54 @@ class ColorSelectorDialog(val callback : Callback) : DialogFragment() {
         val display = view.findViewById<ConstraintLayout>(R.id.current_color)
         val code = view.findViewById<EditText>(R.id.color_code)
         
-        redSlider.addOnChangeListener { slider, value, fromUser ->
+        redSlider.addOnChangeListener { _, value, _ ->
             run {
                 val sb = StringBuilder()
                 sb.append("#")
-                sb.append(String.format("%2s",value.toInt().toString(16)))
-                sb.append(String.format("%2s",blueSlider.value.toInt().toString(16)))
-                sb.append(String.format("%2s",greenSlider.value.toInt().toString(16)))
+                val p1 = String.format("%2s",value.toInt().toString(16)).replace(" ", "0")
+                val p3 = String.format("%2s",blueSlider.value.toInt().toString(16)).replace(" ", "0")
+                val p2 = String.format("%2s",greenSlider.value.toInt().toString(16)).replace(" ", "0")
+                sb.append(p1)
+                sb.append(p2)
+                sb.append(p3)
 
                 selectedColor = sb.toString()
-
                 code.setText(selectedColor)
+                display.setBackgroundColor(Color.parseColor(selectedColor))
             }
         }
 
-        blueSlider.addOnChangeListener { slider, value, fromUser ->
+        blueSlider.addOnChangeListener { _, value, _ ->
             run {
                 val sb = StringBuilder()
                 sb.append("#")
-                sb.append(String.format("%2s",value.toInt().toString(16)))
-                sb.append(String.format("%2s",blueSlider.value.toInt().toString(16)))
-                sb.append(String.format("%2s",greenSlider.value.toInt().toString(16)))
+                val p1 = String.format("%2s",redSlider.value.toInt().toString(16)).replace(" ", "0")
+                val p3 = String.format("%2s",value.toInt().toString(16)).replace(" ", "0")
+                val p2 = String.format("%2s",greenSlider.value.toInt().toString(16)).replace(" ", "0")
+                sb.append(p1)
+                sb.append(p2)
+                sb.append(p3)
 
                 selectedColor = sb.toString()
-
                 code.setText(selectedColor)
+                display.setBackgroundColor(Color.parseColor(selectedColor))
             }
         }
 
-        greenSlider.addOnChangeListener { slider, value, fromUser ->
+        greenSlider.addOnChangeListener { _, value, _ ->
             run {
                 val sb = StringBuilder()
                 sb.append("#")
-                sb.append(String.format("%2s",value.toInt().toString(16)))
-                sb.append(String.format("%2s",blueSlider.value.toInt().toString(16)))
-                sb.append(String.format("%2s",greenSlider.value.toInt().toString(16)))
+                val p1 = String.format("%2s",redSlider.value.toInt().toString(16)).replace(" ", "0")
+                val p3 = String.format("%2s",blueSlider.value.toInt().toString(16)).replace(" ", "0")
+                val p2 = String.format("%2s",value.toInt().toString(16)).replace(" ", "0")
+                sb.append(p1)
+                sb.append(p2)
+                sb.append(p3)
 
                 selectedColor = sb.toString()
-
                 code.setText(selectedColor)
+                display.setBackgroundColor(Color.parseColor(selectedColor))
             }
         }
 
@@ -71,12 +81,13 @@ class ColorSelectorDialog(val callback : Callback) : DialogFragment() {
                     callback.onConfirm(selectedColor)
                     di.dismiss()
                 }
-            }.setNegativeButton("Cancel") { di, _ ->
-            run {
-                callback.onCancelled()
-                di.dismiss()
             }
-        }
+            .setNegativeButton("Cancel") { di, _ ->
+                run {
+                    callback.onCancelled()
+                    di.dismiss()
+                }
+            }
 
         return builder.create()
     }

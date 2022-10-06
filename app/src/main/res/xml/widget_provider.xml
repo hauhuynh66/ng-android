@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="120dp"
-    android:minHeight="80dp"
+    android:minHeight="120dp"
     android:updatePeriodMillis="86400000"
     android:description="@string/widget_description"
+    android:initialLayout="@layout/wgd_weather"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen">
 </appwidget-provider>

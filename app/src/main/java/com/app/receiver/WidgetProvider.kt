@@ -17,6 +17,9 @@ class WidgetProvider : AppWidgetProvider() {
         appWidgetIds: IntArray?
     ) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
+        appWidgetIds?.forEach {
+            
+        }
     }
 
     override fun onAppWidgetOptionsChanged(
