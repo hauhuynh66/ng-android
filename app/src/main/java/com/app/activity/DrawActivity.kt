@@ -96,6 +96,20 @@ class DrawActivity : AppCompatActivity() {
 
                     colorAdapter.notifyDataSetChanged()
                 }
+
+                override fun onSelectorClick(selected: Int) {
+                    draw.changeColor(selected)
+
+                    for (color in colorAdapter.data){
+                        color.selected = false
+                    }
+
+                    colorAdapter.data.filter {
+                        it.value == 0
+                    }[0].selected = true
+
+                    colorAdapter.notifyDataSetChanged()
+                }
             }
         )
 

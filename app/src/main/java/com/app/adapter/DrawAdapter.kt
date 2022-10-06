@@ -15,7 +15,6 @@ import com.app.ngn.R
 
 class DrawAdapter(val context : Context, var data : ArrayList<DrawUtilData>, val type : Int, val listener: Listener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
     internal enum class Position(val type : Int){
         Normal(1),
         Selector(2)
@@ -64,7 +63,7 @@ class DrawAdapter(val context : Context, var data : ArrayList<DrawUtilData>, val
                         (holder as ColorHolder).bind(data[position],listener)
                     }
                     else->{
-                        (holder as ColorSelectorHolder).bind(data[position], context)
+                        (holder as ColorSelectorHolder).bind(data[position], listener, context)
                     }
                 }
             }
@@ -97,16 +96,19 @@ class DrawAdapter(val context : Context, var data : ArrayList<DrawUtilData>, val
 
     class ColorSelectorHolder(v: View) : RecyclerView.ViewHolder(v){
         private var currentColor = "#ffffff"
-        fun bind(data : DrawUtilData, context: Context){
+        fun bind(data : DrawUtilData, listener: Listener, context: Context){
             val holder = itemView.findViewById<ConstraintLayout>(R.id.holder)
+            itemView.findViewById<TextView>(R.id.display).apply {
+                setBackgroundColor(Color.parseColor(currentColor))
+            }
             itemView.apply {
                 setOnClickListener {
                     ColorSelectorDialog(object : ColorSelectorDialog.Callback{
                         override fun onConfirm(color: String) {
                             currentColor = color
-                            itemView.setBackgroundColor(Color.parseColor(currentColor))
+                            listener.onSelectorClick(Color.parseColor(currentColor))
                         }
-                    }).show((context as AppCompatActivity).supportFragmentManager, "CS")
+                    }).show((context as AppCompatActivity).supportFragmentManager, "CSEL")
                 }
             }
             if(data.selected){
@@ -135,6 +137,9 @@ class DrawAdapter(val context : Context, var data : ArrayList<DrawUtilData>, val
 
     interface Listener{
         fun onClick(value : Int)
+        fun onSelectorClick(selected : Int){
+
+        }
     }
 
     open class DrawUtilData(val value : Int, var selected : Boolean = false)
