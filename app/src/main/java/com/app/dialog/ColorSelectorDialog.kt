@@ -12,7 +12,7 @@ import androidx.fragment.app.DialogFragment
 import com.app.ngn.R
 import com.google.android.material.slider.Slider
 
-class ColorSelectorDialog(val callback : Callback) : DialogFragment() {
+class ColorSelectorDialog(val defaultColor : Int,val callback : Callback) : DialogFragment() {
     private var selectedColor : String = "#FF0000"
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val view = (requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater)
@@ -22,7 +22,9 @@ class ColorSelectorDialog(val callback : Callback) : DialogFragment() {
         val greenSlider = view.findViewById<Slider>(R.id.green_slider)
         val display = view.findViewById<ConstraintLayout>(R.id.current_color)
         val code = view.findViewById<EditText>(R.id.color_code)
-        
+
+        display.setBackgroundColor(defaultColor)
+
         redSlider.addOnChangeListener { _, value, _ ->
             run {
                 val sb = StringBuilder()

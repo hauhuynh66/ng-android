@@ -81,53 +81,32 @@ class DrawActivity : AppCompatActivity() {
 
         colorAdapter = DrawAdapter(this,
             getArray(1),
-            0,
+            DrawAdapter.ListType.Color,
             object : DrawAdapter.Listener {
-                override fun onClick(value: Int) {
+                override fun onClick(value: Int, position : Int) {
                     draw.changeColor(value)
-
-                    for (color in colorAdapter.data){
-                        color.selected = false
-                    }
-
-                    colorAdapter.data.filter {
-                        it.value == value
-                    }[0].selected = true
-
-                    colorAdapter.notifyDataSetChanged()
+                    colorAdapter.changeSelected(position)
                 }
 
-                override fun onSelectorClick(selected: Int) {
+                override fun onSelectorClick(selected: Int, position: Int) {
                     draw.changeColor(selected)
-
-                    for (color in colorAdapter.data){
-                        color.selected = false
-                    }
-
-                    colorAdapter.data.filter {
-                        it.value == 0
-                    }[0].selected = true
-
-                    colorAdapter.notifyDataSetChanged()
+                    colorAdapter.selectSelector(selected, position)
                 }
             }
         )
 
         sizeAdapter = DrawAdapter(this,
             getArray(2),
-            1,
+            DrawAdapter.ListType.Value,
             object : DrawAdapter.Listener {
-                override fun onClick(value: Int) {
+                override fun onClick(value: Int, position : Int) {
                     draw.changePathWidth(value.toFloat())
-                    for (size in sizeAdapter.data){
-                        size.selected = false
-                    }
+                    sizeAdapter.changeSelected(position)
+                }
 
-                    sizeAdapter.data.filter {
-                        it.value == value
-                    }[0].selected = true
-
-                    sizeAdapter.notifyDataSetChanged()
+                override fun onSelectorClick(selected: Int, position: Int) {
+                    draw.changePathWidth(selected.toFloat())
+                    colorAdapter.selectSelector(selected, position)
                 }
             }
         )
@@ -166,7 +145,7 @@ class DrawActivity : AppCompatActivity() {
                 return arrayListOf(
                     DrawAdapter.DrawUtilData(Color.RED),
                     DrawAdapter.DrawUtilData(Color.BLUE),
-                    DrawAdapter.DrawUtilData(Color.GREEN, true),
+                    DrawAdapter.DrawUtilData(Color.GREEN),
                     DrawAdapter.DrawUtilData(Color.BLACK),
                     DrawAdapter.DrawUtilData(Color.YELLOW),
                 )
@@ -174,7 +153,7 @@ class DrawActivity : AppCompatActivity() {
             2->{
                 return arrayListOf(
                     DrawAdapter.DrawUtilData(6),
-                    DrawAdapter.DrawUtilData(12, true),
+                    DrawAdapter.DrawUtilData(12),
                     DrawAdapter.DrawUtilData(36),
                     DrawAdapter.DrawUtilData(48),
                     DrawAdapter.DrawUtilData(72)
