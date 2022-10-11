@@ -6,14 +6,14 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.widget.EditText
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
 import com.app.ngn.R
 import com.google.android.material.slider.Slider
 
-class ColorSelectorDialog(val defaultColor : Int,val callback : Callback) : DialogFragment() {
-    private var selectedColor : String = "#FF0000"
+class ColorSelectorDialog(private val defaultColor : Int, val callback : Callback) : DialogFragment() {
+    private var selectedColor : String = String.format("#%06X", defaultColor)
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val view = (requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater)
             .inflate(R.layout.dlg_color_selector, null, false)
@@ -21,9 +21,13 @@ class ColorSelectorDialog(val defaultColor : Int,val callback : Callback) : Dial
         val blueSlider = view.findViewById<Slider>(R.id.blue_slider)
         val greenSlider = view.findViewById<Slider>(R.id.green_slider)
         val display = view.findViewById<ConstraintLayout>(R.id.current_color)
-        val code = view.findViewById<EditText>(R.id.color_code)
+        val code = view.findViewById<TextView>(R.id.color_code)
 
         display.setBackgroundColor(defaultColor)
+        code.text = selectedColor
+        redSlider.value = Color.red(defaultColor).toFloat()
+        blueSlider.value = Color.blue(defaultColor).toFloat()
+        greenSlider.value = Color.green(defaultColor).toFloat()
 
         redSlider.addOnChangeListener { _, value, _ ->
             run {

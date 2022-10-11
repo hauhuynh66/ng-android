@@ -5,24 +5,23 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.EditText
 import androidx.fragment.app.DialogFragment
 import com.app.ngn.R
 
-class EditTextDialog(private val originalText:String?, val listener: Listener) : DialogFragment() {
+class EditDialog<T>(private val data: T, val listener: Listener<T>) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(requireContext())
-        val inflater = requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val v = inflater.inflate(R.layout.dlg_edit, null, false)
-        val text = v.findViewById<EditText>(R.id.dlg_edit_text)
-        if(originalText!=null){
-            text.setText(originalText)
-        }
+        val v = (requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater)
+            .inflate(R.layout.dlg_text_edit, null, false)
+        val text = v.findViewById<EditText>(R.id.edit_text)
+
         builder.setView(v)
         text.requestFocus()
         builder.setPositiveButton("Confirm"){
             di, _ -> run{
-                listener.onConfirm(text.text.toString())
+                //listener.onConfirm()
                 di.dismiss()
             }
         }
@@ -34,8 +33,9 @@ class EditTextDialog(private val originalText:String?, val listener: Listener) :
         }
         return builder.create()
     }
-    interface Listener{
-        fun onConfirm(value:String)
+
+    interface Listener<T>{
+        fun onConfirm(value : T)
         fun onDismiss(){
 
         }

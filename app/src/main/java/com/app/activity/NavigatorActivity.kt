@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.app.activity.rd.RDMainActivity
+import com.app.dialog.EditDialog
 import com.app.fragment.MainFragment
 import com.app.fragment.MiscFragment
 import com.app.fragment.note.NoteListFragment

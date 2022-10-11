@@ -2,7 +2,6 @@ package com.app.adapter
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,192 +11,204 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.app.data.FileData
+import com.app.data.FileDisplay
+import com.app.data.FileType
 import com.app.ngn.R
 import com.app.util.Formatter.Companion.formatDate
+import java.io.File
+import java.nio.file.Files
+import java.nio.file.attribute.BasicFileAttributes
+import java.util.*
 
-class ExplorerListAdapter(val context: Context, var data: ArrayList<FileData>,
-                          var isGrid: Boolean, val listener: Listener? = null, var isMultiple: Boolean = false) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ExplorerListAdapter(val context: Context, var root : String,
+                          var isGrid: Boolean, val callback: Callback? = null, var mode: Mode = Mode.Display) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    var data: MutableList<FileDisplay> = arrayListOf()
+
+    enum class Mode{
+        Display,
+        Select
+    }
+
+    init {
+        data = getFileList(this.root)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         return if(!isGrid){
-            when(viewType){
-                0->{
-                    EXListFileViewHolder(inflater.inflate(R.layout.com_item_holder,parent, false))
-                }
-                else->{
-                    EXListFolderViewHolder(inflater.inflate(R.layout.com_item_holder,parent, false))
-                }
-            }
+            LineViewHolder(inflater.inflate(R.layout.com_item_holder,parent, false))
         }else{
-            EXGridFileViewHolder(inflater.inflate(R.layout.com_ex_grid,parent, false))
+            GridViewHolder(inflater.inflate(R.layout.com_ex_grid,parent, false))
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if(isGrid){
-            (holder as EXGridFileViewHolder).bind(data[position], listener!!, position, context, isMultiple)
+            (holder as GridViewHolder).bind(data[position], callback!!, position, context, mode)
         }else {
-            when (holder.itemViewType) {
-                0 -> {
-                    (holder as EXListFileViewHolder).bind(data[position], listener!!, position, isMultiple)
-                }
-                else -> {
-                    (holder as EXListFolderViewHolder).bind(data[position], listener!!, position, isMultiple)
-                }
-            }
+            (holder as LineViewHolder).bind(data[position], callback!!, position, mode)
         }
 
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return when(data[position].type){
-            "DIR"->{
-                1
-            }
-            else->{
-                0
-            }
-        }
     }
 
     override fun getItemCount(): Int {
         return this.data.size
     }
 
-    class EXListFolderViewHolder(private val v: View) : RecyclerView.ViewHolder (v){
-        fun bind(fileData: FileData, listener: Listener, position : Int, isMultiple: Boolean){
+    class LineViewHolder(private val v: View) : RecyclerView.ViewHolder (v){
+        fun bind(data: FileDisplay, callback: Callback, position : Int, mode: Mode){
             val chk = v.findViewById<CheckBox>(R.id.checkbox)
-            val chkGroup = v.findViewById<ConstraintLayout>(R.id.checkbox_group)
-            chk.isChecked = fileData.checked
+            v.findViewById<ConstraintLayout>(R.id.checkbox_group).visibility = if(mode == Mode.Select) View.VISIBLE else View.GONE
+
+            chk.isChecked = data.checked
             chk.setOnClickListener {
                 if(chk.isChecked){
-                    listener.onCheck(fileData.path)
+                    callback.onCheck(position)
                 }else{
-                    listener.onUnCheck(fileData.path)
+                    callback.onUnCheck(position)
                 }
-                fileData.checked = chk.isChecked
+                data.checked = chk.isChecked
             }
-
-            chkGroup.visibility = if(isMultiple) View.VISIBLE else View.GONE
 
             val next = v.findViewById<ConstraintLayout>(R.id.info_group)
             next.setOnClickListener{
-                listener.onClick(fileData.path, chk.isChecked, position)
+                callback.onClick(position)
             }
 
             next.setOnLongClickListener {
-                listener.onLongClick(fileData.path)
+                callback.onLongClick(position)
                 true
             }
 
             v.findViewById<TextView>(R.id.title).apply {
-                text = fileData.name
+                text = data.name
             }
 
             v.findViewById<TextView>(R.id.description2).apply {
-                if(fileData.size!=null){
-                    text = fileData.size.toString()
+                if(data.size!=null){
+                    text = data.size.toString()
                 }
             }
 
             v.findViewById<TextView>(R.id.description1).apply {
-                text = formatDate(fileData.createDate, "yyyy/MM/dd HH:mm")
+                text = formatDate(data.createDate, "yyyy/MM/dd HH:mm")
             }
 
             v.findViewById<ImageView>(R.id.icon).apply {
-                setImageResource(R.drawable.ic_baseline_folder)
-            }
-
-
-        }
-    }
-
-    class EXListFileViewHolder(private val v:View) : RecyclerView.ViewHolder(v){
-        fun bind(fileData: FileData, listener: Listener, position : Int, isMultiple: Boolean){
-            val chk = v.findViewById<CheckBox>(R.id.checkbox)
-            val chkGroup = v.findViewById<ConstraintLayout>(R.id.checkbox_group)
-            chk.isChecked = fileData.checked
-            chk.setOnClickListener {
-                if(chk.isChecked){
-                    listener.onCheck(fileData.path)
-                }else{
-                    listener.onUnCheck(fileData.path)
+                val res = when(data.type){
+                    FileType.DIRECTORY->{
+                        ContextCompat.getDrawable(context, R.drawable.ic_baseline_folder)
+                    }
+                    else->{
+                        ContextCompat.getDrawable(context, R.drawable.ic_baseline_description)
+                    }
                 }
-                fileData.checked = chk.isChecked
-            }
-
-            chkGroup.visibility = if(isMultiple) View.VISIBLE else View.GONE
-
-            val next = v.findViewById<ConstraintLayout>(R.id.info_group)
-            next.setOnClickListener{
-                listener.onClick(fileData.path, chk.isChecked, position)
-            }
-
-            next.setOnLongClickListener {
-                listener.onLongClick(fileData.path)
-                true
-            }
-
-            v.findViewById<TextView>(R.id.title).apply {
-                text = fileData.name
-            }
-            v.findViewById<TextView>(R.id.description2).apply {
-                if(fileData.size!=null){
-                    text = fileData.size.toString()
-                }
-            }
-            v.findViewById<TextView>(R.id.description1).apply {
-                text = formatDate(fileData.createDate, "yyyy/MM/dd HH:mm")
-            }
-
-            v.findViewById<ImageView>(R.id.icon).apply {
-                setImageResource(R.drawable.ic_baseline_description)
+                setImageDrawable(res)
             }
         }
     }
 
-    class EXGridFileViewHolder(private val v:View) : RecyclerView.ViewHolder(v){
-        fun bind(fileData: FileData, listener: Listener, position: Int, context: Context, isMultiple: Boolean){
-            val icon = v.findViewById<ImageView>(R.id.com_ex_grid_icon)
+    class GridViewHolder(private val v:View) : RecyclerView.ViewHolder(v){
+        fun bind(data: FileDisplay, callback: Callback, position: Int, context: Context, mode: Mode){
             val name = v.findViewById<TextView>(R.id.com_ex_grid_name)
             val chk = v.findViewById<CheckBox>(R.id.com_ex_grid_check)
-            chk.isChecked = fileData.checked
+            chk.isChecked = data.checked
             chk.setOnClickListener {
                 if(chk.isChecked){
-                    listener.onCheck(fileData.path)
+                    callback.onCheck(position)
                 }else{
-                    listener.onUnCheck(fileData.path)
+                    callback.onUnCheck(position)
                 }
-                fileData.checked = chk.isChecked
+                data.checked = chk.isChecked
             }
 
-            chk.visibility = if(isMultiple) View.VISIBLE else View.GONE
+            chk.visibility = if(mode == Mode.Select) View.VISIBLE else View.GONE
 
-            name.text = fileData.name
+            name.text = data.name
             val drawable: Drawable?
-            if(fileData.type=="DIR"){
-                drawable = ContextCompat.getDrawable(context, R.drawable.ic_baseline_folder)
-                v.setOnClickListener {
-                    listener.onClick(fileData.path, chk.isChecked, position)
-                }
-                name.setTextSize(TypedValue.COMPLEX_UNIT_PT, 6f)
-            }else{
-                drawable = ContextCompat.getDrawable(context, R.drawable.ic_baseline_description)
-                name.setTextSize(TypedValue.COMPLEX_UNIT_PT, 4f)
-            }
+
+
             v.setOnLongClickListener {
-                listener.onLongClick(fileData.path)
+                callback.onLongClick(position)
                 true
             }
-            icon.setImageDrawable(drawable)
+            v.findViewById<ImageView>(R.id.com_ex_grid_icon).apply {
+                val res = when(data.type){
+                    FileType.DIRECTORY->{
+                        ContextCompat.getDrawable(context, R.drawable.ic_baseline_folder)
+                    }
+                    else->{
+                        ContextCompat.getDrawable(context, R.drawable.ic_baseline_description)
+                    }
+                }
+                setImageDrawable(res)
+            }
         }
     }
 
-    interface Listener{
-        fun onCheck(path: String)
-        fun onUnCheck(path: String)
-        fun onClick(path : String, isChecked: Boolean, position: Int)
-        fun onLongClick(path : String)
+    fun changeMode(mode : Mode){
+        this.mode = mode
+        data.forEach{
+            it.checked  = false
+        }
+        notifyDataSetChanged()
+    }
+
+    fun check(position: Int){
+        if(mode == Mode.Select){
+            data[position].checked = !data[position].checked
+            notifyItemChanged(position)
+        }
+    }
+
+    fun getSelected() : List<FileDisplay>{
+        return data.filter {
+            it.checked
+        }
+    }
+
+    fun getAction(position: Int) : List<String>{
+        val ret = mutableListOf<String>()
+        if(data[position].type == FileType.DIRECTORY){
+            ret.add("next")
+        }else{
+            ret.add("open")
+        }
+        ret.add(data[position].path)
+        return ret
+    }
+
+    fun redisplay(path : String){
+        this.root = path
+        data = getFileList(this.root)
+        notifyDataSetChanged()
+    }
+
+    private fun getFileList(path : String) : ArrayList<FileDisplay> {
+        val ret = arrayListOf<FileDisplay>()
+        val file = File(path)
+        if(file.isDirectory&&file.listFiles()!=null){
+            for(f: File? in file.listFiles()){
+                if(file.exists()){
+                    f!!.apply {
+                        val attrs = Files.readAttributes(file.toPath(), BasicFileAttributes::class.java)
+                        val date = attrs.creationTime().toMillis()
+                        if(f.isDirectory){
+                            ret.add(FileDisplay(f.name, Date(date), null, f.absolutePath, FileType.DIRECTORY))
+                        }else{
+                            ret.add(FileDisplay(f.name, Date(date), f.length()/1024, f.absolutePath, FileType.fromExtension(f.extension)))
+                        }
+                    }
+                }
+            }
+        }
+        return ret
+    }
+
+    interface Callback{
+        fun onCheck(position: Int)
+        fun onUnCheck(position: Int)
+        fun onClick(position: Int)
+        fun onLongClick(position: Int)
     }
 }

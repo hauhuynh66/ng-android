@@ -5,7 +5,7 @@ import android.os.Looper
 import java.util.concurrent.Callable
 import java.util.concurrent.Executors
 
-class TaskRunner() {
+class TaskRunner {
     private val executor = Executors.newSingleThreadExecutor()
     private val handler:Handler = Handler(Looper.getMainLooper())
 

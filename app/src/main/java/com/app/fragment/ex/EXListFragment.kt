@@ -10,25 +10,18 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.ExplorerListAdapter
-import com.app.data.FileData
+import com.app.data.FileDisplay
 import com.app.dialog.FileActionDialog
 import com.app.listener.EXListListener
 import com.app.ngn.R
 import com.app.util.Animation.Companion.crossfade
-import java.io.File
-import java.nio.file.Files
-import java.nio.file.attribute.BasicFileAttributes
-import java.util.*
-import java.util.stream.Collectors
 
 class EXListFragment : Fragment(), EXListListener {
-    private lateinit var data: ArrayList<FileData>
+    private lateinit var data: MutableList<FileDisplay>
     private val rootPath : String = Environment.getExternalStorageDirectory().absolutePath
     private var path : String = rootPath
     private lateinit var adapter : ExplorerListAdapter
@@ -37,12 +30,8 @@ class EXListFragment : Fragment(), EXListListener {
     private lateinit var pathGroup: ConstraintLayout
     private lateinit var bottomBar: ConstraintLayout
     private lateinit var topBar: ConstraintLayout
-    private var isMultiple = false
-    private var selected: MutableList<String> = mutableListOf()
     private lateinit var num: TextView
-    private var isCheckAll = false
     private lateinit var listener : Listener
-    private var count = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,111 +61,63 @@ class EXListFragment : Fragment(), EXListListener {
         val check = view.findViewById<ImageButton>(R.id.check_all)
         val changeLayout = view.findViewById<ImageButton>(R.id.fg_ex_list_changeLayout)
 
-        data = getFileList(path)
-        val linearListener = object : ExplorerListAdapter.Listener{
-            override fun onCheck(path : String) {
-                if(!isMultiple){
-                    isMultiple = true
-                    crossfade(arrayListOf(bottomBar, topBar), arrayListOf(pathGroup))
-                    listener.onMultipleChanged(isMultiple)
-                }
-                if(!selected.contains(path)){
-                    selected.add(path)
-                }
-                isCheckAll = selected.size == adapter.data.size
-                onSelectionChange()
+        val linearCallback = object : ExplorerListAdapter.Callback{
+            override fun onCheck(position: Int) {
+
             }
 
-            override fun onUnCheck(path : String) {
-                if(selected.contains(path)){
-                    selected.remove(path)
-                }
-                onSelectionChange()
-                isCheckAll = false
+            override fun onUnCheck(position: Int) {
+
             }
 
-            override fun onClick(path: String, isChecked: Boolean, position : Int) {
-                if(!isMultiple){
-                    if(adapter.data[position].type =="DIR"){
-                        adapter.data = getFileList(path)
-                        adapter.notifyDataSetChanged()
-                        pathView.text = path
-                        onPathChanged(path)
+            override fun onClick(position : Int) {
+                if(adapter.mode == ExplorerListAdapter.Mode.Display){
+                    adapter.apply {
+                        val action = getAction(position)
+                        if(action[0] == "next"){
+                            onPathChanged(action[1])
+                        }
                     }
                 }else{
-                    if(!isChecked){
-                        if(!selected.contains(path)){
-                            selected.add(path)
-                        }
-                    }else{
-                        if(selected.contains(path)){
-                            selected.remove(path)
-                        }
-                    }
-                    adapter.data[position].checked = !isChecked
-                    adapter.notifyItemChanged(position)
-                    onSelectionChange()
+                    adapter.check(position)
                 }
             }
 
-            override fun onLongClick(path: String) {
-                if(!isMultiple){
-                    isMultiple = true
+            override fun onLongClick(position: Int) {
+                adapter.apply {
+                    changeMode(ExplorerListAdapter.Mode.Select)
+                    this.check(position)
                     crossfade(arrayListOf(bottomBar, topBar), arrayListOf(pathGroup))
-                    listener.onMultipleChanged(isMultiple)
-
-                    selected.add(path)
-                    isCheckAll = adapter.data.size == 1
-                    onSelectionChange()
-                    adapter.isMultiple = true
-                    adapter.data.filter {
-                        it.path == path
-                    }[0].checked = true
-                    adapter.notifyDataSetChanged()
                 }
             }
         }
-        adapter = ExplorerListAdapter(requireActivity(), data, isGrid = false, linearListener)
+
+        adapter = ExplorerListAdapter(requireActivity(), rootPath, isGrid = false, linearCallback)
         list.layoutManager = LinearLayoutManager(requireContext())
         list.adapter = adapter
         pathView.text = path
 
         changeLayout.setOnClickListener{
-            data = getFileList(this.path)
-            if(count%2==0){
-                list.layoutManager = GridLayoutManager(requireContext(), 3)
-                adapter = ExplorerListAdapter(requireActivity(), data, isGrid = true, linearListener)
+            /*if(grid){
                 changeLayout.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_menu))
             }else{
-                list.layoutManager = LinearLayoutManager(requireContext())
-                adapter = ExplorerListAdapter(requireActivity(), data, isGrid = false, linearListener)
                 changeLayout.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_apps))
-            }
-            list.adapter = adapter
-            count++
+            }*/
         }
 
         dismissBottomBar.setOnClickListener {
-            isMultiple = false
-            listener.onMultipleChanged(isMultiple)
-            selected.clear()
-            for (fileData in adapter.data){
-                fileData.checked = false
-            }
-            adapter.notifyDataSetChanged()
-            crossfade(arrayListOf(pathGroup),arrayListOf(bottomBar, topBar), duration = 0)
-            adapter.isMultiple = false
-            adapter.notifyDataSetChanged()
+            crossfade(arrayListOf(pathGroup),arrayListOf(bottomBar, topBar))
+            adapter.changeMode(ExplorerListAdapter.Mode.Display)
         }
 
         more.setOnClickListener {
-            val dialog = FileActionDialog(selected, object : FileActionDialog.Listener{
+            val dialog = FileActionDialog(arrayListOf(), object : FileActionDialog.Listener{
                 override fun onRename(oldName: String, newName: String) {
                     val renamed = data.filter{
                         it.name == oldName
                     }[0]
                     val m =
-                        FileData(newName, renamed.createDate, renamed.size,
+                        FileDisplay(newName, renamed.createDate, renamed.size,
                             renamed.path.replace(oldName, newName), renamed.type)
                     val pos = data.indexOf(renamed)
                     data.remove(renamed)
@@ -211,57 +152,19 @@ class EXListFragment : Fragment(), EXListListener {
         }
 
         check.setOnClickListener {
-            if(!isCheckAll){
-                for (fileData in adapter.data){
-                    fileData.checked = true
-                }
-                selected.clear()
-                selected = adapter.data.stream().map { it.path }.collect(Collectors.toList())
-                adapter.notifyDataSetChanged()
-            }else{
-                for (fileData in adapter.data){
-                    fileData.checked = false
-                }
-                selected.clear()
-                adapter.notifyDataSetChanged()
-            }
-            isCheckAll = !isCheckAll
-            onSelectionChange()
+
         }
 
-    }
-
-    private fun getFileList(path : String) : ArrayList<FileData>{
-        val ret = arrayListOf<FileData>()
-        val file = File(path)
-        if(file.isDirectory&&file.listFiles()!=null){
-            for(f:File? in file.listFiles()){
-                if(file.exists()){
-                    f!!.apply {
-                        val attrs = Files.readAttributes(file.toPath(),BasicFileAttributes::class.java)
-                        val date = attrs.creationTime().toMillis()
-                        if(f.isDirectory){
-                            ret.add(FileData(f.name, Date(date), null, f.absolutePath, "DIR"))
-                        }else{
-                            ret.add(FileData(f.name, Date(date), f.length()/1024, f.absolutePath, f.extension))
-                        }
-                    }
-                }
-            }
-        }
-        return ret
     }
 
     override fun onPathChanged(path : String) {
         this.path = path
         pathView.text = path
-        adapter.data.clear()
-        adapter.data.addAll(getFileList(this.path))
-        adapter.notifyDataSetChanged()
+        adapter.redisplay(path)
     }
 
     override fun onSelectionChange() {
-        num.text = selected.size.toString().plus(" selected")
+
     }
 
     interface Listener{

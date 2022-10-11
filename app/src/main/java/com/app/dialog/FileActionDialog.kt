@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import com.app.data.ConfirmDialogData
 import com.app.ngn.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.io.File
@@ -25,18 +24,17 @@ class FileActionDialog(private val paths : List<String>, val listener : Listener
         val del = view.findViewById<TextView>(R.id.fg_modal_file_action_delete)
 
         del.setOnClickListener{
-            ConfirmDialog("Do you want to delete?", object : ConfirmDialog.Listener{
-                override fun onConfirm(data: ConfirmDialogData) {
-                    for(s:Any in data.data){
-                        val retName = File(s.toString()).absolutePath
-                        val success = File(s.toString()).delete()
-                        if(success){
-                            listener.onDelete(retName)
+            ConfirmDialog(message = "Do you want to delete?", listener =  object : ConfirmDialog.Listener<ArrayList<String>>{
+                override fun onConfirm(data: ArrayList<String>) {
+                    for(s in data){
+                        val f = File(s)
+                        if(f.exists()){
+                            f.delete()
                         }
                     }
                     dismiss()
                 }
-            }, ConfirmDialogData(ArrayList(paths))).show(requireActivity().supportFragmentManager, "DELETE")
+            }, data = ArrayList(paths)).show(requireActivity().supportFragmentManager, "DELETE")
         }
 
         when{
@@ -52,7 +50,7 @@ class FileActionDialog(private val paths : List<String>, val listener : Listener
                     }
 
                     rename.setOnClickListener {
-                        EditTextDialog(File(this).name, object : EditTextDialog.Listener{
+                        EditDialog(File(this).name, object : EditDialog.Listener<String>{
                             override fun onConfirm(value: String) {
                                 val dirPath = this@apply.substringBeforeLast("/")
                                 val to = File(dirPath, value)

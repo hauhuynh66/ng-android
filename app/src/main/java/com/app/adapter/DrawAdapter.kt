@@ -16,7 +16,7 @@ import com.app.ngn.R
 class DrawAdapter(val context : Context, var data : ArrayList<DrawUtilData>, private val listType : ListType, val listener: Listener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var selected = 0
-    private val defaultColor = Color.parseColor("#ffffff")
+    private val defaultColor = Color.parseColor("#000000")
     private val defaultValue = 10
 
     enum class ListType(val type : Int){

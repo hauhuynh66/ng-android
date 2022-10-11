@@ -15,7 +15,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             app:layout_constraintWidth_percent="0.3"
-            android:layout_height="100dp"
+            android:layout_height="60dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:id="@+id/icon_group">
@@ -36,7 +36,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintWidth_percent="0.7"
-            android:minHeight="80dp"
+            android:minHeight="60dp"
             app:layout_constraintLeft_toRightOf="@id/icon_group"
             android:id="@id/info_group"
             android:orientation="vertical">

@@ -10,9 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.AudioListAdapter
 import com.app.data.AudioData
 import com.app.ngn.R
-import com.app.util.Resolver.Companion.getAudioList
 
-class AudioListFragment() : Fragment() {
+class AudioListFragment : Fragment() {
     private lateinit var data : ArrayList<AudioData>
     private var i : Int = 0
     fun newInstance(i : Int): Fragment{
@@ -37,7 +36,8 @@ class AudioListFragment() : Fragment() {
         i = args!!.getInt("index", 0)
         data = when(i){
             0->{
-                getAudioList(requireContext().contentResolver)
+                //getAudioList(requireContext().contentResolver)
+                arrayListOf()
             }
             1->{
                 arrayListOf()

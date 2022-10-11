@@ -2,14 +2,27 @@ package com.app.dialog
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.widget.TextView
 import androidx.fragment.app.DialogFragment
-import com.app.data.ConfirmDialogData
+import com.app.ngn.R
 
-class ConfirmDialog(private val message : String, val listener : Listener, val data : ConfirmDialogData) : DialogFragment() {
+class ConfirmDialog<T>(private val title : String? = null, private val message : String, val listener : Listener<T>, val data : T) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(requireContext())
-        builder.setMessage(message).setPositiveButton("Confirm"){
+        val view = (requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater)
+            .inflate(R.layout.dlg_confirm, null, false)
+        view.findViewById<TextView>(R.id.title).apply {
+            text = title?:""
+        }
+        view.findViewById<TextView>(R.id.message).apply {
+            text = message
+        }
+
+        builder.setView(view)
+            .setPositiveButton("Confirm"){
             di, _ -> run {
                 listener.onConfirm(data)
                 di.dismiss()
@@ -19,14 +32,15 @@ class ConfirmDialog(private val message : String, val listener : Listener, val d
                 di.dismiss()
             }
         }
+
         return builder.create()
     }
 
-    interface Listener{
-        fun onConfirm(data : ConfirmDialogData){
+    interface Listener<T>{
+        fun onConfirm(data : T)
+
+        fun onCancel(){
 
         }
     }
-
-    class Data(val data: Any?, val arr: ArrayList<Any>?)
 }
