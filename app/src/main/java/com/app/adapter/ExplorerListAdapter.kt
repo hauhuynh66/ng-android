@@ -62,11 +62,6 @@ class ExplorerListAdapter(val context: Context, var root : String,
 
             chk.isChecked = data.checked
             chk.setOnClickListener {
-                if(chk.isChecked){
-                    callback.onCheck(position)
-                }else{
-                    callback.onUnCheck(position)
-                }
                 data.checked = chk.isChecked
             }
 
@@ -114,19 +109,12 @@ class ExplorerListAdapter(val context: Context, var root : String,
             val chk = v.findViewById<CheckBox>(R.id.com_ex_grid_check)
             chk.isChecked = data.checked
             chk.setOnClickListener {
-                if(chk.isChecked){
-                    callback.onCheck(position)
-                }else{
-                    callback.onUnCheck(position)
-                }
-                data.checked = chk.isChecked
+                data.checked = !data.checked
             }
 
             chk.visibility = if(mode == Mode.Select) View.VISIBLE else View.GONE
 
             name.text = data.name
-            val drawable: Drawable?
-
 
             v.setOnLongClickListener {
                 callback.onLongClick(position)
@@ -154,7 +142,7 @@ class ExplorerListAdapter(val context: Context, var root : String,
         notifyDataSetChanged()
     }
 
-    fun check(position: Int){
+    fun select(position: Int){
         if(mode == Mode.Select){
             data[position].checked = !data[position].checked
             notifyItemChanged(position)
@@ -206,8 +194,6 @@ class ExplorerListAdapter(val context: Context, var root : String,
     }
 
     interface Callback{
-        fun onCheck(position: Int)
-        fun onUnCheck(position: Int)
         fun onClick(position: Int)
         fun onLongClick(position: Int)
     }

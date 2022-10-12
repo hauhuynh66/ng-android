@@ -30,7 +30,7 @@ class EXListFragment : Fragment(), EXListListener {
     private lateinit var pathGroup: ConstraintLayout
     private lateinit var bottomBar: ConstraintLayout
     private lateinit var topBar: ConstraintLayout
-    private lateinit var num: TextView
+    private lateinit var selectedCount: TextView
     private lateinit var listener : Listener
 
     override fun onCreateView(
@@ -53,7 +53,7 @@ class EXListFragment : Fragment(), EXListListener {
         pathView = view.findViewById(R.id.fg_ex_list_input)
         bottomBar = view.findViewById(R.id.fg_ex_list_bottom_bar)
         topBar = view.findViewById(R.id.fg_ex_list_top_bar)
-        num = view.findViewById(R.id.fg_ex_list_num_selected)
+        selectedCount = view.findViewById(R.id.fg_ex_list_num_selected)
         pathGroup = view.findViewById(R.id.fg_ex_list_input_group)
         val prev = view.findViewById<ImageButton>(R.id.previous)
         val dismissBottomBar = view.findViewById<ImageButton>(R.id.dismiss)
@@ -61,15 +61,7 @@ class EXListFragment : Fragment(), EXListListener {
         val check = view.findViewById<ImageButton>(R.id.check_all)
         val changeLayout = view.findViewById<ImageButton>(R.id.fg_ex_list_changeLayout)
 
-        val linearCallback = object : ExplorerListAdapter.Callback{
-            override fun onCheck(position: Int) {
-
-            }
-
-            override fun onUnCheck(position: Int) {
-
-            }
-
+        val callback = object : ExplorerListAdapter.Callback{
             override fun onClick(position : Int) {
                 if(adapter.mode == ExplorerListAdapter.Mode.Display){
                     adapter.apply {
@@ -79,20 +71,20 @@ class EXListFragment : Fragment(), EXListListener {
                         }
                     }
                 }else{
-                    adapter.check(position)
+                    adapter.select(position)
                 }
             }
 
             override fun onLongClick(position: Int) {
                 adapter.apply {
                     changeMode(ExplorerListAdapter.Mode.Select)
-                    this.check(position)
+                    this.select(position)
                     crossfade(arrayListOf(bottomBar, topBar), arrayListOf(pathGroup))
                 }
             }
         }
 
-        adapter = ExplorerListAdapter(requireActivity(), rootPath, isGrid = false, linearCallback)
+        adapter = ExplorerListAdapter(requireActivity(), rootPath, isGrid = false, callback)
         list.layoutManager = LinearLayoutManager(requireContext())
         list.adapter = adapter
         pathView.text = path
