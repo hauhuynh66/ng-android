@@ -16,5 +16,3 @@ dependencyResolutionManagement {
 rootProject.name = "NGN"
 include ':app'
 include ':opencv'
-include ':opencv'
-include ':opencv'

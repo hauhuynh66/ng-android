@@ -2,6 +2,7 @@ package com.app.activity.weather
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
@@ -32,38 +33,43 @@ class LocationListActivity : AppCompatActivity() {
             }
         }
 
-        val search = findViewById<SearchView>(R.id.search_view)
+        findViewById<SearchView>(R.id.search_view).apply {
+            visibility = View.VISIBLE
+            setOnSearchClickListener {
+                supportFragmentManager
+                    .beginTransaction().replace(
+                        R.id.container,
+                        LocationChipFragment(locations, object : LocationChipFragment.Listener {
+                            override fun onAdded() {
+                                this@apply.onActionViewCollapsed()
+                                supportFragmentManager
+                                    .beginTransaction()
+                                    .replace(R.id.container, LocationListFragment()).commit()
+
+                            }
+                        })
+                    ).commit()
+            }
+
+            setOnCloseListener {
+                this.onActionViewCollapsed()
+                supportFragmentManager
+                    .beginTransaction().replace(R.id.container, LocationListFragment()).commit()
+                true
+            }
+
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(p0: String?): Boolean {
+                    return true
+                }
+
+                override fun onQueryTextChange(p0: String?): Boolean {
+                    return false
+                }
+            })
+        }
         supportFragmentManager
             .beginTransaction().replace(R.id.container, LocationListFragment()).commit()
-
-        search.setOnSearchClickListener {
-            supportFragmentManager
-                .beginTransaction().replace(R.id.container, LocationChipFragment(locations, object : LocationChipFragment.Listener{
-                    override fun onAdded() {
-                        search.onActionViewCollapsed()
-                        supportFragmentManager
-                            .beginTransaction().replace(R.id.container, LocationListFragment()).commit()
-
-                    }
-                })).commit()
-        }
-
-        search.setOnCloseListener {
-            search.onActionViewCollapsed()
-            supportFragmentManager
-                .beginTransaction().replace(R.id.container, LocationListFragment()).commit()
-            true
-        }
-
-        search.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(p0: String?): Boolean {
-                return true
-            }
-
-            override fun onQueryTextChange(p0: String?): Boolean {
-                return false
-            }
-        })
 
     }
 

@@ -2,13 +2,11 @@ package com.app.activity.ex
 
 import android.Manifest
 import android.os.Bundle
-import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.app.adapter.ExplorerFragmentAdapter
-import com.app.fragment.ex.EXListFragment
 import com.app.ngn.R
 import com.app.util.Check.Companion.checkPermissions
 import com.app.util.Utils
@@ -16,7 +14,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlin.system.exitProcess
 
-class FileExplorerActivity : AppCompatActivity(), EXListFragment.Listener{
+class FileExplorerActivity : AppCompatActivity(){
     private lateinit var tabs : TabLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,13 +71,4 @@ class FileExplorerActivity : AppCompatActivity(), EXListFragment.Listener{
                 )
             )
         }
-    }
-
-    override fun onMultipleChanged(isMultiple: Boolean) {
-        if(isMultiple){
-            tabs.visibility = View.GONE
-        }else{
-            tabs.visibility = View.VISIBLE
-        }
-    }
-}
+    }}

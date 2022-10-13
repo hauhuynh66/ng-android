@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/fg_ex_list_input_group">
+            android:id="@+id/path_group">
             <ImageButton
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
@@ -24,16 +24,16 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 app:layout_constraintLeft_toRightOf="@id/previous"
-                app:layout_constraintRight_toLeftOf="@id/fg_ex_list_changeLayout"
+                app:layout_constraintRight_toLeftOf="@id/change_layout"
                 android:maxLines="1"
                 android:textSize="8pt"
                 android:paddingStart="10dp"
                 android:gravity="left|center_vertical"
-                android:id="@+id/fg_ex_list_input"/>
+                android:id="@+id/path_view"/>
             <ImageButton
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
-                android:id="@+id/fg_ex_list_changeLayout"
+                android:id="@+id/change_layout"
                 app:layout_constraintRight_toRightOf="parent"
                 android:src="@drawable/ic_baseline_apps"
                 android:background="@color/white"/>
@@ -43,19 +43,20 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/fg_ex_list_bottom_bar"
+        app:layout_constraintBottom_toTopOf="@id/actions"
         app:layout_constraintTop_toBottomOf="@id/fg_ex_list_top_wrapper"
-        android:id="@+id/fg_ex_list_list"/>
+        android:id="@+id/list"/>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@color/red_1"
-        android:id="@+id/fg_ex_list_bottom_bar"
+        android:background="@color/design_default_color_primary"
+        android:id="@+id/actions"
+        android:paddingHorizontal="10dp"
         android:visibility="gone">
         <ImageButton
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             app:layout_constraintDimensionRatio="h,1:1"
             android:id="@+id/dismiss"
             android:background="@drawable/ic_baseline_arrow_back"
@@ -70,27 +71,28 @@
             app:layout_constraintLeft_toRightOf="@id/dismiss"
             app:layout_constraintRight_toLeftOf="@id/check_all"
             app:layout_constraintWidth_percent="0.5"
-            android:id="@+id/fg_ex_list_num_selected"
+            android:id="@+id/count"
             android:text="selected"
             android:gravity="center"
             android:textSize="8pt"/>
         <ImageButton
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             app:layout_constraintDimensionRatio="h,1:1"
-            app:layout_constraintRight_toLeftOf="@id/more"
+            app:layout_constraintRight_toLeftOf="@id/action_ex"
             android:id="@+id/check_all"
             android:background="@drawable/ic_baseline_check_all"
             app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginHorizontal="15dp"
             app:layout_constraintBottom_toBottomOf="parent"/>
-        <Button
+        <ImageButton
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             app:layout_constraintDimensionRatio="h,1:1"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:id="@+id/more"
+            android:id="@+id/action_ex"
             android:background="@drawable/ic_baseline_more_vert"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

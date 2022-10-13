@@ -1,7 +1,6 @@
 package com.app.adapter
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +18,8 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.attribute.BasicFileAttributes
 import java.util.*
+import kotlin.io.path.Path
+import kotlin.io.path.absolutePathString
 
 class ExplorerListAdapter(val context: Context, var root : String,
                           var isGrid: Boolean, val callback: Callback? = null, var mode: Mode = Mode.Display) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -149,6 +150,36 @@ class ExplorerListAdapter(val context: Context, var root : String,
         }
     }
 
+    fun setPath(root: String){
+        this.root = root
+        data = getFileList(this.root)
+        notifyDataSetChanged()
+    }
+
+    fun back(currentPath : String) : String{
+        val parent = Path(currentPath).parent
+        setPath(parent.absolutePathString())
+        return parent.absolutePathString()
+    }
+
+    fun flip(){
+        val s = data.filter {
+            it.checked
+        }.size
+
+        if(s == data.size){
+            data.filter {
+                !it.checked
+            }.forEach {
+                it.checked = true
+            }
+        }else{
+            data.forEach {
+                it.checked = !it.checked
+            }
+        }
+    }
+
     fun getSelected() : List<FileDisplay>{
         return data.filter {
             it.checked
@@ -162,6 +193,7 @@ class ExplorerListAdapter(val context: Context, var root : String,
         }else{
             ret.add("open")
         }
+
         ret.add(data[position].path)
         return ret
     }

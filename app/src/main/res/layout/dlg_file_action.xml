@@ -5,25 +5,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="40dp"
         android:gravity="center"
-        android:textSize="8pt"
+        android:textSize="5pt"
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/fg_modal_file_action_show_properties"
         android:text="Properties"/>
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="40dp"
         android:gravity="center"
-        android:textSize="8pt"
+        android:textSize="5pt"
         app:layout_constraintTop_toBottomOf="@id/fg_modal_file_action_show_properties"
         android:id="@+id/fg_modal_file_action_rename"
         android:text="Rename"/>
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="40dp"
         android:gravity="center"
-        android:textSize="8pt"
+        android:textSize="5pt"
         app:layout_constraintTop_toBottomOf="@id/fg_modal_file_action_rename"
         android:id="@+id/fg_modal_file_action_delete"
         android:text="Delete"/>

@@ -28,14 +28,6 @@ class FileListActivity() : AppCompatActivity() {
         val runner = TaskRunner()
 
         val callback = object : ExplorerListAdapter.Callback{
-            override fun onCheck(position: Int) {
-
-            }
-
-            override fun onUnCheck(position: Int) {
-
-            }
-
             override fun onClick(position: Int) {
 
             }

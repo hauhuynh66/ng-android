@@ -1,12 +1,10 @@
 package com.app.fragment.ex
 
-import android.content.Context
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -16,22 +14,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.ExplorerListAdapter
 import com.app.data.FileDisplay
 import com.app.dialog.FileActionDialog
-import com.app.listener.EXListListener
 import com.app.ngn.R
 import com.app.util.Animation.Companion.crossfade
+import com.google.android.material.snackbar.Snackbar
 
-class EXListFragment : Fragment(), EXListListener {
+class EXListFragment : Fragment() {
     private lateinit var data: MutableList<FileDisplay>
     private val rootPath : String = Environment.getExternalStorageDirectory().absolutePath
-    private var path : String = rootPath
+    private var currentPath : String = rootPath
     private lateinit var adapter : ExplorerListAdapter
     private lateinit var list : RecyclerView
     private lateinit var pathView : TextView
     private lateinit var pathGroup: ConstraintLayout
     private lateinit var bottomBar: ConstraintLayout
-    private lateinit var topBar: ConstraintLayout
     private lateinit var selectedCount: TextView
-    private lateinit var listener : Listener
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,24 +38,14 @@ class EXListFragment : Fragment(), EXListListener {
         return inflater.inflate(R.layout.fg_ex_list, container, false)
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        this.listener = context as Listener
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        list = view.findViewById(R.id.fg_ex_list_list)
-        pathView = view.findViewById(R.id.fg_ex_list_input)
-        bottomBar = view.findViewById(R.id.fg_ex_list_bottom_bar)
-        topBar = view.findViewById(R.id.fg_ex_list_top_bar)
-        selectedCount = view.findViewById(R.id.fg_ex_list_num_selected)
-        pathGroup = view.findViewById(R.id.fg_ex_list_input_group)
-        val prev = view.findViewById<ImageButton>(R.id.previous)
-        val dismissBottomBar = view.findViewById<ImageButton>(R.id.dismiss)
-        val more = view.findViewById<Button>(R.id.more)
-        val check = view.findViewById<ImageButton>(R.id.check_all)
-        val changeLayout = view.findViewById<ImageButton>(R.id.fg_ex_list_changeLayout)
+        list = view.findViewById(R.id.list)
+        pathView = view.findViewById(R.id.path_view)
+        bottomBar = view.findViewById(R.id.actions)
+        selectedCount = view.findViewById(R.id.count)
+        pathGroup = view.findViewById(R.id.path_group)
+        val dismiss = view.findViewById<ImageButton>(R.id.dismiss)
 
         val callback = object : ExplorerListAdapter.Callback{
             override fun onClick(position : Int) {
@@ -67,11 +53,11 @@ class EXListFragment : Fragment(), EXListListener {
                     adapter.apply {
                         val action = getAction(position)
                         if(action[0] == "next"){
-                            onPathChanged(action[1])
+                            setPath(action[1])
+                            currentPath = action[1]
+                            pathView.text = currentPath
                         }
                     }
-                }else{
-                    adapter.select(position)
                 }
             }
 
@@ -79,7 +65,7 @@ class EXListFragment : Fragment(), EXListListener {
                 adapter.apply {
                     changeMode(ExplorerListAdapter.Mode.Select)
                     this.select(position)
-                    crossfade(arrayListOf(bottomBar, topBar), arrayListOf(pathGroup))
+                    crossfade(arrayListOf(bottomBar), arrayListOf(pathGroup))
                 }
             }
         }
@@ -87,23 +73,24 @@ class EXListFragment : Fragment(), EXListListener {
         adapter = ExplorerListAdapter(requireActivity(), rootPath, isGrid = false, callback)
         list.layoutManager = LinearLayoutManager(requireContext())
         list.adapter = adapter
-        pathView.text = path
+        pathView.text = currentPath
 
-        changeLayout.setOnClickListener{
-            /*if(grid){
-                changeLayout.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_menu))
-            }else{
-                changeLayout.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_apps))
-            }*/
+        view.findViewById<ImageButton>(R.id.change_layout).apply {
+            setOnClickListener{
+
+            }
         }
 
-        dismissBottomBar.setOnClickListener {
-            crossfade(arrayListOf(pathGroup),arrayListOf(bottomBar, topBar))
+        view.findViewById<ImageButton>(R.id.dismiss).setOnClickListener {
+            crossfade(arrayListOf(pathGroup),arrayListOf(bottomBar))
             adapter.changeMode(ExplorerListAdapter.Mode.Display)
         }
 
-        more.setOnClickListener {
-            val dialog = FileActionDialog(arrayListOf(), object : FileActionDialog.Listener{
+        view.findViewById<ImageButton>(R.id.action_ex).setOnClickListener {
+            val select = adapter.getSelected().map {
+                it.path
+            }
+            val dialog = FileActionDialog(select, object : FileActionDialog.Listener{
                 override fun onRename(oldName: String, newName: String) {
                     val renamed = data.filter{
                         it.name == oldName
@@ -116,7 +103,7 @@ class EXListFragment : Fragment(), EXListListener {
                     data.add(m)
                     adapter.notifyItemRemoved(pos)
                     adapter.notifyItemInserted(data.size-1)
-                    dismissBottomBar.performClick()
+                    dismiss.performClick()
                 }
 
                 override fun onDelete(path: String) {
@@ -126,7 +113,7 @@ class EXListFragment : Fragment(), EXListListener {
                     val pos = data.indexOf(deleted)
                     adapter.data.remove(deleted)
                     adapter.notifyItemRemoved(pos)
-                    dismissBottomBar.performClick()
+                    dismiss.performClick()
                 }
             })
 
@@ -134,32 +121,23 @@ class EXListFragment : Fragment(), EXListListener {
             dialog.show(requireActivity().supportFragmentManager, "TAG")
         }
 
-        prev.setOnClickListener{
-            if(pathView.text.toString() != rootPath || pathView.text.toString().length > rootPath.length){
-                this.path = this.path.substringBeforeLast("/")
-                onPathChanged(path)
+        view.findViewById<ImageButton>(R.id.previous).setOnClickListener{
+            if(currentPath != rootPath){
+                currentPath = adapter.back(currentPath)
+                pathView.text = currentPath
             }else{
-                pathView.text = rootPath
+                Snackbar
+                    .make(view, "Cant go back further", Snackbar.LENGTH_SHORT)
+                    .setAction("OK"){
+                        //
+                    }
+                    .show()
             }
         }
 
-        check.setOnClickListener {
-
+        view.findViewById<ImageButton>(R.id.check_all).setOnClickListener {
+            adapter.flip()
         }
 
-    }
-
-    override fun onPathChanged(path : String) {
-        this.path = path
-        pathView.text = path
-        adapter.redisplay(path)
-    }
-
-    override fun onSelectionChange() {
-
-    }
-
-    interface Listener{
-        fun onMultipleChanged(isMultiple : Boolean)
     }
 }
