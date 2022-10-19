@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.FootballStandingAdapter
 import com.app.data.FootballStandingData
-import com.app.data.HttpResponseData
+import com.app.data.HttpResponse
 import com.app.ngn.R
 import com.app.task.GetHttpTask
 import com.app.task.TaskRunner
@@ -63,12 +63,14 @@ class FootballStandingFragment : Fragment() {
             "x-rapidapi-key" to getString(R.string.football_api_key)
         )
         val task = GetHttpTask(url, headers)
-        taskRunner.execute(task, object : TaskRunner.Callback<HttpResponseData>{
-            override fun onComplete(result: HttpResponseData) {
-                if(result.code == 200 && result.body!=null){
-                    adapter.data = processStandingData(result.body)
+        taskRunner.execute(task, object : TaskRunner.Callback<HttpResponse>{
+            override fun onComplete(result: HttpResponse) {
+                if(result.ok()){
+                    /*suspend {
+                        adapter.data = processStandingData(result.getString())
+                    }
                     adapter.notifyDataSetChanged()
-                    crossfade(arrayListOf(list), arrayListOf(progress))
+                    crossfade(arrayListOf(list), arrayListOf(progress))*/
                 }
             }
         })

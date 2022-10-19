@@ -39,8 +39,8 @@ class Gauge : View {
                         GaugeDisplay.LINE
                     }
                 }
-                bgPaint.color = getColor(R.styleable.Gauge_bgColor, Color.GRAY)
-                pgPaint.color = getColor(R.styleable.Gauge_pgColor, Color.BLUE)
+                bgPaint.color = getColor(R.styleable.Gauge_background_color, Color.GRAY)
+                pgPaint.color = getColor(R.styleable.Gauge_progress_color, Color.BLUE)
                 displayText = getBoolean(R.styleable.Gauge_display_text, true)
             }finally {
                 recycle()

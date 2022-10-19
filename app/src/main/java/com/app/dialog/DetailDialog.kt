@@ -17,7 +17,7 @@ class DetailDialog(val path : String) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(requireContext())
         val v = (requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater)
-            .inflate(R.layout.dlg_ex_detail, null, false)
+            .inflate(R.layout.dlg_list, null, false)
         val list = v.findViewById<RecyclerView>(R.id.dlg_ex_detail_list)
         list.layoutManager = LinearLayoutManager(requireContext())
         list.adapter = DetailAdapter(requireActivity(), getDetails(path), 1)

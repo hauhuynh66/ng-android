@@ -28,7 +28,7 @@ class PieChart : View {
         init()
         context!!.theme.obtainStyledAttributes(attrs, R.styleable.PieChart, 0, 0).apply {
             try {
-                shadow = getBoolean(R.styleable.PieChart_shadow, false)
+                //shadow = getBoolean(R.styleable.PieChart_shadow, false)
                 donut = getBoolean(R.styleable.PieChart_donut, false)
             }finally {
                 recycle()

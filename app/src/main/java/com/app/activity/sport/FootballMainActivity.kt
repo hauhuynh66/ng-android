@@ -1,16 +1,12 @@
 package com.app.activity.sport
 
 import android.os.Bundle
-import android.view.View
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.viewpager2.widget.ViewPager2
 import com.app.adapter.FootballFragmentAdapter
-import com.app.dialog.OptionBottomSheet
 import com.app.ngn.R
-import com.app.util.Utils
+import com.app.util.ViewUtils
 import com.app.viewmodel.Football
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -24,7 +20,7 @@ class FootballMainActivity : AppCompatActivity() {
         val pager = findViewById<ViewPager2>(R.id.pager)
         val tabs = findViewById<TabLayout>(R.id.tabs)
         pager.adapter = FootballFragmentAdapter(supportFragmentManager, lifecycle)
-        pager.setPageTransformer(Utils.Companion.ZoomOutPageTransformer())
+        pager.setPageTransformer(ViewUtils.Companion.ZoomOutPageTransformer())
         TabLayoutMediator(tabs, pager){ tab, pos ->
             run{
                 when(pos){

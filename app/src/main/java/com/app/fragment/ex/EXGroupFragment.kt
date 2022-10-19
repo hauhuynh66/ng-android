@@ -6,17 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.activity.ex.FileListActivity
-import com.app.adapter.MiscAdapter
-import com.app.data.MiscData
+import com.app.adapter.ActionAdapter
+import com.app.data.ActionData
 import com.app.helper.SpanLinearLayoutManager
 import com.app.ngn.R
 
 class EXGroupFragment : Fragment() {
-    private lateinit var data : ArrayList<MiscData>
+    private lateinit var data : ArrayList<ActionData>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,46 +28,20 @@ class EXGroupFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         data = arrayListOf()
-        for( i in 0 until 8){
-            val intent = Intent(requireContext(), FileListActivity::class.java)
-            when(i){
-                0->{
-                    data.add(MiscData(null, "Image" ,object : MiscData.Listener{
-                        override fun onClick() {
-                            intent.putExtra("TYPE", 1)
-                            startActivity(intent)
-                        }
-                    }))
-                }
-                1->{
-                    data.add(MiscData(null, "Video", object : MiscData.Listener{
-                        override fun onClick() {
-                            intent.putExtra("TYPE", 2)
-                            startActivity(intent)
-                        }
-                    }))
-                }
-                2->{
-                    data.add(MiscData(null, "Audio", object : MiscData.Listener{
-                        override fun onClick() {
-                            intent.putExtra("TYPE", 3)
-                            startActivity(intent)
-                        }
-                    }))
-                }
-                3->{
-                    data.add(MiscData(null, "Download", object : MiscData.Listener{
-                        override fun onClick() {
-                            intent.putExtra("TYPE", 4)
-                            startActivity(intent)
-                        }
-                    }))
+        for( i in 0 until 4){
+            val listener = object : ActionData.Listener{
+                override fun onClick() {
+                    val intent = Intent(requireContext(), FileListActivity::class.java)
+                    intent.putExtra("display", i)
+                    startActivity(intent)
                 }
             }
+
+            data.add(ActionData(null, i.toString(), listener))
         }
         val iconList = view.findViewById<RecyclerView>(R.id.fg_ex_group1_list)
         val layoutManager = SpanLinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val adapter = MiscAdapter(requireActivity(), data, 2)
+        val adapter = ActionAdapter(requireActivity(), data, 60)
         iconList.layoutManager = layoutManager
         iconList.adapter = adapter
     }

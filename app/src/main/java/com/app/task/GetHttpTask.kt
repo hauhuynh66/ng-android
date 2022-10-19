@@ -1,16 +1,20 @@
 package com.app.task
 
-import com.app.data.HttpResponseData
-import java.io.BufferedReader
-import java.io.InputStreamReader
+import com.app.data.HttpResponse
+import org.apache.commons.io.IOUtils
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.concurrent.Callable
 
-class GetHttpTask(private val url : String, private val header : MutableMap<String, String>? = null) : Callable<HttpResponseData> {
-    override fun call(): HttpResponseData {
-        try {
-            val url = URL(url)
+class GetHttpTask(private val url : String, private val params : Map<String, Any>? = null, private val header : MutableMap<String, String>? = null) : Callable<HttpResponse> {
+    override fun call(): HttpResponse {
+        return try {
+            val url = if (params!=null){
+                URL(buildUrl(url, params))
+            }else{
+                URL(url)
+            }
+
             val conn = url.openConnection() as HttpURLConnection
             conn.requestMethod = "GET"
 
@@ -20,17 +24,25 @@ class GetHttpTask(private val url : String, private val header : MutableMap<Stri
                 }
             }
 
-            val bufferedReader = BufferedReader(InputStreamReader(conn.inputStream))
-            val responseCode = conn.responseCode
-            val content = StringBuilder()
-            val iterator = bufferedReader.lineSequence().iterator()
-            while (iterator.hasNext()){
-                content.append(iterator.next())
-            }
-
-            return HttpResponseData(responseCode, content.toString())
+            HttpResponse(conn.responseCode, conn.headerFields, IOUtils.toByteArray(conn.inputStream))
         }catch (e : Exception){
-            return HttpResponseData(-999, null)
+            HttpResponse(HttpURLConnection.HTTP_SEE_OTHER)
         }
+    }
+
+    private fun buildUrl(baseUrl : String, params : Map<String, Any>) : String {
+        val ret = StringBuilder(baseUrl)
+        ret.append("?")
+        params.onEachIndexed { index, entry ->
+            ret.append(entry.key)
+            ret.append("=")
+            ret.append(entry.value)
+            if(index!=params.size-1){
+                ret.append("&")
+            }
+        }
+
+        println(ret.toString())
+        return ret.toString()
     }
 }

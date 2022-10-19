@@ -9,7 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.room.Room
 import com.app.activity.GoogleMapActivity
-import com.app.data.HttpResponseData
+import com.app.data.HttpResponse
 import com.app.model.AppDatabase
 import com.app.model.Location
 import com.app.ngn.R
@@ -59,13 +59,13 @@ class LocationChipFragment(val data: ArrayList<String>, val listener : Listener)
             chip.text = d
             val currentUrl = url.replace("{city}", d)
             chip.setOnClickListener {
-                taskRunner.execute(GetHttpTask(currentUrl), object : TaskRunner.Callback<HttpResponseData>{
-                    override fun onComplete(result: HttpResponseData) {
-                        if(result.code == 200 && result.body!=null){
+                taskRunner.execute(GetHttpTask(currentUrl), object : TaskRunner.Callback<HttpResponse>{
+                    override fun onComplete(result: HttpResponse) {
+                        /*if(result.ok()){
                             processCity(result.body)
                         }else{
                             Snackbar.make(requireView(), "No matching location", Snackbar.LENGTH_SHORT).show()
-                        }
+                        }*/
                     }
                 })
             }

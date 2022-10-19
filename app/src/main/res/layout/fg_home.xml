@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<merge>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"
-    android:layout_marginHorizontal="10dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_margin="10dp">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="120dp"
@@ -14,7 +14,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/stats"
         android:backgroundTint="@color/blue_1"
-        android:layout_marginTop="20dp"
         android:background="@drawable/bg1">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -68,12 +67,12 @@
             android:gravity="center"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/statistic_list1"
+            app:layout_constraintBottom_toTopOf="@id/list1"
             android:id="@+id/stat_header1"/>
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:id="@+id/statistic_list1"
+            android:layout_height="400dp"
+            android:id="@+id/list1"
             app:layout_constraintTop_toBottomOf="@id/stat_header1"
             app:layout_constraintBottom_toTopOf="@id/stat_header2"
             android:layout_marginVertical="10dp"/>
@@ -84,15 +83,16 @@
             android:text="Stats"
             android:gravity="center"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/statistic_list2"
-            app:layout_constraintTop_toBottomOf="@id/statistic_list1"
+            app:layout_constraintBottom_toTopOf="@id/list2"
+            app:layout_constraintTop_toBottomOf="@id/list1"
             android:id="@+id/stat_header2"/>
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:id="@+id/statistic_list2"
+            android:id="@+id/list2"
             app:layout_constraintTop_toBottomOf="@id/stat_header2"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginVertical="10dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
+</merge>

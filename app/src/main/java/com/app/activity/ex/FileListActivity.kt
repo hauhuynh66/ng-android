@@ -19,12 +19,13 @@ class FileListActivity() : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         val bundle = intent.extras
-        type = bundle?.getInt("type") ?: 1
+        type = bundle?.getInt("display") ?: 0
 
         val progress = findViewById<ProgressBar>(R.id.progress)
         progress.visibility = View.VISIBLE
         list = findViewById(R.id.ac_file_list_list)
         list.visibility = View.INVISIBLE
+
         val runner = TaskRunner()
 
         val callback = object : ExplorerListAdapter.Callback{

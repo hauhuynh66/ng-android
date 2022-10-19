@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.app.adapter.RDFragmentAdapter
 import com.app.ngn.R
-import com.app.util.Utils
+import com.app.util.ViewUtils
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -16,7 +16,7 @@ class RDMainActivity : AppCompatActivity(){
         val pager = findViewById<ViewPager2>(R.id.pager)
         val tabs = findViewById<TabLayout>(R.id.tabs)
         pager.adapter = RDFragmentAdapter(supportFragmentManager, lifecycle)
-        pager.setPageTransformer(Utils.Companion.ZoomOutPageTransformer())
+        pager.setPageTransformer(ViewUtils.Companion.ZoomOutPageTransformer())
         TabLayoutMediator(tabs, pager){ tab, pos ->
             run{
                 tab.view.minimumWidth = 300

@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.StatAdapter
 import com.app.data.FootballResult
-import com.app.data.HttpResponseData
+import com.app.data.HttpResponse
 import com.app.data.StatLineData
 import com.app.ngn.R
 import com.app.task.GetHttpTask
@@ -95,13 +95,14 @@ class FootballMatchDetailFragment : Fragment() {
             "x-rapidapi-key" to getString(R.string.football_api_key)
         )
         val task = GetHttpTask(url, headers)
-        taskRunner.execute(task, object : TaskRunner.Callback<HttpResponseData>{
-            override fun onComplete(result: HttpResponseData) {
-                if(result.code == 200 && result.body!=null){
-                    println(result.body)
-                    adapter.data = processMatchDetails(result.body)
+        taskRunner.execute(task, object : TaskRunner.Callback<HttpResponse>{
+            override fun onComplete(result: HttpResponse) {
+                if(result.ok()){
+                    /*suspend {
+                        adapter.data = processMatchDetails(result.getString())
+                    }
                     adapter.notifyDataSetChanged()
-                    Animation.crossfade(arrayListOf(list), arrayListOf(progress))
+                    Animation.crossfade(arrayListOf(list), arrayListOf(progress))*/
                 }
             }
         })

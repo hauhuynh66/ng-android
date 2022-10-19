@@ -16,7 +16,7 @@ import com.app.activity.sport.FootballDisplayActivity
 import com.app.adapter.FootballFixtureAdapter
 import com.app.data.FootballResult
 import com.app.data.FootballTeam
-import com.app.data.HttpResponseData
+import com.app.data.HttpResponse
 import com.app.ngn.R
 import com.app.task.GetHttpTask
 import com.app.task.TaskRunner
@@ -26,6 +26,7 @@ import com.app.util.Formatter.Companion.formatDate
 import com.app.viewmodel.Football
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.json.JSONObject
+import java.net.HttpURLConnection
 import java.util.*
 
 class FootballFixtureFragment : Fragment() {
@@ -49,27 +50,26 @@ class FootballFixtureFragment : Fragment() {
         )
 
         val task = GetHttpTask(url, headers)
-        taskRunner.execute(task, object : TaskRunner.Callback<HttpResponseData>{
-            override fun onComplete(result: HttpResponseData) {
-                if(result.code == 200 && result.body!=null){
-                    val data = processFootballResult(result.body)
-                    if(data!=null){
-                        adapter.data = data
-                        adapter.notifyDataSetChanged()
-                    }else{
-                        //TODO
+        taskRunner.execute(task, object : TaskRunner.Callback<HttpResponse>{
+            override fun onComplete(result: HttpResponse) {
+                if(result.responseCode == HttpURLConnection.HTTP_OK){
+                    /*var data = arrayListOf<FootballResult>()
+                    suspend {
+                        data = processFootballResult(result.getString())
                     }
-                    crossfade(arrayListOf(list), arrayListOf(progress))
+                    adapter.data = data
+                    adapter.notifyDataSetChanged()
+                    crossfade(arrayListOf(list), arrayListOf(progress))*/
                 }
             }
         })
     }
 
-    private fun processFootballResult(json : String) : ArrayList<FootballResult>?{
+    private fun processFootballResult(json : String) : ArrayList<FootballResult>{
         val resArray = JSONObject(json).getJSONArray("response")
         val error = JSONObject(json).getJSONArray("errors")
         if(error.length()>0){
-            return null
+            return arrayListOf()
         }else{
             val arr = arrayListOf<FootballResult>()
             for(i in 0 until resArray.length()){

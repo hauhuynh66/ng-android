@@ -8,8 +8,8 @@ import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.app.adapter.ExplorerFragmentAdapter
 import com.app.ngn.R
-import com.app.util.Check.Companion.checkPermissions
-import com.app.util.Utils
+import com.app.util.PermissionUtils.Companion.checkPermissions
+import com.app.util.ViewUtils
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlin.system.exitProcess
@@ -23,7 +23,7 @@ class FileExplorerActivity : AppCompatActivity(){
         val pager = findViewById<ViewPager2>(R.id.pager)
         tabs = findViewById(R.id.tabs)
         pager.adapter = ExplorerFragmentAdapter(supportFragmentManager, lifecycle)
-        pager.setPageTransformer(Utils.Companion.ZoomOutPageTransformer())
+        pager.setPageTransformer(ViewUtils.Companion.ZoomOutPageTransformer())
         TabLayoutMediator(tabs, pager){
             tab, pos -> run{
                 when(pos){

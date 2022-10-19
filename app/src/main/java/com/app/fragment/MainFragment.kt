@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.helper.widget.Carousel
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -47,34 +46,6 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val images = arrayListOf(
-            R.drawable.image_background_1,
-            R.drawable.heh,
-            R.drawable.goldengate,
-            R.drawable.mt_rushmore,
-            R.drawable.bryce_canyon
-        )
-
-        summaryList = view.findViewById(R.id.statistic_list1)
-        statList = view.findViewById(R.id.statistic_list2)
-
-        val carousel = view.findViewById<Carousel>(R.id.carousel)
-
-        carousel.setAdapter(object : Carousel.Adapter{
-            override fun count(): Int {
-                return images.size
-            }
-
-            override fun populate(view: View?, index: Int) {
-                (view as ImageView).setImageResource(images[index])
-            }
-
-            override fun onNewItem(index: Int) {
-
-            }
-        })
-
-        summaryList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         val sumData = arrayListOf(
             CardAdapter.CardData(arrayListOf(50, 60, 20, 10, 100), "Summary 1", "Subtile 1", "PIE"),
@@ -82,16 +53,22 @@ class MainFragment : Fragment() {
             CardAdapter.CardData(arrayListOf(50, 60, 20, 10, 100), "Summary 3", "Subtile 3", "LINE"),
             CardAdapter.CardData(arrayListOf(80), "Summary 4", "Subtile 4", "GAUGE")
         )
-        summaryList.adapter = CardAdapter(requireContext(), sumData, LinearLayoutManager.VERTICAL)
+        view.findViewById<RecyclerView>(R.id.list1).apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            adapter = CardAdapter(requireContext(), sumData, LinearLayoutManager.VERTICAL)
+        }
 
-        statList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         val statData = arrayListOf(
             CardAdapter.CardData(arrayListOf(50, 60, 20, 10, 100), type = "PIE"),
             CardAdapter.CardData(arrayListOf(50, 60, 20, 10, 100), type = "BAR"),
             CardAdapter.CardData(arrayListOf(50, 60, 20, 10, 100), type = "LINE"),
             CardAdapter.CardData(arrayListOf(80), type = "GAUGE")
         )
-        statList.adapter = CardAdapter(requireContext(), statData, LinearLayoutManager.HORIZONTAL)
+
+        view.findViewById<RecyclerView>(R.id.list2).apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = CardAdapter(requireContext(), statData, LinearLayoutManager.HORIZONTAL)
+        }
 
         displayName = view.findViewById(R.id.text1)
         displayImage = view.findViewById(R.id.profile_icon)

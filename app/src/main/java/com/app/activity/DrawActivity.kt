@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.DrawAdapter
 import com.app.helper.SpanLinearLayoutManager
 import com.app.ngn.R
-import com.app.util.Utils
+import com.app.util.FileOperation
 import com.app.view.DrawView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.File
@@ -125,7 +125,7 @@ class DrawActivity : AppCompatActivity() {
         val save = findViewById<Button>(R.id.ac_draw_save)
         save.setOnClickListener {
             val intent = Intent()
-            val file = Utils.createImageFile(path)
+            val file = FileOperation.createImageFile(path)
             val fos = FileOutputStream(file)
             val bmp = draw.mBitmap
             bmp!!.compress(Bitmap.CompressFormat.PNG, 100, fos)

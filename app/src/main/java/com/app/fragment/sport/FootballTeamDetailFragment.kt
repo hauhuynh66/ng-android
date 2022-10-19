@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
 import com.app.data.FootballTeamDetail
-import com.app.data.HttpResponseData
+import com.app.data.HttpResponse
 import com.app.ngn.R
 import com.app.task.GetHttpTask
 import com.app.task.TaskRunner
@@ -63,14 +63,17 @@ class FootballTeamDetailFragment : Fragment() {
         )
 
         val task = GetHttpTask(url, headers)
-        taskRunner.execute(task, object : TaskRunner.Callback<HttpResponseData>{
-            override fun onComplete(result: HttpResponseData) {
-                if(result.code == 200 && result.body!=null){
-                    teamDetail = processTeamDetailGeneral(result.body)
+        taskRunner.execute(task, object : TaskRunner.Callback<HttpResponse>{
+            override fun onComplete(result: HttpResponse) {
+                if(result.ok()){
+                    /*suspend {
+                        teamDetail = processTeamDetailGeneral(result.getString())
+                    }
+
                     if(teamDetail!=null){
                         display(teamDetail!!, view)
                     }
-                    this@FootballTeamDetailFragment.isDisplay.value = true
+                    this@FootballTeamDetailFragment.isDisplay.value = true*/
                 }
             }
         })

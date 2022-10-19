@@ -12,7 +12,7 @@ import com.app.ngn.R
 class SportAdapter(val context: Context, var data : ArrayList<Sport>, val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        return SportViewHolder(inflater.inflate(R.layout.com_item_holder, parent, false))
+        return SportViewHolder(inflater.inflate(R.layout.com_item, parent, false))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

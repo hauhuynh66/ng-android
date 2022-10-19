@@ -10,10 +10,10 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.app.data.WeatherData
+import com.app.data.WeatherType
 import com.app.ngn.R
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class WeatherAdapter(private val context:Context, var data:ArrayList<WeatherData>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -42,7 +42,7 @@ class WeatherAdapter(private val context:Context, var data:ArrayList<WeatherData
             val wind = v.findViewById<TextView>(R.id.wind)
 
             time.text = formatWeatherDate(data.time)
-            status.setImageDrawable(getWeatherIcon(data.description, context))
+            status.setImageDrawable(getWeatherIcon(data.type, context))
             temperature.text = data.temp.toString()
             wind.text = data.speed.toString() + "km/h"
         }
@@ -56,15 +56,15 @@ class WeatherAdapter(private val context:Context, var data:ArrayList<WeatherData
             }
         }
 
-        private fun getWeatherIcon(des: String, context: Context): Drawable? {
+        private fun getWeatherIcon(des: WeatherType, context: Context): Drawable? {
             return when(des){
-                "Rain"->{
+                WeatherType.Rain->{
                     ContextCompat.getDrawable(context, R.drawable.ic_light_rain)
                 }
-                "Drizzle"->{
+                WeatherType.Drizzle->{
                     ContextCompat.getDrawable(context, R.drawable.ic_heavy_rain)
                 }
-                "Clouds"->{
+                WeatherType.Clouds->{
                     ContextCompat.getDrawable(context, R.drawable.ic_cloudy)
                 }
 

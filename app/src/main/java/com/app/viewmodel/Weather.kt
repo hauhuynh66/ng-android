@@ -12,10 +12,13 @@ class Weather : ViewModel(){
         CitySearch
     }
 
-
     val key = "1f21f91e5b111cf398a465df830c423b"
-    val url = "https://api.openweathermap.org/data/2.5/{mode}?lat={lat}&lon={lon}&appid={key}"
-    val currentState = MutableLiveData(WeatherState.WeatherDetail)
-    val currentWeather = MutableLiveData<WeatherData>()
+    val weatherUrl = "https://api.openweathermap.org/data/2.5/weather"
+    val forecastUrl = "https://api.openweathermap.org/data/2.5/forecast"
+
+    val state = MutableLiveData(WeatherState.WeatherDetail)
+
+    val weather = MutableLiveData<WeatherData>()
     val forecast = MutableLiveData<ForecastData>()
+
 }

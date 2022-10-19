@@ -37,7 +37,7 @@ class ExplorerListAdapter(val context: Context, var root : String,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         return if(!isGrid){
-            LineViewHolder(inflater.inflate(R.layout.com_item_holder,parent, false))
+            LineViewHolder(inflater.inflate(R.layout.com_item,parent, false))
         }else{
             GridViewHolder(inflater.inflate(R.layout.com_ex_grid,parent, false))
         }
@@ -56,22 +56,21 @@ class ExplorerListAdapter(val context: Context, var root : String,
         return this.data.size
     }
 
-    class LineViewHolder(private val v: View) : RecyclerView.ViewHolder (v){
+    class LineViewHolder(val v: View) : RecyclerView.ViewHolder (v){
         fun bind(data: FileDisplay, callback: Callback, position : Int, mode: Mode){
-            val chk = v.findViewById<CheckBox>(R.id.checkbox)
-            v.findViewById<ConstraintLayout>(R.id.checkbox_group).visibility = if(mode == Mode.Select) View.VISIBLE else View.GONE
-
-            chk.isChecked = data.checked
-            chk.setOnClickListener {
-                data.checked = chk.isChecked
+            itemView.findViewById<CheckBox>(R.id.checkbox).apply {
+                visibility = if(mode == Mode.Select) View.VISIBLE else View.GONE
+                isChecked = data.checked
+                setOnClickListener {
+                    data.checked = isChecked
+                }
             }
 
-            val next = v.findViewById<ConstraintLayout>(R.id.info_group)
-            next.setOnClickListener{
+            itemView.setOnClickListener{
                 callback.onClick(position)
             }
 
-            next.setOnLongClickListener {
+            itemView.setOnLongClickListener {
                 callback.onLongClick(position)
                 true
             }
@@ -167,7 +166,7 @@ class ExplorerListAdapter(val context: Context, var root : String,
             it.checked
         }.size
 
-        if(s == data.size){
+        if(s < data.size){
             data.filter {
                 !it.checked
             }.forEach {
@@ -178,6 +177,7 @@ class ExplorerListAdapter(val context: Context, var root : String,
                 it.checked = !it.checked
             }
         }
+        notifyDataSetChanged()
     }
 
     fun getSelected() : List<FileDisplay>{
@@ -186,16 +186,12 @@ class ExplorerListAdapter(val context: Context, var root : String,
         }
     }
 
-    fun getAction(position: Int) : List<String>{
-        val ret = mutableListOf<String>()
+    fun getAction(position: Int) : Pair<String, String>{
+        var action = "open"
         if(data[position].type == FileType.DIRECTORY){
-            ret.add("next")
-        }else{
-            ret.add("open")
+            action = "next"
         }
-
-        ret.add(data[position].path)
-        return ret
+        return Pair(action, data[position].path)
     }
 
     fun redisplay(path : String){

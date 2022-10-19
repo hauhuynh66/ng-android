@@ -3,17 +3,13 @@ package com.app
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Build
-import com.google.firebase.messaging.RemoteMessage
 import org.opencv.android.OpenCVLoader
 
 class App: Application() {
     private val messageReceive = "MESSAGE_RECEIVED"
     val actionMessageReceived = "ACTION_MESSAGE_RECEIVED"
     companion object {
-        val messages:ArrayList<RemoteMessage?> = arrayListOf()
         const val channel1ID = "CHANNEL_1"
         const val channel2ID = "CHANNEL_2"
         const val channel3ID = "CHANNEL_3"

@@ -20,8 +20,9 @@ import com.app.adapter.DetailAdapter
 import com.app.adapter.WeatherAdapter
 import com.app.data.DetailData
 import com.app.data.ForecastData
-import com.app.data.HttpResponseData
+import com.app.data.HttpResponse
 import com.app.data.WeatherData
+import com.app.data.WeatherType.Companion.get
 import com.app.helper.SpanGridLayoutManager
 import com.app.model.AppDatabase
 import com.app.model.Location
@@ -29,8 +30,7 @@ import com.app.model.Setting
 import com.app.ngn.R
 import com.app.task.GetHttpTask
 import com.app.task.TaskRunner
-import com.app.util.Animation.Companion.crossfade
-import com.app.util.Check.Companion.checkPermissions
+import com.app.util.PermissionUtils.Companion.checkPermissions
 import com.app.view.SunPositionView
 import com.app.viewmodel.Weather
 import kotlinx.coroutines.Dispatchers
@@ -48,9 +48,8 @@ class WeatherActivity : AppCompatActivity() {
     private var lon : Double = 106.66
     private val default_lat = 10.76
     private val default_lon = 106.66
-    private lateinit var progressBar : ProgressBar
     private lateinit var contentView : ConstraintLayout
-    private lateinit var forecastList : RecyclerView
+    private lateinit var progress : ProgressBar
     private lateinit var db: AppDatabase
     private lateinit var taskRunner: TaskRunner
 
@@ -58,23 +57,43 @@ class WeatherActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_weather)
         setSupportActionBar(findViewById(R.id.toolbar))
+
         supportActionBar!!.apply{
-            title = ""
             setDisplayHomeAsUpEnabled(true)
         }
-        permissionsCheck()
-        taskRunner = TaskRunner()
-        progressBar = findViewById(R.id.progress)
-        contentView = findViewById(R.id.content_view)
-        forecastList = findViewById(R.id.list1)
-        contentView.visibility = View.GONE
         db = Room.databaseBuilder(this, AppDatabase::class.java, "db").fallbackToDestructiveMigration().build()
-        process()
-        getWeather()
-        getForecast()
+
+        progress = findViewById(R.id.progress)
+        contentView = findViewById(R.id.content_view)
+
+        permissionsCheck()
+
+        taskRunner = TaskRunner()
+
+        getCity()
+
+        val wParams = mapOf("lat" to lat, "lon" to lon, "appid" to model.key)
+        taskRunner.execute(GetHttpTask(model.weatherUrl, params = wParams), object : TaskRunner.Callback<HttpResponse>{
+            override fun onComplete(result: HttpResponse) {
+                if(result.ok()){
+                    model.weather.value = getWeatherData(result.get())
+                    displayWeather(contentView, model.weather.value!!)
+                }
+            }
+        })
+
+        val fParams = mapOf("lat" to lat, "lon" to lon, "appid" to model.key, "cnt" to 40)
+        taskRunner.execute(GetHttpTask(model.forecastUrl, params = fParams), object : TaskRunner.Callback<HttpResponse>{
+            override fun onComplete(result: HttpResponse) {
+                if(result.ok()){
+                    model.forecast.value = getForecastData(result.get())
+                    displayForecast(contentView, model.forecast.value!!)
+                }
+            }
+        })
     }
 
-    private fun process(){
+    private fun getCity(){
         runBlocking {
             withContext(Dispatchers.IO){
                 val setting = db.settingRepository().getProperty("current_city")
@@ -113,6 +132,7 @@ class WeatherActivity : AppCompatActivity() {
                         }
                     }
         }
+
         if(!checkPermissions(this,requiredPermissions)){
             launcher.launch(
                 arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -120,22 +140,7 @@ class WeatherActivity : AppCompatActivity() {
         }
     }
 
-    private fun getWeather(){
-        var weatherUrl = model.url.replace("{mode}", "weather")
-        weatherUrl = weatherUrl.replace("{lat}", lat.toString())
-        weatherUrl = weatherUrl.replace("{lon}", lon.toString())
-        weatherUrl = weatherUrl.replace("{key}", model.key)
-
-        taskRunner.execute(GetHttpTask(weatherUrl), object : TaskRunner.Callback<HttpResponseData>{
-            override fun onComplete(result: HttpResponseData) {
-                if(result.code == 200 && result.body!=null){
-                    processWeather(result.body)
-                }
-            }
-        })
-    }
-
-    private fun dbProcess(name : String){
+    private fun getCity(name : String){
         runBlocking {
             withContext(Dispatchers.IO){
                 val location = db.locationRepository().getByName(name)
@@ -155,95 +160,119 @@ class WeatherActivity : AppCompatActivity() {
         }
     }
 
-    private fun processWeather(json: String){
-        val temperature = findViewById<TextView>(R.id.temperature)
-        val extra = findViewById<TextView>(R.id.aqi)
-        val status = findViewById<TextView>(R.id.status)
-        val obj = JSONObject(json)
-        val temp = BigDecimal.valueOf((obj.getJSONObject("main").getDouble("temp") - 272.15))
-        val list2 = findViewById<RecyclerView>(R.id.list2)
-        val detailData = arrayListOf<DetailData>()
-        list2.layoutManager = SpanGridLayoutManager(this, 2)
+    private fun displayWeather(view : View, weatherData: WeatherData){
+        findViewById<TextView>(R.id.temperature).apply {
+            text = weatherData.temp.toString()
+        }
 
-        temperature.text = temp.setScale(2, RoundingMode.FLOOR).toDouble().toString()
-        extra.text = obj.getJSONObject("wind").getDouble("speed").toString()
-        status.text = obj.getJSONArray("weather").getJSONObject(0).getString("description")
+        findViewById<TextView>(R.id.aqi).apply {
+            text = weatherData.speed.toString()
+        }
 
-        detailData.add(DetailData("Humidity", obj.getJSONObject("main").getLong("humidity")))
-        detailData.add(DetailData("Feels Like",
-            BigDecimal.valueOf((obj.getJSONObject("main").getDouble("feels_like") - 272.15))
-                .setScale(2,RoundingMode.FLOOR).toDouble().toString())
+        findViewById<TextView>(R.id.status).apply {
+            text = weatherData.description
+        }
+
+        val list = view.findViewById<RecyclerView>(R.id.list2)
+
+        list.layoutManager = SpanGridLayoutManager(this, 2)
+
+        val detailData = arrayListOf(
+            DetailData("Visibility", weatherData.visibility),
+            DetailData("Filler", "Filler"),
+            DetailData("Filler", "Filler"),
+            DetailData("Filler", "Filler"),
+            DetailData("Filler", "Filler"),
+            DetailData("Filler", "Filler"),
+            DetailData("Filler", "Filler"),
+            DetailData("Filler", "Filler")
         )
-        detailData.add(DetailData("Visibility", obj.getLong("visibility")))
-        detailData.add(DetailData("Filler", "Filler"))
-        detailData.add(DetailData("Filler", "Filler"))
-        detailData.add(DetailData("Filler", "Filler"))
-        list2.adapter = DetailAdapter(this, detailData, 2)
+
+        list.adapter = DetailAdapter(this, detailData, 2)
     }
 
-    private fun getForecast(){
-        crossfade(arrayListOf(progressBar), arrayListOf(contentView), 1000)
-        var forecastUrl = model.url.replace("{mode}", "forecast")
-        forecastUrl = forecastUrl.replace("{lat}", lat.toString())
-        forecastUrl = forecastUrl.replace("{lon}", lon.toString())
-        forecastUrl = forecastUrl.replace("{key}", model.key)
-        forecastUrl = forecastUrl.plus("&cnt=40")
-
-        taskRunner.execute(GetHttpTask(forecastUrl), object : TaskRunner.Callback<HttpResponseData>{
-            override fun onComplete(result: HttpResponseData) {
-                if(result.code == 200 && result.body!=null){
-                    processForecast(result.body)
-                }
+    private fun getWeatherData(json: String) : WeatherData?{
+        return try {
+            val obj = JSONObject(json)
+            if(obj.getInt("cod") != 200){
+                throw Exception(obj.getString("message"))
             }
-        })
-    }
 
-    private fun processForecast(json: String){
-        val obj = JSONObject(json)
-        val list = arrayListOf<WeatherData>()
-        val fcList = obj.getJSONArray("list")
-        for(i in 0 until 40){
-            val f = fcList.getJSONObject(i)
-            val main = f.getJSONObject("main")
-            val temp = BigDecimal(main.getDouble("temp")-272.15).setScale(2, RoundingMode.FLOOR).toDouble()
-            val des = f.getJSONArray("weather").getJSONObject(0).getString("main")
-            val d = Date(f.getLong("dt")*1000)
-            val wind = f.getJSONObject("wind")
-            val data = WeatherData(
+            val description = obj.getJSONArray("weather").getJSONObject(0).getString("description")
+            val main = obj.getJSONArray("weather").getJSONObject(0).getString("main")
+            val temp = BigDecimal(obj.getJSONObject("main").getDouble("temp")-273.15)
+                        .setScale(2, RoundingMode.FLOOR).toDouble()
+            val deg = obj.getJSONObject("wind").getInt("deg")
+            val speed = obj.getJSONObject("wind").getDouble("speed")
+            val d = Date(obj.getLong("dt")*1000)
+            val visibility = obj.getLong("visibility")
+
+            WeatherData(
                 temp,
-                des,
+                get(main),
+                description,
                 d,
-                wind.getInt("deg"),
-                wind.getDouble("speed")
+                deg,
+                speed,
+                visibility
             )
-            list.add(data)
+        }catch (e : Exception){
+            println(e.message)
+            null
         }
-        val cityName = obj.getJSONObject("city").getString("name")
+    }
 
-        if(model.forecast.value == null){
-            model.forecast.value = ForecastData(list, cityName)
-        }else{
-            model.forecast.value!!.apply {
-                data = list
-                name = cityName
-            }
+    private fun displayForecast(view : View, forecastData: ForecastData){
+        supportActionBar.apply {
+            findViewById<TextView>(R.id.title).text = forecastData.name
         }
 
+        val forecastList = view.findViewById<RecyclerView>(R.id.list1)
 
-        val title = findViewById<TextView>(R.id.title)
-        title.text = model.forecast.value!!.name
-
-        dbProcess(model.forecast.value!!.name)
+        getCity(forecastData.name)
 
         forecastList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        forecastList.adapter = WeatherAdapter(this, model.forecast.value!!.data)
+        forecastList.adapter = WeatherAdapter(this, forecastData.data)
+    }
 
-        val sunPositionView = findViewById<SunPositionView>(R.id.gauge)
-        sunPositionView.sunrise = obj.getJSONObject("city").getLong("sunrise")
-        sunPositionView.sunset = obj.getJSONObject("city").getLong("sunset")
-        sunPositionView.reload(System.currentTimeMillis()/1000)
+    private fun getForecastData(json: String) : ForecastData?{
+        val list = arrayListOf<WeatherData>()
+        return try {
+            val obj = JSONObject(json)
+            val cityName = obj.getJSONObject("city").getString("name")
+            val fcList = obj.getJSONArray("list")
 
-        crossfade(arrayListOf(contentView), arrayListOf(progressBar), 1000)
+            val sunPositionView = findViewById<SunPositionView>(R.id.gauge)
+            sunPositionView.display(obj.getJSONObject("city")
+                .getLong("sunrise"), obj.getJSONObject("city").getLong("sunset"))
+
+            for(i in 0 until 40){
+                val f = fcList.getJSONObject(i)
+                val mainObj = f.getJSONObject("main")
+                val temp = BigDecimal(mainObj.getDouble("temp")-273.15)
+                            .setScale(2, RoundingMode.FLOOR).toDouble()
+                val main = f.getJSONArray("weather").getJSONObject(0).getString("main")
+                val des = f.getJSONArray("weather").getJSONObject(0).getString("description")
+                val d = Date(f.getLong("dt")*1000)
+                val wind = f.getJSONObject("wind")
+
+                val data = WeatherData(
+                    temp,
+                    get(main),
+                    des,
+                    d,
+                    wind.getInt("deg"),
+                    wind.getDouble("speed"),
+                )
+                list.add(data)
+            }
+            ForecastData(list, cityName)
+        }catch (e : Exception){
+            println(e.message)
+            null
+        }
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

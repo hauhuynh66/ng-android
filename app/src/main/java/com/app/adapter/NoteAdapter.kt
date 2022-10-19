@@ -56,11 +56,9 @@ class NoteAdapter(val context: Context, val data: MutableList<Note>, private val
         fun bind(note: Note, callback: Callback?){
             val title = v.findViewById<TextView>(R.id.title)
             val content = v.findViewById<TextView>(R.id.body_text)
-            val date = v.findViewById<TextView>(R.id.display_date)
 
             title.text = note.title
             content.text = note.content
-            date.text = formatDate(note.displayDate, "yyyy/MM/dd HH:mm")
             if(callback!=null){
                 v.setOnClickListener{
                     callback.onItemClick(note)
@@ -72,7 +70,6 @@ class NoteAdapter(val context: Context, val data: MutableList<Note>, private val
     class NoteImgViewHolder(val v: View) : RecyclerView.ViewHolder(v){
         fun bind(note: Note, callback: Callback?, context: Context) {
             val img = v.findViewById<ImageView>(R.id.com_note_img_src)
-            val del = v.findViewById<Button>(R.id.com_note_img_del)
             val file = File(note.extra!!)
             if(file.exists()){
                 val uri = FileProvider.getUriForFile(context, "com.app.activity.ngn", File(note.extra!!))

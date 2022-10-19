@@ -1,15 +1,14 @@
 package com.app.task
 
-import com.app.data.HttpResponseData
+import com.app.data.HttpResponse
+import org.apache.commons.io.IOUtils
 import org.json.JSONObject
-import java.io.BufferedReader
-import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.concurrent.Callable
 
-class PostHttpTask(private val url : String, private val postData : JSONObject, private val header : MutableMap<String, String>? = null, private val extra : String? = null) : Callable<HttpResponseData>{
-    override fun call(): HttpResponseData {
+class PostHttpTask(private val url : String, private val postData : JSONObject, private val header : MutableMap<String, String>? = null, private val extra : String? = null) : Callable<HttpResponse>{
+    override fun call(): HttpResponse {
         try {
             val url = URL(url)
             val conn = url.openConnection() as HttpURLConnection
@@ -28,21 +27,10 @@ class PostHttpTask(private val url : String, private val postData : JSONObject, 
 
             conn.outputStream.write(data)
 
-            val responseCode = conn.responseCode
-            val content = StringBuilder()
-            val bufferedReader = BufferedReader(InputStreamReader(conn.inputStream))
-            while (bufferedReader.lineSequence().iterator().hasNext()){
-                content.append(bufferedReader.lineSequence().iterator().next())
-            }
 
-            val ex = if(extra != null){
-                conn.getHeaderField(extra)
-            }else{
-                null
-            }
-            return HttpResponseData(responseCode, content.toString(), ex)
+            return HttpResponse(conn.responseCode, conn.headerFields, IOUtils.toByteArray(conn.inputStream))
         }catch (e : Exception){
-            return HttpResponseData(-999, null)
+            return HttpResponse(HttpURLConnection.HTTP_SEE_OTHER)
         }
     }
 }

@@ -10,10 +10,10 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.appcompat.widget.Toolbar
 import com.app.ngn.R
 import com.app.viewmodel.Authentication
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.squareup.picasso.Picasso
 
@@ -25,7 +25,7 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_profile)
 
-        val toolbar = (findViewById<LinearLayoutCompat>(R.id.toolbar_holder)).findViewById<Toolbar>(R.id.toolbar)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         val title = toolbar.findViewById<TextView>(R.id.title)
         title.text = "Profile"
 

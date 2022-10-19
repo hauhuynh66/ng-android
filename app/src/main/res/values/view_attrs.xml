@@ -1,20 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="showAxes" format="boolean"/>
+    <attr name="showPoints" format="boolean"/>
+    <attr name="background_color" format="color"/>
+    <attr name="dash_color" format="color"/>
+    <attr name="line_color" format="color"/>
+    <attr name="display_text" format="boolean"/>
+    <attr name="progress_color" format="color"/>
+
     <declare-styleable name="LineChart">
-        <attr name="lc_showAxes" format="boolean"/>
-        <attr name="lc_showPoints" format="boolean"/>
+        <attr name="showAxes"/>
+        <attr name="showPoints"/>
     </declare-styleable>
+
     <declare-styleable name="BarChart">
-        <attr name="bc_showAxes" format="boolean"/>
+        <attr name="showAxes"/>
     </declare-styleable>
+
     <declare-styleable name="PieChart">
         <attr name="donut" format="boolean"/>
-        <attr name="shadow" format="boolean"/>
     </declare-styleable>
+
     <declare-styleable name="Gauge">
         <attr name="display" format="string"/>
-        <attr name="bgColor" format="color"/>
-        <attr name="pgColor" format="color"/>
-        <attr name="display_text" format="boolean"/>
+        <attr name="background_color"/>
+        <attr name="progress_color"/>
+        <attr name="display_text"/>
+    </declare-styleable>
+
+    <declare-styleable name="SunPositionView">
+        <attr name="dash_color"/>
+        <attr name="line_color"/>
     </declare-styleable>
 </resources>

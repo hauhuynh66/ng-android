@@ -13,9 +13,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.app.activity.rd.RDMainActivity
-import com.app.dialog.EditDialog
 import com.app.fragment.MainFragment
-import com.app.fragment.MiscFragment
+import com.app.fragment.ActionFragment
 import com.app.fragment.note.NoteListFragment
 import com.app.ngn.R
 import com.app.viewmodel.Authentication
@@ -26,7 +25,6 @@ import kotlin.system.exitProcess
 class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
     private val model : Authentication by viewModels()
     private lateinit var drawerLayout: DrawerLayout
-    private lateinit var toolbar: Toolbar
     private lateinit var displayName : TextView
     private lateinit var displayEmail : TextView
     private lateinit var displayImage : ImageView
@@ -38,7 +36,7 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_navigation)
         val user = model.firebaseAuth.currentUser ?: exitProcess(0)
-        toolbar = findViewById(R.id.toolbar)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -62,17 +60,19 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
         navigationView.setNavigationItemSelectedListener(this)
         this.drawerLayout = findViewById(R.id.drawer_layout)
+
         val drawerToggle = ActionBarDrawerToggle(this, drawerLayout,
             R.string.drawer_open,
             R.string.drawer_close
         )
+
         drawerLayout.addDrawerListener(drawerToggle)
         drawerToggle.syncState()
 
         if(intent.extras!=null){
             when(intent.extras!!.getString("from")){
                 "weather"->{
-                    supportFragmentManager.beginTransaction().replace(R.id.container,  MiscFragment(), "MISC").commit()
+                    supportFragmentManager.beginTransaction().replace(R.id.container,  ActionFragment(), "MISC").commit()
                     supportActionBar!!.title = "Others"
                 }
             }
@@ -95,51 +95,32 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        toolbar.menu.clear()
-        if(supportActionBar!=null){
-            val transaction = supportFragmentManager.beginTransaction()
-                .setCustomAnimations(
-                    R.anim.flip_right_in,
-                    R.anim.flip_right_out,
-                    R.anim.flip_left_in,
-                    R.anim.flip_left_out
-            )
-
-            supportActionBar!!.apply {
-                val currentFragment = supportFragmentManager.findFragmentById(R.id.container)
-                when(item.itemId){
-                    R.id.nav_note->{
-                        this.title = "Note"
-                        if(currentFragment !is NoteListFragment){
-                            transaction.replace(R.id.container,  NoteListFragment(), "NOTE").commit()
-                            transaction.addToBackStack("NOTE")
-                        }
-                    }
-                    R.id.nav_menu_misc->{
-                        this.title = "Others"
-                        if(currentFragment !is MiscFragment) {
-                            transaction.replace(R.id.container, MiscFragment(), "MISC").commit()
-                            transaction.addToBackStack("MISC")
-                        }
-                    }
-                    R.id.nav_rd->{
-                        this.title = "RD"
-                        val intent = Intent(this@NavigatorActivity, RDMainActivity::class.java)
-                        startActivity(intent)
-                    }
-                    R.id.nav_menu_setting->{
-                        val intent = Intent(this@NavigatorActivity, SettingsActivity::class.java)
-                        startActivity(intent)
-                    }
-                    else->{
-                        if(currentFragment !is MainFragment){
-                            this.title = "Home"
-                            transaction.replace(R.id.container,  MainFragment(), "MAIN").commit()
-                            transaction.addToBackStack("MAIN")
-                        }
-                    }
+        val transaction = supportFragmentManager.beginTransaction()
+        var currentTitle = "Home"
+        supportActionBar!!.apply {
+            when(item.itemId){
+                R.id.nav_note->{
+                    currentTitle = "Note"
+                    transaction.replace(R.id.container,  NoteListFragment()).commit()
+                }
+                R.id.nav_menu_misc->{
+                    currentTitle = "Miscellaneous"
+                    transaction.replace(R.id.container,  ActionFragment()).commit()
+                }
+                R.id.nav_rd->{
+                    val intent = Intent(this@NavigatorActivity, RDMainActivity::class.java)
+                    startActivity(intent)
+                }
+                R.id.nav_menu_setting->{
+                    val intent = Intent(this@NavigatorActivity, SettingsActivity::class.java)
+                    startActivity(intent)
+                }
+                else->{
+                    transaction.replace(R.id.container,  MainFragment(), "MAIN").commit()
                 }
             }
+
+            this.title = currentTitle
         }
 
         this.drawerLayout.closeDrawer(GravityCompat.START)
@@ -156,25 +137,21 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     }
 
     override fun onBackPressed() {
-        if(supportFragmentManager.backStackEntryCount==0){
-            when(count){
-                0->{
-                    prev = System.currentTimeMillis()
-                    count++
-                    Toast.makeText(this, "Press back one more time to exit", Toast.LENGTH_SHORT)
-                }
-                1->{
-                    curr = System.currentTimeMillis()
-                    val diff = curr - prev
-                    if( diff < 1000L){
-                        exitProcess(0)
-                    }else{
-                        prev = curr
-                    }
+        when(count){
+            0->{
+                prev = System.currentTimeMillis()
+                count++
+                Toast.makeText(this, "Press back one more time to exit", Toast.LENGTH_SHORT).show()
+            }
+            1->{
+                curr = System.currentTimeMillis()
+                val diff = curr - prev
+                if( diff < Toast.LENGTH_SHORT){
+                    exitProcess(0)
+                }else{
+                    prev = curr
                 }
             }
-        }else{
-            supportFragmentManager.popBackStack()
         }
     }
 }

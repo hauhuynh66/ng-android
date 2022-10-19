@@ -47,7 +47,7 @@ class BarChart : View {
         init()
         context!!.theme.obtainStyledAttributes(attrs, R.styleable.BarChart, 0, 0).apply {
             try {
-                showAxes = getBoolean(R.styleable.BarChart_bc_showAxes, false)
+                showAxes = getBoolean(R.styleable.BarChart_showAxes, false)
             }finally {
                 recycle()
             }

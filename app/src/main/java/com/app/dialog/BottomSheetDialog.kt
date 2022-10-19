@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.BottomSheetAdapter
+import com.app.data.BottomSheetActionData
 import com.app.ngn.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class OptionBottomSheet(
-    val data: ArrayList<Data>, val listener: Listener?) : BottomSheetDialogFragment() {
+class BottomSheetDialog(
+    val data: List<BottomSheetActionData>) : BottomSheetDialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,13 +25,7 @@ class OptionBottomSheet(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val list = view.findViewById<RecyclerView>(R.id.dlg_bottom_sheet_list)
-        list.adapter = BottomSheetAdapter(requireContext(), data, listener)
+        list.adapter = BottomSheetAdapter(requireContext(), data)
         list.layoutManager = LinearLayoutManager(requireContext())
-    }
-
-    class Data(val display :String, val enable : Boolean = true, val option: String? = null)
-
-    interface Listener{
-        fun onClick(option : String?)
     }
 }

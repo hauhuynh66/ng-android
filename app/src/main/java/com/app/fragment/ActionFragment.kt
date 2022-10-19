@@ -14,13 +14,12 @@ import com.app.activity.ex.FileExplorerActivity
 import com.app.activity.mp.MusicBrowserActivity
 import com.app.activity.sport.FootballMainActivity
 import com.app.activity.weather.WeatherActivity
-import com.app.adapter.MiscAdapter
-import com.app.data.MiscData
-import com.app.dialog.OptionBottomSheet
+import com.app.adapter.ActionAdapter
+import com.app.data.ActionData
 import com.app.ngn.R
 
-class MiscFragment : Fragment() {
-    private lateinit var data: ArrayList<MiscData>
+class ActionFragment : Fragment() {
+    private lateinit var data: ArrayList<ActionData>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,51 +32,41 @@ class MiscFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         data = arrayListOf()
-        data.add(MiscData(R.drawable.chat, "Message", object : MiscData.Listener{
+        data.add(ActionData(R.drawable.chat, "Message", object : ActionData.Listener{
             override fun onClick() {
                 val intent = Intent(requireActivity(), MessageActivity::class.java)
                 startActivity(intent)
             }
         }))
-        data.add(MiscData(R.drawable.dj, "Music Player", object : MiscData.Listener{
+        data.add(ActionData(R.drawable.dj, "Music Player", object : ActionData.Listener{
             override fun onClick() {
                 val intent = Intent(requireActivity(), MusicBrowserActivity::class.java)
                 startActivity(intent)
             }
         }))
-        data.add(MiscData(R.drawable.folder, "File Explorer", object : MiscData.Listener{
+
+        data.add(ActionData(R.drawable.folder, "File Explorer", object : ActionData.Listener{
             override fun onClick() {
                 val intent = Intent(requireActivity(), FileExplorerActivity::class.java)
                 startActivity(intent)
             }
         }))
-        data.add(MiscData(R.drawable.cloudy, "Weather",object : MiscData.Listener{
+
+        data.add(ActionData(R.drawable.cloudy, "Weather", object : ActionData.Listener{
             override fun onClick() {
                 val intent = Intent(requireActivity(), WeatherActivity::class.java)
                 startActivity(intent)
             }
         }))
-        data.add(MiscData(R.drawable.vision, "OpenCV", object : MiscData.Listener{
+
+        data.add(ActionData(R.drawable.vision, "FR", object : ActionData.Listener{
             override fun onClick() {
-                val listener = object : OptionBottomSheet.Listener{
-                    override fun onClick(option: String?) {
-                        val intent = Intent(requireActivity(), CVActivity::class.java)
-                        intent.putExtra("mode", option)
-                        startActivity(intent)
-                    }
-                }
-
-                val optionData = arrayListOf(
-                    OptionBottomSheet.Data("Orb", option = "ORB")
-                )
-
-                val bottomSheet = OptionBottomSheet(optionData, listener)
-                bottomSheet.isCancelable = true
-                bottomSheet.show(requireActivity().supportFragmentManager, "CV_OPTIONS")
+                val intent = Intent(requireActivity(), CVActivity::class.java)
+                startActivity(intent)
             }
         }))
 
-        data.add(MiscData(R.drawable.sports, "Sport", object : MiscData.Listener{
+        data.add(ActionData(R.drawable.sports, "Sport", object : ActionData.Listener{
             override fun onClick() {
                 val intent = Intent(requireActivity(), FootballMainActivity::class.java)
                 startActivity(intent)
@@ -86,6 +75,6 @@ class MiscFragment : Fragment() {
 
         val list = view.findViewById<RecyclerView>(R.id.item_list)
         list.layoutManager = GridLayoutManager(requireContext(), 2)
-        list.adapter = MiscAdapter(requireContext(), data, 1)
+        list.adapter = ActionAdapter(requireContext(), data, 100)
     }
 }
