@@ -1,3 +1,3 @@
 package com.app.data
 
-class DetailData(val name : String, val value: Any?)
+class DetailData(val name : String, val value : Any?)

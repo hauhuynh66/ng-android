@@ -1,17 +1,23 @@
 package com.app.util
 
-import android.content.Context
-import android.graphics.drawable.Drawable
-import androidx.core.content.ContextCompat
-import com.app.ngn.R
 import java.util.*
 
 class Generator {
     companion object{
         fun generateString(length:Int):String{
-            val sb:StringBuilder = StringBuilder()
+            val sb = StringBuilder()
             val sample = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890"
-            for (i in 0..length){
+            for (i in 0 until length){
+                sb.append(sample[Random().nextInt(sample.length)])
+            }
+            return sb.toString()
+        }
+
+        fun generateColorCode() : String{
+            val sb = StringBuilder()
+            val sample = "0123456789"
+            sb.append("#")
+            for(i in 0 until 6){
                 sb.append(sample[Random().nextInt(sample.length)])
             }
             return sb.toString()

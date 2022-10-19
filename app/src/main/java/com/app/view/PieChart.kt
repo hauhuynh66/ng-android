@@ -5,13 +5,14 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import com.app.ngn.R
+import com.app.util.Generator
 import kotlin.math.min
-import kotlin.random.Random
 
 class PieChart : View {
     private lateinit var linePaint : Paint
     private lateinit var sweepPaint : Paint
-    private lateinit var outerRectF: RectF
+    private var outerRectF: RectF = RectF()
+    private var r : Float = 0f
     private var lineWidth = 10f
     private var padding = 20f
     private var data = arrayListOf<Number>(
@@ -19,7 +20,7 @@ class PieChart : View {
     )
     private var shadow = false
     private var donut = false
-    private lateinit var random : Random
+    private lateinit var colorList : List<String>
 
     constructor(context: Context?) : super(context){
         init()
@@ -53,24 +54,33 @@ class PieChart : View {
             color = Color.GREEN
             style = Paint.Style.FILL
         }
+
+        colorList = generateColor(data.size)
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+
+        val centerX = width/2
+        val centerY = height/2
+        val r = min(width/2, height/2) - 2*padding
+
+        outerRectF = RectF(centerX - r, centerY - r, centerX + r, centerY + r)
     }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        val centerX = width/2
-        val centerY = height/2
-        val r = min(width/2, height/2) - 2*padding
-        outerRectF = RectF(centerX - r, centerY - r, centerX + r, centerY + r)
+
 
         val sum : Double = data.reduce{
             a,b -> a.toDouble() + b.toDouble()
         }.toDouble()
 
         var currentArc = -90f
+
         data.forEachIndexed {
             i, it -> run{
-                random = Random(i)
-                sweepPaint.color = Color.parseColor(randomColor())
+                sweepPaint.color = Color.parseColor(colorList[i])
                 val sweepArc = ((it.toDouble()/sum)).toFloat() * 360f
                 canvas!!.drawArc(outerRectF, currentArc, sweepArc, true, sweepPaint)
                 currentArc += sweepArc
@@ -80,17 +90,6 @@ class PieChart : View {
             drawDonut(canvas, 2*r/3)
         }
     }
-
-    private fun randomColor() : String{
-        val chars = "0123456789"
-        val ret = StringBuilder()
-        ret.append("#")
-        for(i in 0 until 6){
-            ret.append(chars[random.nextInt(chars.length-1)])
-        }
-        return ret.toString()
-    }
-
     private fun drawDonut(canvas: Canvas?, r : Float){
         val centerX = width/2
         val centerY = height/2
@@ -103,8 +102,17 @@ class PieChart : View {
         canvas!!.drawArc(innerRectF, 0f, 360f, true, paint)
     }
 
-    public fun setData(data : ArrayList<Number>){
+    fun setData(data : ArrayList<Number>){
         this.data = data
+        this.colorList = generateColor(this.data.size)
         invalidate()
+    }
+
+    private fun generateColor(length : Int) : List<String>{
+        val list = mutableListOf<String>()
+        for(i in 0..length){
+            list.add(Generator.generateColorCode())
+        }
+        return list
     }
 }

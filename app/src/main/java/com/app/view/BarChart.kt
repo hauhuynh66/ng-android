@@ -8,14 +8,13 @@ import android.graphics.Path
 import android.util.AttributeSet
 import android.view.View
 import com.app.ngn.R
-import kotlin.random.Random
+import com.app.util.Generator.Companion.generateColorCode
 
 class BarChart : View {
-    data class Data(val value : Number)
     private lateinit var linePaint: Paint
     private lateinit var axPaint: Paint
     private lateinit var barPaint : Paint
-    private var data = arrayListOf<Number>(
+    private var data = listOf<Number>(
         20,
         10,
         30,
@@ -37,7 +36,7 @@ class BarChart : View {
     private var showAxes : Boolean = true
 
     private lateinit var linePath : Path
-    private lateinit var random : Random
+    private lateinit var colorList : List<String>
 
     constructor(context: Context?) : super(context){
         init()
@@ -77,6 +76,8 @@ class BarChart : View {
         }
 
         linePath = Path()
+
+        colorList = generateColor(data.size)
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -98,10 +99,9 @@ class BarChart : View {
 
         data.forEachIndexed{ i, d ->
             run {
-                random = Random(i)
                 barPaint.apply {
                     strokeWidth = barWidth
-                    color = Color.parseColor(randomColor())
+                    color = Color.parseColor(colorList[i])
                 }
                 val x = convertX(i)
                 val y = convertY(d.toDouble(), maxY)
@@ -121,18 +121,17 @@ class BarChart : View {
         return (height - padding - y * ratio).toFloat()
     }
 
-    private fun randomColor() : String{
-        val chars = "0123456789"
-        val ret = StringBuilder()
-        ret.append("#")
-        for(i in 0 until 6){
-            ret.append(chars[random.nextInt(chars.length-1)])
-        }
-        return ret.toString()
+    fun setData(data : List<Number>){
+        this.data = data
+        generateColor(this.data.size)
+        invalidate()
     }
 
-    fun setData(data : ArrayList<Number>){
-        this.data = data
-        invalidate()
+    private fun generateColor(length : Int) : List<String>{
+        val list = mutableListOf<String>()
+        for(i in 0..length){
+            list.add(generateColorCode())
+        }
+        return list
     }
 }
