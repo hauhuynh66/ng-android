@@ -1,39 +1,39 @@
 package com.app.adapter
 
-import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.app.data.DetailData
+import com.app.data.LineData
 import com.app.ngn.R
 
-class DetailAdapter(val context: Context, val data : ArrayList<DetailData>, private val mode : Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ListAdapter(val context: Context, val data : ArrayList<LineData>, private val lineStyle : Int) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        return DetailViewHolder(when(mode){
+        return LineViewHolder(when(lineStyle){
             1->{
-                inflater.inflate(R.layout.com_detail, parent, false)
+                inflater.inflate(R.layout.com_list_line_1, parent, false)
             }
             else->{
-                inflater.inflate(R.layout.com_detail2, parent, false)
+                inflater.inflate(R.layout.com_list_line_2, parent, false)
             }
         })
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as DetailViewHolder).bind(data[position])
+        (holder as LineViewHolder).bind(data[position])
     }
 
     override fun getItemCount(): Int {
         return data.size
     }
 
-    class DetailViewHolder(private val view : View) : RecyclerView.ViewHolder(view){
-        fun bind(detail : DetailData){
+    class LineViewHolder(private val view : View) : RecyclerView.ViewHolder(view){
+        fun bind(detail : LineData){
             val propName = view.findViewById<TextView>(R.id.name)
             propName.text = detail.name
             val propValue = view.findViewById<TextView>(R.id.value)

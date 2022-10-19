@@ -8,8 +8,8 @@ import android.view.LayoutInflater
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.adapter.DetailAdapter
-import com.app.data.DetailData
+import com.app.adapter.ListAdapter
+import com.app.data.LineData
 import com.app.ngn.R
 import java.io.File
 
@@ -20,7 +20,7 @@ class DetailDialog(val path : String) : DialogFragment() {
             .inflate(R.layout.dlg_list, null, false)
         val list = v.findViewById<RecyclerView>(R.id.dlg_ex_detail_list)
         list.layoutManager = LinearLayoutManager(requireContext())
-        list.adapter = DetailAdapter(requireActivity(), getDetails(path), 1)
+        list.adapter = ListAdapter(requireActivity(), getDetails(path), 1)
         builder.setView(v).setPositiveButton("OK"){
             di, _ -> run{
                 di.dismiss()
@@ -29,15 +29,15 @@ class DetailDialog(val path : String) : DialogFragment() {
         return builder.create()
     }
 
-    private fun getDetails(path: String) : ArrayList<DetailData>{
-        val ret = arrayListOf<DetailData>()
+    private fun getDetails(path: String) : ArrayList<LineData>{
+        val ret = arrayListOf<LineData>()
         val file = File(path)
         if(!file.exists()){
             return arrayListOf()
         }
 
-        ret.add(DetailData("Name", file.name))
-        ret.add(DetailData("Extension", file.extension))
+        ret.add(LineData("Name", file.name))
+        ret.add(LineData("Extension", file.extension))
 
         return ret
     }

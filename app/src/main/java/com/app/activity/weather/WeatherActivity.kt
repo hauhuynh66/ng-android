@@ -16,9 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.app.activity.NavigatorActivity
-import com.app.adapter.DetailAdapter
+import com.app.adapter.ListAdapter
 import com.app.adapter.WeatherAdapter
-import com.app.data.DetailData
+import com.app.data.LineData
 import com.app.data.ForecastData
 import com.app.data.HttpResponse
 import com.app.data.WeatherData
@@ -177,18 +177,18 @@ class WeatherActivity : AppCompatActivity() {
 
         list.layoutManager = SpanGridLayoutManager(this, 2)
 
-        val detailData = arrayListOf(
-            DetailData("Visibility", weatherData.visibility),
-            DetailData("Filler", "Filler"),
-            DetailData("Filler", "Filler"),
-            DetailData("Filler", "Filler"),
-            DetailData("Filler", "Filler"),
-            DetailData("Filler", "Filler"),
-            DetailData("Filler", "Filler"),
-            DetailData("Filler", "Filler")
+        val lineData = arrayListOf(
+            LineData("Visibility", weatherData.visibility),
+            LineData("Filler", "Filler"),
+            LineData("Filler", "Filler"),
+            LineData("Filler", "Filler"),
+            LineData("Filler", "Filler"),
+            LineData("Filler", "Filler"),
+            LineData("Filler", "Filler"),
+            LineData("Filler", "Filler")
         )
 
-        list.adapter = DetailAdapter(this, detailData, 2)
+        list.adapter = ListAdapter(this, lineData, 2)
     }
 
     private fun getWeatherData(json: String) : WeatherData?{

@@ -36,7 +36,6 @@ class SpanGridLayoutManager :  GridLayoutManager{
     }
 
     private fun spanLayoutSize(layoutParams: RecyclerView.LayoutParams): RecyclerView.LayoutParams {
-        val min = 100
         var rows = (itemCount/spanCount)
         val left = itemCount%spanCount
 
@@ -46,7 +45,7 @@ class SpanGridLayoutManager :  GridLayoutManager{
 
         layoutParams.width = (getHorizontalSpace() / spanCount.toDouble()).roundToInt()
 
-        val height = if(((getVerticalSpace() / rows.toDouble()).roundToInt())< min) min else (getVerticalSpace() / rows.toDouble()).roundToInt()
+        val height = (getVerticalSpace() / rows.toDouble()).roundToInt()
         layoutParams.height = height
 
         return layoutParams
