@@ -75,16 +75,16 @@ class WeatherActivity : AppCompatActivity() {
                 if(result.ok()){
                     model.weather.value = getWeatherData(result.get())
                     displayWeather(contentView, model.weather.value!!)
-                }
-            }
-        })
 
-        val fParams = mapOf("lat" to lat, "lon" to lon, "appid" to model.key, "cnt" to 40)
-        taskRunner.execute(GetHttpTask(model.forecastUrl, params = fParams), object : TaskRunner.Callback<HttpResponse>{
-            override fun onComplete(result: HttpResponse) {
-                if(result.ok()){
-                    model.forecast.value = getForecastData(result.get())
-                    displayForecast(contentView, model.forecast.value!!)
+                    val fParams = mapOf("lat" to lat, "lon" to lon, "appid" to model.key, "cnt" to 40)
+                    taskRunner.execute(GetHttpTask(model.forecastUrl, params = fParams), object : TaskRunner.Callback<HttpResponse>{
+                        override fun onComplete(result: HttpResponse) {
+                            if(result.ok()){
+                                model.forecast.value = getForecastData(result.get())
+                                displayForecast(contentView, model.forecast.value!!)
+                            }
+                        }
+                    })
                 }
             }
         })
