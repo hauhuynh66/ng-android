@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.app.ngn.R
 import com.app.viewmodel.Authentication
-import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.squareup.picasso.Picasso
 
@@ -27,7 +27,7 @@ class ProfileActivity : AppCompatActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         val title = toolbar.findViewById<TextView>(R.id.title)
-        title.text = "Profile"
+        title.text = getString(R.string.profile_title)
 
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -54,7 +54,6 @@ class ProfileActivity : AppCompatActivity() {
         when(item.itemId){
             android.R.id.home->{
                 if(displayName.text == "" || photoUrl.text == ""){
-                    //Display Toast
 
                 }else{
                     if(checkChange()){
@@ -63,7 +62,7 @@ class ProfileActivity : AppCompatActivity() {
                             .setMessage("Do you want to save changes?")
                             .setPositiveButton("Yes"
                             ) { di, _ ->
-                                updateProfile(displayName.text.toString(), photoUrl.text.toString(),object : Listener{
+                                updateProfile(displayName.text.toString(), photoUrl.text.toString(),object : Callback{
                                     override fun onSuccess() {
                                         di.dismiss()
                                         onBackPressed()
@@ -95,7 +94,7 @@ class ProfileActivity : AppCompatActivity() {
         return true
     }
 
-    private fun updateProfile(displayName : String, photoUrl : String, listener : Listener) {
+    private fun updateProfile(displayName : String, photoUrl : String, callback : Callback) {
         firebase.firebaseAuth.currentUser!!.apply {
             val update = UserProfileChangeRequest.Builder()
                 .setDisplayName(displayName)
@@ -104,10 +103,10 @@ class ProfileActivity : AppCompatActivity() {
             this.updateProfile(update)
                 .addOnCompleteListener {
                     if(it.isSuccessful){
-                        listener.onSuccess()
+                        callback.onSuccess()
                     }
                 }.addOnFailureListener {
-                    listener.onFailure()
+                    callback.onFailure()
                 }
         }
     }
@@ -122,7 +121,7 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    interface Listener{
+    interface Callback{
         fun onSuccess()
         fun onFailure()
     }

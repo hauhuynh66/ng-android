@@ -8,6 +8,7 @@
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>
+    <string name="profile_title">Profile</string>
 
     <!-- Messages Preferences -->
     <string name="signature_title">Your signature</string>
@@ -29,4 +30,6 @@
     <string name="football_api_url">https://v3.football.api-sports.io</string>
     <string name="football_api_key">207de13e407253dfbe98859d90d378ce</string>
     <string name="football_api_host">v3.football.api-sports.io</string>
+
+    <string name="local_web_server">http://10.0.2.2:8400</string>
 </resources>

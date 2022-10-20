@@ -18,10 +18,7 @@ import androidx.room.Room
 import com.app.activity.NavigatorActivity
 import com.app.adapter.ListAdapter
 import com.app.adapter.WeatherAdapter
-import com.app.data.LineData
-import com.app.data.ForecastData
-import com.app.data.HttpResponse
-import com.app.data.WeatherData
+import com.app.data.*
 import com.app.data.WeatherType.Companion.get
 import com.app.helper.SpanGridLayoutManager
 import com.app.model.AppDatabase
@@ -188,7 +185,7 @@ class WeatherActivity : AppCompatActivity() {
             LineData("Filler", "Filler")
         )
 
-        list.adapter = ListAdapter(this, lineData, 2)
+        list.adapter = ListAdapter(this, lineData, LineStyle.Style2)
     }
 
     private fun getWeatherData(json: String) : WeatherData?{

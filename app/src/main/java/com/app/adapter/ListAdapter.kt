@@ -7,19 +7,23 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.data.LineData
+import com.app.data.LineStyle
 import com.app.ngn.R
 
-class ListAdapter(val context: Context, val data : ArrayList<LineData>, private val lineStyle : Int) :
+class ListAdapter(val context: Context, val data : ArrayList<LineData>, private val lineStyle : LineStyle) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         return LineViewHolder(when(lineStyle){
-            1->{
+            LineStyle.Style1->{
                 inflater.inflate(R.layout.com_list_line_1, parent, false)
             }
-            else->{
+            LineStyle.Style2->{
                 inflater.inflate(R.layout.com_list_line_2, parent, false)
+            }
+            LineStyle.Style3->{
+                inflater.inflate(R.layout.com_list_line_3, parent, false)
             }
         })
     }
@@ -33,12 +37,12 @@ class ListAdapter(val context: Context, val data : ArrayList<LineData>, private 
     }
 
     class LineViewHolder(private val view : View) : RecyclerView.ViewHolder(view){
-        fun bind(detail : LineData){
-            val propName = view.findViewById<TextView>(R.id.name)
-            propName.text = detail.name
-            val propValue = view.findViewById<TextView>(R.id.value)
-            if(detail.value!=null){
-                propValue.text = detail.value.toString()
+        fun bind(data : LineData){
+            view.findViewById<TextView>(R.id.name).apply {
+                text = data.name
+            }
+            view.findViewById<TextView>(R.id.value).apply {
+                text = data.value?.toString()
             }
         }
     }
