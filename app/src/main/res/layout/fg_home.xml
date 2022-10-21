@@ -12,7 +12,7 @@
         android:id="@+id/header"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/stats"
-        android:backgroundTint="@color/blue_1"
+        android:backgroundTint="@color/DeepSkyBlue"
         android:background="@drawable/bg1">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

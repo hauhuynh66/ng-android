@@ -8,12 +8,13 @@ import android.graphics.Path
 import android.util.AttributeSet
 import android.view.View
 import com.app.ngn.R
-import com.app.util.Generator.Companion.generateColorCode
+import com.app.util.Generator
 
 class BarChart : View {
     private lateinit var linePaint: Paint
     private lateinit var axPaint: Paint
     private lateinit var barPaint : Paint
+    private var random : Boolean = false
     private var data = listOf<Number>(
         20,
         10,
@@ -43,14 +44,18 @@ class BarChart : View {
     }
 
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs){
-        init()
         context!!.theme.obtainStyledAttributes(attrs, R.styleable.BarChart, 0, 0).apply {
             try {
                 showAxes = getBoolean(R.styleable.BarChart_showAxes, false)
+                random = getBoolean(R.styleable.BarChart_random, false)
             }finally {
                 recycle()
             }
         }
+
+        colorList = Generator.generateColor(data.size)
+
+        init()
     }
 
     private fun init(){
@@ -76,8 +81,6 @@ class BarChart : View {
         }
 
         linePath = Path()
-
-        colorList = generateColor(data.size)
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -121,17 +124,9 @@ class BarChart : View {
         return (height - padding - y * ratio).toFloat()
     }
 
-    fun setData(data : List<Number>){
-        this.data = data
-        generateColor(this.data.size)
+    fun setData(list : List<Number>){
+        this.data = list
+        colorList = Generator.generateColor(data.size)
         invalidate()
-    }
-
-    private fun generateColor(length : Int) : List<String>{
-        val list = mutableListOf<String>()
-        for(i in 0..length){
-            list.add(generateColorCode())
-        }
-        return list
     }
 }

@@ -112,7 +112,5 @@ class CVOperation {
             Utils.matToBitmap(dst, ret)
             return ret
         }
-
-
     }
 }

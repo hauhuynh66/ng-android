@@ -1,17 +1,21 @@
 package com.app.activity.weather
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.AttributeSet
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
@@ -20,7 +24,6 @@ import com.app.adapter.ListAdapter
 import com.app.adapter.WeatherAdapter
 import com.app.data.*
 import com.app.data.WeatherType.Companion.get
-import com.app.helper.SpanGridLayoutManager
 import com.app.model.AppDatabase
 import com.app.model.Location
 import com.app.model.Setting
@@ -37,6 +40,7 @@ import org.json.JSONObject
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
+import kotlin.math.roundToInt
 import kotlin.system.exitProcess
 
 class WeatherActivity : AppCompatActivity() {
@@ -172,7 +176,54 @@ class WeatherActivity : AppCompatActivity() {
 
         val list = view.findViewById<RecyclerView>(R.id.list2)
 
-        list.layoutManager = SpanGridLayoutManager(this, 2)
+        list.layoutManager = object : GridLayoutManager(this, 2){
+            override fun generateLayoutParams(lp: ViewGroup.LayoutParams?): RecyclerView.LayoutParams {
+                return spanLayoutSize(super.generateLayoutParams(lp))
+            }
+
+            override fun generateLayoutParams(
+                c: Context?,
+                attrs: AttributeSet?
+            ): RecyclerView.LayoutParams {
+                return spanLayoutSize(super.generateLayoutParams(c, attrs))
+            }
+
+            private fun spanLayoutSize(layoutParams: RecyclerView.LayoutParams): RecyclerView.LayoutParams {
+                var rows = (itemCount/spanCount)
+                val left = itemCount%spanCount
+
+                if ( left > 0){
+                    rows++
+                }
+
+                layoutParams.width = (getHorizontalSpace() / spanCount.toDouble()).roundToInt()
+
+                val height = (getVerticalSpace() / rows.toDouble()).roundToInt()
+                layoutParams.height = height
+
+                return layoutParams
+            }
+
+            private fun getHorizontalSpace(): Int {
+                return width - paddingRight - paddingLeft
+            }
+
+            private fun getVerticalSpace(): Int {
+                return height - paddingBottom - paddingTop
+            }
+
+            override fun generateDefaultLayoutParams(): RecyclerView.LayoutParams {
+                return spanLayoutSize(super.generateDefaultLayoutParams())
+            }
+
+            override fun canScrollVertically(): Boolean {
+                return false
+            }
+
+            override fun canScrollHorizontally(): Boolean {
+                return false
+            }
+        }
 
         val lineData = arrayListOf(
             LineData("Visibility", weatherData.visibility),

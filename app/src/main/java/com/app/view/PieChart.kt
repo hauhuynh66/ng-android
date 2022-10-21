@@ -12,6 +12,7 @@ class PieChart : View {
     private lateinit var linePaint : Paint
     private lateinit var sweepPaint : Paint
     private var outerRectF: RectF = RectF()
+    private var random : Boolean = false
     private var r : Float = 0f
     private var lineWidth = 10f
     private var padding = 20f
@@ -26,15 +27,18 @@ class PieChart : View {
         init()
     }
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs){
-        init()
         context!!.theme.obtainStyledAttributes(attrs, R.styleable.PieChart, 0, 0).apply {
             try {
-                //shadow = getBoolean(R.styleable.PieChart_shadow, false)
+                shadow = getBoolean(R.styleable.PieChart_shadow, false)
                 donut = getBoolean(R.styleable.PieChart_donut, false)
+                random = getBoolean(R.styleable.PieChart_random, false)
             }finally {
                 recycle()
             }
         }
+
+        colorList = Generator.generateColor(data.size)
+        init()
     }
 
     private fun init(){
@@ -54,8 +58,6 @@ class PieChart : View {
             color = Color.GREEN
             style = Paint.Style.FILL
         }
-
-        colorList = generateColor(data.size)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -70,7 +72,6 @@ class PieChart : View {
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-
 
         val sum : Double = data.reduce{
             a,b -> a.toDouble() + b.toDouble()
@@ -102,17 +103,9 @@ class PieChart : View {
         canvas!!.drawArc(innerRectF, 0f, 360f, true, paint)
     }
 
-    fun setData(data : ArrayList<Number>){
-        this.data = data
-        this.colorList = generateColor(this.data.size)
+    fun setData(list : ArrayList<Number>){
+        this.data = list
+        colorList = Generator.generateColor(data.size)
         invalidate()
-    }
-
-    private fun generateColor(length : Int) : List<String>{
-        val list = mutableListOf<String>()
-        for(i in 0..length){
-            list.add(Generator.generateColorCode())
-        }
-        return list
     }
 }

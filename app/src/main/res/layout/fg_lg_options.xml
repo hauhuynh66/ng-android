@@ -29,7 +29,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/lg_gg"
             android:text="Firebase"
-            android:backgroundTint="@color/firebase"
+            android:backgroundTint="@color/Gold"
             android:textAllCaps="false"
             android:id="@+id/lg_ep"/>
         <Button
@@ -42,7 +42,7 @@
             app:layout_constraintBottom_toTopOf="@id/lg_gh"
             android:text="Google"
             android:textAllCaps="false"
-            android:backgroundTint="@color/red"
+            android:backgroundTint="@color/Red"
             android:id="@+id/lg_gg"/>
         <Button
             android:layout_width="0dp"
@@ -54,7 +54,7 @@
             app:layout_constraintBottom_toTopOf="@id/lg_tw"
             android:text="Github"
             android:textAllCaps="false"
-            android:backgroundTint="@color/black"
+            android:backgroundTint="@color/Black"
             android:id="@+id/lg_gh"/>
         <Button
             android:layout_width="0dp"
@@ -65,7 +65,7 @@
             app:layout_constraintTop_toBottomOf="@id/lg_gh"
             app:layout_constraintBottom_toBottomOf="parent"
             android:text="Twitter"
-            android:backgroundTint="@color/twitter"
+            android:backgroundTint="@color/DeepSkyBlue"
             android:textAllCaps="false"
             android:id="@+id/lg_tw"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,19 +1,20 @@
 package com.app.activity
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.AttributeSet
 import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.DrawAdapter
-import com.app.helper.SpanLinearLayoutManager
 import com.app.ngn.R
 import com.app.util.FileOperation
 import com.app.view.DrawView
@@ -26,6 +27,7 @@ class DrawActivity : AppCompatActivity() {
     private val path = Environment.getExternalStorageDirectory().absolutePath + "/photo"
     private lateinit var colorAdapter : DrawAdapter
     private lateinit var sizeAdapter: DrawAdapter
+    private lateinit var fixedLayoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +39,27 @@ class DrawActivity : AppCompatActivity() {
                 val uri = it.data!!.data
                 val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, uri)
                 draw.changeBackground(bitmap)
+            }
+        }
+        fixedLayoutManager = object : LinearLayoutManager(this, HORIZONTAL, false){
+            override fun generateLayoutParams(
+                c: Context?,
+                attrs: AttributeSet?
+            ): RecyclerView.LayoutParams {
+                return spanLayoutSize(super.generateLayoutParams(c, attrs))
+            }
+
+            private fun getHorizontalSpace(): Int {
+                return width - paddingLeft - paddingRight
+            }
+
+            private fun spanLayoutSize(layoutParams: RecyclerView.LayoutParams): RecyclerView.LayoutParams {
+                layoutParams.width = getHorizontalSpace() / itemCount
+                return layoutParams
+            }
+
+            override fun canScrollHorizontally(): Boolean {
+                return false
             }
         }
 
@@ -114,10 +137,8 @@ class DrawActivity : AppCompatActivity() {
         val colorList = findViewById<RecyclerView>(R.id.ac_draw_color)
         val sizeList = findViewById<RecyclerView>(R.id.ac_draw_size)
 
-        colorList.layoutManager =
-            SpanLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        sizeList.layoutManager =
-            SpanLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        colorList.layoutManager = fixedLayoutManager
+        sizeList.layoutManager = fixedLayoutManager
         colorList.adapter = colorAdapter
 
         sizeList.adapter = sizeAdapter

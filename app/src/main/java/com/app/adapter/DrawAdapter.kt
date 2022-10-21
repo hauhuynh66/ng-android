@@ -144,7 +144,7 @@ class DrawAdapter(val context : Context, var data : ArrayList<DrawUtilData>, pri
                 holder.setBackgroundResource(0)
             }
             itemView.findViewById<TextView>(R.id.display).apply{
-                setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.green_1))
+                setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.Green))
                 text = data.value.toString()
                 setOnClickListener {
                     listener.onClick(data.value, position)

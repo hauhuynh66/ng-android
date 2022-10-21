@@ -4,8 +4,8 @@
         android:topLeftRadius="10dp"
         android:topRightRadius="10dp"/>
     <solid
-        android:color="@color/pink"/>
+        android:color="@color/MediumPurple"/>
     <stroke
         android:width="2dp"
-        android:color="@color/black"/>
+        android:color="@color/Black"/>
 </shape>

@@ -7,6 +7,8 @@
     <attr name="line_color" format="color"/>
     <attr name="display_text" format="boolean"/>
     <attr name="progress_color" format="color"/>
+    <attr name="random" format="boolean"/>
+    <attr name="shadow" format="boolean"/>
 
     <declare-styleable name="LineChart">
         <attr name="showAxes"/>
@@ -15,10 +17,13 @@
 
     <declare-styleable name="BarChart">
         <attr name="showAxes"/>
+        <attr name="random"/>
     </declare-styleable>
 
     <declare-styleable name="PieChart">
         <attr name="donut" format="boolean"/>
+        <attr name="random"/>
+        <attr name="shadow"/>
     </declare-styleable>
 
     <declare-styleable name="Gauge">

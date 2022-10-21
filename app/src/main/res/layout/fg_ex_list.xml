@@ -36,7 +36,7 @@
                 android:id="@+id/change_layout"
                 app:layout_constraintRight_toRightOf="parent"
                 android:src="@drawable/ic_baseline_apps"
-                android:background="@color/white"/>
+                android:background="@color/White"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

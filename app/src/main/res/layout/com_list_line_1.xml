@@ -10,17 +10,18 @@
         app:layout_constraintWidth_percent="0.3"
         android:layout_height="wrap_content"
         android:textSize="6pt"
-        android:gravity="left|center_vertical"
+        android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:id="@+id/name"/>
     <TextView
         android:layout_width="0dp"
-        app:layout_constraintWidth_percent="0.7"
+        android:paddingLeft="15dp"
         android:layout_height="wrap_content"
         android:textSize="6pt"
-        android:gravity="center"
+        android:gravity="left|center_vertical"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toRightOf="@id/name"
+        app:layout_constraintRight_toRightOf="parent"
         android:id="@+id/value"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

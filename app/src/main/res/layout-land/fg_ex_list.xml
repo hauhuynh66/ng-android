@@ -37,13 +37,13 @@
                 android:id="@+id/fg_ex_list_changeLayout"
                 app:layout_constraintRight_toRightOf="parent"
                 android:src="@drawable/ic_baseline_apps"
-                android:background="@color/white"/>
+                android:background="@color/White"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
-            android:background="@color/blue"
+            android:background="@color/DeepSkyBlue"
             android:id="@+id/fg_ex_list_top_bar"
             android:visibility="gone">
             <Button
@@ -65,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@color/red"
+        android:background="@color/Red"
         android:id="@+id/fg_ex_list_bottom_bar"
         android:visibility="gone">
         <Button
@@ -82,7 +82,6 @@
             app:layout_constraintLeft_toRightOf="@id/fg_ex_list_back"
             app:layout_constraintWidth_percent="0.5"
             android:id="@+id/fg_ex_list_num_selected"
-            android:text="selected"
             android:gravity="center"
             android:textSize="8pt"/>
         <Button

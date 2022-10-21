@@ -8,7 +8,7 @@
         android:layout_height="150dp"
         android:id="@+id/current_color"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/red"/>
+        android:background="@color/Red"/>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,15 +22,15 @@
             android:layout_margin="20dp"
             android:valueFrom="0"
             android:valueTo="255"
-            app:trackColorActive="@color/red"
-            app:thumbColor="@color/red"
+            app:trackColorActive="@color/Red"
+            app:thumbColor="@color/Red"
             android:value="255"
             android:id="@+id/red_slider"/>
         <com.google.android.material.slider.Slider
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:thumbColor="@color/blue"
-            app:trackColorActive="@color/blue"
+            app:thumbColor="@color/Blue"
+            app:trackColorActive="@color/Blue"
             android:layout_margin="20dp"
             android:valueFrom="0"
             android:valueTo="255"
@@ -43,12 +43,12 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:layout_margin="20dp"
-            app:trackColorActive="@color/green"
+            app:trackColorActive="@color/Green"
             android:valueFrom="0"
             android:valueTo="255"
             app:layout_constraintBottom_toTopOf="@id/color_code"
             app:layout_constraintTop_toBottomOf="@id/blue_slider"
-            app:thumbColor="@color/green"
+            app:thumbColor="@color/Green"
             android:id="@+id/green_slider"/>
         <TextView
             android:layout_width="0dp"

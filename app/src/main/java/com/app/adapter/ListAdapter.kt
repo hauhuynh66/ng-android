@@ -10,7 +10,7 @@ import com.app.data.LineData
 import com.app.data.LineStyle
 import com.app.ngn.R
 
-class ListAdapter(val context: Context, val data : ArrayList<LineData>, private val lineStyle : LineStyle) :
+class ListAdapter(val context: Context, val data : List<LineData>, private val lineStyle : LineStyle) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater

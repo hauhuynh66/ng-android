@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:background="@color/pink"
+    android:background="@color/Orchid"
     app:contentInsetLeft="0dp"
     app:contentInsetStart="0dp"
     android:id="@+id/toolbar">

@@ -1,7 +1,9 @@
 package com.app.fragment.ex
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.activity.ex.FileListActivity
 import com.app.adapter.ActionAdapter
 import com.app.data.ActionData
-import com.app.helper.SpanLinearLayoutManager
 import com.app.ngn.R
 
 class EXGroupFragment : Fragment() {
@@ -40,9 +41,27 @@ class EXGroupFragment : Fragment() {
             data.add(ActionData(null, i.toString(), listener))
         }
         val iconList = view.findViewById<RecyclerView>(R.id.fg_ex_group1_list)
-        val layoutManager = SpanLinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val adapter = ActionAdapter(requireActivity(), data, 60)
-        iconList.layoutManager = layoutManager
-        iconList.adapter = adapter
+        iconList.layoutManager = object : LinearLayoutManager(requireContext(), VERTICAL, false){
+                override fun generateLayoutParams(
+                    c: Context?,
+                    attrs: AttributeSet?
+                ): RecyclerView.LayoutParams {
+                    return spanLayoutSize(super.generateLayoutParams(c, attrs))
+                }
+
+                private fun getVerticalSpace(): Int {
+                    return height - paddingBottom - paddingTop
+                }
+
+                private fun spanLayoutSize(layoutParams: RecyclerView.LayoutParams): RecyclerView.LayoutParams {
+                    layoutParams.height = getVerticalSpace() / itemCount
+                    return layoutParams
+                }
+
+                override fun canScrollVertically(): Boolean {
+                    return false
+                }
+            }
+        iconList.adapter = ActionAdapter(requireActivity(), data, 60)
     }
 }
