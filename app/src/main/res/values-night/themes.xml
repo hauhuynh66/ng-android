@@ -2,13 +2,9 @@
     <!-- Base application theme. -->
     <style name="Theme.NGN" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/LightSkyBlue</item>
+        <item name="colorPrimary">@color/DodgerBlue</item>
         <item name="colorPrimaryVariant">@color/BlueViolet</item>
         <item name="colorOnPrimary">@color/Black</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/Teal</item>
-        <item name="colorSecondaryVariant">@color/Teal</item>
-        <item name="colorOnSecondary">@color/Black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->

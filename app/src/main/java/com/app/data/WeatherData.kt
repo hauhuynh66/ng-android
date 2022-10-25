@@ -75,6 +75,14 @@ enum class TemperatureUnit{
     }
 }
 
+enum class SunState{
+    State1,
+    State2,
+    State3
+}
+
+data class ForecastData constructor(var data:ArrayList<WeatherData>, var name:String)
+
 enum class WeatherType{
     Thunderstorm,
     Drizzle,

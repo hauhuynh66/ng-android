@@ -22,6 +22,7 @@ class MessageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_message)
         setSupportActionBar(findViewById(R.id.toolbar))
+
         supportActionBar!!.apply {
             title = "Message"
         }

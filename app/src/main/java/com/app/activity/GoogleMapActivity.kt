@@ -4,6 +4,7 @@ import android.Manifest
 import android.location.Location
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -26,8 +27,12 @@ class GoogleMapActivity:AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_map)
         selfCheck()
+
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        toolbar.title = "Map"
+        toolbar.findViewById<TextView>(R.id.title).apply {
+            text = getString(R.string.map_title)
+        }
+
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         val mapFragment = supportFragmentManager

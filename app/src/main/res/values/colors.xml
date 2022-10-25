@@ -140,4 +140,9 @@
     <color name="DarkBlue">#00008B</color>
     <color name="Navy">#000080</color>
     <color name="Black">#000000</color>
+
+    <color name="Info">#0DCAF0</color>
+    <color name="Success">#198754</color>
+    <color name="Danger">#DC3545</color>
+    <color name="Warning">#FFC107</color>
 </resources>

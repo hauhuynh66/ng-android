@@ -3,11 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:layout_marginHorizontal="10dp"
     app:layout_constraintBottom_toBottomOf="parent"
     android:id="@+id/player_fm"
-    android:background="@drawable/bg4"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/Peru"
     android:transitionName="player">
     <TextView
         app:layout_constraintTop_toTopOf="parent"

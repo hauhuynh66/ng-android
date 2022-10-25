@@ -1,10 +1,10 @@
 package com.app.activity
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.MenuItem
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.ListAdapter
 import com.app.data.LineData
+import com.app.data.LineDisplayOption
 import com.app.data.LineStyle
 import com.app.ngn.R
 import com.app.viewmodel.Authentication
@@ -27,14 +28,23 @@ class ProfileActivity : AppCompatActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         val title = toolbar.findViewById<TextView>(R.id.title)
-        val profileList = findViewById<RecyclerView>(R.id.info_list)
-        val infoList = findViewById<RecyclerView>(R.id.stat_list)
+        val infoList = findViewById<RecyclerView>(R.id.info_list)
+        val statList = findViewById<RecyclerView>(R.id.stat_list)
+
         val infoData = listOf(
             LineData("1", "Line1"),
             LineData("2", "Line2"),
             LineData("3", "Line3"),
             LineData("4", "Line4"),
             LineData("5", "Line5"),
+        )
+
+        val lineOption = LineDisplayOption(Color.RED, 10f)
+        val statData = listOf(
+            LineData("Name 1", 10, option = lineOption),
+            LineData("Name 2", 50, option = lineOption),
+            LineData("Name 3", 100, option = lineOption),
+            LineData("Name 4", 1, option = lineOption),
         )
 
         title.text = getString(R.string.profile_title)
@@ -47,7 +57,7 @@ class ProfileActivity : AppCompatActivity() {
             Picasso.get().load(photoUrl).into(findViewById<ImageView>(R.id.photo))
         }
 
-        profileList.apply {
+        infoList.apply {
             layoutManager = object : LinearLayoutManager(context, VERTICAL, false){
                 override fun generateLayoutParams(
                     c: Context?,
@@ -56,12 +66,8 @@ class ProfileActivity : AppCompatActivity() {
                     return spanLayoutSize(super.generateLayoutParams(c, attrs))
                 }
 
-                private fun getVerticalSpace(): Int {
-                    return height - paddingBottom - paddingTop
-                }
-
                 private fun spanLayoutSize(layoutParams: RecyclerView.LayoutParams): RecyclerView.LayoutParams {
-                    layoutParams.height = getVerticalSpace() / itemCount
+                    layoutParams.height = (height - paddingBottom - paddingTop) / itemCount
                     return layoutParams
                 }
 
@@ -70,6 +76,28 @@ class ProfileActivity : AppCompatActivity() {
                 }
             }
             adapter = ListAdapter(context, infoData, LineStyle.Style1)
+        }
+
+        statList.apply {
+            layoutManager = object : LinearLayoutManager(context, HORIZONTAL, false){
+                override fun generateLayoutParams(
+                    c: Context?,
+                    attrs: AttributeSet?
+                ): RecyclerView.LayoutParams {
+                    return spanLayoutSize(super.generateLayoutParams(c, attrs))
+                }
+
+                private fun spanLayoutSize(layoutParams: RecyclerView.LayoutParams): RecyclerView.LayoutParams {
+                    layoutParams.width = (width - paddingLeft - paddingRight) / itemCount
+                    layoutParams.height = height
+                    return layoutParams
+                }
+
+                override fun canScrollVertically(): Boolean {
+                    return false
+                }
+            }
+            adapter = ListAdapter(context, statData, LineStyle.Style2)
         }
     }
 

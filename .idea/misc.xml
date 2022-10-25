@@ -84,6 +84,8 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_item_holder.xml" value="0.21516754850088182" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_item_holder_1.xml" value="0.21516754850088182" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_item_holder_2.xml" value="0.21516754850088182" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_list_line_1.xml" value="0.10400000000000001" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_list_line_3.xml" value="0.1" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_logo.xml" value="0.152" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_misc.xml" value="0.264" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_misc_2.xml" value="0.21428571428571427" />
@@ -124,7 +126,7 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_login.xml" value="0.13072916666666667" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_main.xml" value="0.22554347826086957" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_map.xml" value="0.11302083333333333" />
-        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_message.xml" value="0.11302083333333333" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_message.xml" value="0.152" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_mp_browser.xml" value="0.28818061088977426" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_mp_search.xml" value="0.1234375" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/ac_music_player.xml" value="0.2" />
@@ -167,14 +169,14 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_item_holder_2.xml" value="0.25416666666666665" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_list_header.xml" value="0.11354166666666667" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_list_line_1.xml" value="0.152" />
-        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_list_line_2.xml" value="0.25416666666666665" />
-        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_list_line_3.xml" value="0.2" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_list_line_2.xml" value="0.152" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_list_line_3.xml" value="0.4" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_logo.xml" value="0.176" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_mat_list_row.xml" value="0.11197916666666667" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_message.xml" value="0.264" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_misc.xml" value="0.176" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_misc_2.xml" value="0.25416666666666665" />
-        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_mp_player.xml" value="0.264" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_mp_player.xml" value="0.176" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_note.xml" value="0.2" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_note_img.xml" value="0.176" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/com_rd_card.xml" value="0.2" />
@@ -235,13 +237,13 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_test.xml" value="0.1" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fg_weather.xml" value="0.10190217391304347" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/fragment_holder.xml" value="0.11302083333333333" />
-        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/gauge_card.xml" value="0.176" />
-        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/horizontal_bar_chart_card.xml" value="0.176" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/gauge_card.xml" value="0.2" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/horizontal_bar_chart_card.xml" value="0.6" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/horizontal_gauge_card.xml" value="0.536" />
-        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/horizontal_line_chart_card.xml" value="0.125" />
-        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/horizontal_pie_chart_card.xml" value="0.125" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/horizontal_line_chart_card.xml" value="0.536" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/horizontal_pie_chart_card.xml" value="0.72" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/i_carousel.xml" value="0.176" />
-        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/line_chart_card.xml" value="0.4" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/line_chart_card.xml" value="0.336283185840708" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/list.xml" value="0.11197916666666667" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/nav_header.xml" value="0.136" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout/pie_chart_card.xml" value="0.264" />

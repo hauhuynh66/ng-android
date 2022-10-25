@@ -5,10 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.AttributeSet
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -225,15 +222,17 @@ class WeatherActivity : AppCompatActivity() {
             }
         }
 
+        val lineOption = LineDisplayOption(gravity = Gravity.LEFT or Gravity.CENTER_VERTICAL)
+
         val lineData = arrayListOf(
-            LineData("Visibility", weatherData.visibility),
-            LineData("Filler", "Filler"),
-            LineData("Filler", "Filler"),
-            LineData("Filler", "Filler"),
-            LineData("Filler", "Filler"),
-            LineData("Filler", "Filler"),
-            LineData("Filler", "Filler"),
-            LineData("Filler", "Filler")
+            LineData("Visibility", weatherData.visibility, option = lineOption),
+            LineData("Filler", "Filler", option = lineOption),
+            LineData("Filler", "Filler", option = lineOption),
+            LineData("Filler", "Filler", option = lineOption),
+            LineData("Filler", "Filler", option = lineOption),
+            LineData("Filler", "Filler", option = lineOption),
+            LineData("Filler", "Filler", option = lineOption),
+            LineData("Filler", "Filler", option = lineOption)
         )
 
         list.adapter = ListAdapter(this, lineData, LineStyle.Style2)

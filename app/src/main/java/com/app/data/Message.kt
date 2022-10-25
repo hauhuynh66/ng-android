@@ -1,6 +1,6 @@
 package com.app.data
 
-class Message(val from : String? = "", val content : String? = ""){
+class Message(val from : String? = null, val content : String? = null){
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

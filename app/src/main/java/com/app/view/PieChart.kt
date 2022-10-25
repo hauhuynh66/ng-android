@@ -12,10 +12,10 @@ class PieChart : View {
     private lateinit var linePaint : Paint
     private lateinit var sweepPaint : Paint
     private var outerRectF: RectF = RectF()
+    private var innerRectF: RectF = RectF()
     private var random : Boolean = false
-    private var r : Float = 0f
     private var lineWidth = 10f
-    private var padding = 20f
+    private var padding = 10f
     private var data = arrayListOf<Number>(
         100, 200, 300, 500, 20, 400
     )
@@ -68,6 +68,7 @@ class PieChart : View {
         val r = min(width/2, height/2) - 2*padding
 
         outerRectF = RectF(centerX - r, centerY - r, centerX + r, centerY + r)
+        innerRectF = RectF(centerX - 2*r/3, centerY - 2*r/3, centerX + 2*r/3, centerY + 2*r/3)
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -87,20 +88,15 @@ class PieChart : View {
                 currentArc += sweepArc
             }
         }
-        if(donut){
-            drawDonut(canvas, 2*r/3)
+
+        if (donut){
+            sweepPaint.apply {
+                color = Color.WHITE
+                xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
+            }
+
+            canvas!!.drawArc(innerRectF, 0f, 360f, true, sweepPaint)
         }
-    }
-    private fun drawDonut(canvas: Canvas?, r : Float){
-        val centerX = width/2
-        val centerY = height/2
-        val innerRectF = RectF(centerX - r, centerY - r, centerX + r, centerY + r)
-        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-        paint.apply {
-            color = Color.WHITE
-            xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
-        }
-        canvas!!.drawArc(innerRectF, 0f, 360f, true, paint)
     }
 
     fun setData(list : ArrayList<Number>){

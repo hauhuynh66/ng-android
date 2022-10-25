@@ -24,7 +24,6 @@ class Generator {
             }
             return sb.toString()
         }
-
         fun generateColor(length : Int) : List<String>{
             val list = mutableListOf<String>()
             for(i in 0..length){

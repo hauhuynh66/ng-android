@@ -1,6 +1,7 @@
 package com.app.adapter
 
 import android.content.Context
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,20 +11,20 @@ import com.app.data.LineData
 import com.app.data.LineStyle
 import com.app.ngn.R
 
-class ListAdapter(val context: Context, val data : List<LineData>, private val lineStyle : LineStyle) :
+class ListAdapter(
+    private val context: Context,
+    private val data : List<LineData>,
+    private val lineStyle : LineStyle
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-
         return LineViewHolder(when(lineStyle){
             LineStyle.Style1->{
                 inflater.inflate(R.layout.com_list_line_1, parent, false)
             }
             LineStyle.Style2->{
                 inflater.inflate(R.layout.com_list_line_2, parent, false)
-            }
-            LineStyle.Style3->{
-                inflater.inflate(R.layout.com_list_line_3, parent, false)
             }
         })
     }
@@ -40,9 +41,23 @@ class ListAdapter(val context: Context, val data : List<LineData>, private val l
         fun bind(data : LineData){
             view.findViewById<TextView>(R.id.name).apply {
                 text = data.name
+                if(data.option.gravity!=null){
+                    gravity = data.option.gravity
+                }
             }
+
             view.findViewById<TextView>(R.id.value).apply {
-                text = data.value?.toString()
+                text = data.value.toString()
+                setTextColor(data.option.color)
+                setTextSize(TypedValue.COMPLEX_UNIT_PT, data.option.textSize)
+
+                if(data.option.gravity!=null){
+                    gravity = data.option.gravity
+                }
+            }
+
+            if(data.icon != null){
+                view.findViewById<TextView>(R.id.icon).visibility = View.VISIBLE
             }
         }
     }
