@@ -6,7 +6,7 @@ class FileDisplay(
     var name : String,
     val createDate: Date,
     val size: Long?,
-    val path: String,
+    val absolutePath: String,
     val type: FileType,
     var checked : Boolean = false){
 }

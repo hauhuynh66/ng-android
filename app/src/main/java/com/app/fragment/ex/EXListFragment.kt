@@ -83,7 +83,7 @@ class EXListFragment : Fragment() {
 
         view.findViewById<ImageButton>(R.id.action_ex).setOnClickListener {
             val select = adapter.getSelected().map {
-                it.path
+                it.absolutePath
             }
         }
 

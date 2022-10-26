@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.app.data.FileDisplay
@@ -191,7 +190,7 @@ class ExplorerListAdapter(val context: Context, var root : String,
         if(data[position].type == FileType.DIRECTORY){
             action = "next"
         }
-        return Pair(action, data[position].path)
+        return Pair(action, data[position].absolutePath)
     }
 
     fun redisplay(path : String){

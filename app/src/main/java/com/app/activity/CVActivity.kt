@@ -27,7 +27,7 @@ class CVActivity : AppCompatActivity(){
         setSupportActionBar(toolbar)
 
         findViewById<TextView>(R.id.title).apply {
-            text = "Computer Vision"
+            text = getString(R.string.cv_title)
         }
 
         cameraResult = registerForActivityResult(ActivityResultContracts.TakePicture()) {
