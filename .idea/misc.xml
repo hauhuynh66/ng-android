@@ -44,6 +44,7 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/drawable/custom_chk.xml" value="0.1355" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/drawable/ic_baseline_arrow_downward.xml" value="0.124" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/drawable/ic_baseline_arrow_upward.xml" value="0.124" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/drawable/ic_baseline_chevron_right.xml" value="0.118" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/drawable/ic_baseline_close.xml" value="0.213" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/drawable/ic_baseline_refresh.xml" value="0.118" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/drawable/ic_baseline_remove_red_eye.xml" value="0.1355" />
@@ -87,6 +88,7 @@
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_list_line_1.xml" value="0.10400000000000001" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_list_line_3.xml" value="0.1" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_logo.xml" value="0.152" />
+        <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_message.xml" value="0.1" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_misc.xml" value="0.264" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_misc_2.xml" value="0.21428571428571427" />
         <entry key="..\:/psnpj/ng-android/app/src/main/res/layout-land/com_note.xml" value="0.176" />

@@ -9,14 +9,17 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import com.app.listener.NoteDialogListener
 import com.app.model.Note
 import com.app.ngn.R
 import com.app.util.Formatter.Companion.parseDate
 import com.app.util.Utils
 import java.util.*
 
-class NoteDialog(private val dialogListener: NoteDialogListener):DialogFragment() {
+class NoteDialog(private val dialogListener: Listener) : DialogFragment() {
+    interface Listener{
+        fun onConfirm(note : Note)
+        fun onCancel(note : Note)
+    }
     private lateinit var dp:ImageView
     private lateinit var tp:ImageView
     private lateinit var title:EditText
@@ -73,7 +76,7 @@ class NoteDialog(private val dialogListener: NoteDialogListener):DialogFragment(
                 if(title.length()>10 && content.length()>10){
                     val sb:StringBuilder = StringBuilder()
                     sb.append(date.text.toString(),time.text.toString())
-                    dialogListener.onAdd(
+                    dialogListener.onConfirm(
                         Note(
                             title =  this.title.text.toString(),
                             content = this.content.text.toString(),

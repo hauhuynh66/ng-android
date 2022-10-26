@@ -39,7 +39,8 @@
             app:layout_constraintTop_toBottomOf="@id/name"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:background="@drawable/bg3"
+            android:background="@drawable/bg1"
+            android:backgroundTint="@color/DarkViolet"
             android:id="@+id/message_container">
             <TextView
                 android:layout_width="wrap_content"

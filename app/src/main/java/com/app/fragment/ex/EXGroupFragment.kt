@@ -37,31 +37,27 @@ class EXGroupFragment : Fragment() {
                     startActivity(intent)
                 }
             }
-
             data.add(ActionData(null, i.toString(), listener))
         }
+
         val iconList = view.findViewById<RecyclerView>(R.id.fg_ex_group1_list)
-        iconList.layoutManager = object : LinearLayoutManager(requireContext(), VERTICAL, false){
-                override fun generateLayoutParams(
-                    c: Context?,
-                    attrs: AttributeSet?
-                ): RecyclerView.LayoutParams {
-                    return spanLayoutSize(super.generateLayoutParams(c, attrs))
-                }
-
-                private fun getVerticalSpace(): Int {
-                    return height - paddingBottom - paddingTop
-                }
-
-                private fun spanLayoutSize(layoutParams: RecyclerView.LayoutParams): RecyclerView.LayoutParams {
-                    layoutParams.height = getVerticalSpace() / itemCount
-                    return layoutParams
-                }
-
-                override fun canScrollVertically(): Boolean {
-                    return false
-                }
+        iconList.layoutManager = object : LinearLayoutManager(requireContext(), HORIZONTAL, false) {
+            override fun generateLayoutParams(
+                c: Context?,
+                attrs: AttributeSet?
+            ): RecyclerView.LayoutParams {
+                return spanLayoutSize(super.generateLayoutParams(c, attrs))
             }
+
+            private fun spanLayoutSize(layoutParams: RecyclerView.LayoutParams): RecyclerView.LayoutParams {
+                layoutParams.width = (width - paddingLeft - paddingRight) / itemCount
+                return layoutParams
+            }
+            override fun canScrollHorizontally(): Boolean {
+                return false
+            }
+        }
+
         iconList.adapter = ActionAdapter(requireActivity(), data, 60)
     }
 }

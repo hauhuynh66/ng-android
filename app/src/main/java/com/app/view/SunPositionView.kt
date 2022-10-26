@@ -8,6 +8,7 @@ import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import com.app.data.SunState
 import com.app.ngn.R
+import com.app.util.Utils
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,18 +19,18 @@ class SunPositionView : View {
 
     private var dashColor : Int = Color.BLACK
     private var lineColor : Int = Color.YELLOW
+    private var bitmapSize : Float = 60f
 
     private var arcRect : RectF = RectF()
     private val bounds : Rect = Rect()
+    private var bitmapRect : RectF = RectF()
 
     private var dashedLinePaint : Paint = Paint()
     private var linePaint : Paint = Paint()
     private var textPaint : Paint = Paint()
-    private var srText = ""
-    private var ssText = ""
     private val padding = 20f
 
-    fun getState(sunrise: Long, sunset: Long, current: Long) : SunState {
+    private fun getState(sunrise: Long, sunset: Long, current: Long) : SunState {
         return if(current > sunset){
             SunState.State2
         }else if(current < sunrise){
@@ -48,6 +49,7 @@ class SunPositionView : View {
             try {
                 dashColor = getColor(R.styleable.SunPositionView_dash_color, Color.BLACK)
                 lineColor = getColor(R.styleable.SunPositionView_line_color, Color.YELLOW)
+                bitmapSize = getDimension(R.styleable.SunPositionView_bmp_size, 60f)
             }finally {
                 recycle()
             }
@@ -111,8 +113,6 @@ class SunPositionView : View {
     fun display(sunrise : Long, sunset : Long){
         this.sunrise = sunrise
         this.sunset = sunset
-        this.srText = format(Date(this.sunrise*1000))
-        this.ssText = format(Date(this.sunset*1000))
 
         this.current = System.currentTimeMillis()/1000
 
@@ -128,6 +128,8 @@ class SunPositionView : View {
         val dis: Long = sunset - sunrise
         val c: Long = current - sunrise
         val deg = (c.toDouble()/dis.toDouble()) * 180.0
+        val srText = format(Date(this.sunrise*1000))
+        val ssText = format(Date(this.sunset*1000))
 
         canvas!!.apply {
             drawArc(arcRect, 180f, 180f, false, dashedLinePaint)
@@ -140,10 +142,40 @@ class SunPositionView : View {
     }
 
     private fun drawState2(canvas: Canvas?){
+        val midnight = Utils.atEndDate(this.current * 1000) / 1000
+        val distance = midnight - this.sunset
+        val weight = this.current - this.sunset
+        val deg = (weight.toDouble()/distance.toDouble()) * 180.0
 
+        val leftText = format(Date(this.sunset*1000))
+        val rightText = "11:59 PM "
+
+        canvas!!.apply {
+            drawArc(arcRect, 180f, 180f, false, dashedLinePaint)
+            drawArc(arcRect, 180f, deg.toFloat(), false, linePaint)
+            textPaint.getTextBounds(leftText, 0, leftText.length, bounds)
+            drawText(leftText, padding + 20f, height - bounds.height() / 2 - 10f, textPaint)
+            textPaint.getTextBounds(rightText, 0, rightText.length, bounds)
+            drawText(rightText, width - 40f - bounds.width(), height - bounds.height() / 2 - 10f, textPaint)
+        }
     }
 
     private fun drawState3(canvas: Canvas?){
+        val midnight = Utils.atStartDate(this.current * 1000) / 1000
+        val distance = this.sunrise - midnight
+        val weight = this.current - midnight
+        val deg = (weight.toDouble()/distance.toDouble()) * 180.0
 
+        val leftText = "00:00 AM"
+        val rightText = format(Date(this.sunrise*1000))
+
+        canvas!!.apply {
+            drawArc(arcRect, 180f, 180f, false, dashedLinePaint)
+            drawArc(arcRect, 180f, deg.toFloat(), false, linePaint)
+            textPaint.getTextBounds(leftText, 0, leftText.length, bounds)
+            drawText(leftText, padding + 20f, height - bounds.height() / 2 - 10f, textPaint)
+            textPaint.getTextBounds(rightText, 0, rightText.length, bounds)
+            drawText(rightText, width - 40f - bounds.width(), height - bounds.height() / 2 - 10f, textPaint)
+        }
     }
 }

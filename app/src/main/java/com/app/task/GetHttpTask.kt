@@ -42,7 +42,6 @@ class GetHttpTask(private val url : String, private val params : Map<String, Any
             }
         }
 
-        println(ret.toString())
         return ret.toString()
     }
 }

@@ -36,5 +36,6 @@
     <declare-styleable name="SunPositionView">
         <attr name="dash_color"/>
         <attr name="line_color"/>
+        <attr name="bmp_size" format="dimension"/>
     </declare-styleable>
 </resources>

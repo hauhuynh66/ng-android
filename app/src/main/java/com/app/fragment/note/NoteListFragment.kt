@@ -16,7 +16,6 @@ import androidx.room.Room
 import com.app.activity.DrawActivity
 import com.app.adapter.NoteAdapter
 import com.app.dialog.NoteDialog
-import com.app.listener.NoteDialogListener
 import com.app.model.AppDatabase
 import com.app.model.Note
 import com.app.ngn.R
@@ -28,12 +27,35 @@ import kotlinx.coroutines.withContext
 import java.util.*
 
 
-class NoteListFragment:Fragment(), NoteDialogListener {
+class NoteListFragment : Fragment() {
     private lateinit var fb:FloatingActionButton
     private lateinit var adapter: NoteAdapter
     private lateinit var data:ArrayList<Note>
     private lateinit var db: AppDatabase
     private lateinit var rootView : View
+    private val listener = object : NoteDialog.Listener {
+        override fun onConfirm(note: Note) {
+            try {
+                var success: Long?
+                runBlocking {
+                    withContext(Dispatchers.IO) {
+                        success = db.noteRepository().insert(note)
+                    }
+                }
+                if (success != null) {
+                    this@NoteListFragment.data.add(note)
+                    adapter.notifyItemInserted(this@NoteListFragment.data.size - 1)
+                }
+
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        override fun onCancel(note: Note) {
+            /**/
+        }
+    }
     private val drawLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             result->
         run{
@@ -98,7 +120,7 @@ class NoteListFragment:Fragment(), NoteDialogListener {
         noteList.adapter = adapter
         fb = view.findViewById(R.id.addBtn)
         fb.setOnClickListener {
-            NoteDialog(this).show(requireActivity().supportFragmentManager, "NewNote")
+            NoteDialog(listener).show(requireActivity().supportFragmentManager, "NewNote")
         }
 
         val itemCallback = object : ItemTouchHelper.Callback() {
@@ -153,25 +175,6 @@ class NoteListFragment:Fragment(), NoteDialogListener {
         itemHelper.attachToRecyclerView(noteList)
     }
 
-    override fun onAdd(note: Note) {
-        /**/
-        try{
-            var success: Long?
-            runBlocking {
-                withContext(Dispatchers.IO){
-                    success = db.noteRepository().insert(note)
-                }
-            }
-            if(success!=null){
-                this.data.add(note)
-                adapter.notifyItemInserted(this.data.size - 1)
-            }
-
-        }catch (e : Exception){
-            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
-        }
-    }
-
     fun deleteNote(note: Note) : Boolean{
         var success: Boolean
         runBlocking {
@@ -180,9 +183,5 @@ class NoteListFragment:Fragment(), NoteDialogListener {
             }
         }
         return success
-    }
-
-    override fun onCancel(temp: Note) {
-        /**/
     }
 }

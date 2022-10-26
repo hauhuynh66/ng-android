@@ -12,7 +12,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="10pt"
+            android:textSize="6pt"
             android:text="Types"
             app:layout_constraintTop_toTopOf="parent"
             android:id="@+id/fg_ex_group1_title"
