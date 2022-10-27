@@ -35,16 +35,16 @@ class ListAdapter(
         return data.size
     }
 
-    class LineViewHolder(private val view : View) : RecyclerView.ViewHolder(view){
+    class LineViewHolder(view : View) : RecyclerView.ViewHolder(view){
         fun bind(data : LineData){
-            view.findViewById<TextView>(R.id.name).apply {
+            itemView.findViewById<TextView>(R.id.name).apply {
                 text = data.name
                 if(data.option.gravity!=null){
                     gravity = data.option.gravity
                 }
             }
 
-            view.findViewById<TextView>(R.id.value).apply {
+            itemView.findViewById<TextView>(R.id.value).apply {
                 text = data.value.toString()
                 setTextColor(data.option.color)
                 setTextSize(TypedValue.COMPLEX_UNIT_PT, data.option.textSize)
@@ -55,7 +55,7 @@ class ListAdapter(
             }
 
             if(data.icon != null){
-                view.findViewById<TextView>(R.id.icon).visibility = View.VISIBLE
+                itemView.findViewById<TextView>(R.id.icon).visibility = View.VISIBLE
             }
         }
     }

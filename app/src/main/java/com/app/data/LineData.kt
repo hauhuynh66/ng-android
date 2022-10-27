@@ -8,6 +8,7 @@ data class LineData(
     val icon : Int? = null,
     val option : LineDisplayOption = LineDisplayOption())
 
+
 enum class LineStyle{
     Style1,
     Style2

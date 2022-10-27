@@ -37,7 +37,7 @@ class ActionAdapter(val data : List<ActionData>, val size : Int) : RecyclerView.
                     setImageResource(data.resource)
                 }
                 setOnClickListener {
-                    data.callback.onClick()
+                    data.callback?.onClick()
                 }
             }
         }

@@ -1,3 +1,5 @@
 package com.app.data
 
-data class PageData(private val value : String, private val drawable : Int, private val bg: Int)
+import android.graphics.Color
+
+data class PageData(val text : String, val resource : Int, val background: Int = Color.WHITE)

@@ -66,7 +66,7 @@ class ActionFragment : Fragment() {
             }
         }))
 
-        data.add(ActionData(R.drawable.sports, "Sport", object : ActionData.Callback{
+        data.add(ActionData(R.drawable.sports, "Soccer", object : ActionData.Callback{
             override fun onClick() {
                 val intent = Intent(requireActivity(), FootballMainActivity::class.java)
                 startActivity(intent)

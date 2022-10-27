@@ -13,8 +13,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.app.activity.news.RDMainActivity
-import com.app.fragment.MainFragment
+import com.app.fragment.AboutFragment
 import com.app.fragment.ActionFragment
+import com.app.fragment.MainFragment
+import com.app.fragment.TestFragment
 import com.app.fragment.note.NoteListFragment
 import com.app.ngn.R
 import com.app.viewmodel.Authentication
@@ -114,6 +116,14 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 R.id.nav_menu_setting->{
                     val intent = Intent(this@NavigatorActivity, SettingsActivity::class.java)
                     startActivity(intent)
+                }
+                R.id.nav_menu_about->{
+                    currentTitle = "About"
+                    transaction.replace(R.id.container,  AboutFragment(), "ABOUT").commit()
+                }
+                R.id.nav_menu_test->{
+                    currentTitle = "Test"
+                    transaction.replace(R.id.container,  TestFragment(), "TEST").commit()
                 }
                 else->{
                     transaction.replace(R.id.container,  MainFragment(), "MAIN").commit()

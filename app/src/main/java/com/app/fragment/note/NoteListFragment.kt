@@ -139,12 +139,6 @@ class NoteListFragment : Fragment() {
                     deleteNote(item)
                     val snackBar = Snackbar.make(requireContext(), rootView, "Note removed", Snackbar.LENGTH_LONG)
                     snackBar.setAction("OK") {
-                        adapter.restoreItem(item, pos)
-                        runBlocking {
-                            withContext(Dispatchers.IO){
-                                db.noteRepository().insert(item)
-                            }
-                        }
 
                     }
                     snackBar.show()

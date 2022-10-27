@@ -13,8 +13,11 @@
                     android:title="RD"
                     android:id="@+id/nav_rd"/>
                 <item
-                    android:title="Misc"
+                    android:title="Apps"
                     android:id="@+id/nav_menu_misc"/>
+                <item
+                    android:title="Test"
+                    android:id="@+id/nav_menu_test"/>
             </menu>
         </item>
     </group>
@@ -24,6 +27,9 @@
                 <item
                     android:title="Setting"
                     android:id="@+id/nav_menu_setting"/>
+                <item
+                    android:title="About"
+                    android:id="@+id/nav_menu_about"/>
             </menu>
         </item>
     </group>
