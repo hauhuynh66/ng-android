@@ -7,12 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.adapter.AudioListAdapter
-import com.app.data.AudioData
+import com.app.adapter.GenericListAdapter
 import com.app.ngn.R
 
 class AudioListFragment : Fragment() {
-    private lateinit var data : ArrayList<AudioData>
+    private lateinit var data : ArrayList<String>
     private var i : Int = 0
     fun newInstance(i : Int): Fragment{
         val args = Bundle()
@@ -36,7 +35,6 @@ class AudioListFragment : Fragment() {
         i = args!!.getInt("index", 0)
         data = when(i){
             0->{
-                //getAudioList(requireContext().contentResolver)
                 arrayListOf()
             }
             1->{
@@ -54,6 +52,8 @@ class AudioListFragment : Fragment() {
         }
         val list = view.findViewById<RecyclerView>(R.id.item_list)
         list.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        list.adapter = AudioListAdapter(requireContext(), data, i)
+        list.adapter = GenericListAdapter(data, object : GenericListAdapter.Callback{
+
+        })
     }
 }

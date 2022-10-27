@@ -235,7 +235,7 @@ class WeatherActivity : AppCompatActivity() {
             LineData("Filler", "Filler", option = lineOption)
         )
 
-        list.adapter = ListAdapter(this, lineData, LineStyle.Style2)
+        list.adapter = ListAdapter(lineData, LineStyle.Style2)
     }
 
     private fun getWeatherData(json: String) : WeatherData?{
@@ -279,7 +279,7 @@ class WeatherActivity : AppCompatActivity() {
         getCity(forecastData.name)
 
         forecastList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        forecastList.adapter = WeatherAdapter(this, forecastData.data)
+        forecastList.adapter = WeatherAdapter(forecastData.data)
     }
 
     private fun getForecastData(json: String) : ForecastData?{

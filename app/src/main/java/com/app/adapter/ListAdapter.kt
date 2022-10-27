@@ -1,6 +1,5 @@
 package com.app.adapter
 
-import android.content.Context
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -12,13 +11,12 @@ import com.app.data.LineStyle
 import com.app.ngn.R
 
 class ListAdapter(
-    private val context: Context,
     private val data : List<LineData>,
     private val lineStyle : LineStyle
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val inflater = LayoutInflater.from(parent.context)
         return LineViewHolder(when(lineStyle){
             LineStyle.Style1->{
                 inflater.inflate(R.layout.com_list_line_1, parent, false)

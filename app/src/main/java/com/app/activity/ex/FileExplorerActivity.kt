@@ -5,8 +5,13 @@ import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.app.adapter.ExplorerFragmentAdapter
+import com.app.fragment.ex.EXGroupFragment
+import com.app.fragment.ex.EXListFragment
 import com.app.ngn.R
 import com.app.util.PermissionUtils.Companion.checkPermissions
 import com.app.util.ViewUtils
@@ -71,4 +76,25 @@ class FileExplorerActivity : AppCompatActivity(){
                 )
             )
         }
-    }}
+    }
+
+    inner class ExplorerFragmentAdapter(fm: FragmentManager, lc : Lifecycle) : FragmentStateAdapter(fm, lc){
+        override fun getItemCount(): Int {
+            return 2
+        }
+
+        override fun createFragment(position: Int): Fragment {
+            return when(position){
+                0->{
+                    EXGroupFragment()
+                }
+                1->{
+                    EXListFragment()
+                }
+                else->{
+                    Fragment()
+                }
+            }
+        }
+    }
+}

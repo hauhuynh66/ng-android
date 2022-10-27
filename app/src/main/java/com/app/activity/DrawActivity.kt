@@ -41,6 +41,7 @@ class DrawActivity : AppCompatActivity() {
                 draw.changeBackground(bitmap)
             }
         }
+
         fixedLayoutManager = object : LinearLayoutManager(this, HORIZONTAL, false){
             override fun generateLayoutParams(
                 c: Context?,
@@ -82,8 +83,8 @@ class DrawActivity : AppCompatActivity() {
             getIntent.type = "image/*"
 
             val pickIntent =
-                Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            pickIntent.type = "image/*"
+                Intent(Intent.ACTION_PICK)
+            pickIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*")
 
             val chooserIntent = Intent.createChooser(getIntent, "Select Image")
             chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(pickIntent))
@@ -102,7 +103,7 @@ class DrawActivity : AppCompatActivity() {
             draw.prev()
         }
 
-        colorAdapter = DrawAdapter(this,
+        colorAdapter = DrawAdapter(
             getArray(1),
             DrawAdapter.ListType.Color,
             object : DrawAdapter.Listener {
@@ -118,7 +119,7 @@ class DrawActivity : AppCompatActivity() {
             }
         )
 
-        sizeAdapter = DrawAdapter(this,
+        sizeAdapter = DrawAdapter(
             getArray(2),
             DrawAdapter.ListType.Value,
             object : DrawAdapter.Listener {

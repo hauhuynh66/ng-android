@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.app.activity.weather.WeatherActivity
-import com.app.adapter.TextListAdapter
+import com.app.adapter.GenericListAdapter
 import com.app.model.AppDatabase
 import com.app.ngn.R
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +19,7 @@ import kotlinx.coroutines.withContext
 
 class LocationListFragment : Fragment() {
     private lateinit var db: AppDatabase
-    private lateinit var adapter: TextListAdapter
+    private lateinit var adapter: GenericListAdapter
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,7 +41,7 @@ class LocationListFragment : Fragment() {
         }
 
         val list = view.findViewById<RecyclerView>(R.id.item_list)
-        adapter = TextListAdapter(requireContext(), arr, object : TextListAdapter.Listener{
+        adapter = GenericListAdapter(arr, object : GenericListAdapter.Callback {
             override fun onClick(data: String) {
                 runBlocking {
                     withContext(Dispatchers.IO){

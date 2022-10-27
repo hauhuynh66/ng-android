@@ -1,13 +1,12 @@
 package com.app.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ngn.R
 
-class TableAdapter(val context : Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class TableAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var data : List<TableData> = arrayListOf()
 
     init {
@@ -15,7 +14,7 @@ class TableAdapter(val context : Context) : RecyclerView.Adapter<RecyclerView.Vi
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val v = (context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater)
+        val v = LayoutInflater.from(parent.context)
             .inflate(R.layout.com_row, parent, false)
         return TableRowViewHolder(v)
     }

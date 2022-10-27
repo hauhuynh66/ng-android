@@ -1,6 +1,5 @@
 package com.app.adapter
 
-import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.dialog.ColorSelectorDialog
 import com.app.ngn.R
 
-class DrawAdapter(val context : Context, var data : ArrayList<DrawUtilData>, private val listType : ListType, val listener: Listener) :
+class DrawAdapter(var data : ArrayList<DrawUtilData>, private val listType : ListType, val listener: Listener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var selected = 0
     private val defaultColor = Color.parseColor("#000000")
@@ -43,7 +42,7 @@ class DrawAdapter(val context : Context, var data : ArrayList<DrawUtilData>, pri
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val inflater = LayoutInflater.from(parent.context)
         return when(listType){
             ListType.Color->{
                 when(viewType){
@@ -76,12 +75,11 @@ class DrawAdapter(val context : Context, var data : ArrayList<DrawUtilData>, pri
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when(listType){
             ListType.Color->{
-                return when(getItemViewType(position)){
-                    ItemRole.Normal.type->{
+                return when(getItemViewType(position)){                    ItemRole.Normal.type->{
                         (holder as ColorHolder).bind(data[position],listener, position)
                     }
                     else->{
-                        (holder as ColorSelectorHolder).bind(data[position], listener, context, position)
+                        (holder as ColorSelectorHolder).bind(data[position], listener, position)
                     }
                 }
             }
@@ -113,7 +111,7 @@ class DrawAdapter(val context : Context, var data : ArrayList<DrawUtilData>, pri
     }
 
     class ColorSelectorHolder(v: View) : RecyclerView.ViewHolder(v){
-        fun bind(data : DrawUtilData, listener: Listener, context: Context, position: Int){
+        fun bind(data : DrawUtilData, listener: Listener, position: Int){
             val holder = itemView.findViewById<ConstraintLayout>(R.id.holder)
 
             itemView.findViewById<TextView>(R.id.display).apply {

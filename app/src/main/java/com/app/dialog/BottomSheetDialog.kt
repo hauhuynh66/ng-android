@@ -25,7 +25,7 @@ class BottomSheetDialog(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val list = view.findViewById<RecyclerView>(R.id.dlg_bottom_sheet_list)
-        list.adapter = BottomSheetAdapter(requireContext(), data)
+        list.adapter = BottomSheetAdapter(data)
         list.layoutManager = LinearLayoutManager(requireContext())
     }
 }

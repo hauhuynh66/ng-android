@@ -1,4 +1,4 @@
-package com.app.fragment.sport
+package com.app.fragment.soccer
 
 import android.content.res.Configuration
 import android.os.Bundle
@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.FootballStandingAdapter
-import com.app.data.FootballStandingData
+import com.app.data.FootballStanding
 import com.app.data.HttpResponse
 import com.app.ngn.R
 import com.app.task.GetHttpTask
@@ -47,7 +47,7 @@ class FootballStandingFragment : Fragment() {
 
         progress = view.findViewById(R.id.progress)
         list = view.findViewById(R.id.item_list)
-        adapter = FootballStandingAdapter(requireContext(), arrayListOf())
+        adapter = FootballStandingAdapter(arrayListOf())
         list.adapter = adapter
         list.layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
 
@@ -76,8 +76,8 @@ class FootballStandingFragment : Fragment() {
         })
     }
 
-    private fun processStandingData(json : String) : ArrayList<FootballStandingData?>{
-        val ret = arrayListOf<FootballStandingData?>()
+    private fun processStandingData(json : String) : ArrayList<FootballStanding?>{
+        val ret = arrayListOf<FootballStanding?>()
         //header
         ret.add(null)
         //header
@@ -93,7 +93,7 @@ class FootballStandingFragment : Fragment() {
                     val score = FootballJson.getScore(data.getJSONObject("all").getJSONObject("goals"))
                     val match = FootballJson.getMatch(data.getJSONObject("all"))
 
-                    ret.add(FootballStandingData(team, match, score, data.getInt("points"), form))
+                    ret.add(FootballStanding(team, match, score, data.getInt("points"), form))
                 }
             }
         }

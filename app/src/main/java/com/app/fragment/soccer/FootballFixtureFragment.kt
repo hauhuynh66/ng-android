@@ -1,4 +1,4 @@
-package com.app.fragment.sport
+package com.app.fragment.soccer
 
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.activity.sport.FootballDisplayActivity
+import com.app.activity.soccer.FootballDisplayActivity
 import com.app.adapter.FootballFixtureAdapter
 import com.app.data.FootballResult
 import com.app.data.FootballTeam
@@ -135,7 +135,7 @@ class FootballFixtureFragment : Fragment() {
         progress = view.findViewById(R.id.progress)
         result = arrayListOf()
 
-        adapter = FootballFixtureAdapter(requireContext(), result, object : FootballFixtureAdapter.Callback{
+        adapter = FootballFixtureAdapter(result, object : FootballFixtureAdapter.Callback{
             override fun onTeamClick(team: FootballTeam) {
                 val intent = Intent(requireActivity(), FootballDisplayActivity::class.java)
                 intent.putExtra("type","team")

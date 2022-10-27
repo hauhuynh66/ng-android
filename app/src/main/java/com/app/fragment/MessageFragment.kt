@@ -33,7 +33,7 @@ class MessageFragment(var messages : ArrayList<Message>) : Fragment() {
         list = view.findViewById(R.id.item_list)
         progressBar = view.findViewById(R.id.progress)
         progressBar.visibility = View.VISIBLE
-        adapter = MessageAdapter(requireContext(), messages)
+        adapter = MessageAdapter(messages)
         list.adapter = adapter
         list.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     }

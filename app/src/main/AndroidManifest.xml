@@ -86,13 +86,13 @@
         <activity android:name="com.app.activity.MessageActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.rd.RDMainActivity"
+        <activity android:name="com.app.activity.news.RDMainActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.sport.FootballMainActivity"
+        <activity android:name="com.app.activity.soccer.FootballMainActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.sport.FootballDisplayActivity"
+        <activity android:name="com.app.activity.soccer.FootballDisplayActivity"
             android:exported="true"/>
 
         <service android:name="com.app.service.MediaPlaybackService"

@@ -1,6 +1,5 @@
 package com.app.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.data.Message
 import com.app.ngn.R
 
-class MessageAdapter(val context: Context, val list: List<Message>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MessageAdapter(val list: List<Message>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var lastPosition = -1
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val inflater = LayoutInflater.from(parent.context)
         return MessageHolder(inflater.inflate(R.layout.com_message, parent, false))
     }
 
@@ -47,7 +46,7 @@ class MessageAdapter(val context: Context, val list: List<Message>) : RecyclerVi
     private fun setAnimation(view : View, position : Int){
         if (position > lastPosition) {
             val animation: Animation =
-                AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left)
+                AnimationUtils.loadAnimation(view.context, android.R.anim.slide_in_left)
             view.startAnimation(animation)
             lastPosition = position
         }

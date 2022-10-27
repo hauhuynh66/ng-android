@@ -65,7 +65,7 @@ class EXListFragment : Fragment() {
             }
         }
 
-        adapter = ExplorerListAdapter(requireActivity(), rootPath, isGrid = false, callback)
+        adapter = ExplorerListAdapter(rootPath, isGrid = false, callback)
         list.layoutManager = LinearLayoutManager(requireContext())
         list.adapter = adapter
         pathView.text = currentPath

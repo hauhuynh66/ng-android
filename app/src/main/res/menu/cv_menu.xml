@@ -4,13 +4,11 @@
     <item
         android:id="@+id/cv_menu_camera"
         android:title="Take Picture"
-        android:iconTint="@color/Warning"
         android:icon="@drawable/ic_baseline_camera_alt"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/cv_menu_open"
         android:title="Open File"
-        android:iconTint="@color/Warning"
         android:icon="@drawable/ic_baseline_folder"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
 </menu>

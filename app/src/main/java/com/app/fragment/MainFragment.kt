@@ -21,8 +21,6 @@ import com.squareup.picasso.Picasso
 
 class MainFragment : Fragment() {
     private val firebase : Authentication by activityViewModels()
-    private lateinit var summaryList : RecyclerView
-    private lateinit var statList : RecyclerView
     private lateinit var displayName : TextView
     private lateinit var displayImage : ImageView
     override fun onCreateView(
@@ -55,7 +53,7 @@ class MainFragment : Fragment() {
         )
         view.findViewById<RecyclerView>(R.id.list1).apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            adapter = CardAdapter(requireContext(), sumData, LinearLayoutManager.VERTICAL)
+            adapter = CardAdapter(sumData, LinearLayoutManager.VERTICAL)
         }
 
         val statData = arrayListOf(
@@ -67,7 +65,7 @@ class MainFragment : Fragment() {
 
         view.findViewById<RecyclerView>(R.id.list2).apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = CardAdapter(requireContext(), statData, LinearLayoutManager.HORIZONTAL)
+            adapter = CardAdapter(statData, LinearLayoutManager.HORIZONTAL)
         }
 
         displayName = view.findViewById(R.id.text1)

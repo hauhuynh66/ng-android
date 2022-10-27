@@ -1,4 +1,4 @@
-package com.app.fragment.rd
+package com.app.fragment.news
 
 import android.os.Bundle
 import android.view.ContextMenu

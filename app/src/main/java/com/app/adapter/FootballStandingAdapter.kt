@@ -1,6 +1,5 @@
 package com.app.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,13 +7,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.app.data.FootballStandingData
+import com.app.data.FootballStanding
 import com.app.ngn.R
 import com.squareup.picasso.Picasso
 
-class FootballStandingAdapter(val context: Context, var data : ArrayList<FootballStandingData?>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class FootballStandingAdapter(var data : ArrayList<FootballStanding?>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val inflater = LayoutInflater.from(parent.context)
         return when(viewType){
             0->{
                 FootballStandingHeader(inflater.inflate(R.layout.com_football_standing_header, parent, false))
@@ -27,7 +26,7 @@ class FootballStandingAdapter(val context: Context, var data : ArrayList<Footbal
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if(position>0){
-            (holder as FootballStandingHolder).bind(data[position]!!, context)
+            (holder as FootballStandingHolder).bind(data[position]!!)
         }
     }
 
@@ -47,7 +46,7 @@ class FootballStandingAdapter(val context: Context, var data : ArrayList<Footbal
     }
 
     class FootballStandingHolder(v : View) : RecyclerView.ViewHolder(v){
-        fun bind(data : FootballStandingData?, context: Context){
+        fun bind(data : FootballStanding?){
             data!!.apply {
                 Picasso.get().load(data.team.iconUrl).into(itemView.findViewById<ImageView>(R.id.icon))
                 itemView.findViewById<TextView>(R.id.match_played).apply {
@@ -85,13 +84,13 @@ class FootballStandingAdapter(val context: Context, var data : ArrayList<Footbal
             for(i in 0..3){
                 val res = when(data.form[i]){
                     'W'->{
-                        ContextCompat.getDrawable(context, R.drawable.ic_baseline_check)
+                        ContextCompat.getDrawable(itemView.context, R.drawable.ic_baseline_check)
                     }
                     'L'->{
-                        ContextCompat.getDrawable(context, R.drawable.ic_baseline_close)
+                        ContextCompat.getDrawable(itemView.context, R.drawable.ic_baseline_close)
                     }
                     'D'->{
-                        ContextCompat.getDrawable(context, R.drawable.ic_baseline_remove)
+                        ContextCompat.getDrawable(itemView.context, R.drawable.ic_baseline_remove)
                     }
                     else->{
                         null
@@ -102,7 +101,5 @@ class FootballStandingAdapter(val context: Context, var data : ArrayList<Footbal
         }
     }
 
-    class FootballStandingHeader(v : View) : RecyclerView.ViewHolder(v){
-
-    }
+    class FootballStandingHeader(v : View) : RecyclerView.ViewHolder(v)
 }

@@ -1,12 +1,10 @@
-package com.app.activity.sport
+package com.app.activity.soccer
 
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.app.data.FootballResult
-import com.app.data.FootballTeam
-import com.app.fragment.sport.FootballMatchDetailFragment
-import com.app.fragment.sport.FootballTeamDetailFragment
+import com.app.fragment.soccer.FootballMatchDetailFragment
+import com.app.fragment.soccer.FootballTeamDetailFragment
 import com.app.ngn.R
 import com.app.viewmodel.FootballDisplay
 

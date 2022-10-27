@@ -1,4 +1,4 @@
-package com.app.fragment.sport
+package com.app.fragment.soccer
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,11 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.StatAdapter
 import com.app.data.FootballResult
 import com.app.data.HttpResponse
-import com.app.data.StatLineData
+import com.app.data.StatLine
 import com.app.ngn.R
 import com.app.task.GetHttpTask
 import com.app.task.TaskRunner
-import com.app.util.Animation
 import com.app.viewmodel.FootballDisplay
 import com.squareup.picasso.Picasso
 import org.json.JSONObject
@@ -27,7 +26,7 @@ class FootballMatchDetailFragment : Fragment() {
     private val model : FootballDisplay by activityViewModels()
     private val postfix = "/fixtures/statistics"
     private lateinit var adapter : StatAdapter
-    private lateinit var data : ArrayList<StatLineData>
+    private lateinit var data : ArrayList<StatLine>
     private lateinit var taskRunner : TaskRunner
     private lateinit var list : RecyclerView
     private lateinit var progress : ProgressBar
@@ -51,7 +50,7 @@ class FootballMatchDetailFragment : Fragment() {
         redisplayOverview(model.matchOverview!!, view.findViewById(R.id.overview_group))
         taskRunner = TaskRunner()
         data = arrayListOf()
-        adapter = StatAdapter(requireContext(), data)
+        adapter = StatAdapter(data)
 
         list = view.findViewById(R.id.item_list)
         list.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -108,8 +107,8 @@ class FootballMatchDetailFragment : Fragment() {
         })
     }
 
-    private fun processMatchDetails(json : String) : ArrayList<StatLineData>{
-        val ret = arrayListOf<StatLineData>()
+    private fun processMatchDetails(json : String) : ArrayList<StatLine>{
+        val ret = arrayListOf<StatLine>()
         val obj = JSONObject(json)
         val arr = obj.getJSONArray("response")
         if(arr.length()<1){
@@ -153,7 +152,7 @@ class FootballMatchDetailFragment : Fragment() {
 
             }
 
-            ret.add(StatLineData(stats[i], vLeft, vRight))
+            ret.add(StatLine(stats[i], vLeft, vRight))
         }
         return ret
     }

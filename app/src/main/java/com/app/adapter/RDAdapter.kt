@@ -1,4 +1,4 @@
 package com.app.adapter
 
-class RDNewAdapter {
+class RDAdapter {
 }

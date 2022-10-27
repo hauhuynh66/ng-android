@@ -110,7 +110,7 @@ class NoteListFragment : Fragment() {
             }
         }
 
-        adapter = NoteAdapter(requireActivity(), data, object : NoteAdapter.Callback{
+        adapter = NoteAdapter(data, object : NoteAdapter.Callback{
             override fun onItemClick(note: Note) {
 
             }

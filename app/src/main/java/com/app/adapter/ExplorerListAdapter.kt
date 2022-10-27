@@ -1,6 +1,5 @@
 package com.app.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,8 +19,7 @@ import java.util.*
 import kotlin.io.path.Path
 import kotlin.io.path.absolutePathString
 
-class ExplorerListAdapter(val context: Context, var root : String,
-                          var isGrid: Boolean, val callback: Callback? = null, var mode: Mode = Mode.Display) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ExplorerListAdapter(var root : String, var isGrid: Boolean, val callback: Callback? = null, var mode: Mode = Mode.Display) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var data: MutableList<FileDisplay> = arrayListOf()
 
     enum class Mode{
@@ -34,7 +32,7 @@ class ExplorerListAdapter(val context: Context, var root : String,
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val inflater = LayoutInflater.from(parent.context)
         return if(!isGrid){
             LineViewHolder(inflater.inflate(R.layout.com_item,parent, false))
         }else{
@@ -44,7 +42,7 @@ class ExplorerListAdapter(val context: Context, var root : String,
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if(isGrid){
-            (holder as GridViewHolder).bind(data[position], callback!!, position, context, mode)
+            (holder as GridViewHolder).bind(data[position], callback!!, position, mode)
         }else {
             (holder as LineViewHolder).bind(data[position], callback!!, position, mode)
         }
@@ -103,7 +101,7 @@ class ExplorerListAdapter(val context: Context, var root : String,
     }
 
     class GridViewHolder(private val v:View) : RecyclerView.ViewHolder(v){
-        fun bind(data: FileDisplay, callback: Callback, position: Int, context: Context, mode: Mode){
+        fun bind(data: FileDisplay, callback: Callback, position: Int, mode: Mode){
             val name = v.findViewById<TextView>(R.id.com_ex_grid_name)
             val chk = v.findViewById<CheckBox>(R.id.com_ex_grid_check)
             chk.isChecked = data.checked
@@ -122,10 +120,10 @@ class ExplorerListAdapter(val context: Context, var root : String,
             v.findViewById<ImageView>(R.id.com_ex_grid_icon).apply {
                 val res = when(data.type){
                     FileType.DIRECTORY->{
-                        ContextCompat.getDrawable(context, R.drawable.ic_baseline_folder)
+                        ContextCompat.getDrawable(itemView.context, R.drawable.ic_baseline_folder)
                     }
                     else->{
-                        ContextCompat.getDrawable(context, R.drawable.ic_baseline_description)
+                        ContextCompat.getDrawable(itemView.context, R.drawable.ic_baseline_description)
                     }
                 }
                 setImageDrawable(res)

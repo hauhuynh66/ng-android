@@ -15,10 +15,11 @@ import com.app.ngn.R
 import java.text.SimpleDateFormat
 import java.util.*
 
-class WeatherAdapter(private val context:Context, var data:ArrayList<WeatherData>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
+class WeatherAdapter(var data:ArrayList<WeatherData>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private lateinit var context: Context
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        context = parent.context
+        val inflater = LayoutInflater.from(parent.context)
         return WeatherViewHolder(inflater.inflate(R.layout.com_weather, parent, false))
     }
 
@@ -44,7 +45,7 @@ class WeatherAdapter(private val context:Context, var data:ArrayList<WeatherData
             time.text = formatWeatherDate(data.time)
             status.setImageDrawable(getWeatherIcon(data.type, context))
             temperature.text = data.temp.toString()
-            wind.text = data.speed.toString() + "km/h"
+            wind.text = "${data.speed} km/h"
         }
 
         private fun formatWeatherDate(date: Date) : String{

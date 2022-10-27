@@ -75,7 +75,7 @@ class ProfileActivity : AppCompatActivity() {
                     return false
                 }
             }
-            adapter = ListAdapter(context, infoData, LineStyle.Style1)
+            adapter = ListAdapter(infoData, LineStyle.Style1)
         }
 
         statList.apply {
@@ -97,7 +97,7 @@ class ProfileActivity : AppCompatActivity() {
                     return false
                 }
             }
-            adapter = ListAdapter(context, statData, LineStyle.Style2)
+            adapter = ListAdapter(statData, LineStyle.Style2)
         }
     }
 

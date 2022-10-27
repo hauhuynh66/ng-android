@@ -1,4 +1,4 @@
-package com.app.fragment.sport
+package com.app.fragment.soccer
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,24 +1,21 @@
 package com.app.adapter
 
-import android.content.Context
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.app.model.Note
 import com.app.ngn.R
-import com.app.util.Formatter.Companion.formatDate
 import java.io.File
 
-class NoteAdapter(val context: Context, val data: MutableList<Note>, private val callback: Callback?)
+class NoteAdapter(val data: MutableList<Note>, private val callback: Callback?)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val inflater = this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val inflater = LayoutInflater.from(parent.context)
         return when(viewType){
             0->{
                 NoteViewHolder(inflater.inflate(R.layout.com_note, parent, false))
@@ -35,7 +32,7 @@ class NoteAdapter(val context: Context, val data: MutableList<Note>, private val
                 (holder as NoteViewHolder).bind(this.data[position], callback)
             }
             else->{
-                (holder as NoteImgViewHolder).bind(this.data[position], callback, context)
+                (holder as NoteImgViewHolder).bind(this.data[position], callback)
             }
         }
     }
@@ -68,12 +65,12 @@ class NoteAdapter(val context: Context, val data: MutableList<Note>, private val
     }
 
     class NoteImgViewHolder(val v: View) : RecyclerView.ViewHolder(v){
-        fun bind(note: Note, callback: Callback?, context: Context) {
+        fun bind(note: Note, callback: Callback?) {
             val img = v.findViewById<ImageView>(R.id.com_note_img_src)
             val file = File(note.extra!!)
             if(file.exists()){
-                val uri = FileProvider.getUriForFile(context, "com.app.activity.ngn", File(note.extra!!))
-                img.setImageBitmap(MediaStore.Images.Media.getBitmap(context.contentResolver, uri))
+                val uri = FileProvider.getUriForFile(itemView.context, "com.app.activity.ngn", File(note.extra!!))
+                img.setImageBitmap(MediaStore.Images.Media.getBitmap(itemView.context.contentResolver, uri))
             }
             if(callback!=null){
                 v.setOnClickListener{

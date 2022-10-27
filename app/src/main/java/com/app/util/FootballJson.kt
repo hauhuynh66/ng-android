@@ -1,6 +1,6 @@
 package com.app.util
 
-import com.app.data.FootballStandingData
+import com.app.data.FootballStanding
 import com.app.data.FootballTeam
 import org.json.JSONObject
 
@@ -13,18 +13,18 @@ class FootballJson {
             return FootballTeam(id, name, icon)
         }
 
-        fun getScore(scoreObj : JSONObject) : FootballStandingData.ScoreData{
+        fun getScore(scoreObj : JSONObject) : FootballStanding.ScoreData{
             val goalScored = scoreObj.getInt("for")
             val goalConceded = scoreObj.getInt("against")
-            return FootballStandingData.ScoreData(goalScored, goalConceded)
+            return FootballStanding.ScoreData(goalScored, goalConceded)
         }
 
-        fun getMatch(allObj : JSONObject) : FootballStandingData.MatchData{
+        fun getMatch(allObj : JSONObject) : FootballStanding.MatchData{
             val played = allObj.getInt("played")
             val win = allObj.getInt("win")
             val lose = allObj.getInt("lose")
             val draw = allObj.getInt("draw")
-            return FootballStandingData.MatchData(played, win, lose, draw)
+            return FootballStanding.MatchData(played, win, lose, draw)
         }
     }
 }

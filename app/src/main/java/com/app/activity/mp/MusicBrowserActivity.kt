@@ -7,8 +7,12 @@ import android.util.Pair
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.app.adapter.MusicFragmentAdapter
+import com.app.fragment.mp.AudioListFragment
 import com.app.ngn.R
 import com.app.util.ViewUtils
 import com.google.android.material.tabs.TabLayout
@@ -61,6 +65,16 @@ class MusicBrowserActivity : AppCompatActivity() {
                 val intent = Intent(this@MusicBrowserActivity, MusicSearchActivity::class.java)
                 startActivity(intent)
             }
+        }
+    }
+
+    class MusicFragmentAdapter(fm: FragmentManager, lc: Lifecycle) : FragmentStateAdapter(fm, lc) {
+        override fun getItemCount(): Int {
+            return 4
+        }
+
+        override fun createFragment(position: Int): Fragment {
+            return AudioListFragment().newInstance(position)
         }
     }
 }

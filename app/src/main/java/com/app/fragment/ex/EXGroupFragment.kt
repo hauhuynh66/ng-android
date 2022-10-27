@@ -30,14 +30,14 @@ class EXGroupFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         data = arrayListOf()
         for( i in 0 until 4){
-            val listener = object : ActionData.Listener{
+            val callback = object : ActionData.Callback{
                 override fun onClick() {
                     val intent = Intent(requireContext(), FileListActivity::class.java)
                     intent.putExtra("display", i)
                     startActivity(intent)
                 }
             }
-            data.add(ActionData(null, i.toString(), listener))
+            data.add(ActionData(null, i.toString(), callback))
         }
 
         val iconList = view.findViewById<RecyclerView>(R.id.fg_ex_group1_list)
@@ -58,6 +58,6 @@ class EXGroupFragment : Fragment() {
             }
         }
 
-        iconList.adapter = ActionAdapter(requireActivity(), data, 60)
+        iconList.adapter = ActionAdapter(data, 60)
     }
 }
