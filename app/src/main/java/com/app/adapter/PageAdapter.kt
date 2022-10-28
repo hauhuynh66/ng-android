@@ -27,7 +27,7 @@ class PageAdapter(val data : List<PageData>) : PagerAdapter() {
 
         view.findViewById<TextView>(R.id.text).text = page.text
         view.findViewById<ImageView>(R.id.icon).setImageDrawable(ContextCompat.getDrawable(container.context, page.resource))
-        view.findViewById<ConstraintLayout>(R.id.page_holder).setBackgroundColor(page.background)
+        view.findViewById<ConstraintLayout>(R.id.page_holder).setBackgroundResource(data[position].background)
 
         container.addView(view)
 

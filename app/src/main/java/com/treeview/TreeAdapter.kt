@@ -3,24 +3,45 @@ package com.treeview
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.app.ngn.R
 
+/**
+ * Tree Adapter
+ * nm : store list of node to for layout
+ */
 class TreeAdapter(private val nm : NodeManager) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private var onNodeClickListener : OnNodeClickListener = object : OnNodeClickListener{}
+
+    fun setOnNodeClickListener(onNodeClickListener: OnNodeClickListener){
+        this.onNodeClickListener = onNodeClickListener
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return NodeHolder(LayoutInflater.from(parent.context)
-            .inflate(R.layout.com_list_line_1, parent, false))
+            .inflate(android.R.layout.simple_list_item_1, parent, false))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        
+        (holder as NodeHolder).bind(nm.nodes[position], onNodeClickListener)
     }
 
     override fun getItemCount(): Int {
-        return nm.rootNodes.size
+        return nm.nodes.size
     }
 
     class NodeHolder(view : View) : RecyclerView.ViewHolder(view){
+        fun bind(node : Node, onNodeClickListener: OnNodeClickListener){
+            itemView.setPadding(node.level * itemView.paddingLeft, itemView.paddingTop, itemView.paddingRight, itemView.paddingBottom)
+            itemView.findViewById<TextView>(android.R.id.text1).text = node.value.toString()
+            itemView.setOnClickListener {
+                onNodeClickListener.onClick(node)
+            }
+        }
+    }
 
+    interface OnNodeClickListener{
+        fun onClick(node : Node){
+
+        }
     }
 }

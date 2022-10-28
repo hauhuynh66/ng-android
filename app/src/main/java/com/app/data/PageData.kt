@@ -1,5 +1,5 @@
 package com.app.data
 
-import android.graphics.Color
+import com.app.ngn.R
 
-data class PageData(val text : String, val resource : Int, val background: Int = Color.WHITE)
+data class PageData(val text : String, val resource : Int, val background: Int = R.color.WhiteSmoke)

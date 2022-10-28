@@ -1,6 +1,12 @@
 package com.app.util
 
+import android.content.ContentResolver
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
 import org.opencv.android.Utils
 import org.opencv.core.*
 import org.opencv.features2d.BFMatcher
@@ -8,8 +14,12 @@ import org.opencv.features2d.Features2d
 import org.opencv.features2d.ORB
 import org.opencv.features2d.SIFT
 import org.opencv.imgproc.Imgproc
+import org.opencv.objdetect.CascadeClassifier
 
-
+/**
+ * CV Operation
+ * Static functions for basic OpenCV Operation
+ */
 class CVOperation {
     companion object{
         fun gaussianFilter(bitmap: Bitmap) : Bitmap {
@@ -112,5 +122,55 @@ class CVOperation {
             Utils.matToBitmap(dst, ret)
             return ret
         }
+
+        fun faceDetect(bitmap: Bitmap) : Bitmap {
+            val ret = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
+            val src = Mat()
+            val gray = Mat()
+            Utils.bitmapToMat(bitmap, src)
+            Imgproc.cvtColor(src, gray, Imgproc.COLOR_BGR2GRAY)
+
+            val path = Environment.getExternalStorageDirectory().absolutePath + "/Download/haarcascade_frontalface_default.xml"
+            val cascadeClassifier = CascadeClassifier(path)
+            val faces = MatOfRect()
+            cascadeClassifier.detectMultiScale(gray,  faces)
+            faces.toArray().forEach {
+                Imgproc.rectangle(
+                    src,
+                    Point(it.x.toDouble(), it.y.toDouble()),
+                    Point((it.x + it.width).toDouble(), (it.y + it.height).toDouble()),
+                    Scalar(255.0, 0.0, 0.0),
+                    3
+                )
+            }
+            Utils.matToBitmap(src, ret)
+            return ret
+        }
+
+        private fun getBitmap(uri : Uri, contentResolver: ContentResolver) : Bitmap? {
+            var dst : Bitmap? = null
+            try {
+                uri.apply {
+                    dst = if(Build.VERSION.SDK_INT < 28){
+                        MediaStore.Images.Media.getBitmap(
+                            contentResolver,
+                            uri
+                        )
+                    }else {
+                        val src = ImageDecoder.createSource(contentResolver, uri)
+                        ImageDecoder.decodeBitmap(src)
+                    }
+                }
+            }catch (e : Exception){
+                e.printStackTrace()
+            }
+            return dst
+        }
+
+        fun getBitmap(uri: Uri, contentResolver: ContentResolver, format : Bitmap.Config) : Bitmap? {
+            val bitmap = getBitmap(uri, contentResolver)
+            return bitmap?.copy(format, true)
+        }
+
     }
 }

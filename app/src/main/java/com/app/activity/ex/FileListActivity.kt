@@ -28,15 +28,6 @@ class FileListActivity() : AppCompatActivity() {
 
         val runner = TaskRunner()
 
-        val callback = object : ExplorerListAdapter.Callback{
-            override fun onClick(position: Int) {
-
-            }
-
-            override fun onLongClick(position: Int) {
-
-            }
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

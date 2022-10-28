@@ -10,7 +10,7 @@
                     android:title="Note"
                     android:id="@+id/nav_note"/>
                 <item
-                    android:title="RD"
+                    android:title="News"
                     android:id="@+id/nav_rd"/>
                 <item
                     android:title="Apps"

@@ -47,14 +47,14 @@ class DrawActivity : AppCompatActivity() {
                 c: Context?,
                 attrs: AttributeSet?
             ): RecyclerView.LayoutParams {
-                return spanLayoutSize(super.generateLayoutParams(c, attrs))
+                return resize(super.generateLayoutParams(c, attrs))
             }
 
             private fun getHorizontalSpace(): Int {
                 return width - paddingLeft - paddingRight
             }
 
-            private fun spanLayoutSize(layoutParams: RecyclerView.LayoutParams): RecyclerView.LayoutParams {
+            private fun resize(layoutParams: RecyclerView.LayoutParams): RecyclerView.LayoutParams {
                 layoutParams.width = getHorizontalSpace() / itemCount
                 return layoutParams
             }

@@ -1,19 +1,23 @@
 package com.app.fragment.ex
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.ExplorerListAdapter
 import com.app.ngn.R
 import com.app.util.Animation.Companion.crossfade
+import com.app.util.FileOperation
 import com.google.android.material.snackbar.Snackbar
 
 class EXListFragment : Fragment() {
@@ -40,22 +44,22 @@ class EXListFragment : Fragment() {
         pathView = view.findViewById(R.id.path_view)
         bottomBar = view.findViewById(R.id.actions)
         selectedCount = view.findViewById(R.id.count)
-        val dismiss = view.findViewById<ImageButton>(R.id.dismiss)
 
-        val callback = object : ExplorerListAdapter.Callback{
-            override fun onClick(position : Int) {
-                if(adapter.mode == ExplorerListAdapter.Mode.Display){
-                    adapter.apply {
-                        val (action,path) = getAction(position)
-                        if(action == "next"){
-                            setPath(path)
-                            currentPath = path
-                            pathView.text = currentPath
-                        }
+        adapter = ExplorerListAdapter(rootPath, isGrid = false)
+        adapter.setOnItemClickListener(object : ExplorerListAdapter.OnItemClickListener{
+            override fun onClick(position: Int) {
+                adapter.apply {
+                    val (action,path) = getAction(position)
+                    if(action == "next"){
+                        setPath(path)
+                        currentPath = path
+                        pathView.text = currentPath
                     }
                 }
             }
+        })
 
+        adapter.setOnItemLongClickListener(object : ExplorerListAdapter.OnItemLongClickListener{
             override fun onLongClick(position: Int) {
                 adapter.apply {
                     changeMode(ExplorerListAdapter.Mode.Select)
@@ -63,9 +67,8 @@ class EXListFragment : Fragment() {
                     crossfade(arrayListOf(bottomBar))
                 }
             }
-        }
+        })
 
-        adapter = ExplorerListAdapter(rootPath, isGrid = false, callback)
         list.layoutManager = LinearLayoutManager(requireContext())
         list.adapter = adapter
         pathView.text = currentPath
@@ -81,10 +84,13 @@ class EXListFragment : Fragment() {
             adapter.changeMode(ExplorerListAdapter.Mode.Display)
         }
 
-        view.findViewById<ImageButton>(R.id.action_ex).setOnClickListener {
-            val select = adapter.getSelected().map {
+        view.findViewById<ImageButton>(R.id.action_ex).setOnClickListener { it ->
+            val select  = adapter.getSelected().map {
                 it.absolutePath
             }
+            val menu = configMenu(requireContext(), it, select)
+
+            menu.show()
         }
 
         view.findViewById<ImageButton>(R.id.previous).setOnClickListener{
@@ -94,6 +100,7 @@ class EXListFragment : Fragment() {
             }else{
                 Snackbar
                     .make(view, "Cant go back further", Snackbar.LENGTH_SHORT)
+                    .setAction("OK"){}
                     .show()
             }
         }
@@ -101,5 +108,47 @@ class EXListFragment : Fragment() {
         view.findViewById<ImageButton>(R.id.check_all).setOnClickListener {
             adapter.flip()
         }
+    }
+
+    fun configMenu(context : Context, view : View, select : List<String>) : PopupMenu{
+        val menu = PopupMenu(context, view)
+        menu.menuInflater.inflate(R.menu.file_menu, menu.menu)
+        val renameItem = menu.menu[2]
+        if(select.size > 1) {
+            renameItem.isEnabled = false
+        }
+        menu.setOnMenuItemClickListener {
+            when(it.itemId){
+                R.id.file_menu_delete->{
+                    var message = "${select.size} file(s) deleted"
+                    if(!handleDelete(select)){
+                        message = "Something went wrong"
+                    }
+                    Snackbar.make(this.requireView(),message, Snackbar.LENGTH_SHORT)
+                        .setAction("OK"){}
+                        .show()
+                }
+                else->{
+
+                }
+            }
+            adapter.refresh()
+            true
+        }
+
+        return menu
+    }
+
+    fun handleDelete(list : List<String>) : Boolean{
+        val success = FileOperation.deleteFiles(list)
+        return success == list.size
+    }
+
+    fun handleMove(list : List<String>){
+
+    }
+
+    fun handleRename(newPath : String){
+
     }
 }

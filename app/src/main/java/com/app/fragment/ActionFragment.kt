@@ -59,7 +59,7 @@ class ActionFragment : Fragment() {
             }
         }))
 
-        data.add(ActionData(R.drawable.vision, "FR", object : ActionData.Callback{
+        data.add(ActionData(R.drawable.vision, "CV", object : ActionData.Callback{
             override fun onClick() {
                 val intent = Intent(requireActivity(), CVActivity::class.java)
                 startActivity(intent)

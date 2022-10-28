@@ -40,6 +40,10 @@ import java.util.*
 import kotlin.math.roundToInt
 import kotlin.system.exitProcess
 
+/**
+ * Weather Activity
+ * Display current weather and 40 next forecast data
+ */
 class WeatherActivity : AppCompatActivity() {
     private val model : Weather by viewModels()
     private var lat : Double = 10.76
@@ -174,10 +178,6 @@ class WeatherActivity : AppCompatActivity() {
         val list = view.findViewById<RecyclerView>(R.id.list2)
 
         list.layoutManager = object : GridLayoutManager(this, 2){
-            override fun generateLayoutParams(lp: ViewGroup.LayoutParams?): RecyclerView.LayoutParams {
-                return spanLayoutSize(super.generateLayoutParams(lp))
-            }
-
             override fun generateLayoutParams(
                 c: Context?,
                 attrs: AttributeSet?
@@ -186,8 +186,8 @@ class WeatherActivity : AppCompatActivity() {
             }
 
             private fun spanLayoutSize(layoutParams: RecyclerView.LayoutParams): RecyclerView.LayoutParams {
-                var rows = (itemCount/spanCount)
-                val left = itemCount%spanCount
+                var rows = (itemCount / spanCount)
+                val left = itemCount % spanCount
 
                 if ( left > 0){
                     rows++
@@ -207,10 +207,6 @@ class WeatherActivity : AppCompatActivity() {
 
             private fun getVerticalSpace(): Int {
                 return height - paddingBottom - paddingTop
-            }
-
-            override fun generateDefaultLayoutParams(): RecyclerView.LayoutParams {
-                return spanLayoutSize(super.generateDefaultLayoutParams())
             }
 
             override fun canScrollVertically(): Boolean {

@@ -9,6 +9,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ngn.R
+import com.treeview.Node
+import com.treeview.NodeManager
+import com.treeview.TreeAdapter
+
+/**
+ * Test Fragment
+ * Fragment for testing new components
+ */
 
 class TestFragment : Fragment() {
     override fun onCreateView(
@@ -22,10 +30,30 @@ class TestFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        view.findViewById<RecyclerView>(R.id.list).apply {
+        val nodeManager = NodeManager()
+        val n1 = Node("Test1")
+        n1.addChild(Node("Test11"))
+        n1.addChild(Node("Test12"))
+        val n2 = Node("Test2")
+        n2.addChild(Node("Test21"))
+        n2.addChild(Node("Test22"))
+        nodeManager.nodes.add(n1)
+        nodeManager.nodes.add(n2)
+        view.findViewById<RecyclerView>(R.id.item_list).apply {
+            val treeAdapter = TreeAdapter(nodeManager)
+            treeAdapter.setOnNodeClickListener(object : TreeAdapter.OnNodeClickListener{
+                override fun onClick(node: Node) {
+                    if(!node.isExpanded){
+                        nodeManager.expandNode(node)
+                        treeAdapter.notifyDataSetChanged()
+                    }else{
+                        nodeManager.collapseNode(node)
+                        treeAdapter.notifyDataSetChanged()
+                    }
+                }
+            })
             layoutManager = LinearLayoutManager(context, VERTICAL,false)
-
+            adapter = treeAdapter
         }
     }
 
