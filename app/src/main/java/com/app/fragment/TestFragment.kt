@@ -8,10 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
+import com.app.adapter.TableAdapter
 import com.app.ngn.R
-import com.treeview.Node
-import com.treeview.NodeManager
-import com.treeview.TreeAdapter
 
 /**
  * Test Fragment
@@ -30,15 +28,20 @@ class TestFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val nodeManager = NodeManager()
+        /*val nodeManager = NodeManager(LinkedList<Node>())
         val n1 = Node("Test1")
-        n1.addChild(Node("Test11"))
+        val n11 = Node("Test11")
+        n1.addChild(n11)
+        n11.addChild(Node("Test111"))
         n1.addChild(Node("Test12"))
         val n2 = Node("Test2")
         n2.addChild(Node("Test21"))
         n2.addChild(Node("Test22"))
-        nodeManager.nodes.add(n1)
-        nodeManager.nodes.add(n2)
+
+        val list = LinkedList<Node>()
+        list.addAll(listOf(n1,n2))
+        nodeManager.nodes = list
+
         view.findViewById<RecyclerView>(R.id.item_list).apply {
             val treeAdapter = TreeAdapter(nodeManager)
             treeAdapter.setOnNodeClickListener(object : TreeAdapter.OnNodeClickListener{
@@ -54,6 +57,21 @@ class TestFragment : Fragment() {
             })
             layoutManager = LinearLayoutManager(context, VERTICAL,false)
             adapter = treeAdapter
+        }
+
+        val rootNode = BNode("Test")
+        val left = BNode("TestL")
+        val right = BNode("TestR")
+        left.attachLeft(BNode("LLLLL"))
+        right.attachRight(BNode("RRRRR"))
+        rootNode.attachLeft(left)
+        rootNode.attachRight(right)
+        val tree = BTree(rootNode)
+        tree.traverse(BTree.TraverseType.InOrder)*/
+
+        view.findViewById<RecyclerView>(R.id.item_list).apply {
+            adapter = TableAdapter(5)
+            layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
         }
     }
 

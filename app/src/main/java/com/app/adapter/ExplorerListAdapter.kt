@@ -231,15 +231,20 @@ class ExplorerListAdapter(var root : String, var isGrid: Boolean, var mode: Mode
         val ret = arrayListOf<FileDisplay>()
         val file = File(path)
         if(file.isDirectory && file.listFiles()!=null){
-            for(f: File? in file.listFiles()){
-                if(file.exists()){
-                    f!!.apply {
-                        val attrs = Files.readAttributes(file.toPath(), BasicFileAttributes::class.java)
-                        val date = attrs.creationTime().toMillis()
-                        if(f.isDirectory){
-                            ret.add(FileDisplay(f.name, Date(date), null, f.absolutePath, FileType.DIRECTORY))
-                        }else{
-                            ret.add(FileDisplay(f.name, Date(date), f.length()/1024, f.absolutePath, FileType.fromExtension(f.extension)))
+            val listFiles = file.listFiles()
+            with(listFiles){
+                if(this!=null && this.isNotEmpty()){
+                    for(f: File? in this){
+                        if(file.exists()){
+                            f!!.apply {
+                                val attrs = Files.readAttributes(file.toPath(), BasicFileAttributes::class.java)
+                                val date = attrs.creationTime().toMillis()
+                                if(f.isDirectory){
+                                    ret.add(FileDisplay(f.name, Date(date), null, f.absolutePath, FileType.DIRECTORY))
+                                }else{
+                                    ret.add(FileDisplay(f.name, Date(date), f.length()/1024, f.absolutePath, FileType.fromExtension(f.extension)))
+                                }
+                            }
                         }
                     }
                 }

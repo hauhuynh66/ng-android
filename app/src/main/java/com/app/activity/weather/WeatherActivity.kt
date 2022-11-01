@@ -5,7 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.AttributeSet
-import android.view.*
+import android.view.Gravity
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -27,6 +30,7 @@ import com.app.model.Setting
 import com.app.ngn.R
 import com.app.task.GetHttpTask
 import com.app.task.TaskRunner
+import com.app.util.Animation
 import com.app.util.PermissionUtils.Companion.checkPermissions
 import com.app.view.SunPositionView
 import com.app.viewmodel.Weather
@@ -68,6 +72,8 @@ class WeatherActivity : AppCompatActivity() {
         progress = findViewById(R.id.progress)
         contentView = findViewById(R.id.content_view)
 
+        Animation.crossfade(arrayListOf(progress), arrayListOf(contentView))
+
         permissionsCheck()
 
         taskRunner = TaskRunner()
@@ -87,6 +93,7 @@ class WeatherActivity : AppCompatActivity() {
                             if(result.ok()){
                                 model.forecast.value = getForecastData(result.get())
                                 displayForecast(contentView, model.forecast.value!!)
+                                Animation.crossfade(arrayListOf(contentView), arrayListOf(progress), duration = 1000L)
                             }
                         }
                     })

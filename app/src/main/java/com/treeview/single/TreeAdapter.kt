@@ -1,5 +1,6 @@
-package com.treeview
+package com.treeview.single
 
+import android.R
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,14 +12,14 @@ import androidx.recyclerview.widget.RecyclerView
  * nm : store list of node to for layout
  */
 class TreeAdapter(private val nm : NodeManager) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var onNodeClickListener : OnNodeClickListener = object : OnNodeClickListener{}
+    private var onNodeClickListener : OnNodeClickListener = object : OnNodeClickListener {}
 
     fun setOnNodeClickListener(onNodeClickListener: OnNodeClickListener){
         this.onNodeClickListener = onNodeClickListener
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return NodeHolder(LayoutInflater.from(parent.context)
-            .inflate(android.R.layout.simple_list_item_1, parent, false))
+            .inflate(R.layout.simple_list_item_1, parent, false))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -31,8 +32,15 @@ class TreeAdapter(private val nm : NodeManager) : RecyclerView.Adapter<RecyclerV
 
     class NodeHolder(view : View) : RecyclerView.ViewHolder(view){
         fun bind(node : Node, onNodeClickListener: OnNodeClickListener){
-            itemView.setPadding(node.level * itemView.paddingLeft, itemView.paddingTop, itemView.paddingRight, itemView.paddingBottom)
-            itemView.findViewById<TextView>(android.R.id.text1).text = node.value.toString()
+            println("${node.level} - ${node.value}")
+            println("=============================")
+            itemView.findViewById<TextView>(R.id.text1).text = "${node.value}"
+            itemView.setPadding(
+                node.level * 50,
+                itemView.paddingTop,
+                itemView.paddingRight,
+                itemView.paddingBottom
+            )
             itemView.setOnClickListener {
                 onNodeClickListener.onClick(node)
             }
