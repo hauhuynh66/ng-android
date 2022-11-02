@@ -1,8 +1,13 @@
 package com.app.util
 
+import android.content.Context
+import android.graphics.drawable.Drawable
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
+import com.app.data.WeatherType
+import com.app.ngn.R
 import kotlin.math.abs
 import kotlin.math.max
 

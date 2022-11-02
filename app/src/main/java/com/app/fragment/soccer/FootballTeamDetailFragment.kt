@@ -42,14 +42,14 @@ class FootballTeamDetailFragment : Fragment() {
         val content = view.findViewById<ConstraintLayout>(R.id.content)
         val progress = view.findViewById<ProgressBar>(R.id.progress)
         this.isDisplay.observe(requireActivity()){
-            when(isDisplay.value){
+            /*when(isDisplay.value){
                 true->{
                     crossfade(arrayListOf(content), arrayListOf(progress), 1000)
                 }
                 false->{
                     crossfade(arrayListOf(progress), arrayListOf(content), 1000)
                 }
-            }
+            }*/
         }
         getTeamDetail(model.team!!.id)
     }

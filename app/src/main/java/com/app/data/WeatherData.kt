@@ -1,5 +1,6 @@
 package com.app.data
 
+import com.app.ngn.R
 import java.util.*
 
 data class WeatherData(val temp: Double,
@@ -9,7 +10,26 @@ data class WeatherData(val temp: Double,
                        val deg : Int,
                        val speed: Double,
                        val visibility : Long? = 0
-)
+){
+    companion object{
+        fun getIcon(des: WeatherType): Int {
+            return when(des){
+                WeatherType.Rain->{
+                    R.drawable.ic_light_rain
+                }
+                WeatherType.Drizzle->{
+                    R.drawable.ic_heavy_rain
+                }
+                WeatherType.Clouds->{
+                    R.drawable.ic_cloudy
+                }
+                else -> {
+                    R.drawable.ic_sunny
+                }
+            }
+        }
+    }
+}
 
 enum class TemperatureUnit{
     Celsius,

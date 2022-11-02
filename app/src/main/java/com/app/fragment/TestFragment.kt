@@ -8,8 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
-import com.app.adapter.TableAdapter
 import com.app.ngn.R
+import com.table.TableAdapter
+import com.table.TableManager
 
 /**
  * Test Fragment
@@ -57,20 +58,10 @@ class TestFragment : Fragment() {
             })
             layoutManager = LinearLayoutManager(context, VERTICAL,false)
             adapter = treeAdapter
-        }
-
-        val rootNode = BNode("Test")
-        val left = BNode("TestL")
-        val right = BNode("TestR")
-        left.attachLeft(BNode("LLLLL"))
-        right.attachRight(BNode("RRRRR"))
-        rootNode.attachLeft(left)
-        rootNode.attachRight(right)
-        val tree = BTree(rootNode)
-        tree.traverse(BTree.TraverseType.InOrder)*/
+        }*/
 
         view.findViewById<RecyclerView>(R.id.item_list).apply {
-            adapter = TableAdapter(5)
+            adapter = TableAdapter(TableManager(5))
             layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
         }
     }

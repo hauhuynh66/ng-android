@@ -1,7 +1,6 @@
 package com.app.adapter
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.app.data.WeatherData
-import com.app.data.WeatherType
 import com.app.ngn.R
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,7 +25,7 @@ class WeatherAdapter(var data:ArrayList<WeatherData>) : RecyclerView.Adapter<Rec
         val metric = context.resources.displayMetrics
         (holder as WeatherViewHolder).apply {
             v.layoutParams.width = metric.widthPixels/3
-            bind(data[position], context)
+            bind(data[position])
         }
     }
 
@@ -36,14 +34,14 @@ class WeatherAdapter(var data:ArrayList<WeatherData>) : RecyclerView.Adapter<Rec
     }
 
     class WeatherViewHolder(var v:View) : RecyclerView.ViewHolder(v){
-        fun bind(data : WeatherData, context: Context){
+        fun bind(data : WeatherData){
             val time = v.findViewById<TextView>(R.id.time)
             val status = v.findViewById<ImageView>(R.id.status)
             val temperature = v.findViewById<TextView>(R.id.temperature)
             val wind = v.findViewById<TextView>(R.id.wind)
 
             time.text = formatWeatherDate(data.time)
-            status.setImageDrawable(getWeatherIcon(data.type, context))
+            status.setImageDrawable(ContextCompat.getDrawable(v.context, WeatherData.getIcon(data.type)))
             temperature.text = data.temp.toString()
             wind.text = "${data.speed} km/h"
         }
@@ -54,24 +52,6 @@ class WeatherAdapter(var data:ArrayList<WeatherData>) : RecyclerView.Adapter<Rec
                 sf.format(date)
             }catch (e:Exception){
                 ""
-            }
-        }
-
-        private fun getWeatherIcon(des: WeatherType, context: Context): Drawable? {
-            return when(des){
-                WeatherType.Rain->{
-                    ContextCompat.getDrawable(context, R.drawable.ic_light_rain)
-                }
-                WeatherType.Drizzle->{
-                    ContextCompat.getDrawable(context, R.drawable.ic_heavy_rain)
-                }
-                WeatherType.Clouds->{
-                    ContextCompat.getDrawable(context, R.drawable.ic_cloudy)
-                }
-
-                else -> {
-                    ContextCompat.getDrawable(context, R.drawable.ic_sunny)
-                }
             }
         }
     }

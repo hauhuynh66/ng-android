@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.app.data.Message
 import com.app.fragment.MessageFragment
 import com.app.ngn.R
@@ -21,11 +23,10 @@ class MessageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_message)
-        setSupportActionBar(findViewById(R.id.toolbar))
+        val title = findViewById<Toolbar>(R.id.toolbar).findViewById<TextView>(R.id.title)
+        title.text = "Messages"
 
-        supportActionBar!!.apply {
-            title = "Message"
-        }
+        setSupportActionBar(findViewById(R.id.toolbar))
 
         val displayUser = if(auth.currentUser!=null){
             auth.currentUser!!.email!!

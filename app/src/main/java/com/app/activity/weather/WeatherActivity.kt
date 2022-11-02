@@ -9,12 +9,14 @@ import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -180,6 +182,10 @@ class WeatherActivity : AppCompatActivity() {
 
         findViewById<TextView>(R.id.status).apply {
             text = weatherData.description
+        }
+
+        findViewById<ImageView>(R.id.status_icon).apply {
+            setImageDrawable(ContextCompat.getDrawable( context, WeatherData.getIcon(weatherData.type)))
         }
 
         val list = view.findViewById<RecyclerView>(R.id.list2)

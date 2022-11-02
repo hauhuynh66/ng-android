@@ -37,7 +37,9 @@ class GoogleMapActivity:AppCompatActivity(), OnMapReadyCallback {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+
         fusedLocationProviderClient.lastLocation.addOnSuccessListener {
             location = it
             mapFragment.getMapAsync(this)

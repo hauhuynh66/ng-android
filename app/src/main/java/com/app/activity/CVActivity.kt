@@ -1,6 +1,9 @@
 package com.app.activity
 
+import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
@@ -14,11 +17,13 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import com.app.ngn.R
 import com.app.util.CVOperation
 import com.app.util.FileOperation
 import java.io.File
+import kotlin.system.exitProcess
 
 /**
  * CV Activity
@@ -35,6 +40,7 @@ class CVActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_cv)
+        selfCheck(this)
 
         source = findViewById(R.id.src)
         result = findViewById(R.id.res)
@@ -48,6 +54,7 @@ class CVActivity : AppCompatActivity(){
 
         cameraResult = registerForActivityResult(ActivityResultContracts.TakePicture()) {
             if (it == true) {
+                println(photoURI?.path)
                 val bitmap = CVOperation.getBitmap(photoURI!!, contentResolver, Bitmap.Config.ARGB_8888)
                 source.setImageBitmap(bitmap)
                 result.setImageBitmap(CVOperation.faceDetect(bitmap!!))
@@ -108,5 +115,16 @@ class CVActivity : AppCompatActivity(){
             }
         }
         return true
+    }
+
+    fun selfCheck(context : Context){
+        val launcher = registerForActivityResult(ActivityResultContracts.RequestPermission()){
+            if(it!=true){
+                exitProcess(0)
+            }
+        }
+        if(ActivityCompat.checkSelfPermission(context, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
+            launcher.launch(Manifest.permission.CAMERA)
+        }
     }
 }
