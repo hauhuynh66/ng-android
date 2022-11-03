@@ -150,7 +150,7 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         when(count){
             0->{
                 prev = System.currentTimeMillis()
-                count++
+                count = 1
                 Toast.makeText(this, "Press back one more time to exit", Toast.LENGTH_SHORT).show()
             }
             1->{
@@ -160,6 +160,7 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                     exitProcess(0)
                 }else{
                     prev = curr
+                    count = 0
                 }
             }
         }

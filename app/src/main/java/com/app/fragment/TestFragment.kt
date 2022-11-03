@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ngn.R
 import com.table.TableAdapter
-import com.table.TableManager
 
 /**
  * Test Fragment
@@ -60,10 +59,10 @@ class TestFragment : Fragment() {
             adapter = treeAdapter
         }*/
 
+
         view.findViewById<RecyclerView>(R.id.item_list).apply {
-            adapter = TableAdapter(TableManager(5))
+            adapter = TableAdapter(3, 3)
             layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
         }
     }
-
 }

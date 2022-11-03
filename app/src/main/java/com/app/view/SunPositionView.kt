@@ -8,7 +8,7 @@ import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import com.app.data.SunState
 import com.app.ngn.R
-import com.app.util.Utils
+import com.app.util.DateTimeUtils
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,7 +23,6 @@ class SunPositionView : View {
 
     private var arcRect : RectF = RectF()
     private val bounds : Rect = Rect()
-    private var bitmapRect : RectF = RectF()
 
     private var dashedLinePaint : Paint = Paint()
     private var linePaint : Paint = Paint()
@@ -80,7 +79,7 @@ class SunPositionView : View {
             size, resources.displayMetrics
         )
         val customTypeface =
-            ResourcesCompat.getCachedFont(context!!, R.font.audiowide)
+            ResourcesCompat.getFont(context, R.font.audiowide)
 
         textPaint.apply {
             color = Color.BLACK
@@ -96,7 +95,6 @@ class SunPositionView : View {
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-
         when(getState(sunrise, sunset, current)){
             SunState.State1->{
                 drawState1(canvas)
@@ -142,7 +140,7 @@ class SunPositionView : View {
     }
 
     private fun drawState2(canvas: Canvas?){
-        val midnight = Utils.atEndDate(this.current * 1000) / 1000
+        val midnight = DateTimeUtils.atEndDate(this.current * 1000) / 1000
         val distance = midnight - this.sunset
         val weight = this.current - this.sunset
         val deg = (weight.toDouble()/distance.toDouble()) * 180.0
@@ -161,7 +159,7 @@ class SunPositionView : View {
     }
 
     private fun drawState3(canvas: Canvas?){
-        val midnight = Utils.atStartDate(this.current * 1000) / 1000
+        val midnight = DateTimeUtils.atStartDate(this.current * 1000) / 1000
         val distance = this.sunrise - midnight
         val weight = this.current - midnight
         val deg = (weight.toDouble()/distance.toDouble()) * 180.0

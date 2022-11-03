@@ -9,6 +9,7 @@ import org.opencv.android.OpenCVLoader
 class App: Application() {
     private val messageReceive = "MESSAGE_RECEIVED"
     val actionMessageReceived = "ACTION_MESSAGE_RECEIVED"
+
     companion object {
         const val channel1ID = "CHANNEL_1"
         const val channel2ID = "CHANNEL_2"
@@ -18,7 +19,6 @@ class App: Application() {
     override fun onCreate() {
         super.onCreate()
         OpenCVLoader.initDebug()
-        println("OK")
         createNotificationChannel()
     }
 

@@ -5,5 +5,10 @@
         android:title="Add"
         android:icon="@drawable/ic_add"
         app:showAsAction="always"
-        android:id="@+id/add"/>
+        android:id="@+id/weather_location_select"/>
+    <item
+        android:title="Graph"
+        android:icon="@drawable/ic_baseline_refresh"
+        app:showAsAction="always"
+        android:id="@+id/weather_graph"/>
 </menu>

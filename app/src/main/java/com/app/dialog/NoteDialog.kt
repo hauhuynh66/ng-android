@@ -7,12 +7,13 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.app.model.Note
 import com.app.ngn.R
+import com.app.util.DateTimeUtils
 import com.app.util.Formatter.Companion.parseDate
-import com.app.util.Utils
 import java.util.*
 
 class NoteDialog(private val dialogListener: Listener) : DialogFragment() {
@@ -20,10 +21,11 @@ class NoteDialog(private val dialogListener: Listener) : DialogFragment() {
         fun onConfirm(note : Note)
         fun onCancel(note : Note)
     }
-    private lateinit var dp:ImageView
-    private lateinit var tp:ImageView
-    private lateinit var title:EditText
-    private lateinit var content:EditText
+
+    private lateinit var dp : ImageView
+    private lateinit var tp : ImageView
+    private lateinit var title : TextView
+    private lateinit var content : TextView
     private var calendar: Calendar = Calendar.getInstance()
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(requireContext())
@@ -41,7 +43,7 @@ class NoteDialog(private val dialogListener: Listener) : DialogFragment() {
                 calendar.set(Calendar.YEAR, year)
                 calendar.set(Calendar.MONTH, month)
                 calendar.set(Calendar.DATE, day)
-                date.setText(Utils.getText(calendar, 1, '/'))
+                date.setText(DateTimeUtils.getText(calendar, 1, '/'))
             }
         }
 
@@ -49,7 +51,7 @@ class NoteDialog(private val dialogListener: Listener) : DialogFragment() {
             run{
                 calendar.set(Calendar.HOUR, hour)
                 calendar.set(Calendar.MINUTE, minute)
-                time.setText(Utils.getText(calendar, 2, '/'))
+                time.setText(DateTimeUtils.getText(calendar, 2, '/'))
             }
         }
 

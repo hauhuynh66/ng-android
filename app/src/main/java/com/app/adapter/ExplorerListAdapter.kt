@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.app.data.FileDisplay
-import com.app.data.FileType
+import com.app.data.FileTable
 import com.app.ngn.R
 import com.app.util.Formatter.Companion.formatDate
 import java.io.File
@@ -96,10 +96,10 @@ class ExplorerListAdapter(var root : String, var isGrid: Boolean, var mode: Mode
             }
 
             v.findViewById<TextView>(R.id.description2).apply {
-                text = if(data.type != FileType.DIRECTORY){
-                    data.size?.toString()
-                }else{
+                text = if(FileTable.fromExtension(data.extension)==FileTable.DIRECTORY){
                     ""
+                }else{
+                    data.size.toString()
                 }
             }
 
@@ -108,8 +108,8 @@ class ExplorerListAdapter(var root : String, var isGrid: Boolean, var mode: Mode
             }
 
             v.findViewById<ImageView>(R.id.icon).apply {
-                val res = when(data.type){
-                    FileType.DIRECTORY->{
+                val res = when(FileTable.fromExtension(data.extension)){
+                    FileTable.DIRECTORY->{
                         ContextCompat.getDrawable(context, R.drawable.ic_baseline_folder)
                     }
                     else->{
@@ -149,8 +149,8 @@ class ExplorerListAdapter(var root : String, var isGrid: Boolean, var mode: Mode
                 true
             }
             v.findViewById<ImageView>(R.id.com_ex_grid_icon).apply {
-                val res = when(data.type){
-                    FileType.DIRECTORY->{
+                val res = when(FileTable.fromExtension(data.extension)){
+                    FileTable.DIRECTORY->{
                         ContextCompat.getDrawable(itemView.context, R.drawable.ic_baseline_folder)
                     }
                     else->{
@@ -221,7 +221,7 @@ class ExplorerListAdapter(var root : String, var isGrid: Boolean, var mode: Mode
 
     fun getAction(position: Int) : Pair<String, String>{
         var action = "open"
-        if(data[position].type == FileType.DIRECTORY){
+        if(FileTable.fromExtension(data[position].extension) == FileTable.DIRECTORY){
             action = "next"
         }
         return Pair(action, data[position].absolutePath)
@@ -240,9 +240,9 @@ class ExplorerListAdapter(var root : String, var isGrid: Boolean, var mode: Mode
                                 val attrs = Files.readAttributes(file.toPath(), BasicFileAttributes::class.java)
                                 val date = attrs.creationTime().toMillis()
                                 if(f.isDirectory){
-                                    ret.add(FileDisplay(f.name, Date(date), null, f.absolutePath, FileType.DIRECTORY))
+                                    ret.add(FileDisplay(f.name, Date(date), null, f.absolutePath, null))
                                 }else{
-                                    ret.add(FileDisplay(f.name, Date(date), f.length()/1024, f.absolutePath, FileType.fromExtension(f.extension)))
+                                    ret.add(FileDisplay(f.name, Date(date), f.length()/1024, f.absolutePath, f.extension))
                                 }
                             }
                         }

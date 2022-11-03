@@ -20,10 +20,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import com.app.ngn.R
+import com.app.util.BitmapUtils
 import com.app.util.CVOperation
 import com.app.util.FileOperation
 import java.io.File
 import kotlin.system.exitProcess
+
 
 /**
  * CV Activity
@@ -54,10 +56,9 @@ class CVActivity : AppCompatActivity(){
 
         cameraResult = registerForActivityResult(ActivityResultContracts.TakePicture()) {
             if (it == true) {
-                println(photoURI?.path)
-                val bitmap = CVOperation.getBitmap(photoURI!!, contentResolver, Bitmap.Config.ARGB_8888)
+                val bitmap = BitmapUtils.getBitmap(photoURI!!, contentResolver, Bitmap.Config.ARGB_8888)
                 source.setImageBitmap(bitmap)
-                result.setImageBitmap(CVOperation.faceDetect(bitmap!!))
+                result.setImageBitmap(CVOperation.faceDetect(BitmapUtils.rotateImage(File(photoURI?.path!!).path)))
             }else{
                 val file = File(photoURI?.path)
                 file.delete()
@@ -67,7 +68,7 @@ class CVActivity : AppCompatActivity(){
 
         fileSelectResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             if(it.data?.data !=null){
-                val bitmap = CVOperation.getBitmap(it.data?.data!!, contentResolver, Bitmap.Config.ARGB_8888)
+                val bitmap = BitmapUtils.getBitmap(it.data?.data!!, contentResolver, Bitmap.Config.ARGB_8888)
                 source.setImageBitmap(bitmap)
                 result.setImageBitmap(CVOperation.faceDetect(bitmap!!))
             }
@@ -83,7 +84,6 @@ class CVActivity : AppCompatActivity(){
         when(item.itemId){
             R.id.cv_menu_camera->{
                 val file = FileOperation.createImageFile(dir)
-
                 photoURI = if(file!=null){
                     FileProvider.getUriForFile(this,"com.app.activity.ngn", file)
                 }else{
@@ -117,7 +117,7 @@ class CVActivity : AppCompatActivity(){
         return true
     }
 
-    fun selfCheck(context : Context){
+    private fun selfCheck(context : Context){
         val launcher = registerForActivityResult(ActivityResultContracts.RequestPermission()){
             if(it!=true){
                 exitProcess(0)

@@ -3,9 +3,9 @@ package com.app.util
 import java.text.DecimalFormat
 import java.util.*
 
-class Utils {
+class DateTimeUtils {
     companion object{
-        fun getText(cl:Calendar, mode:Int, separator : Char) : String {
+        fun getText(cl: Calendar, mode:Int, separator : Char) : String {
             val sb:StringBuilder = StringBuilder()
             val f = DecimalFormat("00")
             when(mode){

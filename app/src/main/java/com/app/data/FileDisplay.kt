@@ -7,34 +7,26 @@ class FileDisplay(
     val createDate: Date,
     val size: Long?,
     val absolutePath: String,
-    val type: FileType,
-    var checked : Boolean = false){
-}
+    val extension: String?,
+    var checked : Boolean = false
+)
 
-enum class FileType{
+enum class FileTable{
     DIRECTORY,
-    IMAGE,
-    VIDEO,
-    AUDIO,
-    OTHERS;
+    FILE;
 
     companion object{
-        fun fromExtension(extension : String): FileType {
-            return when(extension){
-                "jpg"->{
-                    IMAGE
-                }
-                "mp3"->{
-                    AUDIO
-                }
-                "mp4"->{
-                    VIDEO
-                }
-                else->{
-                    OTHERS
+        fun fromExtension(extension: String?) : FileTable{
+            return if(extension == null){
+                return DIRECTORY
+            }
+            else{
+                when(extension){
+                    else->{
+                        FILE
+                    }
                 }
             }
         }
     }
 }
-

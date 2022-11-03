@@ -1,7 +1,5 @@
 package com.app.util
 
-import android.content.Context
-import com.app.ngn.R
 import java.util.*
 
 class Generator {
@@ -24,6 +22,7 @@ class Generator {
             }
             return sb.toString()
         }
+
         fun generateColor(length : Int) : List<String>{
             val list = mutableListOf<String>()
             for(i in 0..length){

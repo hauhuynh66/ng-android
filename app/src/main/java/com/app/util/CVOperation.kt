@@ -146,31 +146,5 @@ class CVOperation {
             Utils.matToBitmap(src, ret)
             return ret
         }
-
-        private fun getBitmap(uri : Uri, contentResolver: ContentResolver) : Bitmap? {
-            var dst : Bitmap? = null
-            try {
-                uri.apply {
-                    dst = if(Build.VERSION.SDK_INT < 28){
-                        MediaStore.Images.Media.getBitmap(
-                            contentResolver,
-                            uri
-                        )
-                    }else {
-                        val src = ImageDecoder.createSource(contentResolver, uri)
-                        ImageDecoder.decodeBitmap(src)
-                    }
-                }
-            }catch (e : Exception){
-                e.printStackTrace()
-            }
-            return dst
-        }
-
-        fun getBitmap(uri: Uri, contentResolver: ContentResolver, format : Bitmap.Config) : Bitmap? {
-            val bitmap = getBitmap(uri, contentResolver)
-            return bitmap?.copy(format, true)
-        }
-
     }
 }

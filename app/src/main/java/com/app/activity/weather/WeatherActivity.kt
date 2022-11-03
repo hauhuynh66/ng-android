@@ -338,9 +338,12 @@ class WeatherActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            R.id.add->{
+            R.id.weather_location_select->{
                 val list = Intent(this, LocationListActivity::class.java)
                 startActivity(list)
+            }
+            R.id.weather_graph->{
+
             }
             android.R.id.home->{
                 onBackPressed()
