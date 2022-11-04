@@ -22,7 +22,7 @@ import androidx.core.content.FileProvider
 import com.app.ngn.R
 import com.app.util.BitmapUtils
 import com.app.util.CVOperation
-import com.app.util.FileOperation
+import com.app.util.FileUtils
 import java.io.File
 import kotlin.system.exitProcess
 
@@ -58,7 +58,7 @@ class CVActivity : AppCompatActivity(){
             if (it == true) {
                 val bitmap = BitmapUtils.getBitmap(photoURI!!, contentResolver, Bitmap.Config.ARGB_8888)
                 source.setImageBitmap(bitmap)
-                result.setImageBitmap(CVOperation.faceDetect(BitmapUtils.rotateImage(File(photoURI?.path!!).path)))
+                result.setImageBitmap(CVOperation.canny(bitmap!!))
             }else{
                 val file = File(photoURI?.path)
                 file.delete()
@@ -70,7 +70,7 @@ class CVActivity : AppCompatActivity(){
             if(it.data?.data !=null){
                 val bitmap = BitmapUtils.getBitmap(it.data?.data!!, contentResolver, Bitmap.Config.ARGB_8888)
                 source.setImageBitmap(bitmap)
-                result.setImageBitmap(CVOperation.faceDetect(bitmap!!))
+                result.setImageBitmap(CVOperation.sift(bitmap!!))
             }
         }
     }
@@ -83,7 +83,7 @@ class CVActivity : AppCompatActivity(){
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.cv_menu_camera->{
-                val file = FileOperation.createImageFile(dir)
+                val file = FileUtils.createImageFile(dir)
                 photoURI = if(file!=null){
                     FileProvider.getUriForFile(this,"com.app.activity.ngn", file)
                 }else{

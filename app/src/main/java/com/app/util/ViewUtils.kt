@@ -1,13 +1,12 @@
 package com.app.util
 
 import android.content.Context
-import android.graphics.drawable.Drawable
+import android.util.AttributeSet
 import android.view.View
-import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
-import com.app.data.WeatherType
-import com.app.ngn.R
 import kotlin.math.abs
 import kotlin.math.max
 
@@ -77,6 +76,50 @@ class ViewUtils {
                             alpha = 0f
                         }
                     }
+                }
+            }
+        }
+
+        fun getFixedHorizontalLayoutManager(context: Context) : RecyclerView.LayoutManager{
+            return object : LinearLayoutManager(context, HORIZONTAL, false){
+                override fun generateLayoutParams(
+                    c: Context?,
+                    attrs: AttributeSet?
+                ): RecyclerView.LayoutParams {
+                    return resize(super.generateLayoutParams(c, attrs))
+                }
+
+                private fun getHorizontalSpace(): Int {
+                    return width - paddingLeft - paddingRight
+                }
+
+                private fun resize(layoutParams: RecyclerView.LayoutParams): RecyclerView.LayoutParams {
+                    layoutParams.width = getHorizontalSpace() / itemCount
+                    return layoutParams
+                }
+
+                override fun canScrollHorizontally(): Boolean {
+                    return false
+                }
+            }
+        }
+
+        fun getFixedVerticalLayoutManager(context: Context) : RecyclerView.LayoutManager{
+            return object : LinearLayoutManager(context, VERTICAL, false){
+                override fun generateLayoutParams(
+                    c: Context?,
+                    attrs: AttributeSet?
+                ): RecyclerView.LayoutParams {
+                    return spanLayoutSize(super.generateLayoutParams(c, attrs))
+                }
+
+                private fun spanLayoutSize(layoutParams: RecyclerView.LayoutParams): RecyclerView.LayoutParams {
+                    layoutParams.height = (height - paddingBottom - paddingTop) / itemCount
+                    return layoutParams
+                }
+
+                override fun canScrollVertically(): Boolean {
+                    return false
                 }
             }
         }

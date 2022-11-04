@@ -56,5 +56,4 @@ class WeatherAdapter(var data:ArrayList<WeatherData>) : RecyclerView.Adapter<Rec
         }
     }
 
-
 }

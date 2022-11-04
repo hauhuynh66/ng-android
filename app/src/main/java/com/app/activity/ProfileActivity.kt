@@ -1,22 +1,20 @@
 package com.app.activity
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.util.AttributeSet
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.ListAdapter
 import com.app.data.LineData
 import com.app.data.LineDisplayOption
 import com.app.data.LineStyle
 import com.app.ngn.R
+import com.app.util.ViewUtils
 import com.app.viewmodel.Authentication
 import com.squareup.picasso.Picasso
 
@@ -58,45 +56,12 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         infoList.apply {
-            layoutManager = object : LinearLayoutManager(context, VERTICAL, false){
-                override fun generateLayoutParams(
-                    c: Context?,
-                    attrs: AttributeSet?
-                ): RecyclerView.LayoutParams {
-                    return spanLayoutSize(super.generateLayoutParams(c, attrs))
-                }
-
-                private fun spanLayoutSize(layoutParams: RecyclerView.LayoutParams): RecyclerView.LayoutParams {
-                    layoutParams.height = (height - paddingBottom - paddingTop) / itemCount
-                    return layoutParams
-                }
-
-                override fun canScrollVertically(): Boolean {
-                    return false
-                }
-            }
+            layoutManager = ViewUtils.getFixedVerticalLayoutManager(this@ProfileActivity)
             adapter = ListAdapter(infoData, LineStyle.Style1)
         }
 
         statList.apply {
-            layoutManager = object : LinearLayoutManager(context, HORIZONTAL, false){
-                override fun generateLayoutParams(
-                    c: Context?,
-                    attrs: AttributeSet?
-                ): RecyclerView.LayoutParams {
-                    return spanLayoutSize(super.generateLayoutParams(c, attrs))
-                }
-
-                private fun spanLayoutSize(layoutParams: RecyclerView.LayoutParams): RecyclerView.LayoutParams {
-                    layoutParams.width = (width - paddingLeft - paddingRight) / itemCount
-                    layoutParams.height = height
-                    return layoutParams
-                }
-
-                override fun canScrollVertically(): Boolean {
-                    return false
-                }
-            }
+            layoutManager = ViewUtils.getFixedHorizontalLayoutManager(this@ProfileActivity)
             adapter = ListAdapter(statData, LineStyle.Style2)
         }
     }

@@ -1,22 +1,20 @@
 package com.app.activity
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.AttributeSet
 import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.DrawAdapter
 import com.app.ngn.R
-import com.app.util.FileOperation
+import com.app.util.FileUtils
+import com.app.util.ViewUtils
 import com.app.view.DrawView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.File
@@ -27,7 +25,6 @@ class DrawActivity : AppCompatActivity() {
     private val path = Environment.getExternalStorageDirectory().absolutePath + "/photo"
     private lateinit var colorAdapter : DrawAdapter
     private lateinit var sizeAdapter: DrawAdapter
-    private lateinit var fixedLayoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,28 +36,6 @@ class DrawActivity : AppCompatActivity() {
                 val uri = it.data!!.data
                 val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, uri)
                 draw.changeBackground(bitmap)
-            }
-        }
-
-        fixedLayoutManager = object : LinearLayoutManager(this, HORIZONTAL, false){
-            override fun generateLayoutParams(
-                c: Context?,
-                attrs: AttributeSet?
-            ): RecyclerView.LayoutParams {
-                return resize(super.generateLayoutParams(c, attrs))
-            }
-
-            private fun getHorizontalSpace(): Int {
-                return width - paddingLeft - paddingRight
-            }
-
-            private fun resize(layoutParams: RecyclerView.LayoutParams): RecyclerView.LayoutParams {
-                layoutParams.width = getHorizontalSpace() / itemCount
-                return layoutParams
-            }
-
-            override fun canScrollHorizontally(): Boolean {
-                return false
             }
         }
 
@@ -121,7 +96,7 @@ class DrawActivity : AppCompatActivity() {
 
         sizeAdapter = DrawAdapter(
             getArray(2),
-            DrawAdapter.ListType.Value,
+            DrawAdapter.ListType.Text,
             object : DrawAdapter.Listener {
                 override fun onClick(value: Int, position : Int) {
                     draw.changePathWidth(value.toFloat())
@@ -138,16 +113,15 @@ class DrawActivity : AppCompatActivity() {
         val colorList = findViewById<RecyclerView>(R.id.ac_draw_color)
         val sizeList = findViewById<RecyclerView>(R.id.ac_draw_size)
 
-        colorList.layoutManager = fixedLayoutManager
-        sizeList.layoutManager = fixedLayoutManager
+        colorList.layoutManager = ViewUtils.getFixedHorizontalLayoutManager(this)
+        sizeList.layoutManager = ViewUtils.getFixedHorizontalLayoutManager(this)
         colorList.adapter = colorAdapter
-
         sizeList.adapter = sizeAdapter
 
         val save = findViewById<Button>(R.id.ac_draw_save)
         save.setOnClickListener {
             val intent = Intent()
-            val file = FileOperation.createImageFile(path)
+            val file = FileUtils.createImageFile(path)
             val fos = FileOutputStream(file)
             val bmp = draw.mBitmap
             bmp!!.compress(Bitmap.CompressFormat.PNG, 100, fos)

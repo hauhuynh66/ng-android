@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.ExplorerListAdapter
 import com.app.ngn.R
 import com.app.util.Animation.Companion.crossfade
-import com.app.util.FileOperation
+import com.app.util.FileUtils
 import com.google.android.material.snackbar.Snackbar
 
 class EXListFragment : Fragment() {
@@ -140,7 +140,7 @@ class EXListFragment : Fragment() {
     }
 
     fun handleDelete(list : List<String>) : Boolean{
-        val success = FileOperation.deleteFiles(list)
+        val success = FileUtils.deleteFiles(list)
         return success == list.size
     }
 

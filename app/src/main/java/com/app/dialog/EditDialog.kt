@@ -4,13 +4,13 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.EditText
 import androidx.fragment.app.DialogFragment
 import com.app.ngn.R
 
-class EditDialog<T>(private val data: T, val listener: Listener<T>) : DialogFragment() {
+class EditDialog<T>(private val data: T, private val listener: Listener<T>) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(requireContext())
         val v = (requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater)

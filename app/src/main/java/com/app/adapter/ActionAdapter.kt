@@ -9,14 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.data.ActionData
 import com.app.ngn.R
 
-class ActionAdapter(val data : List<ActionData>, val size : Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ActionAdapter(val data : List<ActionData>, private val iconSize : Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return ActionViewHolder(inflater.inflate(R.layout.com_misc,parent, false))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as ActionViewHolder).bind(this.data[position], size)
+        (holder as ActionViewHolder).bind(this.data[position], iconSize)
     }
 
     override fun getItemCount(): Int {

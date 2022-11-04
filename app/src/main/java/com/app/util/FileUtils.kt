@@ -8,13 +8,14 @@ import java.util.*
  * File Operation
  * Basic Operation on File
  */
-class FileOperation {
+class FileUtils {
     companion object{
         /**
          * Create temp file to store image
          */
         fun createImageFile(dir : String) : File?{
             val formatter = SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault())
+
             val name = formatter.format(Date()).plus("_IMG.jpg")
             if(!File(dir).exists()){
                 val success = File(dir).mkdirs()
@@ -22,6 +23,7 @@ class FileOperation {
                     return null
                 }
             }
+
             val file = File(dir, name)
             return if(!file.exists()){
                 val success = file.createNewFile()

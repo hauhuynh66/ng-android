@@ -6,11 +6,9 @@ import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.app.adapter.ExplorerListAdapter
 import com.app.ngn.R
-import com.app.task.TaskRunner
 
-class FileListActivity() : AppCompatActivity() {
+class FileListActivity : AppCompatActivity() {
     private var type: Int = 1
     private lateinit var list: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,9 +23,6 @@ class FileListActivity() : AppCompatActivity() {
         progress.visibility = View.VISIBLE
         list = findViewById(R.id.ac_file_list_list)
         list.visibility = View.INVISIBLE
-
-        val runner = TaskRunner()
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

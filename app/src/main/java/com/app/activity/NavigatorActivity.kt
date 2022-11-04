@@ -17,7 +17,7 @@ import com.app.fragment.AboutFragment
 import com.app.fragment.ActionFragment
 import com.app.fragment.MainFragment
 import com.app.fragment.TestFragment
-import com.app.fragment.note.NoteListFragment
+import com.app.fragment.NoteListFragment
 import com.app.ngn.R
 import com.app.viewmodel.Authentication
 import com.google.android.material.navigation.NavigationView
