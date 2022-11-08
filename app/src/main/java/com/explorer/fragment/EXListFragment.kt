@@ -90,7 +90,9 @@ class EXListFragment : Fragment(), ExplorerListAdapter.OnItemClickListener, Expl
         view.findViewById<ImageButton>(R.id.previous).setOnClickListener{
             if(currentPath != rootPath){
                 val parent  = File(currentPath).parent
-                onPathChange(parent)
+                if (parent != null) {
+                    onPathChange(parent)
+                }
             }else {
                 Snackbar
                     .make(view, "Cant go back further", Snackbar.LENGTH_SHORT)
@@ -104,7 +106,7 @@ class EXListFragment : Fragment(), ExplorerListAdapter.OnItemClickListener, Expl
         }
     }
 
-    private fun configMenu(context : Context, view : View, select : List<String>) : PopupMenu{
+    private fun configMenu(context : Context, view : View, select : List<String>) : PopupMenu {
         val menu = PopupMenu(context, view)
         menu.menuInflater.inflate(R.menu.file_menu, menu.menu)
         val renameItem = menu.menu[2]
@@ -118,6 +120,7 @@ class EXListFragment : Fragment(), ExplorerListAdapter.OnItemClickListener, Expl
                     if(!handleDelete(select)){
                         message = "Something went wrong"
                     }
+                    onPathChange(currentPath)
                     Snackbar.make(this.requireView(),message, Snackbar.LENGTH_SHORT)
                         .setAction("OK"){}
                         .show()
@@ -128,9 +131,6 @@ class EXListFragment : Fragment(), ExplorerListAdapter.OnItemClickListener, Expl
             }
             true
         }
-
-        onPathChange(currentPath)
-
         return menu
     }
 
