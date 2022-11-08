@@ -32,7 +32,7 @@ import com.app.model.Setting
 import com.app.ngn.R
 import com.app.task.GetHttpTask
 import com.app.task.TaskRunner
-import com.app.util.Animation
+import com.app.util.Animation.Companion.crossfade
 import com.app.util.PermissionUtils.Companion.checkPermissions
 import com.app.view.SunPositionView
 import com.app.viewmodel.Weather
@@ -74,7 +74,7 @@ class WeatherActivity : AppCompatActivity() {
         progress = findViewById(R.id.progress)
         contentView = findViewById(R.id.content_view)
 
-        Animation.crossfade(arrayListOf(progress), arrayListOf(contentView))
+        crossfade(progress, contentView)
 
         permissionsCheck()
 
@@ -95,7 +95,7 @@ class WeatherActivity : AppCompatActivity() {
                             if(result.ok()){
                                 model.forecast.value = getForecastData(result.get())
                                 displayForecast(contentView, model.forecast.value!!)
-                                Animation.crossfade(arrayListOf(contentView), arrayListOf(progress), duration = 1000L)
+                                crossfade(contentView, progress, duration = 1000L)
                             }
                         }
                     })

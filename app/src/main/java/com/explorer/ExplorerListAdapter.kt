@@ -1,4 +1,4 @@
-package com.app.adapter
+package com.explorer
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,21 +8,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.app.data.FileDisplay
+import com.app.data.FileInfo
 import com.app.data.FileTable
 import com.app.ngn.R
 import com.app.util.Formatter.Companion.formatDate
-import java.io.File
-import java.nio.file.Files
-import java.nio.file.attribute.BasicFileAttributes
-import java.util.*
-import kotlin.io.path.Path
-import kotlin.io.path.absolutePathString
 
-class ExplorerListAdapter(var root : String, var isGrid: Boolean, var mode: Mode = Mode.Display) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var data: MutableList<FileDisplay> = arrayListOf()
-    private var clickListener : OnItemClickListener = object : OnItemClickListener{}
-    private var longClickListener : OnItemLongClickListener = object : OnItemLongClickListener{}
+class ExplorerListAdapter(fileInfoList : List<FileInfo>? = null , var isGrid: Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private var data: MutableList<FileDisplay> = mutableListOf()
+    private var currentMode : Mode = Mode.Display
+    private var clickListener : OnItemClickListener = object : OnItemClickListener {}
+    private var longClickListener : OnItemLongClickListener = object : OnItemLongClickListener {}
 
     enum class Mode{
         Display,
@@ -30,7 +25,17 @@ class ExplorerListAdapter(var root : String, var isGrid: Boolean, var mode: Mode
     }
 
     init {
-        data = getFileList(this.root)
+        fileInfoList?.forEach {
+            data.add(FileDisplay(it))
+        }
+    }
+
+    fun setData(fileInfoList: List<FileInfo>?){
+        data.clear()
+        fileInfoList?.forEach {
+            data.add(FileDisplay(it))
+        }
+        notifyDataSetChanged()
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener){
@@ -52,9 +57,19 @@ class ExplorerListAdapter(var root : String, var isGrid: Boolean, var mode: Mode
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if(isGrid){
-            (holder as GridViewHolder).bind(data[position], position, mode, clickListener, longClickListener)
+            (holder as GridViewHolder).bind(
+                data[position],
+                currentMode,
+                clickListener,
+                longClickListener
+            )
         }else {
-            (holder as LineViewHolder).bind(data[position], position, mode, clickListener, longClickListener)
+            (holder as LineViewHolder).bind(
+                data[position],
+                currentMode,
+                clickListener,
+                longClickListener
+            )
         }
 
     }
@@ -64,8 +79,10 @@ class ExplorerListAdapter(var root : String, var isGrid: Boolean, var mode: Mode
     }
 
     class LineViewHolder(val v: View) : RecyclerView.ViewHolder (v){
-        fun bind(data: FileDisplay, position : Int, mode: Mode,
-                 clickListener: OnItemClickListener, longClickListener: OnItemLongClickListener){
+        fun bind(
+            data: FileDisplay, mode: Mode,
+            clickListener: OnItemClickListener, longClickListener: OnItemLongClickListener
+        ){
             val checkBox = itemView.findViewById<CheckBox>(R.id.checkbox)
             checkBox.apply {
                 visibility = if(mode == Mode.Select) View.VISIBLE else View.GONE
@@ -78,37 +95,36 @@ class ExplorerListAdapter(var root : String, var isGrid: Boolean, var mode: Mode
 
             itemView.setOnClickListener{
                 if(mode == Mode.Display){
-                    clickListener.onClick(position)
+                    clickListener.onClick(data.info)
                 }else{
                     checkBox.isSoundEffectsEnabled = false
                     checkBox.performClick()
                 }
-
             }
 
             itemView.setOnLongClickListener {
-                longClickListener.onLongClick(position)
+                longClickListener.onLongClick(data.info)
                 true
             }
 
             v.findViewById<TextView>(R.id.title).apply {
-                text = data.name
+                text = data.info.name
             }
 
             v.findViewById<TextView>(R.id.description2).apply {
-                text = if(FileTable.fromExtension(data.extension)==FileTable.DIRECTORY){
+                text = if(FileTable.fromExtension(data.info.extension)==FileTable.DIRECTORY){
                     ""
                 }else{
-                    data.size.toString()
+                    data.info.size.toString()
                 }
             }
 
             v.findViewById<TextView>(R.id.description1).apply {
-                text = formatDate(data.createDate, "yyyy/MM/dd HH:mm")
+                text = formatDate(data.info.createDate, "yyyy/MM/dd HH:mm")
             }
 
             v.findViewById<ImageView>(R.id.icon).apply {
-                val res = when(FileTable.fromExtension(data.extension)){
+                val res = when(FileTable.fromExtension(data.info.extension)){
                     FileTable.DIRECTORY->{
                         ContextCompat.getDrawable(context, R.drawable.ic_baseline_folder)
                     }
@@ -122,8 +138,10 @@ class ExplorerListAdapter(var root : String, var isGrid: Boolean, var mode: Mode
     }
 
     class GridViewHolder(private val v:View) : RecyclerView.ViewHolder(v){
-        fun bind(data: FileDisplay, position: Int, mode: Mode,
-                 clickListener: OnItemClickListener, longClickListener: OnItemLongClickListener){
+        fun bind(
+            data: FileDisplay, mode: Mode,
+            clickListener: OnItemClickListener, longClickListener: OnItemLongClickListener
+        ){
             val name = v.findViewById<TextView>(R.id.com_ex_grid_name)
             val chk = v.findViewById<CheckBox>(R.id.com_ex_grid_check)
             chk.isChecked = data.checked
@@ -133,11 +151,11 @@ class ExplorerListAdapter(var root : String, var isGrid: Boolean, var mode: Mode
 
             chk.visibility = if(mode == Mode.Select) View.VISIBLE else View.GONE
 
-            name.text = data.name
+            name.text = data.info.name
 
             v.setOnClickListener {
                 if(mode == Mode.Display){
-                    clickListener.onClick(position)
+                    clickListener.onClick(data.info)
                 }else{
                     chk.isSoundEffectsEnabled = false
                     chk.performClick()
@@ -145,11 +163,11 @@ class ExplorerListAdapter(var root : String, var isGrid: Boolean, var mode: Mode
             }
 
             v.setOnLongClickListener {
-                longClickListener.onLongClick(position)
+                longClickListener.onLongClick(data.info)
                 true
             }
             v.findViewById<ImageView>(R.id.com_ex_grid_icon).apply {
-                val res = when(FileTable.fromExtension(data.extension)){
+                val res = when(FileTable.fromExtension(data.info.extension)){
                     FileTable.DIRECTORY->{
                         ContextCompat.getDrawable(itemView.context, R.drawable.ic_baseline_folder)
                     }
@@ -163,7 +181,7 @@ class ExplorerListAdapter(var root : String, var isGrid: Boolean, var mode: Mode
     }
 
     fun changeMode(mode : Mode){
-        this.mode = mode
+        this.currentMode = mode
         data.forEach{
             it.checked  = false
         }
@@ -171,22 +189,10 @@ class ExplorerListAdapter(var root : String, var isGrid: Boolean, var mode: Mode
     }
 
     fun select(position: Int){
-        if(mode == Mode.Select){
+        if(currentMode == Mode.Select){
             data[position].checked = !data[position].checked
             notifyItemChanged(position)
         }
-    }
-
-    fun setPath(root: String){
-        this.root = root
-        data = getFileList(this.root)
-        notifyDataSetChanged()
-    }
-
-    fun back(currentPath : String) : String{
-        val parent = Path(currentPath).parent
-        setPath(parent.absolutePathString())
-        return parent.absolutePathString()
     }
 
     fun flip(){
@@ -214,54 +220,28 @@ class ExplorerListAdapter(var root : String, var isGrid: Boolean, var mode: Mode
         }
     }
 
-    fun refresh(){
-        this.data = getFileList(root)
-        notifyDataSetChanged()
-    }
-
     fun getAction(position: Int) : Pair<String, String>{
         var action = "open"
-        if(FileTable.fromExtension(data[position].extension) == FileTable.DIRECTORY){
+        if(FileTable.fromExtension(data[position].info.extension) == FileTable.DIRECTORY){
             action = "next"
         }
-        return Pair(action, data[position].absolutePath)
-    }
-
-    private fun getFileList(path : String) : ArrayList<FileDisplay> {
-        val ret = arrayListOf<FileDisplay>()
-        val file = File(path)
-        if(file.isDirectory && file.listFiles()!=null){
-            val listFiles = file.listFiles()
-            with(listFiles){
-                if(this!=null && this.isNotEmpty()){
-                    for(f: File? in this){
-                        if(file.exists()){
-                            f!!.apply {
-                                val attrs = Files.readAttributes(file.toPath(), BasicFileAttributes::class.java)
-                                val date = attrs.creationTime().toMillis()
-                                if(f.isDirectory){
-                                    ret.add(FileDisplay(f.name, Date(date), null, f.absolutePath, null))
-                                }else{
-                                    ret.add(FileDisplay(f.name, Date(date), f.length()/1024, f.absolutePath, f.extension))
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return ret
+        return Pair(action, data[position].info.absolutePath)
     }
 
     interface OnItemClickListener{
-        fun onClick(position: Int){
+        fun onClick(fileInfo : FileInfo){
 
         }
     }
 
     interface OnItemLongClickListener{
-        fun onLongClick(position: Int){
+        fun onLongClick(fileInfo : FileInfo){
 
         }
     }
+
+    data class FileDisplay(
+        val info : FileInfo,
+        var checked : Boolean = false,
+        var disabled : Boolean = false)
 }

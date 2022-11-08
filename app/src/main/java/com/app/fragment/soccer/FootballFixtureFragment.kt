@@ -41,7 +41,7 @@ class FootballFixtureFragment : Fragment() {
     private val calendar = GregorianCalendar()
 
     private fun getResult(strLeagueId : String, strDate : String){
-        crossfade(arrayListOf(progress), arrayListOf(list))
+        crossfade(progress, list)
         val url = getString(R.string.football_api_url) + postfix + "?league=" + strLeagueId + "&season=" + 2022 + "&date=" + strDate
 
         val headers = mutableMapOf(

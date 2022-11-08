@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.activity.CVActivity
 import com.app.activity.MessageActivity
-import com.app.activity.ex.FileExplorerActivity
-import com.app.activity.mp.MusicBrowserActivity
+import com.explorer.activity.FileExplorerActivity
+import com.musicplayer.activity.MusicBrowserActivity
 import com.app.activity.soccer.FootballMainActivity
 import com.app.activity.weather.WeatherActivity
 import com.app.adapter.ActionAdapter

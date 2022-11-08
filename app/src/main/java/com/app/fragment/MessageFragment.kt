@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -51,7 +50,7 @@ class MessageFragment(var messages : ArrayList<Message>) : Fragment() {
     }
 
     fun activate(){
-        crossfade(arrayListOf(list), arrayListOf(progressBar), 1000)
+        crossfade(list, progressBar, 1000)
         isActivated = true
     }
 }

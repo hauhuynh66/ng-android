@@ -1,4 +1,4 @@
-package com.app.activity.ex
+package com.explorer.activity
 
 import android.os.Bundle
 import android.view.MenuItem

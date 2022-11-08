@@ -3,6 +3,7 @@ package com.app.util
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
@@ -12,6 +13,9 @@ import kotlin.math.max
 
 class ViewUtils {
     companion object{
+        /**
+         *
+         */
         class ZoomOutPageTransformer: ViewPager2.PageTransformer{
             private val minScale = 0.85f
             private val minAlpha = 0.5f
@@ -48,6 +52,9 @@ class ViewUtils {
             }
         }
 
+        /**
+         *
+         */
         class DepthPageTransFormer : ViewPager.PageTransformer{
             private val minScale = 0.75f
             override fun transformPage(page: View, position: Float) {
@@ -80,6 +87,9 @@ class ViewUtils {
             }
         }
 
+        /**
+         *
+         */
         fun getFixedHorizontalLayoutManager(context: Context) : RecyclerView.LayoutManager{
             return object : LinearLayoutManager(context, HORIZONTAL, false){
                 override fun generateLayoutParams(
@@ -104,6 +114,9 @@ class ViewUtils {
             }
         }
 
+        /**
+         *
+         */
         fun getFixedVerticalLayoutManager(context: Context) : RecyclerView.LayoutManager{
             return object : LinearLayoutManager(context, VERTICAL, false){
                 override fun generateLayoutParams(
@@ -119,6 +132,37 @@ class ViewUtils {
                 }
 
                 override fun canScrollVertically(): Boolean {
+                    return false
+                }
+            }
+        }
+
+        fun getFixedSpanLayoutManager(context: Context, spanCount : Int) : RecyclerView.LayoutManager{
+            return object : GridLayoutManager(context, spanCount) {
+                override fun generateLayoutParams(
+                    c: Context?,
+                    attrs: AttributeSet?
+                ): RecyclerView.LayoutParams {
+                    return spanLayoutSize(super.generateLayoutParams(c, attrs))
+                }
+
+                private fun spanLayoutSize(layoutParams: RecyclerView.LayoutParams): RecyclerView.LayoutParams {
+                    val row = itemCount / spanCount
+                    val mod = itemCount % spanCount
+                    if(mod != 0){
+                        row + 1
+                    }
+
+                    layoutParams.height = (height - paddingBottom - paddingTop) / row
+                    layoutParams.width = (width - paddingLeft - paddingRight) / spanCount
+                    return layoutParams
+                }
+
+                override fun canScrollVertically(): Boolean {
+                    return false
+                }
+
+                override fun canScrollHorizontally(): Boolean {
                     return false
                 }
             }

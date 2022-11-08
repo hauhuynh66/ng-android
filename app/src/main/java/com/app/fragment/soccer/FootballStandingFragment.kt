@@ -55,7 +55,7 @@ class FootballStandingFragment : Fragment() {
     }
 
     private fun getStandings(strLeagueId : String, strSeason : String){
-        crossfade(arrayListOf(progress), arrayListOf(list), 1000)
+        crossfade(progress, list, 1000L)
         val url = getString(R.string.football_api_url) + postfix + "?league=" + strLeagueId + "&season=" + strSeason
 
         val headers = mutableMapOf(

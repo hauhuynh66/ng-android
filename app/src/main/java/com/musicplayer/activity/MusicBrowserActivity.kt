@@ -1,4 +1,4 @@
-package com.app.activity.mp
+package com.musicplayer.activity
 
 import android.app.ActivityOptions
 import android.content.Intent
@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.app.fragment.mp.AudioListFragment
+import com.musicplayer.fragment.AudioListFragment
 import com.app.ngn.R
 import com.app.util.ViewUtils
 import com.google.android.material.tabs.TabLayout

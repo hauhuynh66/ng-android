@@ -1,4 +1,4 @@
-package com.app.fragment.mp
+package com.musicplayer.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

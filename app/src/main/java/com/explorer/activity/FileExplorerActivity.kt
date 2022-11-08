@@ -1,4 +1,4 @@
-package com.app.activity.ex
+package com.explorer.activity
 
 import android.Manifest
 import android.os.Bundle
@@ -10,11 +10,11 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.app.fragment.ex.EXGroupFragment
-import com.app.fragment.ex.EXListFragment
 import com.app.ngn.R
 import com.app.util.PermissionUtils.Companion.checkPermissions
 import com.app.util.ViewUtils
+import com.explorer.fragment.EXGroupFragment
+import com.explorer.fragment.EXListFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlin.system.exitProcess

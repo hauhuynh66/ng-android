@@ -57,10 +57,10 @@
             android:name="com.app.activity.GoogleMapActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.ex.FileExplorerActivity"
+        <activity android:name="com.explorer.activity.FileExplorerActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.ex.FileListActivity"
+        <activity android:name="com.explorer.activity.FileListActivity"
             android:exported="true"/>
 
         <activity android:name="com.app.activity.CVActivity"
@@ -72,13 +72,13 @@
         <activity android:name="com.app.activity.DrawActivity"
             android:exported="true"/>
         
-        <activity android:name="com.app.activity.mp.MusicPlayerActivity"
+        <activity android:name="com.musicplayer.activity.MusicPlayerActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.mp.MusicBrowserActivity"
+        <activity android:name="com.musicplayer.activity.MusicBrowserActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.mp.MusicSearchActivity"
+        <activity android:name="com.musicplayer.activity.MusicSearchActivity"
             android:exported="true"/>
 
         <activity android:name="com.app.activity.weather.WeatherActivity"

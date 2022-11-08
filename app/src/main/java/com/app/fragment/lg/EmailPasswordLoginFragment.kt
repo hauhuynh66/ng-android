@@ -62,7 +62,7 @@ class EmailPasswordLoginFragment : Fragment() {
 
     private fun firebaseLogin(loginBtn : Button){
         if (email.text != null && password.text != null) {
-            Animation.crossfade(arrayListOf(progressView), arrayListOf(contentView), 1000)
+            Animation.crossfade(progressView, contentView, 1000L)
             val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
             imm.hideSoftInputFromWindow(loginBtn.windowToken,0)
@@ -78,7 +78,7 @@ class EmailPasswordLoginFragment : Fragment() {
                 }
                 .addOnFailureListener { err ->
                     run {
-                        Animation.crossfade(arrayListOf(contentView), arrayListOf(progressView), 1000)
+                        Animation.crossfade(contentView, progressView, 1000L)
                         Toast.makeText(requireContext(), err.message, Toast.LENGTH_LONG).show()
                     }
                 }

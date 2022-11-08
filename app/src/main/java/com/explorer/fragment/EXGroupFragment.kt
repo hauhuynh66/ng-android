@@ -1,4 +1,4 @@
-package com.app.fragment.ex
+package com.explorer.fragment
 
 import android.content.Context
 import android.content.Intent
@@ -10,10 +10,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.activity.ex.FileListActivity
 import com.app.adapter.ActionAdapter
 import com.app.data.ActionData
 import com.app.ngn.R
+import com.explorer.activity.FileListActivity
 
 class EXGroupFragment : Fragment() {
     private lateinit var data : ArrayList<ActionData>
