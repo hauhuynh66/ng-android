@@ -8,8 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.app.data.FileInfo
-import com.app.data.FileTable
 import com.app.ngn.R
 import com.app.util.Formatter.Companion.formatDate
 

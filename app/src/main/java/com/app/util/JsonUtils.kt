@@ -1,12 +1,12 @@
 package com.app.util
 
-import com.app.data.FootballStanding
-import com.app.data.FootballTeam
+import com.football.FootballStanding
+import com.football.FootballTeam
 import org.json.JSONObject
 
 class JsonUtils {
     companion object{
-        fun getTeam(teamObj : JSONObject) : FootballTeam{
+        fun getTeam(teamObj : JSONObject) : FootballTeam {
             val id = teamObj.getInt("id")
             val name = teamObj.getString("name")
             val icon = teamObj.getString("logo")

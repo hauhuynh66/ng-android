@@ -4,8 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.app.fragment.lg.EmailPasswordLoginFragment
-import com.app.fragment.lg.LoginOptionsFragment
+import com.app.fragment.EmailPasswordLoginFragment
+import com.app.fragment.LoginOptionsFragment
 import com.app.ngn.R
 import com.app.viewmodel.Authentication
 

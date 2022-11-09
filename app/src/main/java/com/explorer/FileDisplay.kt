@@ -1,4 +1,4 @@
-package com.app.data
+package com.explorer
 
 import java.io.File
 import java.nio.file.Files
@@ -24,7 +24,7 @@ data class FileInfo(
                 var size : Long? = null
                 if(!file.isDirectory){
                     extension = file.extension
-                    size = Files.size(Path(file.absolutePath))
+                    size = Files.size(Path(file.absolutePath)) / 1024L
                 }
                 return FileInfo(file.name, date, size, file.absolutePath, extension)
             }

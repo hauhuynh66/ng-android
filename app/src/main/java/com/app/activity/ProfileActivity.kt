@@ -2,6 +2,7 @@ package com.app.activity
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.Gravity
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
@@ -37,7 +38,7 @@ class ProfileActivity : AppCompatActivity() {
             LineData("5", "Line5"),
         )
 
-        val lineOption = LineDisplayOption(Color.RED, 10f)
+        val lineOption = LineDisplayOption(Color.RED, 10f, Gravity.CENTER)
         val statData = listOf(
             LineData("Name 1", 10, option = lineOption),
             LineData("Name 2", 50, option = lineOption),

@@ -1,8 +1,8 @@
 package com.app.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.app.data.FootballResult
-import com.app.data.FootballTeam
+import com.football.FootballResult
+import com.football.FootballTeam
 
 class FootballDisplay : ViewModel() {
     var team : FootballTeam? = null

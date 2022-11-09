@@ -66,7 +66,7 @@
         <activity android:name="com.app.activity.CVActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.weather.LocationListActivity"
+        <activity android:name="com.weather.activity.LocationListActivity"
             android:exported="true"/>
 
         <activity android:name="com.app.activity.DrawActivity"
@@ -81,19 +81,19 @@
         <activity android:name="com.musicplayer.activity.MusicSearchActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.weather.WeatherActivity"
+        <activity android:name="com.weather.activity.WeatherActivity"
             android:exported="true"/>
 
         <activity android:name="com.app.activity.MessageActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.news.RDMainActivity"
+        <activity android:name="com.app.activity.NewsMainActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.soccer.FootballMainActivity"
+        <activity android:name="com.football.activity.FootballMainActivity"
             android:exported="true"/>
 
-        <activity android:name="com.app.activity.soccer.FootballDisplayActivity"
+        <activity android:name="com.football.activity.FootballDisplayActivity"
             android:exported="true"/>
 
         <service android:name="com.app.service.MediaPlaybackService"

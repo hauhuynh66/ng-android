@@ -11,7 +11,7 @@ import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.app.adapter.DrawAdapter
+import com.app.adapter.ColorAdapter
 import com.app.ngn.R
 import com.app.util.FileUtils
 import com.app.util.ViewUtils
@@ -23,8 +23,6 @@ import java.io.FileOutputStream
 
 class DrawActivity : AppCompatActivity() {
     private val path = Environment.getExternalStorageDirectory().absolutePath + "/photo"
-    private lateinit var colorAdapter : DrawAdapter
-    private lateinit var sizeAdapter: DrawAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,45 +76,24 @@ class DrawActivity : AppCompatActivity() {
             draw.prev()
         }
 
-        colorAdapter = DrawAdapter(
-            getArray(1),
-            DrawAdapter.ListType.Color,
-            object : DrawAdapter.Listener {
-                override fun onClick(value: Int, position : Int) {
-                    draw.changeColor(value)
-                    colorAdapter.changeSelected(position)
-                }
-
-                override fun onSelectorClick(selected: Int, position: Int) {
-                    draw.changeColor(selected)
-                    colorAdapter.selectSelector(selected, position)
-                }
-            }
-        )
-
-        sizeAdapter = DrawAdapter(
-            getArray(2),
-            DrawAdapter.ListType.Text,
-            object : DrawAdapter.Listener {
-                override fun onClick(value: Int, position : Int) {
-                    draw.changePathWidth(value.toFloat())
-                    sizeAdapter.changeSelected(position)
-                }
-
-                override fun onSelectorClick(selected: Int, position: Int) {
-                    draw.changePathWidth(selected.toFloat())
-                    colorAdapter.selectSelector(selected, position)
-                }
-            }
-        )
-
         val colorList = findViewById<RecyclerView>(R.id.ac_draw_color)
         val sizeList = findViewById<RecyclerView>(R.id.ac_draw_size)
 
         colorList.layoutManager = ViewUtils.getFixedHorizontalLayoutManager(this)
         sizeList.layoutManager = ViewUtils.getFixedHorizontalLayoutManager(this)
-        colorList.adapter = colorAdapter
-        sizeList.adapter = sizeAdapter
+
+        colorList.adapter = ColorAdapter(
+            listOf(
+                Color.RED,
+                Color.BLUE,
+                Color.GREEN,
+                Color.YELLOW,
+                Color.CYAN
+            )
+        )
+        /**
+         * Adapter definition here
+         */
 
         val save = findViewById<Button>(R.id.ac_draw_save)
         save.setOnClickListener {
@@ -131,32 +108,6 @@ class DrawActivity : AppCompatActivity() {
                 intent.putExtra("bmp", path)
                 setResult(Activity.RESULT_OK, intent)
                 finish()
-            }
-        }
-    }
-
-    private fun getArray(mode : Int) : ArrayList<DrawAdapter.DrawUtilData>{
-        when(mode){
-            1->{
-                return arrayListOf(
-                    DrawAdapter.DrawUtilData(Color.RED),
-                    DrawAdapter.DrawUtilData(Color.BLUE),
-                    DrawAdapter.DrawUtilData(Color.GREEN),
-                    DrawAdapter.DrawUtilData(Color.BLACK),
-                    DrawAdapter.DrawUtilData(Color.YELLOW),
-                )
-            }
-            2->{
-                return arrayListOf(
-                    DrawAdapter.DrawUtilData(6),
-                    DrawAdapter.DrawUtilData(12),
-                    DrawAdapter.DrawUtilData(36),
-                    DrawAdapter.DrawUtilData(48),
-                    DrawAdapter.DrawUtilData(72)
-                )
-            }
-            else->{
-                return arrayListOf()
             }
         }
     }

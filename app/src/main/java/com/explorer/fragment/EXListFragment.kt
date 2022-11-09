@@ -15,12 +15,12 @@ import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.data.FileInfo
 import com.app.ngn.R
 import com.app.task.TaskRunner
 import com.app.util.Animation.Companion.crossfade
 import com.app.util.FileUtils
 import com.explorer.ExplorerListAdapter
+import com.explorer.FileInfo
 import com.explorer.FileInfoTask
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
@@ -55,11 +55,11 @@ class EXListFragment : Fragment(), ExplorerListAdapter.OnItemClickListener, Expl
         adapter.setOnItemClickListener(this)
         adapter.setOnItemLongClickListener(this)
 
-        crossfade(progress, list, 1000L)
+        crossfade(progress, list, 500L)
         taskRunner.execute(FileInfoTask(rootPath), object : TaskRunner.Callback<List<FileInfo>>{
             override fun onComplete(result: List<FileInfo>) {
                 adapter.setData(result)
-                crossfade(list, progress, 1000L)
+                crossfade(list, progress, 500L)
             }
         })
 
@@ -156,13 +156,13 @@ class EXListFragment : Fragment(), ExplorerListAdapter.OnItemClickListener, Expl
     }
 
     private fun onPathChange(newPath: String){
-        crossfade(progress, list, 1000L)
+        crossfade(progress, list, 500L)
         taskRunner.execute(FileInfoTask(newPath), object : TaskRunner.Callback<List<FileInfo>>{
             override fun onComplete(result: List<FileInfo>) {
                 adapter.setData(result)
                 currentPath = newPath
                 path.text = currentPath
-                crossfade(list, progress, 1000L)
+                crossfade(list, progress, 500L)
             }
         })
     }

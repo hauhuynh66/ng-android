@@ -12,8 +12,8 @@ import com.app.activity.CVActivity
 import com.app.activity.MessageActivity
 import com.explorer.activity.FileExplorerActivity
 import com.musicplayer.activity.MusicBrowserActivity
-import com.app.activity.soccer.FootballMainActivity
-import com.app.activity.weather.WeatherActivity
+import com.football.activity.FootballMainActivity
+import com.weather.activity.WeatherActivity
 import com.app.adapter.ActionAdapter
 import com.app.data.ActionData
 import com.app.ngn.R

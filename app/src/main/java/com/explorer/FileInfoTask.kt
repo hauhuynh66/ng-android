@@ -1,6 +1,6 @@
 package com.explorer
 
-import com.app.data.FileInfo
+import com.google.zxing.integration.android.IntentIntegrator
 import java.io.File
 import java.util.concurrent.Callable
 

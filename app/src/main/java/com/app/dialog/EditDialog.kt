@@ -2,26 +2,28 @@ package com.app.dialog
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
-import android.text.InputType
-import android.view.LayoutInflater
+import android.view.View
 import android.widget.EditText
+import android.widget.NumberPicker
 import androidx.fragment.app.DialogFragment
 import com.app.ngn.R
 
-class EditDialog<T>(private val data: T, private val listener: Listener<T>) : DialogFragment() {
+abstract class EditDialog<T>(private val data: T, private val listener: Listener<T>) : DialogFragment() {
+    abstract fun inflateView() : View
+    abstract fun getValue(view: View) : T
+    abstract fun ini(view : View, value : T)
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(requireContext())
-        val v = (requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater)
-            .inflate(R.layout.dlg_text_edit, null, false)
-        val text = v.findViewById<EditText>(R.id.edit_text)
+        val view = inflateView()
+        ini(view, data)
+        builder.setView(view)
 
-        builder.setView(v)
-        text.requestFocus()
         builder.setPositiveButton("Confirm"){
             di, _ -> run{
-                //listener.onConfirm()
+                val currentValue = getValue(view)
+                println(currentValue)
+                listener.onConfirm(currentValue)
                 di.dismiss()
             }
         }
@@ -39,5 +41,42 @@ class EditDialog<T>(private val data: T, private val listener: Listener<T>) : Di
         fun onDismiss(){
 
         }
+    }
+}
+
+class EditTextDialog(data : String, listener: Listener<String>) : EditDialog<String>(data, listener){
+    override fun inflateView(): View {
+        return layoutInflater.inflate(R.layout.dlg_text_edit, null, false)
+    }
+
+    override fun getValue(view: View): String {
+        val editElement = view.findViewById<EditText>(R.id.edit) ?: return ""
+        println("Text evoke")
+        return editElement.text.toString()
+    }
+
+    override fun ini(view: View, value: String) {
+        val editElement = view.findViewById<EditText>(R.id.edit) ?: return
+        editElement.setText(value)
+    }
+}
+
+class NumberEditDialog(private val min : Int, private val max : Int, data : Number, listener: Listener<Number>) :
+    EditDialog<Number>(data, listener){
+    override fun inflateView(): View {
+        return layoutInflater.inflate(R.layout.dlg_number_edit, null, false)
+    }
+
+    override fun getValue(view: View): Number {
+        val editElement = view.findViewById<NumberPicker>(R.id.edit) ?: return 0
+        println("Number evoke")
+        return editElement.value
+    }
+
+    override fun ini(view: View, value: Number) {
+        val editElement = view.findViewById<NumberPicker>(R.id.edit) ?: return
+        editElement.minValue = min
+        editElement.maxValue = max
+        editElement.value = value.toInt()
     }
 }

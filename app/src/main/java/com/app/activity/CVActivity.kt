@@ -58,7 +58,7 @@ class CVActivity : AppCompatActivity(){
             if (it == true) {
                 val bitmap = BitmapUtils.getBitmap(photoURI!!, contentResolver, Bitmap.Config.ARGB_8888)
                 source.setImageBitmap(bitmap)
-                result.setImageBitmap(CVOperation.canny(bitmap!!))
+                result.setImageBitmap(CVOperation.faceDetect(bitmap!!))
             }else{
                 val file = File(photoURI?.path)
                 file.delete()
@@ -70,7 +70,7 @@ class CVActivity : AppCompatActivity(){
             if(it.data?.data !=null){
                 val bitmap = BitmapUtils.getBitmap(it.data?.data!!, contentResolver, Bitmap.Config.ARGB_8888)
                 source.setImageBitmap(bitmap)
-                result.setImageBitmap(CVOperation.sift(bitmap!!))
+                result.setImageBitmap(CVOperation.faceDetect(bitmap!!))
             }
         }
     }

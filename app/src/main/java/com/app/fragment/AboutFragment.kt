@@ -1,10 +1,8 @@
 package com.app.fragment
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Html
-import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -12,13 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.app.adapter.PageAdapter
 import com.app.data.PageData
 import com.app.ngn.R
 import com.app.util.Generator
+import com.app.util.ViewUtils
 
 class AboutFragment : Fragment() {
     private lateinit var indicator : DotAdapter
@@ -47,27 +45,7 @@ class AboutFragment : Fragment() {
 
         view.findViewById<RecyclerView>(R.id.dot_list).apply {
             adapter = indicator
-            layoutManager = object : LinearLayoutManager(requireContext(), HORIZONTAL, false){
-                override fun generateLayoutParams(
-                    c: Context?,
-                    attrs: AttributeSet?
-                ): RecyclerView.LayoutParams {
-                    return resize(super.generateLayoutParams(c, attrs))
-                }
-
-                private fun getHorizontalSpace(): Int {
-                    return width - paddingLeft - paddingRight
-                }
-
-                private fun resize(layoutParams: RecyclerView.LayoutParams): RecyclerView.LayoutParams {
-                    layoutParams.width = getHorizontalSpace() / itemCount
-                    return layoutParams
-                }
-
-                override fun canScrollHorizontally(): Boolean {
-                    return false
-                }
-            }
+            layoutManager = ViewUtils.getFixedHorizontalLayoutManager(requireContext())
         }
 
         viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{

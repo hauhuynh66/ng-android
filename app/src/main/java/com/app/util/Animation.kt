@@ -2,7 +2,12 @@ package com.app.util
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
+import android.graphics.Path
 import android.view.View
+import android.view.animation.PathInterpolator
+import androidx.dynamicanimation.animation.DynamicAnimation
+import androidx.dynamicanimation.animation.FlingAnimation
 
 class Animation {
     companion object{
@@ -29,5 +34,35 @@ class Animation {
                     })
             }
         }
+
+        fun translateX(view : View, value : Number, duration: Long){
+            ObjectAnimator.ofFloat(view, "translationX", value.toFloat())
+                .setDuration(duration)
+                .start()
+        }
+
+        fun translateY(view : View, value : Number, duration: Long){
+            ObjectAnimator.ofFloat(view, "translationY", value.toFloat())
+                .setDuration(duration)
+                .start()
+        }
+
+        fun pathAnimate(view : View, path : Path, duration: Long){
+            val pathInterpolator = PathInterpolator(path)
+            val objectAnimator = ObjectAnimator.ofFloat(view, "translationX")
+            objectAnimator.apply {
+                this.interpolator = pathInterpolator
+                this.duration = duration
+            }.start()
+        }
+
+        fun fling(view : View, property : DynamicAnimation.ViewProperty, maxValue : Number){
+            val flingAnimator = FlingAnimation(view, property)
+            flingAnimator.apply {
+                setMinValue(0f)
+                setMaxValue(maxValue.toFloat())
+            }.start()
+        }
+
     }
 }

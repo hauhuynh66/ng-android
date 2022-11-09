@@ -30,7 +30,16 @@ class TestFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val intent = Intent(requireContext(), DrawActivity::class.java)
+        /*val zxingLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            val result = IntentIntegrator.parseActivityResult(it.resultCode, it.data)
+
+            if(result.contents != null){
+                Snackbar.make(requireView(), result.contents, Snackbar.LENGTH_SHORT).show()
+            }
+        }
+        zxingLauncher.launch(IntentIntegrator(requireActivity()).createScanIntent())*/
+
+        val intent = Intent(requireActivity(), DrawActivity::class.java)
         startActivity(intent)
 
         view.findViewById<RecyclerView>(R.id.item_list).apply {
