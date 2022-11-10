@@ -35,7 +35,6 @@ data class FileInfo(
 enum class FileTable{
     DIRECTORY,
     FILE;
-
     companion object{
         fun fromExtension(extension: String?) : FileTable{
             return if(extension == null){

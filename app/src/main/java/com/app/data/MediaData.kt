@@ -2,13 +2,14 @@ package com.app.data
 
 import android.net.Uri
 
-abstract class MediaData(
-    val name : String
+open class MediaData(
+    val name : String,
+    val uri : Uri
 )
 
 class AudioData(
-    val title : String,
+    title : String,
     val artist : String,
     val duration : Long,
-    val uri : Uri
-)
+    uri : Uri
+) : MediaData(title, uri)
