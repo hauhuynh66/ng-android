@@ -23,9 +23,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.app.activity.NavigatorActivity
 import com.app.adapter.ListAdapter
-import com.weather.WeatherAdapter
-import com.app.data.*
-import com.weather.WeatherType.Companion.get
+import com.app.data.HttpResponse
+import com.app.data.LineData
+import com.app.data.LineDisplayOption
+import com.app.data.LineManager
 import com.app.model.AppDatabase
 import com.app.model.Location
 import com.app.model.Setting
@@ -37,7 +38,9 @@ import com.app.util.PermissionUtils.Companion.checkPermissions
 import com.app.view.SunPositionView
 import com.app.viewmodel.Weather
 import com.weather.ForecastData
+import com.weather.WeatherAdapter
 import com.weather.WeatherData
+import com.weather.WeatherType.Companion.get
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -246,7 +249,7 @@ class WeatherActivity : AppCompatActivity() {
             LineData("Filler", "Filler", option = lineOption)
         )
 
-        list.adapter = ListAdapter(lineData, LineStyle.Style2)
+        list.adapter = ListAdapter(LineManager(lineData, LineManager.LineStyle.Two))
     }
 
     private fun getWeatherData(json: String) : WeatherData?{

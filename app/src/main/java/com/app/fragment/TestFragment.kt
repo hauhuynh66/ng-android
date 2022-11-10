@@ -16,7 +16,6 @@ import com.app.ngn.R
  * Test Fragment
  * Fragment for testing new components
  */
-
 class TestFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,

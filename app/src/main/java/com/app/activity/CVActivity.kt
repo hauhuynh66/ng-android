@@ -60,7 +60,7 @@ class CVActivity : AppCompatActivity(){
                 source.setImageBitmap(bitmap)
                 result.setImageBitmap(CVOperation.faceDetect(bitmap!!))
             }else{
-                val file = File(photoURI?.path)
+                val file = File(photoURI?.path!!)
                 file.delete()
                 Toast.makeText(this@CVActivity, "Cancelled", Toast.LENGTH_SHORT).show()
             }

@@ -61,7 +61,7 @@ class EditTextDialog(data : String, listener: Listener<String>) : EditDialog<Str
     }
 }
 
-class NumberEditDialog(private val min : Int, private val max : Int, data : Number, listener: Listener<Number>) :
+class NumberEditDialog(data : Number, listener: Listener<Number>, private val min : Int? = 0, private val max : Int? = 100) :
     EditDialog<Number>(data, listener){
     override fun inflateView(): View {
         return layoutInflater.inflate(R.layout.dlg_number_edit, null, false)
@@ -75,8 +75,8 @@ class NumberEditDialog(private val min : Int, private val max : Int, data : Numb
 
     override fun ini(view: View, value: Number) {
         val editElement = view.findViewById<NumberPicker>(R.id.edit) ?: return
-        editElement.minValue = min
-        editElement.maxValue = max
+        editElement.minValue = min?:0
+        editElement.maxValue = max?:100
         editElement.value = value.toInt()
     }
 }

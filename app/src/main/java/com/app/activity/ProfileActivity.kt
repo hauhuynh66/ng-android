@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.ListAdapter
 import com.app.data.LineData
 import com.app.data.LineDisplayOption
-import com.app.data.LineStyle
+import com.app.data.LineManager
 import com.app.ngn.R
 import com.app.util.ViewUtils
 import com.app.viewmodel.Authentication
@@ -58,12 +58,12 @@ class ProfileActivity : AppCompatActivity() {
 
         infoList.apply {
             layoutManager = ViewUtils.getFixedVerticalLayoutManager(this@ProfileActivity)
-            adapter = ListAdapter(infoData, LineStyle.Style1)
+            adapter = ListAdapter(LineManager(infoData, LineManager.LineStyle.One))
         }
 
         statList.apply {
             layoutManager = ViewUtils.getFixedHorizontalLayoutManager(this@ProfileActivity)
-            adapter = ListAdapter(statData, LineStyle.Style2)
+            adapter = ListAdapter(LineManager(statData, LineManager.LineStyle.Two))
         }
     }
 

@@ -11,22 +11,20 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.adapter.StatAdapter
-import com.football.FootballResult
+import com.app.adapter.ListAdapter
 import com.app.data.HttpResponse
 import com.app.data.StatLine
+import com.app.data.StatManager
 import com.app.ngn.R
 import com.app.task.GetHttpTask
 import com.app.task.TaskRunner
-import com.app.viewmodel.FootballDisplay
+import com.football.FootballResult
 import com.squareup.picasso.Picasso
 import org.json.JSONObject
 
 class FootballMatchDetailFragment : Fragment() {
-    private val model : FootballDisplay by activityViewModels()
     private val postfix = "/fixtures/statistics"
-    private lateinit var adapter : StatAdapter
-    private lateinit var data : ArrayList<StatLine>
+    private lateinit var data : List<StatLine>
     private lateinit var taskRunner : TaskRunner
     private lateinit var list : RecyclerView
     private lateinit var progress : ProgressBar
@@ -47,14 +45,14 @@ class FootballMatchDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        redisplayOverview(model.matchOverview!!, view.findViewById(R.id.overview_group))
+        //redisplayOverview(model.matchOverview!!, view.findViewById(R.id.overview_group))
         taskRunner = TaskRunner()
         data = arrayListOf()
-        adapter = StatAdapter(data)
+        val statManager = StatManager(data)
 
         list = view.findViewById(R.id.item_list)
         list.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        list.adapter = adapter
+        list.adapter = ListAdapter(statManager)
 
         progress = view.findViewById(R.id.progress)
 
@@ -87,7 +85,8 @@ class FootballMatchDetailFragment : Fragment() {
     }
 
     private fun getMatchDetails(){
-        val url = getString(R.string.football_api_url) + postfix + "?fixture=" + model.matchOverview!!.matchId
+        //val url = getString(R.string.football_api_url) + postfix + "?fixture=" + model.matchOverview!!.matchId
+        val url = getString(R.string.football_api_url) + postfix + "?fixture="
 
         val headers = mutableMapOf(
             "x-rapidapi-host" to getString(R.string.football_api_host),

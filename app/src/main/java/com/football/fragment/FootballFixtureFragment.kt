@@ -1,7 +1,6 @@
 package com.football.fragment
 
 import android.app.DatePickerDialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,28 +8,23 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.football.activity.FootballDisplayActivity
-import com.football.FootballFixtureAdapter
-import com.football.FootballResult
-import com.football.FootballTeam
 import com.app.data.HttpResponse
 import com.app.ngn.R
 import com.app.task.GetHttpTask
 import com.app.task.TaskRunner
 import com.app.util.Animation.Companion.crossfade
 import com.app.util.JsonUtils
-import com.app.util.Formatter.Companion.formatDate
-import com.app.viewmodel.Football
+import com.football.FootballFixtureAdapter
+import com.football.FootballResult
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.util.*
 
 class FootballFixtureFragment : Fragment() {
-    private val model : Football by activityViewModels()
+    //private val model : Football by activityViewModels()
     private val postfix : String = "/fixtures"
     private lateinit var result : ArrayList<FootballResult>
     private lateinit var progress : ProgressBar
@@ -120,7 +114,7 @@ class FootballFixtureFragment : Fragment() {
                     calendar.set(Calendar.YEAR, y)
                     calendar.set(Calendar.MONTH, m)
                     calendar.set(Calendar.DATE, d)
-                    model.currentDate.value = calendar.time
+                    //model.currentDate.value = calendar.time
                 }
 
                 DatePickerDialog(requireContext(),
@@ -135,7 +129,7 @@ class FootballFixtureFragment : Fragment() {
         progress = view.findViewById(R.id.progress)
         result = arrayListOf()
 
-        adapter = FootballFixtureAdapter(result, object : FootballFixtureAdapter.Callback{
+        /*adapter = FootballFixtureAdapter(result, object : FootballFixtureAdapter.Callback{
             override fun onTeamClick(team: FootballTeam) {
                 val intent = Intent(requireActivity(), FootballDisplayActivity::class.java)
                 intent.putExtra("type","team")
@@ -154,7 +148,7 @@ class FootballFixtureFragment : Fragment() {
         model.currentDate.observe(requireActivity()){
             calendar.time = model.currentDate.value!!
             getResult(model.currentLeague.value.toString(), formatDate(calendar.time, "yyyy-MM-dd"))
-        }
+        }*/
 
         list.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         list.adapter = adapter

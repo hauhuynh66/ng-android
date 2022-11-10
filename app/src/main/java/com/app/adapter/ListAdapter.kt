@@ -7,56 +7,69 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.data.LineData
-import com.app.data.LineStyle
+import com.app.data.StatLine
 import com.app.ngn.R
+import com.app.view.StatBar
 
-class ListAdapter(
-    private val data : List<LineData>,
-    private val lineStyle : LineStyle
-) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+/**
+ * List Manager
+ */
+interface ListManager<T>{
+    fun createView(parent : ViewGroup) : RecyclerView.ViewHolder
+
+    fun bind(holder: RecyclerView.ViewHolder, position: Int)
+
+    fun getSize() : Int
+}
+
+/**
+ * One line text only list
+ */
+class TextManager(var data : List<String>) : ListManager<String>{
+    override fun createView(parent: ViewGroup): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return LineViewHolder(when(lineStyle){
-            LineStyle.Style1->{
-                inflater.inflate(R.layout.com_list_line_1, parent, false)
-            }
-            LineStyle.Style2->{
-                inflater.inflate(R.layout.com_list_line_2, parent, false)
-            }
-        })
+        return ViewHolder(inflater.inflate(R.layout.com_text, parent, false))
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as LineViewHolder).bind(data[position])
+    override fun bind(holder: RecyclerView.ViewHolder, position: Int) {
+        (holder as ViewHolder).bind(data[position])
     }
 
-    override fun getItemCount(): Int {
+    override fun getSize(): Int {
         return data.size
     }
 
-    class LineViewHolder(view : View) : RecyclerView.ViewHolder(view){
-        fun bind(data : LineData){
-            itemView.findViewById<TextView>(R.id.name).apply {
-                text = data.name
-                if(data.option.gravity!=null){
-                    gravity = data.option.gravity
-                }
-            }
-
-            itemView.findViewById<TextView>(R.id.value).apply {
-                text = data.value.toString()
-                setTextColor(data.option.color)
-                setTextSize(TypedValue.COMPLEX_UNIT_PT, data.option.textSize)
-
-                if(data.option.gravity!=null){
-                    gravity = data.option.gravity
-                }
-            }
-
-            if(data.icon != null){
-                itemView.findViewById<TextView>(R.id.icon).visibility = View.VISIBLE
+    inner class ViewHolder(v : View) : RecyclerView.ViewHolder(v) {
+        fun bind(data : String){
+            itemView.findViewById<TextView>(R.id.text).apply {
+                this.text = data
             }
         }
+    }
+}
+
+class ListAdapter<T>(private val listManager: ListManager<T>)
+    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return listManager.createView(parent)
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        listManager.bind(holder, position)
+    }
+
+    override fun getItemCount(): Int {
+        return listManager.getSize()
+    }
+
+
+
+    interface OnItemClickListener{
+        fun execute()
+    }
+
+    interface OnItemLongClickListener{
+        fun execute()
     }
 }

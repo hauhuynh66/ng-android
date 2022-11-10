@@ -75,7 +75,7 @@ class ColorSelectorDialog(private val defaultColor : Int, val callback : Callbac
                 sb.append(p3)
 
                 selectedColor = sb.toString()
-                code.setText(selectedColor)
+                code.text = selectedColor
                 display.setBackgroundColor(Color.parseColor(selectedColor))
             }
         }
@@ -84,7 +84,7 @@ class ColorSelectorDialog(private val defaultColor : Int, val callback : Callbac
             .setView(view)
             .setPositiveButton("Confirm") { di, _ ->
                 run {
-                    callback.onConfirm(selectedColor)
+                    callback.onConfirm(Color.parseColor(selectedColor))
                     di.dismiss()
                 }
             }
@@ -99,7 +99,7 @@ class ColorSelectorDialog(private val defaultColor : Int, val callback : Callbac
     }
 
     interface Callback{
-        fun onConfirm(color : String)
+        fun onConfirm(color : Int)
 
         fun onCancelled(){
 

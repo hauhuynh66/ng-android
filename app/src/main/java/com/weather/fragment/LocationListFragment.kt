@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.weather.activity.WeatherActivity
-import com.app.adapter.GenericListAdapter
+import com.app.adapter.ListAdapter
+import com.app.adapter.TextManager
 import com.app.model.AppDatabase
 import com.app.ngn.R
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +20,7 @@ import kotlinx.coroutines.withContext
 
 class LocationListFragment : Fragment() {
     private lateinit var db: AppDatabase
-    private lateinit var adapter: GenericListAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,19 +42,22 @@ class LocationListFragment : Fragment() {
         }
 
         val list = view.findViewById<RecyclerView>(R.id.item_list)
-        adapter = GenericListAdapter(arr, object : GenericListAdapter.Callback {
-            override fun onClick(data: String) {
-                runBlocking {
+        val textManager = TextManager(arr)
+        val onClick = object : ListAdapter.OnItemClickListener{
+            override fun execute() {
+                /*runBlocking {
                     withContext(Dispatchers.IO){
                         db.settingRepository().update("current_city", data)
                     }
                 }
                 val intent = Intent(requireActivity(), WeatherActivity::class.java)
-                startActivity(intent)
+                startActivity(intent)*/
             }
+        }
 
-            override fun onLongClick(data: String) {
-                runBlocking {
+        val onLongClick = object : ListAdapter.OnItemLongClickListener{
+            override fun execute() {
+                /*runBlocking {
                     withContext(Dispatchers.IO){
                         val count = db.locationRepository().count()
                         if(count>1){
@@ -67,10 +71,10 @@ class LocationListFragment : Fragment() {
                 }
                 val pos = adapter.data.indexOf(data)
                 adapter.data.remove(data)
-                adapter.notifyItemRemoved(pos)
-
+                adapter.notifyItemRemoved(pos)*/
             }
-        })
+        }
+        val adapter = ListAdapter(textManager)
         list.adapter = adapter
         list.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     }

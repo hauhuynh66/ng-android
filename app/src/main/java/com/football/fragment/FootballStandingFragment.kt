@@ -19,11 +19,9 @@ import com.app.task.GetHttpTask
 import com.app.task.TaskRunner
 import com.app.util.Animation.Companion.crossfade
 import com.app.util.JsonUtils
-import com.app.viewmodel.Football
 import org.json.JSONObject
 
 class FootballStandingFragment : Fragment() {
-    private val model : Football by activityViewModels()
     private val postfix = "/standings"
     private lateinit var progress : ProgressBar
     private lateinit var adapter : FootballStandingAdapter
@@ -51,7 +49,7 @@ class FootballStandingFragment : Fragment() {
         list.adapter = adapter
         list.layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
 
-        getStandings(model.currentLeague.value.toString(), "2022")
+        //getStandings(model.currentLeague.value.toString(), "2022")
     }
 
     private fun getStandings(strLeagueId : String, strSeason : String){

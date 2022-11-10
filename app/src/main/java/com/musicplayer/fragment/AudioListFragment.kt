@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.adapter.GenericListAdapter
 import com.app.ngn.R
 
 class AudioListFragment : Fragment() {
@@ -52,8 +51,5 @@ class AudioListFragment : Fragment() {
         }
         val list = view.findViewById<RecyclerView>(R.id.item_list)
         list.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        list.adapter = GenericListAdapter(data, object : GenericListAdapter.Callback{
-
-        })
     }
 }

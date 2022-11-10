@@ -12,6 +12,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.ColorAdapter
+import com.app.adapter.DrawAdapter
+import com.app.adapter.ValueAdapter
 import com.app.ngn.R
 import com.app.util.FileUtils
 import com.app.util.ViewUtils
@@ -82,7 +84,7 @@ class DrawActivity : AppCompatActivity() {
         colorList.layoutManager = ViewUtils.getFixedHorizontalLayoutManager(this)
         sizeList.layoutManager = ViewUtils.getFixedHorizontalLayoutManager(this)
 
-        colorList.adapter = ColorAdapter(
+        val colorAdapter = ColorAdapter(
             listOf(
                 Color.RED,
                 Color.BLUE,
@@ -91,9 +93,29 @@ class DrawActivity : AppCompatActivity() {
                 Color.CYAN
             )
         )
-        /**
-         * Adapter definition here
-         */
+        colorAdapter.onItemSelectedListener = object : DrawAdapter.OnItemSelectedListener<Int> {
+            override fun onClick(value: Int) {
+                draw.changeColor(value.toString().toInt())
+            }
+        }
+
+        val sizeAdapter = ValueAdapter(
+            listOf(
+                12,
+                24,
+                36,
+                72
+            )
+        )
+
+        sizeAdapter.onItemSelectedListener = object : DrawAdapter.OnItemSelectedListener<Number> {
+            override fun onClick(value: Number) {
+                draw.changePathWidth(value.toString().toFloat())
+            }
+        }
+
+        colorList.adapter = colorAdapter
+        sizeList.adapter = sizeAdapter
 
         val save = findViewById<Button>(R.id.ac_draw_save)
         save.setOnClickListener {

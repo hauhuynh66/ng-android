@@ -16,12 +16,10 @@ import com.app.data.HttpResponse
 import com.app.ngn.R
 import com.app.task.GetHttpTask
 import com.app.task.TaskRunner
-import com.app.viewmodel.FootballDisplay
 import com.squareup.picasso.Picasso
 import org.json.JSONObject
 
 class FootballTeamDetailFragment : Fragment() {
-    private val model : FootballDisplay by activityViewModels()
     private val postfix : String = "/teams"
     private val isDisplay : MutableLiveData<Boolean> = MutableLiveData(true)
     private var teamDetail : FootballTeamDetail? = null
@@ -50,7 +48,7 @@ class FootballTeamDetailFragment : Fragment() {
                 }
             }*/
         }
-        getTeamDetail(model.team!!.id)
+        //getTeamDetail(model.team!!.id)
     }
 
     private fun getTeamDetail(teamId : Int){
