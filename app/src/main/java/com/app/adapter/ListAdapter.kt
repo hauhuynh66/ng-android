@@ -1,15 +1,11 @@
 package com.app.adapter
 
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.app.data.LineData
-import com.app.data.StatLine
 import com.app.ngn.R
-import com.app.view.StatBar
 
 /**
  * List Manager
