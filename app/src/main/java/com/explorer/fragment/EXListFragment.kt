@@ -25,14 +25,15 @@ import com.explorer.FileInfoTask
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 
-class EXListFragment : Fragment(), ExplorerListAdapter.OnItemClickListener, ExplorerListAdapter.OnItemLongClickListener {
-    private val rootPath : String = Environment.getExternalStorageDirectory().absolutePath
-    private var currentPath : String = rootPath
-    private lateinit var adapter : ExplorerListAdapter
-    private lateinit var list : RecyclerView
-    private lateinit var path : TextView
+class EXListFragment : Fragment(), ExplorerListAdapter.OnItemClickListener,
+    ExplorerListAdapter.OnItemLongClickListener {
+    private val rootPath: String = Environment.getExternalStorageDirectory().absolutePath
+    private var currentPath: String = rootPath
+    private lateinit var adapter: ExplorerListAdapter
+    private lateinit var list: RecyclerView
+    private lateinit var path: TextView
     private lateinit var bottomBar: ConstraintLayout
-    private lateinit var progress : ProgressBar
+    private lateinit var progress: ProgressBar
     private val taskRunner = TaskRunner()
 
     override fun onCreateView(
@@ -56,7 +57,7 @@ class EXListFragment : Fragment(), ExplorerListAdapter.OnItemClickListener, Expl
         adapter.setOnItemLongClickListener(this)
 
         crossfade(progress, list, 500L)
-        taskRunner.execute(FileInfoTask(rootPath), object : TaskRunner.Callback<List<FileInfo>>{
+        taskRunner.execute(FileInfoTask(rootPath), object : TaskRunner.Callback<List<FileInfo>> {
             override fun onComplete(result: List<FileInfo>) {
                 adapter.setData(result)
                 crossfade(list, progress, 500L)
@@ -68,7 +69,7 @@ class EXListFragment : Fragment(), ExplorerListAdapter.OnItemClickListener, Expl
         path.text = currentPath
 
         view.findViewById<ImageButton>(R.id.change_layout).apply {
-            setOnClickListener{
+            setOnClickListener {
 
             }
         }
@@ -79,7 +80,7 @@ class EXListFragment : Fragment(), ExplorerListAdapter.OnItemClickListener, Expl
         }
 
         view.findViewById<ImageButton>(R.id.action_ex).setOnClickListener { it ->
-            val select  = adapter.getSelected().map {
+            val select = adapter.getSelected().map {
                 it.info.absolutePath
             }
             val menu = configMenu(requireContext(), it, select)
@@ -87,16 +88,16 @@ class EXListFragment : Fragment(), ExplorerListAdapter.OnItemClickListener, Expl
             menu.show()
         }
 
-        view.findViewById<ImageButton>(R.id.previous).setOnClickListener{
-            if(currentPath != rootPath){
-                val parent  = File(currentPath).parent
+        view.findViewById<ImageButton>(R.id.previous).setOnClickListener {
+            if (currentPath != rootPath) {
+                val parent = File(currentPath).parent
                 if (parent != null) {
                     onPathChange(parent)
                 }
-            }else {
+            } else {
                 Snackbar
                     .make(view, "Cant go back further", Snackbar.LENGTH_SHORT)
-                    .setAction("OK"){}
+                    .setAction("OK") {}
                     .show()
             }
         }
@@ -106,26 +107,26 @@ class EXListFragment : Fragment(), ExplorerListAdapter.OnItemClickListener, Expl
         }
     }
 
-    private fun configMenu(context : Context, view : View, select : List<String>) : PopupMenu {
+    private fun configMenu(context: Context, view: View, select: List<String>): PopupMenu {
         val menu = PopupMenu(context, view)
         menu.menuInflater.inflate(R.menu.file_menu, menu.menu)
         val renameItem = menu.menu[2]
-        if(select.size > 1) {
+        if (select.size > 1) {
             renameItem.isEnabled = false
         }
         menu.setOnMenuItemClickListener {
-            when(it.itemId){
-                R.id.file_menu_delete->{
+            when (it.itemId) {
+                R.id.file_menu_delete -> {
                     var message = "${select.size} file(s) deleted"
-                    if(!handleDelete(select)){
+                    if (!handleDelete(select)) {
                         message = "Something went wrong"
                     }
                     onPathChange(currentPath)
-                    Snackbar.make(this.requireView(),message, Snackbar.LENGTH_SHORT)
-                        .setAction("OK"){}
+                    Snackbar.make(this.requireView(), message, Snackbar.LENGTH_SHORT)
+                        .setAction("OK") {}
                         .show()
                 }
-                else->{
+                else -> {
 
                 }
             }
@@ -134,30 +135,32 @@ class EXListFragment : Fragment(), ExplorerListAdapter.OnItemClickListener, Expl
         return menu
     }
 
-    private fun handleDelete(list : List<String>) : Boolean{
+    private fun handleDelete(list: List<String>): Boolean {
         return FileUtils.deleteFiles(list) == list.size
     }
 
-    fun handleMove(list : List<String>){
+    fun handleMove(list: List<String>) {
 
     }
 
-    fun handleRename(newPath : String){
+    fun handleRename(newPath: String) {
 
     }
 
-    override fun onClick(fileInfo : FileInfo) {
-        onPathChange(fileInfo.absolutePath)
+    override fun onClick(fileInfo: FileInfo) {
+        if (fileInfo.extension == null) {
+            onPathChange(fileInfo.absolutePath)
+        }
     }
 
-    override fun onLongClick(fileInfo : FileInfo) {
+    override fun onLongClick(fileInfo: FileInfo) {
         adapter.changeMode(ExplorerListAdapter.Mode.Select)
         crossfade(bottomBar)
     }
 
-    private fun onPathChange(newPath: String){
+    private fun onPathChange(newPath: String) {
         crossfade(progress, list, 500L)
-        taskRunner.execute(FileInfoTask(newPath), object : TaskRunner.Callback<List<FileInfo>>{
+        taskRunner.execute(FileInfoTask(newPath), object : TaskRunner.Callback<List<FileInfo>> {
             override fun onComplete(result: List<FileInfo>) {
                 adapter.setData(result)
                 currentPath = newPath

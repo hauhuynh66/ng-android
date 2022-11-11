@@ -16,6 +16,10 @@ interface ListManager<T>{
     fun bind(holder: RecyclerView.ViewHolder, position: Int)
 
     fun getSize() : Int
+
+    fun getViewType(position: Int) : Int {
+        return 0
+    }
 }
 
 /**

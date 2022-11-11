@@ -14,6 +14,7 @@ import android.widget.ImageButton
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.room.Room
@@ -75,16 +76,17 @@ class MusicPlayerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState:Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_music_player)
-        setSupportActionBar(findViewById(R.id.toolbar))
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
         db = Room.databaseBuilder(this, AppDatabase::class.java, "db").fallbackToDestructiveMigration().build()
         displayView = findViewById(R.id.group1)
+
         supportActionBar!!.apply {
-            title = ""
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_downward)
         }
 
-        findViewById<TextView>(R.id.toolbar_title).text = getString(R.string.music_player)
+        toolbar.findViewById<TextView>(R.id.title).text = getString(R.string.music_player)
 
         mediaBrowser = MediaBrowserCompat(
             this,

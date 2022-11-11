@@ -12,11 +12,11 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.musicplayer.fragment.AudioListFragment
 import com.app.ngn.R
 import com.app.util.ViewUtils
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.musicplayer.fragment.SongListFragment
 
 class MusicBrowserActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +74,14 @@ class MusicBrowserActivity : AppCompatActivity() {
         }
 
         override fun createFragment(position: Int): Fragment {
-            return AudioListFragment().newInstance(position)
+            return when(position){
+                0->{
+                    SongListFragment()
+                }
+                else->{
+                    Fragment()
+                }
+            }
         }
     }
 }

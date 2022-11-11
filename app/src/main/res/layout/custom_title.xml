@@ -7,6 +7,7 @@
     android:background="@color/Orchid"
     app:contentInsetLeft="0dp"
     app:contentInsetStart="0dp"
+    android:transitionName="player"
     android:id="@+id/toolbar">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
