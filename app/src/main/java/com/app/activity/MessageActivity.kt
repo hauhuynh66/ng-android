@@ -23,10 +23,12 @@ class MessageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_message)
-        val title = findViewById<Toolbar>(R.id.toolbar).findViewById<TextView>(R.id.title)
-        title.text = "Messages"
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
-        setSupportActionBar(findViewById(R.id.toolbar))
+        val title = toolbar.findViewById<TextView>(R.id.title)
+        title.text = getString(R.string.message_title)
+
 
         val displayUser = if(auth.currentUser!=null){
             auth.currentUser!!.email!!

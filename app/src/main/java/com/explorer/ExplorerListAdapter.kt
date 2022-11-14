@@ -47,7 +47,7 @@ class ExplorerListAdapter(fileInfoList : List<FileInfo>? = null , var isGrid: Bo
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return if(!isGrid){
-            LineViewHolder(inflater.inflate(R.layout.com_item,parent, false))
+            LineViewHolder(inflater.inflate(R.layout.com_ex_line,parent, false))
         }else{
             GridViewHolder(inflater.inflate(R.layout.com_ex_grid,parent, false))
         }
@@ -218,14 +218,6 @@ class ExplorerListAdapter(fileInfoList : List<FileInfo>? = null , var isGrid: Bo
         }
     }
 
-    fun getAction(position: Int) : Pair<String, String>{
-        var action = "open"
-        if(FileTable.fromExtension(data[position].info.extension) == FileTable.DIRECTORY){
-            action = "next"
-        }
-        return Pair(action, data[position].info.absolutePath)
-    }
-
     interface OnItemClickListener{
         fun onClick(fileInfo : FileInfo){
 
@@ -237,9 +229,4 @@ class ExplorerListAdapter(fileInfoList : List<FileInfo>? = null , var isGrid: Bo
 
         }
     }
-
-    data class FileDisplay(
-        val info : FileInfo,
-        var checked : Boolean = false,
-        var disabled : Boolean = false)
 }

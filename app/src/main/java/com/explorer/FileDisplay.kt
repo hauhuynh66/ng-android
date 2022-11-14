@@ -1,5 +1,10 @@
 package com.explorer
 
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.app.adapter.ListManager
 import com.app.ngn.R
 import java.io.File
 import java.nio.file.Files
@@ -85,6 +90,72 @@ enum class FileTable{
                     R.drawable.ic_baseline_description
                 }
             }
+        }
+    }
+}
+
+data class FileDisplay(
+    val info : FileInfo,
+    var checked : Boolean = false,
+    var disabled : Boolean = false)
+
+
+class FileInfoManager(private val data : List<FileInfo>, private val type: Type) : ListManager<FileInfo>{
+    private val displayData : MutableList<FileDisplay> = mutableListOf()
+    private var currentItemMode : ItemMode = ItemMode.Select
+
+    enum class Type{
+        Grid,
+        Line
+    }
+
+    enum class ItemMode{
+        Select,
+        Display
+    }
+
+    init {
+        data.forEach {
+            displayData.add(FileDisplay(it))
+        }
+    }
+
+    override fun createView(parent: ViewGroup): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return when(type){
+            Type.Grid->{
+                GridView(inflater.inflate(R.layout.com_ex_grid, parent, false))
+            }
+            Type.Line->{
+                LineView(inflater.inflate(R.layout.com_ex_line, parent, false))
+            }
+        }
+    }
+
+    override fun bind(holder: RecyclerView.ViewHolder, position: Int) {
+        when(type){
+            Type.Grid->{
+                (holder as GridView).bind()
+            }
+            Type.Line->{
+                (holder as LineView).bind()
+            }
+        }
+    }
+
+    override fun getSize(): Int {
+        return data.size
+    }
+
+    inner class LineView(v : View) : RecyclerView.ViewHolder(v) {
+        fun bind(){
+
+        }
+    }
+
+    inner class GridView(v : View) : RecyclerView.ViewHolder(v) {
+        fun bind(){
+
         }
     }
 }

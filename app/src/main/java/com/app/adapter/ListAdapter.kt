@@ -50,6 +50,8 @@ class TextManager(var data : List<String>) : ListManager<String>{
 
 class ListAdapter<T>(private val listManager: ListManager<T>)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    var onItemClickListener : OnItemClickListener<T> = object : OnItemClickListener<T>{}
+    var onItemLongClickListener : OnItemLongClickListener<T> = object : OnItemLongClickListener<T>{}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return listManager.createView(parent)
@@ -65,11 +67,15 @@ class ListAdapter<T>(private val listManager: ListManager<T>)
 
 
 
-    interface OnItemClickListener{
-        fun execute()
+    interface OnItemClickListener<T>{
+        fun execute(item : T){
+
+        }
     }
 
-    interface OnItemLongClickListener{
-        fun execute()
+    interface OnItemLongClickListener<T>{
+        fun execute(item : T){
+
+        }
     }
 }
