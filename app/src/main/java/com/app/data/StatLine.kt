@@ -15,7 +15,7 @@ data class StatLine(val name : String, val leftValue : Int, val rightValue : Int
 /**
  * Stat line list manager
  */
-class StatManager(var data : List<StatLine>) : ListManager<StatLine> {
+class StatManager(data : List<StatLine>) : ListManager<StatLine>(data) {
     override fun createView(parent: ViewGroup): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return ViewHolder(inflater.inflate(R.layout.com_statistic, parent, false))
@@ -23,10 +23,6 @@ class StatManager(var data : List<StatLine>) : ListManager<StatLine> {
 
     override fun bind(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as ViewHolder).bind(data[position])
-    }
-
-    override fun getSize(): Int {
-        return data.size
     }
 
     inner class ViewHolder(v : View) : RecyclerView.ViewHolder(v){

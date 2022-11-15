@@ -12,7 +12,7 @@ import com.app.ngn.R
 
 class Message(val from : String? = null, val content : String? = null)
 
-class MessageManager(private val data : List<Message>) : ListManager<Message> {
+class MessageManager(data : List<Message>) : ListManager<Message>(data) {
     private var lastPosition = -1
     override fun createView(parent: ViewGroup): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -22,10 +22,6 @@ class MessageManager(private val data : List<Message>) : ListManager<Message> {
     override fun bind(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as ViewHolder).bind(data[position])
         setAnimation(holder.v, position)
-    }
-
-    override fun getSize(): Int {
-        return data.size
     }
 
     inner class ViewHolder(val v : View) : RecyclerView.ViewHolder(v){

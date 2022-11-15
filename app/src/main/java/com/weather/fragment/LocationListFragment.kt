@@ -43,7 +43,7 @@ class LocationListFragment : Fragment() {
 
         val list = view.findViewById<RecyclerView>(R.id.item_list)
         val textManager = TextManager(arr)
-        val onClick = object : ListAdapter.OnItemClickListener{
+        /*val onClick = object : ListAdapter.OnItemClickListener{
             override fun execute() {
                 /*runBlocking {
                     withContext(Dispatchers.IO){
@@ -73,7 +73,8 @@ class LocationListFragment : Fragment() {
                 adapter.data.remove(data)
                 adapter.notifyItemRemoved(pos)*/
             }
-        }
+        }*/
+
         val adapter = ListAdapter(textManager)
         list.adapter = adapter
         list.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

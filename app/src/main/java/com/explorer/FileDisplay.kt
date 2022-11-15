@@ -100,7 +100,7 @@ data class FileDisplay(
     var disabled : Boolean = false)
 
 
-class FileInfoManager(private val data : List<FileInfo>, private val type: Type) : ListManager<FileInfo>{
+class FileInfoManager(data : List<FileInfo>, private val type: Type) : ListManager<FileInfo>(data){
     private val displayData : MutableList<FileDisplay> = mutableListOf()
     private var currentItemMode : ItemMode = ItemMode.Select
 
@@ -141,10 +141,6 @@ class FileInfoManager(private val data : List<FileInfo>, private val type: Type)
                 (holder as LineView).bind()
             }
         }
-    }
-
-    override fun getSize(): Int {
-        return data.size
     }
 
     inner class LineView(v : View) : RecyclerView.ViewHolder(v) {

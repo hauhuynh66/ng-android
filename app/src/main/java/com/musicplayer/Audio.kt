@@ -103,7 +103,7 @@ class Audio(
     }
 }
 
-class AudioManager(val data : List<Audio>) : ListManager<Audio>{
+class AudioManager(data : List<Audio>) : ListManager<Audio>(data){
     override fun createView(parent: ViewGroup): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return ViewHolder(inflater.inflate(R.layout.com_text, parent, false))
@@ -111,10 +111,6 @@ class AudioManager(val data : List<Audio>) : ListManager<Audio>{
 
     override fun bind(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as ViewHolder).bind(data[position])
-    }
-
-    override fun getSize(): Int {
-        return data.size
     }
 
     inner class ViewHolder(v : View) : RecyclerView.ViewHolder(v){

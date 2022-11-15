@@ -10,37 +10,41 @@ import com.app.ngn.R
 /**
  * List Manager
  */
-interface ListManager<T>{
-    fun createView(parent : ViewGroup) : RecyclerView.ViewHolder
+abstract class ListManager<T>(val data : List<T>){
+    var onItemClickListener : OnItemClickListener<T>? = null
 
-    fun bind(holder: RecyclerView.ViewHolder, position: Int)
+    abstract fun createView(parent : ViewGroup) : RecyclerView.ViewHolder
 
-    fun getSize() : Int
+    abstract fun bind(holder: RecyclerView.ViewHolder, position: Int)
 
-    fun getViewType(position: Int) : Int {
-        return 0
+    fun getSize() : Int {
+        return data.size
+    }
+
+    interface OnItemClickListener<T>{
+        fun execute(item : T)
     }
 }
 
 /**
  * One line text only list
  */
-class TextManager(var data : List<String>) : ListManager<String>{
+class TextManager(data : List<String>) : ListManager<String>(data){
     override fun createView(parent: ViewGroup): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return ViewHolder(inflater.inflate(R.layout.com_text, parent, false))
     }
 
     override fun bind(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as ViewHolder).bind(data[position])
-    }
-
-    override fun getSize(): Int {
-        return data.size
+        (holder as ViewHolder).bind(data[position], onItemClickListener)
     }
 
     inner class ViewHolder(v : View) : RecyclerView.ViewHolder(v) {
-        fun bind(data : String){
+        fun bind(data : String, listener: OnItemClickListener<String>?){
+            itemView.setOnClickListener {
+                listener?.execute(data)
+            }
+
             itemView.findViewById<TextView>(R.id.text).apply {
                 this.text = data
             }
@@ -50,8 +54,6 @@ class TextManager(var data : List<String>) : ListManager<String>{
 
 class ListAdapter<T>(private val listManager: ListManager<T>)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var onItemClickListener : OnItemClickListener<T> = object : OnItemClickListener<T>{}
-    var onItemLongClickListener : OnItemLongClickListener<T> = object : OnItemLongClickListener<T>{}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return listManager.createView(parent)
@@ -63,19 +65,5 @@ class ListAdapter<T>(private val listManager: ListManager<T>)
 
     override fun getItemCount(): Int {
         return listManager.getSize()
-    }
-
-
-
-    interface OnItemClickListener<T>{
-        fun execute(item : T){
-
-        }
-    }
-
-    interface OnItemLongClickListener<T>{
-        fun execute(item : T){
-
-        }
     }
 }

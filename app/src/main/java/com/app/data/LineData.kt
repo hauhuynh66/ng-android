@@ -19,8 +19,7 @@ data class LineData(
 class LineDisplayOption(val color : Int = Color.BLACK, val textSize : Float = 6f, val gravity: Int? = null)
 
 
-class LineManager(private var data : List<LineData>, private val style: LineStyle) :
-    ListManager<LineData> {
+class LineManager(data : List<LineData>, private val style: LineStyle) : ListManager<LineData>(data) {
     override fun createView(parent: ViewGroup): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val layout = when(style){
@@ -37,10 +36,6 @@ class LineManager(private var data : List<LineData>, private val style: LineStyl
 
     override fun bind(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as ViewHolder).bind(data[position])
-    }
-
-    override fun getSize(): Int {
-        return data.size
     }
 
     inner class ViewHolder(v : View) : RecyclerView.ViewHolder(v){
