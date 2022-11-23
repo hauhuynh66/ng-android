@@ -1,5 +1,6 @@
 package com.treeview.single
 
+import com.explorer.FileInfo
 import java.util.*
 
 /**
@@ -10,7 +11,7 @@ import java.util.*
  * isExpanded : node display status
  * layoutId : node layout resource
  */
-open class Node(val value : Any) {
+abstract class Node(val value : Any) {
     var level : Int = 0
     var parent : Node? = null
     val children : LinkedList<Node> = LinkedList<Node>()
@@ -38,4 +39,12 @@ open class Node(val value : Any) {
     override fun hashCode(): Int {
         return uuid.hashCode()
     }
+
+    //abstract fun getView() : View
+}
+
+class FileNode(private val fileInfo: FileInfo) : Node(fileInfo.name){
+    /*override fun getView(): View {
+
+    }*/
 }

@@ -96,7 +96,7 @@
         <activity android:name="com.football.activity.FootballDisplayActivity"
             android:exported="true"/>
 
-        <service android:name="com.app.service.MediaPlaybackService"
+        <service android:name="com.musicplayer.MediaPlaybackService"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.media.browse.MediaBrowserService" />
