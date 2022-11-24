@@ -8,7 +8,7 @@ import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.adapter.ListAdapter
+import com.app.adapter.CustomListAdapter
 import com.app.data.Message
 import com.app.data.MessageManager
 import com.app.ngn.R
@@ -33,7 +33,7 @@ class MessageFragment(var messages : ArrayList<Message>) : Fragment() {
         progressBar = view.findViewById(R.id.progress)
         progressBar.visibility = View.VISIBLE
         val messageManager = MessageManager(messages)
-        list.adapter = ListAdapter(messageManager)
+        list.adapter = CustomListAdapter(messageManager)
         list.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     }
 

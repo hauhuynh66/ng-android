@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.app.activity.news.NewsActivity
 import com.app.fragment.AboutFragment
 import com.app.fragment.ActionFragment
 import com.app.fragment.MainFragment
@@ -109,7 +110,7 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                     transaction.replace(R.id.container,  ActionFragment()).commit()
                 }
                 R.id.nav_rd->{
-                    val intent = Intent(this@NavigatorActivity, NewsMainActivity::class.java)
+                    val intent = Intent(this@NavigatorActivity, NewsActivity::class.java)
                     startActivity(intent)
                 }
                 R.id.nav_menu_setting->{

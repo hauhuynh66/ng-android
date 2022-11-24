@@ -8,7 +8,7 @@ import java.net.URL
 import java.util.concurrent.Callable
 
 class PostHttpTask(private val url : String, private val postData : JSONObject, private val header : MutableMap<String, String>? = null, private val extra : String? = null) : Callable<HttpResponse>{
-    override fun call(): HttpResponse {
+    override fun call(): HttpResponse? {
         try {
             val url = URL(url)
             val conn = url.openConnection() as HttpURLConnection
@@ -30,7 +30,7 @@ class PostHttpTask(private val url : String, private val postData : JSONObject, 
 
             return HttpResponse(conn.responseCode, conn.headerFields, IOUtils.toByteArray(conn.inputStream))
         }catch (e : Exception){
-            return HttpResponse(HttpURLConnection.HTTP_SEE_OTHER)
+            return null
         }
     }
 }

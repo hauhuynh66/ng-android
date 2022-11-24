@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
-import com.weather.SunState
+import com.app.data.weather.SunState
 import com.app.ngn.R
 import com.app.util.DateTimeUtils
 import java.text.SimpleDateFormat

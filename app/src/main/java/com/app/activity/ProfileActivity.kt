@@ -10,7 +10,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.RecyclerView
-import com.app.adapter.ListAdapter
+import com.app.adapter.CustomListAdapter
 import com.app.data.LineData
 import com.app.data.LineDisplayOption
 import com.app.data.LineManager
@@ -58,12 +58,12 @@ class ProfileActivity : AppCompatActivity() {
 
         infoList.apply {
             layoutManager = ViewUtils.getFixedVerticalLayoutManager(this@ProfileActivity)
-            adapter = ListAdapter(LineManager(infoData, LineManager.LineStyle.One))
+            adapter = CustomListAdapter(LineManager(infoData, LineManager.LineStyle.One))
         }
 
         statList.apply {
             layoutManager = ViewUtils.getFixedHorizontalLayoutManager(this@ProfileActivity)
-            adapter = ListAdapter(LineManager(statData, LineManager.LineStyle.Two))
+            adapter = CustomListAdapter(LineManager(statData, LineManager.LineStyle.Two))
         }
     }
 

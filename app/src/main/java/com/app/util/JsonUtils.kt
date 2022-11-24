@@ -1,7 +1,7 @@
 package com.app.util
 
-import com.football.FootballStanding
-import com.football.FootballTeam
+import com.app.data.score.FootballStanding
+import com.app.data.score.FootballTeam
 import org.json.JSONObject
 
 class JsonUtils {

@@ -57,55 +57,48 @@
             android:name="com.app.activity.GoogleMapActivity"
             android:exported="true"/>
 
-        <activity android:name="com.explorer.activity.FileExplorerActivity"
+        <activity android:name="com.app.activity.explorer.FileExplorerActivity"
             android:exported="true"/>
 
-        <activity android:name="com.explorer.activity.FileListActivity"
+        <activity android:name="com.app.activity.explorer.FileListActivity"
             android:exported="true"/>
 
         <activity android:name="com.app.activity.CVActivity"
             android:exported="true"/>
 
-        <activity android:name="com.weather.activity.LocationListActivity"
+        <activity android:name="com.app.activity.weather.LocationListActivity"
             android:exported="true"/>
 
         <activity android:name="com.app.activity.DrawActivity"
             android:exported="true"/>
+
+        <activity android:name="com.app.activity.weather.WeatherActivity"
+            android:exported="true"/>
+
+        <activity android:name="com.app.activity.message.MessageActivity"
+            android:exported="true"/>
+
+        <activity android:name="com.app.activity.news.NewsActivity"
+            android:exported="true"/>
+
+        <activity android:name="com.app.activity.score.MainActivity"
+            android:exported="true"/>
         
-        <activity android:name="com.musicplayer.activity.MusicPlayerActivity"
+        <activity android:name="com.app.activity.player.BrowserActivity"
             android:exported="true"/>
 
-        <activity android:name="com.musicplayer.activity.MusicBrowserActivity"
+        <activity android:name="com.app.activity.player.PlayerActivity"
             android:exported="true"/>
 
-        <activity android:name="com.musicplayer.activity.MusicSearchActivity"
-            android:exported="true"/>
+        <service android:name="com.app.service.MyService"
+            android:exported="true">
+        </service>
 
-        <activity android:name="com.weather.activity.WeatherActivity"
-            android:exported="true"/>
-
-        <activity android:name="com.app.activity.MessageActivity"
-            android:exported="true"/>
-
-        <activity android:name="com.app.activity.NewsMainActivity"
-            android:exported="true"/>
-
-        <activity android:name="com.football.activity.FootballMainActivity"
-            android:exported="true"/>
-
-        <activity android:name="com.football.activity.FootballDisplayActivity"
-            android:exported="true"/>
-
-        <service android:name="com.musicplayer.MediaPlaybackService"
+        <service android:name="com.app.service.MyBrowserService"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
-        </service>
-
-        <service android:name="com.app.service.MyService"
-            android:exported="true">
-
         </service>
 
         <receiver android:name="androidx.media.session.MediaButtonReceiver"

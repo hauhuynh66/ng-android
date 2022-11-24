@@ -11,7 +11,6 @@ import com.app.view.StatBar
 
 data class StatLine(val name : String, val leftValue : Int, val rightValue : Int)
 
-
 /**
  * Stat line list manager
  */

@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.adapter.ListAdapter
+import com.app.adapter.CustomListAdapter
 import com.app.data.LineData
 import com.app.data.LineManager
 import com.app.ngn.R
@@ -21,7 +21,7 @@ class DetailDialog(val path : String) : DialogFragment() {
             .inflate(R.layout.dlg_list, null, false)
         val list = v.findViewById<RecyclerView>(R.id.dlg_ex_detail_list)
         list.layoutManager = LinearLayoutManager(requireContext())
-        list.adapter = ListAdapter(LineManager(getDetails(path), LineManager.LineStyle.One))
+        list.adapter = CustomListAdapter(LineManager(getDetails(path), LineManager.LineStyle.One))
         builder.setView(v).setPositiveButton("OK"){
             di, _ -> run{
                 di.dismiss()

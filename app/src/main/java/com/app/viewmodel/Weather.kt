@@ -2,8 +2,8 @@ package com.app.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.weather.ForecastData
-import com.weather.WeatherData
+import com.app.data.weather.ForecastData
+import com.app.data.weather.WeatherData
 
 class Weather : ViewModel(){
     enum class WeatherState{
