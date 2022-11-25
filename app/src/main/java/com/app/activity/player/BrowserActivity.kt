@@ -1,7 +1,10 @@
 package com.app.activity.player
 
+import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.media.MediaBrowserCompat
+import android.support.v4.media.session.MediaControllerCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,10 +21,30 @@ import com.app.adapter.CustomListAdapter
 import com.app.data.media.Audio
 import com.app.data.media.AudioManager
 import com.app.ngn.R
+import com.app.service.MyBrowserService
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class BrowserActivity : AppCompatActivity() {
+    private lateinit var mediaBrowser : MediaBrowserCompat
+    private val connectionCallback : MediaBrowserCompat.ConnectionCallback = object : MediaBrowserCompat.ConnectionCallback(){
+        override fun onConnected() {
+            mediaBrowser.sessionToken.also { token ->
+                val mediaController = MediaControllerCompat(this@BrowserActivity, token)
+                MediaControllerCompat.setMediaController(this@BrowserActivity, mediaController)
+            }
+            buildTransportControl()
+        }
+
+        override fun onConnectionSuspended() {
+            super.onConnectionSuspended()
+        }
+
+        override fun onConnectionFailed() {
+            super.onConnectionFailed()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_mp_browser)
@@ -48,6 +71,9 @@ class BrowserActivity : AppCompatActivity() {
             val intent = Intent(this, PlayerActivity::class.java)
             startActivity(intent)
         }
+
+        mediaBrowser = MediaBrowserCompat(this, ComponentName(this, MyBrowserService::class.java), connectionCallback, null)
+        mediaBrowser.connect()
     }
 
     inner class BrowserAdapter(fm : FragmentManager, lc: Lifecycle) : FragmentStateAdapter(fm, lc){
@@ -65,6 +91,15 @@ class BrowserActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaBrowser.disconnect()
+    }
+
+    private fun buildTransportControl(){
+
     }
 
     class SongList : Fragment(){

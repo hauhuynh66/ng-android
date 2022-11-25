@@ -13,6 +13,8 @@ class MyBrowserService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedList
     private lateinit var stateBuilder : PlaybackStateCompat.Builder
     private var prepared : Boolean = false
     private var current: Int = 0
+    private var isPlaying: Boolean = false
+
     private val sessionCallback : MediaSessionCompat.Callback = object : MediaSessionCompat.Callback(){
         override fun onPlay() {
             if(prepared){
@@ -20,10 +22,10 @@ class MyBrowserService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedList
                 val state = PlaybackStateCompat.Builder()
                     .setState(PlaybackStateCompat.STATE_PLAYING, mediaPlayer.currentPosition.toLong(), mediaPlayer.playbackParams.speed)
                     .build()
-
                 mediaSession?.apply {
                     setPlaybackState(state)
                 }
+                isPlaying = true
             }
         }
 
@@ -38,47 +40,68 @@ class MyBrowserService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedList
                 mediaSession?.apply {
                     setPlaybackState(state)
                 }
+                isPlaying = false
             }
         }
 
         override fun onSkipToNext() {
             super.onSkipToNext()
-            current++
-            mediaPlayer.stop()
-            mediaPlayer.reset()
-            mediaPlayer.setDataSource(audio[current].uri.path)
-            mediaPlayer.setOnPreparedListener(this@MyBrowserService)
-            mediaPlayer.prepareAsync()
-
-            if (prepared){
-                if()
+            if(current < audio.size - 1){
+                current++
+            } else {
+                current = 0
             }
+            isPlaying = mediaPlayer.isPlaying
+
+            resetMediaPlayer(audio[current])
         }
 
         override fun onSkipToPrevious() {
             super.onSkipToPrevious()
+            if(current > 0){
+                current--
+            } else {
+                current = audio.size - 1
+            }
+            isPlaying = mediaPlayer.isPlaying
+
+            resetMediaPlayer(audio[current])
         }
     }
+
     private var audio = listOf<Audio>()
     private val mediaPlayer : MediaPlayer = MediaPlayer()
 
     private val LOG_TAG = "MY MEDIA BROWSER SERVICE"
     private val ROOT_ID = "ROOT"
     private val EMPTY_ROOT_ID = "EMPTY"
+
     override fun onCreate() {
         super.onCreate()
         audio = Audio.getInternalAudio(baseContext.contentResolver)
         mediaPlayer.setOnPreparedListener(this)
         mediaPlayer.setDataSource(audio[0].uri.path)
         mediaPlayer.prepareAsync()
-        mediaSession = MediaSessionCompat(baseContext, LOG_TAG).apply {
+        mediaSession = MediaSessionCompat(this, LOG_TAG).apply {
             stateBuilder = PlaybackStateCompat.Builder()
                 .setActions(PlaybackStateCompat.ACTION_PAUSE or PlaybackStateCompat.ACTION_PLAY)
 
             setPlaybackState(stateBuilder.build())
+            setMetadata(Audio.getMetaData(audio[current]))
             setCallback(sessionCallback)
             setSessionToken(sessionToken)
+            isActive = true
         }
+    }
+
+    override fun onDestroy() {
+        mediaSession?.run {
+            isActive = false
+            release()
+        }
+        mediaPlayer.stop()
+        mediaPlayer.release()
+        super.onDestroy()
     }
 
     override fun onGetRoot(
@@ -106,5 +129,29 @@ class MyBrowserService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedList
 
     override fun onPrepared(p0: MediaPlayer?) {
         prepared = true
+
+        if(isPlaying){
+            mediaPlayer.start()
+            val state = PlaybackStateCompat.Builder()
+                .setState(PlaybackStateCompat.STATE_PLAYING, mediaPlayer.currentPosition.toLong(), mediaPlayer.playbackParams.speed)
+                .build()
+            mediaSession?.setPlaybackState(state)
+        }
+    }
+
+    private fun resetMediaPlayer(src : Audio){
+        mediaPlayer.stop()
+        mediaPlayer.reset()
+        mediaPlayer.setOnPreparedListener(this)
+        mediaPlayer.setDataSource(src.uri.path)
+        mediaPlayer.prepareAsync()
+
+        val state = PlaybackStateCompat.Builder()
+            .setState(PlaybackStateCompat.STATE_PAUSED, mediaPlayer.currentPosition.toLong(), mediaPlayer.playbackParams.speed)
+            .build()
+        mediaSession?.apply {
+            setMetadata(Audio.getMetaData(src))
+            setPlaybackState(state)
+        }
     }
 }

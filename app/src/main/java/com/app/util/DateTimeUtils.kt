@@ -1,6 +1,7 @@
 package com.app.util
 
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 class DateTimeUtils {
@@ -50,6 +51,33 @@ class DateTimeUtils {
             calendar.set(Calendar.MILLISECOND, 0)
 
             return calendar.timeInMillis
+        }
+
+        fun timeFromLong(duration : Long?) : String {
+            val formatter = SimpleDateFormat("mm:ss", Locale.getDefault())
+            return try {
+                formatter.format(duration)
+            }catch (e : Exception){
+                "00:00"
+            }
+        }
+
+        fun formatDate(date: Date, pattern : String) : String{
+            val sf = SimpleDateFormat(pattern, Locale.getDefault())
+            return try {
+                sf.format(date)
+            }catch (e:Exception){
+                ""
+            }
+        }
+
+        fun parseDate(s:String, pattern: String): Date {
+            val sf = SimpleDateFormat(pattern, Locale.getDefault())
+            return try {
+                sf.parse(s)!!
+            }catch (e:Exception){
+                Date()
+            }
         }
     }
 }

@@ -12,7 +12,7 @@ import com.app.data.explorer.FileDisplay
 import com.app.data.explorer.FileInfo
 import com.app.data.explorer.FileTable
 import com.app.ngn.R
-import com.app.util.Formatter.Companion.formatDate
+import com.app.util.DateTimeUtils.Companion.formatDate
 
 class ExplorerListAdapter(fileInfoList : List<FileInfo>? = null, var isGrid: Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var data: MutableList<FileDisplay> = mutableListOf()
