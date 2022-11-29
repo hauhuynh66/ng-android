@@ -1,13 +1,18 @@
 package com.app.activity.player
 
+import android.app.ActivityOptions
 import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
+import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
+import android.support.v4.media.session.PlaybackStateCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -27,8 +32,10 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class BrowserActivity : AppCompatActivity() {
     private lateinit var mediaBrowser : MediaBrowserCompat
+    private var mediaMetadata : MediaMetadataCompat? = null
     private val connectionCallback : MediaBrowserCompat.ConnectionCallback = object : MediaBrowserCompat.ConnectionCallback(){
         override fun onConnected() {
+            super.onConnected()
             mediaBrowser.sessionToken.also { token ->
                 val mediaController = MediaControllerCompat(this@BrowserActivity, token)
                 MediaControllerCompat.setMediaController(this@BrowserActivity, mediaController)
@@ -44,6 +51,21 @@ class BrowserActivity : AppCompatActivity() {
             super.onConnectionFailed()
         }
     }
+
+    private val controllerCallback : MediaControllerCompat.Callback = object : MediaControllerCompat.Callback(){
+        override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
+            super.onPlaybackStateChanged(state)
+            updatePlaybackState(state)
+        }
+
+        override fun onMetadataChanged(metadata: MediaMetadataCompat?) {
+            super.onMetadataChanged(metadata)
+            updateMetadata(metadata)
+        }
+    }
+    private lateinit var mediaTitle : TextView
+    private lateinit var mediaSubtitle : TextView
+    private lateinit var mediaPlay : ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,14 +89,21 @@ class BrowserActivity : AppCompatActivity() {
             }
         }.attach()
 
-        findViewById<ConstraintLayout>(R.id.player_fm).setOnClickListener {
+        val mediaPlayer = findViewById<ConstraintLayout>(R.id.player_fm)
+        mediaPlayer.setOnClickListener {
             val intent = Intent(this, PlayerActivity::class.java)
-            startActivity(intent)
+            val option = ActivityOptions.makeSceneTransitionAnimation(this, it, "player")
+            startActivity(intent, option.toBundle())
         }
+        mediaTitle = mediaPlayer.findViewById(R.id.audio_title)
+        mediaSubtitle = mediaPlayer.findViewById(R.id.audio_subtitle)
+        mediaPlay = mediaPlayer.findViewById(R.id.btn_play)
 
         mediaBrowser = MediaBrowserCompat(this, ComponentName(this, MyBrowserService::class.java), connectionCallback, null)
         mediaBrowser.connect()
     }
+
+
 
     inner class BrowserAdapter(fm : FragmentManager, lc: Lifecycle) : FragmentStateAdapter(fm, lc){
         override fun getItemCount(): Int {
@@ -95,11 +124,45 @@ class BrowserActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        MediaControllerCompat.getMediaController(this)?.unregisterCallback(controllerCallback)
         mediaBrowser.disconnect()
     }
 
     private fun buildTransportControl(){
+        val controller = MediaControllerCompat.getMediaController(this)
 
+        updatePlaybackState(controller.playbackState)
+        updateMetadata(controller.metadata)
+
+        mediaPlay.setOnClickListener {
+            val state = controller.playbackState
+            if(state.state == PlaybackStateCompat.STATE_PLAYING){
+                controller.transportControls.pause()
+            }else{
+                controller.transportControls.play()
+            }
+        }
+
+        controller.registerCallback(controllerCallback)
+    }
+
+    private fun updatePlaybackState(state : PlaybackStateCompat?){
+        when(state?.state){
+            PlaybackStateCompat.STATE_PLAYING->{
+                mediaPlay.setImageResource(R.drawable.ic_baseline_pause)
+            }
+            else->{
+                mediaPlay.setImageResource(R.drawable.ic_baseline_play_arrow)
+            }
+        }
+    }
+
+    private fun updateMetadata(metadata : MediaMetadataCompat?){
+        mediaMetadata = metadata
+        metadata?.apply {
+            mediaTitle.text = this.getText(MediaMetadataCompat.METADATA_KEY_TITLE)
+            mediaSubtitle.text = this.getText(MediaMetadataCompat.METADATA_KEY_ALBUM)
+        }
     }
 
     class SongList : Fragment(){
