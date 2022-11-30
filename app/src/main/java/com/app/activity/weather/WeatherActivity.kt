@@ -23,10 +23,15 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.app.activity.NavigatorActivity
 import com.app.adapter.CustomListAdapter
+import com.app.adapter.WeatherAdapter
 import com.app.data.HttpResponse
 import com.app.data.LineData
 import com.app.data.LineDisplayOption
 import com.app.data.LineManager
+import com.app.data.weather.ForecastData
+import com.app.data.weather.WeatherData
+import com.app.data.weather.WeatherType
+import com.app.data.weather.WeatherType.Companion.fromString
 import com.app.model.AppDatabase
 import com.app.model.Location
 import com.app.model.Setting
@@ -35,13 +40,9 @@ import com.app.task.GetHttpTask
 import com.app.task.TaskRunner
 import com.app.util.Animation.Companion.crossfade
 import com.app.util.PermissionUtils.Companion.checkPermissions
+import com.app.util.ViewUtils
 import com.app.view.SunPositionView
 import com.app.viewmodel.Weather
-import com.app.data.weather.ForecastData
-import com.app.adapter.WeatherAdapter
-import com.app.data.weather.WeatherData
-import com.app.data.weather.WeatherType
-import com.app.data.weather.WeatherType.Companion.fromString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -70,11 +71,9 @@ class WeatherActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_weather)
-        setSupportActionBar(findViewById(R.id.toolbar))
+        ViewUtils.configTitle(findViewById(R.id.toolbar), true, 2)
 
-        supportActionBar!!.apply{
-            setDisplayHomeAsUpEnabled(true)
-        }
+        setSupportActionBar(findViewById(R.id.toolbar))
         db = Room.databaseBuilder(this, AppDatabase::class.java, "db").fallbackToDestructiveMigration().build()
 
         progress = findViewById(R.id.progress)

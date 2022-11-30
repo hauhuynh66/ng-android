@@ -20,7 +20,7 @@ class LocationListActivity : AppCompatActivity() {
     private lateinit var db: AppDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.ac_list)
+        setContentView(R.layout.ac_search_list)
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar!!.apply {
             title = "Locations"

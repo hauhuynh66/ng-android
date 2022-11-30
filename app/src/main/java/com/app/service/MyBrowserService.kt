@@ -1,16 +1,20 @@
 package com.app.service
 
-import android.content.Context
+import android.app.PendingIntent
+import android.app.TaskStackBuilder
+import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.media.MediaBrowserServiceCompat
 import androidx.media.session.MediaButtonReceiver
 import com.app.App
+import com.app.activity.player.BrowserActivity
 import com.app.data.media.Audio
 import com.app.ngn.R
 
@@ -20,6 +24,8 @@ class MyBrowserService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedList
     private var prepared : Boolean = false
     private var current: Int = 0
     private var isPlaying: Boolean = false
+    private val notificationId: Int = 1
+    private lateinit var notificationBuilder : NotificationCompat.Builder
 
     private val sessionCallback : MediaSessionCompat.Callback = object : MediaSessionCompat.Callback(){
         override fun onPlay() {
@@ -32,7 +38,6 @@ class MyBrowserService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedList
                     setPlaybackState(state)
                 }
                 isPlaying = true
-                createNotification(baseContext)
             }
         }
 
@@ -48,7 +53,6 @@ class MyBrowserService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedList
                     setPlaybackState(state)
                 }
                 isPlaying = false
-                createNotification(baseContext)
             }
         }
 
@@ -77,8 +81,12 @@ class MyBrowserService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedList
         }
 
         override fun onSkipToQueueItem(id: Long) {
-            println(id)
             super.onSkipToQueueItem(id)
+            current = id.toInt()
+
+            isPlaying = true
+
+            resetMediaPlayer(audio[current])
         }
     }
 
@@ -91,6 +99,7 @@ class MyBrowserService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedList
 
     override fun onCreate() {
         super.onCreate()
+        notificationBuilder = NotificationCompat.Builder(this, App.notificationChannel)
         audio = Audio.getInternalAudio(baseContext.contentResolver)
         mediaPlayer.setOnPreparedListener(this)
         mediaPlayer.setDataSource(audio[0].uri.path)
@@ -103,7 +112,6 @@ class MyBrowserService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedList
             setMetadata(Audio.getMetaData(audio[current]))
             setCallback(sessionCallback)
             setSessionToken(sessionToken)
-            isActive = true
         }
     }
 
@@ -162,63 +170,74 @@ class MyBrowserService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedList
         val state = PlaybackStateCompat.Builder()
             .setState(PlaybackStateCompat.STATE_PAUSED, mediaPlayer.currentPosition.toLong(), mediaPlayer.playbackParams.speed)
             .build()
+
         mediaSession?.apply {
             setMetadata(Audio.getMetaData(src))
             setPlaybackState(state)
         }
     }
 
-    private fun createNotification(context : Context){
+    private fun createNotification(){
         val controller = mediaSession?.controller
         val mediaMetadata = controller?.metadata
         val description = mediaMetadata?.description
-        val state = controller?.playbackState
+        val contentIntent = Intent(this, BrowserActivity::class.java)
+        val pendingContentIntent = TaskStackBuilder.create(this).run {
+            addNextIntentWithParentStack(contentIntent)
+            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        }
 
-        val builder = NotificationCompat.Builder(context, App.notificationChannel1).apply {
+        notificationBuilder.apply{
             setContentTitle(description?.title)
-            setContentText(description?.subtitle)
+            setContentText(description?.description)
+            setContentIntent(pendingContentIntent)
             setSmallIcon(R.drawable.ic_baseline_notifications)
-            setDeleteIntent(
-                MediaButtonReceiver.buildMediaButtonPendingIntent(
-                    context,
-                    PlaybackStateCompat.ACTION_STOP
-                )
-            )
-            setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            color = ContextCompat.getColor(context, R.color.Peru)
-
-            if(state?.state == PlaybackStateCompat.STATE_PLAYING){
-                addAction(
-                    R.drawable.ic_baseline_pause,
-                    "Pause",
-                    MediaButtonReceiver.buildMediaButtonPendingIntent(
-                        context,
-                        PlaybackStateCompat.ACTION_PAUSE
-                    )
-                )
-            }else{
-                addAction(
-                    R.drawable.ic_baseline_play_arrow,
-                    "Play",
-                    MediaButtonReceiver.buildMediaButtonPendingIntent(
-                        context,
-                        PlaybackStateCompat.ACTION_PLAY
-                    )
-                )
-            }
 
             setStyle(androidx.media.app.NotificationCompat.MediaStyle()
                 .setMediaSession(mediaSession?.sessionToken)
+                .setShowActionsInCompactView(0)
                 .setShowCancelButton(true)
                 .setCancelButtonIntent(
                     MediaButtonReceiver.buildMediaButtonPendingIntent(
-                        context,
+                        this@MyBrowserService,
                         PlaybackStateCompat.ACTION_STOP
                     )
                 )
             )
+
+            setDeleteIntent(
+                MediaButtonReceiver.buildMediaButtonPendingIntent(
+                    this@MyBrowserService,
+                    PlaybackStateCompat.ACTION_STOP
+                )
+            )
+            setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            color = ContextCompat.getColor(this@MyBrowserService, R.color.Peru)
+
+            addAction(
+                R.drawable.ic_baseline_pause,
+                "Play",
+                MediaButtonReceiver.buildMediaButtonPendingIntent(
+                    this@MyBrowserService,
+                    PlaybackStateCompat.ACTION_PAUSE
+                )
+            )
         }
 
-        startForeground(1, builder.build())
+        startForeground(notificationId, notificationBuilder.build())
+    }
+
+    private fun updateNotification(){
+        val controller = mediaSession?.controller
+        val mediaMetadata = controller?.metadata
+        val description = mediaMetadata?.description
+        notificationBuilder.apply {
+            setContentTitle(description?.title)
+            setContentText(description?.description)
+        }
+
+        with(NotificationManagerCompat.from(this@MyBrowserService)){
+            notify(notificationId, notificationBuilder.build())
+        }
     }
 }

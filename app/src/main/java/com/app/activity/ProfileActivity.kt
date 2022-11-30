@@ -26,6 +26,7 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(R.layout.ac_profile)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        ViewUtils.configTitle(toolbar, true)
         val title = toolbar.findViewById<TextView>(R.id.title)
         val infoList = findViewById<RecyclerView>(R.id.info_list)
         val statList = findViewById<RecyclerView>(R.id.stat_list)

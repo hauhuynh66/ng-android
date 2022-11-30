@@ -2,12 +2,17 @@ package com.app.util
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.View
+import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
+import com.app.ngn.R
 import kotlin.math.abs
 import kotlin.math.max
 
@@ -166,6 +171,26 @@ class ViewUtils {
                     return false
                 }
             }
+        }
+
+        fun configTitle(toolbar : Toolbar, homeDisplay : Boolean, menuNumber : Int = 0){
+            val constraintSet = ConstraintSet()
+            constraintSet.clone(toolbar.findViewById<ConstraintLayout>(R.id.title_holder))
+            val metrics = toolbar.context.resources.displayMetrics
+            val size = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56f, metrics).toInt()
+
+            val rightMargin = if(homeDisplay){
+                size
+            }else{
+                0
+            }
+
+            val leftMargin = menuNumber * size
+
+            constraintSet.connect(R.id.title, ConstraintSet.LEFT, R.id.title_holder, ConstraintSet.LEFT, leftMargin)
+            constraintSet.connect(R.id.title, ConstraintSet.RIGHT, R.id.title_holder, ConstraintSet.RIGHT, rightMargin)
+
+            constraintSet.applyTo(toolbar.findViewById(R.id.title_holder))
         }
     }
 

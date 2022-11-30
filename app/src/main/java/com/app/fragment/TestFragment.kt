@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
-import com.app.activity.DrawActivity
+import com.app.activity.ImageGallery
 import com.app.ngn.R
 
 /**
@@ -38,7 +38,7 @@ class TestFragment : Fragment() {
         }
         zxingLauncher.launch(IntentIntegrator(requireActivity()).createScanIntent())*/
 
-        val intent = Intent(requireActivity(), DrawActivity::class.java)
+        val intent = Intent(requireActivity(), ImageGallery::class.java)
         startActivity(intent)
 
         view.findViewById<RecyclerView>(R.id.item_list).apply {

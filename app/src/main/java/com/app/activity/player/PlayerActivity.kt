@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.app.ngn.R
 import com.app.service.MyBrowserService
 import com.app.util.DateTimeUtils
@@ -77,7 +78,10 @@ class PlayerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_music_player)
-
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        toolbar.findViewById<TextView>(R.id.title).text = "Player"
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         mediaBrowser = MediaBrowserCompat(this, ComponentName(this, MyBrowserService::class.java), connectionCallback, null)
         mediaBrowser.connect()
     }
@@ -112,6 +116,20 @@ class PlayerActivity : AppCompatActivity() {
             controller.transportControls.skipToPrevious()
         }
 
+        cProgress.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+
+            }
+        })
+
         controller?.registerCallback(controllerCallback)
     }
 
@@ -135,6 +153,7 @@ class PlayerActivity : AppCompatActivity() {
             cSubtitle.text = metadata.getText(MediaMetadataCompat.METADATA_KEY_ALBUM)
             cDuration.text = DateTimeUtils.timeFromLong(metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION))
             cTime.text = DateTimeUtils.timeFromLong(0)
+            cProgress.max = metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION).toInt()
         }
     }
 
@@ -150,7 +169,6 @@ class PlayerActivity : AppCompatActivity() {
 
         playPause.setImageResource(iconRes)
         cTime.text = DateTimeUtils.timeFromLong(playbackState?.position)
+        cProgress.progress = playbackState?.position?.toInt()?:0
     }
-
-
 }

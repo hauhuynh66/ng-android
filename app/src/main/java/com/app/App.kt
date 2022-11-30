@@ -11,7 +11,7 @@ class App: Application() {
     val actionMessageReceived = "ACTION_MESSAGE_RECEIVED"
 
     companion object {
-        const val notificationChannel1 = "CHANNEL_1"
+        const val notificationChannel = "CHANNEL_1"
     }
 
     override fun onCreate() {
@@ -22,16 +22,16 @@ class App: Application() {
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            val channel1 = NotificationChannel(
-                notificationChannel1,
+            val channel = NotificationChannel(
+                notificationChannel,
                 "Channel 1",
                 NotificationManager.IMPORTANCE_DEFAULT
             )
-            channel1.description = "This is Channel 1"
+            channel.description = "This is Channel 1"
 
             val notificationManager =
                 (getSystemService(NOTIFICATION_SERVICE) as NotificationManager)
-            notificationManager.createNotificationChannel(channel1)
+            notificationManager.createNotificationChannel(channel)
         }
     }
 }

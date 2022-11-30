@@ -13,24 +13,29 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.app.adapter.CustomListAdapter
+import com.app.adapter.ListManager
 import com.app.data.media.Audio
-import com.app.data.media.AudioManager
+import com.app.data.media.AudioListManager
 import com.app.ngn.R
 import com.app.service.MyBrowserService
+import com.app.viewmodel.AudioListConnector
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class BrowserActivity : AppCompatActivity() {
+    private val audioListConnector : AudioListConnector by viewModels()
     private lateinit var mediaBrowser : MediaBrowserCompat
     private var mediaMetadata : MediaMetadataCompat? = null
     private val connectionCallback : MediaBrowserCompat.ConnectionCallback = object : MediaBrowserCompat.ConnectionCallback(){
@@ -103,8 +108,6 @@ class BrowserActivity : AppCompatActivity() {
         mediaBrowser.connect()
     }
 
-
-
     inner class BrowserAdapter(fm : FragmentManager, lc: Lifecycle) : FragmentStateAdapter(fm, lc){
         override fun getItemCount(): Int {
             return 3
@@ -144,6 +147,12 @@ class BrowserActivity : AppCompatActivity() {
         }
 
         controller.registerCallback(controllerCallback)
+
+        audioListConnector.selectedAudio.observe(this){
+            if(it != null){
+                mediaController.transportControls.skipToQueueItem(it.id)
+            }
+        }
     }
 
     private fun updatePlaybackState(state : PlaybackStateCompat?){
@@ -166,11 +175,19 @@ class BrowserActivity : AppCompatActivity() {
     }
 
     class SongList : Fragment(){
+        private val audioListConnector : AudioListConnector by activityViewModels()
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
             val data = Audio.getInternalAudio(requireContext().contentResolver)
             val list = view.findViewById<RecyclerView>(R.id.item_list)
-            list.adapter = CustomListAdapter(AudioManager(data))
+            val audioListManager = AudioListManager(data)
+            audioListManager.onItemClickListener = object : ListManager.OnItemClickListener<Audio>{
+                override fun execute(item: Audio) {
+                    audioListConnector.selectedAudio.value = item
+                }
+            }
+
+            list.adapter = CustomListAdapter(audioListManager)
             list.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         }
 

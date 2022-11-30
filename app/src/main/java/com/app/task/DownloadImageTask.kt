@@ -13,13 +13,13 @@ import java.util.concurrent.Callable
  * path : Path to store image
  * return bitmap to downloaded source
  */
-class DownloadImageTask(private val url : URL, val path : String? = null) : Callable<Bitmap?> {
-    override fun call(): Bitmap? {
-        var bitmap: Bitmap? = null
+class DownloadImageTask(private val url : URL, val path : String? = null) : Callable<Boolean> {
+    override fun call(): Boolean {
+        val bitmap: Bitmap?
+        var success = false
         try {
             val conn = url.openConnection()
             bitmap = BitmapFactory.decodeStream(conn.getInputStream())
-
             if(path != null){
                 val file = File(path)
                 if(!file.exists()){
@@ -28,9 +28,10 @@ class DownloadImageTask(private val url : URL, val path : String? = null) : Call
                 val outputStream = BufferedOutputStream(FileOutputStream(file))
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
             }
+            success = true
         }catch (e : Exception){
             e.printStackTrace()
         }
-        return bitmap
+        return success
     }
 }

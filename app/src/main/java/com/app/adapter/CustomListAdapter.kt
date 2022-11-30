@@ -54,7 +54,6 @@ class TextManager(data : List<String>) : ListManager<String>(data){
 
 class CustomListAdapter<T>(private val listManager: ListManager<T>)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return listManager.createView(parent)
     }

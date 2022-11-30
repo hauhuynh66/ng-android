@@ -83,12 +83,16 @@
 
         <activity android:name="com.app.activity.score.MainActivity"
             android:exported="true"/>
+
+        <activity android:name="com.app.activity.ImageGallery"
+            android:exported="true"/>
         
         <activity android:name="com.app.activity.player.BrowserActivity"
-            android:exported="true"/>
+            android:exported="true"
+            android:parentActivityName="com.app.activity.NavigatorActivity"/>
 
         <activity android:name="com.app.activity.player.PlayerActivity"
-            android:exported="true"/>
+            android:exported="true" />
 
         <service android:name="com.app.service.MyService"
             android:exported="true">
