@@ -1,5 +1,6 @@
 package com.app.fragment.weather
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
+import com.app.activity.weather.WeatherActivity
 import com.app.adapter.CustomListAdapter
+import com.app.adapter.ListManager
 import com.app.adapter.TextManager
 import com.app.model.AppDatabase
 import com.app.ngn.R
@@ -41,19 +44,19 @@ class LocationListFragment : Fragment() {
 
         val list = view.findViewById<RecyclerView>(R.id.item_list)
         val textManager = TextManager(arr)
-        /*val onClick = object : ListAdapter.OnItemClickListener{
-            override fun execute() {
-                /*runBlocking {
+        textManager.onItemClickListener = object : ListManager.OnItemClickListener<String>{
+            override fun execute(item: String) {
+                runBlocking {
                     withContext(Dispatchers.IO){
-                        db.settingRepository().update("current_city", data)
+                        db.settingRepository().update("current_city", item)
                     }
                 }
                 val intent = Intent(requireActivity(), WeatherActivity::class.java)
-                startActivity(intent)*/
+                startActivity(intent)
             }
         }
 
-        val onLongClick = object : ListAdapter.OnItemLongClickListener{
+        /*val onLongClick = object : ListAdapter.OnItemLongClickListener{
             override fun execute() {
                 /*runBlocking {
                     withContext(Dispatchers.IO){

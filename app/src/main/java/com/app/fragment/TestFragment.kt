@@ -1,6 +1,5 @@
 package com.app.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
-import com.app.activity.ImageGallery
 import com.app.ngn.R
 
 /**
@@ -37,9 +35,6 @@ class TestFragment : Fragment() {
             }
         }
         zxingLauncher.launch(IntentIntegrator(requireActivity()).createScanIntent())*/
-
-        val intent = Intent(requireActivity(), ImageGallery::class.java)
-        startActivity(intent)
 
         view.findViewById<RecyclerView>(R.id.item_list).apply {
             adapter = null

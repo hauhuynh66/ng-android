@@ -15,6 +15,7 @@ import androidx.appcompat.widget.Toolbar
 import com.app.ngn.R
 import com.app.service.MyBrowserService
 import com.app.util.DateTimeUtils
+import com.app.util.ViewUtils
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var mediaBrowser : MediaBrowserCompat
@@ -79,7 +80,8 @@ class PlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_music_player)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        toolbar.findViewById<TextView>(R.id.title).text = "Player"
+        ViewUtils.configTitle(toolbar, true)
+        toolbar.findViewById<TextView>(R.id.title).text = getString(R.string.music_player)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         mediaBrowser = MediaBrowserCompat(this, ComponentName(this, MyBrowserService::class.java), connectionCallback, null)

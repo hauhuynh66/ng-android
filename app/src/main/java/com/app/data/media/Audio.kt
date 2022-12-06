@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.ListManager
+import com.app.ngn.R
 
 class Audio(
     title : String,
@@ -103,7 +104,7 @@ class Audio(
 class AudioListManager(data : List<Audio>) : ListManager<Audio>(data){
     override fun createView(parent: ViewGroup): RecyclerView.ViewHolder {
         return ViewHolder(
-            LayoutInflater.from(parent.context).inflate(android.R.layout.simple_list_item_1, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.com_text, parent, false)
         )
     }
 
@@ -113,7 +114,7 @@ class AudioListManager(data : List<Audio>) : ListManager<Audio>(data){
 
     inner class ViewHolder(v : View) : RecyclerView.ViewHolder(v){
         fun bind(audio: Audio, onItemClickListener: OnItemClickListener<Audio>?){
-            itemView.findViewById<TextView>(android.R.id.text1).apply {
+            itemView.findViewById<TextView>(R.id.text).apply {
                 text = audio.name
                 setOnClickListener {
                     onItemClickListener?.execute(audio)

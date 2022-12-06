@@ -12,7 +12,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -23,13 +22,13 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.app.activity.NavigatorActivity
 import com.app.adapter.CustomListAdapter
-import com.app.adapter.WeatherAdapter
 import com.app.data.HttpResponse
 import com.app.data.LineData
 import com.app.data.LineDisplayOption
 import com.app.data.LineManager
 import com.app.data.weather.ForecastData
 import com.app.data.weather.WeatherData
+import com.app.data.weather.WeatherManager
 import com.app.data.weather.WeatherType
 import com.app.data.weather.WeatherType.Companion.fromString
 import com.app.model.AppDatabase
@@ -39,7 +38,7 @@ import com.app.ngn.R
 import com.app.task.GetHttpTask
 import com.app.task.TaskRunner
 import com.app.util.Animation.Companion.crossfade
-import com.app.util.PermissionUtils.Companion.checkPermissions
+import com.app.util.Permission
 import com.app.util.ViewUtils
 import com.app.view.SunPositionView
 import com.app.viewmodel.Weather
@@ -75,13 +74,19 @@ class WeatherActivity : AppCompatActivity() {
 
         setSupportActionBar(findViewById(R.id.toolbar))
         db = Room.databaseBuilder(this, AppDatabase::class.java, "db").fallbackToDestructiveMigration().build()
+        val requiredPermission = Permission(listOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION), this, object : Permission.Callback{
+            override fun onDenied(permission: String) {
+                super.onDenied(permission)
+                exitProcess(0)
+            }
+        })
+
+        requiredPermission.checkOrRequest()
 
         progress = findViewById(R.id.progress)
         contentView = findViewById(R.id.content_view)
 
         crossfade(progress, contentView)
-
-        permissionsCheck()
 
         taskRunner = TaskRunner()
 
@@ -127,32 +132,6 @@ class WeatherActivity : AppCompatActivity() {
                     lon = location.lon
                 }
             }
-        }
-    }
-
-    private fun permissionsCheck(){
-        val requiredPermissions = arrayListOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
-        val launcher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
-                permission->
-                    run {
-                        when{
-                            permission.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false)->{
-
-                            }
-                            permission.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false)->{
-
-                            }
-                            else->{
-                                exitProcess(0)
-                            }
-                        }
-                    }
-        }
-
-        if(!checkPermissions(this,requiredPermissions)){
-            launcher.launch(
-                arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
-            )
         }
     }
 
@@ -292,8 +271,9 @@ class WeatherActivity : AppCompatActivity() {
 
         getCity(forecastData.name)
 
+        val weatherManager = WeatherManager(forecastData.data)
         forecastList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        forecastList.adapter = WeatherAdapter(forecastData.data)
+        forecastList.adapter = CustomListAdapter(weatherManager)
     }
 
     private fun getForecastData(json: String) : ForecastData?{

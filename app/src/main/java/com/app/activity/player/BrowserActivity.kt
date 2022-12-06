@@ -30,12 +30,12 @@ import com.app.data.media.Audio
 import com.app.data.media.AudioListManager
 import com.app.ngn.R
 import com.app.service.MyBrowserService
-import com.app.viewmodel.AudioListConnector
+import com.app.viewmodel.ConnectorModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class BrowserActivity : AppCompatActivity() {
-    private val audioListConnector : AudioListConnector by viewModels()
+    private val audioListConnector : ConnectorModel<Audio> by viewModels()
     private lateinit var mediaBrowser : MediaBrowserCompat
     private var mediaMetadata : MediaMetadataCompat? = null
     private val connectionCallback : MediaBrowserCompat.ConnectionCallback = object : MediaBrowserCompat.ConnectionCallback(){
@@ -148,7 +148,7 @@ class BrowserActivity : AppCompatActivity() {
 
         controller.registerCallback(controllerCallback)
 
-        audioListConnector.selectedAudio.observe(this){
+        audioListConnector.data.observe(this){
             if(it != null){
                 mediaController.transportControls.skipToQueueItem(it.id)
             }
@@ -175,7 +175,7 @@ class BrowserActivity : AppCompatActivity() {
     }
 
     class SongList : Fragment(){
-        private val audioListConnector : AudioListConnector by activityViewModels()
+        private val audioListConnector : ConnectorModel<Audio> by activityViewModels()
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
             val data = Audio.getInternalAudio(requireContext().contentResolver)
@@ -183,7 +183,7 @@ class BrowserActivity : AppCompatActivity() {
             val audioListManager = AudioListManager(data)
             audioListManager.onItemClickListener = object : ListManager.OnItemClickListener<Audio>{
                 override fun execute(item: Audio) {
-                    audioListConnector.selectedAudio.value = item
+                    audioListConnector.data.value = item
                 }
             }
 

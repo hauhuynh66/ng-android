@@ -74,12 +74,12 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        app:fabCustomSize="60dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:fabCustomSize="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="20dp"
         android:id="@+id/edit"
-        android:src="@drawable/ic_baseline_settings"/>
+        android:src="@drawable/ic_baseline_settings" />
 </androidx.constraintlayout.widget.ConstraintLayout>

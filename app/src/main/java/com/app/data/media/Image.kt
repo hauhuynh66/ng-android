@@ -1,6 +1,8 @@
 package com.app.data.media
 
 import android.content.ContentResolver
+import android.graphics.BitmapFactory
+import android.media.ThumbnailUtils
 import android.net.Uri
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -10,7 +12,6 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.ListManager
 import com.app.ngn.R
-import com.app.util.BitmapUtils
 
 class Image(
     name : String,
@@ -27,6 +28,7 @@ class Image(
         )
         fun getExternalImages(contentResolver: ContentResolver) : List<Image>{
             val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            println(uri.path)
             val cursor = contentResolver.query(uri, columns,null, null, null)
             val list = mutableListOf<Image>()
             if(cursor!=null){
@@ -59,8 +61,15 @@ class ImageListManager(data : List<Image>) : ListManager<Image>(data){
 
     inner class ViewHolder(v : View) : RecyclerView.ViewHolder(v){
         fun bind(image: Image, onItemClickListener: OnItemClickListener<Image>?){
-            itemView.findViewById<ImageView>(R.id.image)
-                .setImageBitmap(BitmapUtils.getBitmapFromUri(image.uri, itemView.context.contentResolver))
+            val preview = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(image.uri.path), 100, 100)
+            itemView.findViewById<ImageView>(R.id.image).apply {
+                setImageBitmap(preview)
+                if(onItemClickListener!=null){
+                    setOnClickListener {
+                        onItemClickListener.execute(image)
+                    }
+                }
+            }
         }
     }
 }

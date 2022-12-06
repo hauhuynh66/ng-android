@@ -5,45 +5,55 @@ import android.location.Location
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.app.ngn.R
-import com.app.util.PermissionUtils.Companion.checkPermissions
+import com.app.util.Permission
+import com.app.util.ViewUtils
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlin.system.exitProcess
 
 class GoogleMapActivity:AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
-    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var location : Location
+    private lateinit var mapFragment : SupportMapFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_map)
-        selfCheck()
-
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        toolbar.findViewById<TextView>(R.id.title).apply {
-            text = getString(R.string.map_title)
-        }
-
+        ViewUtils.configTitle(toolbar, true)
+        toolbar.findViewById<TextView>(R.id.title).text = getString(R.string.map_title)
         setSupportActionBar(toolbar)
+        val requestPermission = Permission(
+            listOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+            this,
+            object : Permission.Callback{
+                override fun onGranted() {
+                    val fusedLocationProviderClient = FusedLocationProviderClient(this@GoogleMapActivity)
+                    fusedLocationProviderClient.lastLocation.addOnSuccessListener{
+                        location = it
+                    }
+                }
+
+                override fun onDenied(permission: String) {
+                    super.onDenied(permission)
+                    exitProcess(0)
+                }
+            }
+        )
+        requestPermission.checkOrRequest()
+
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        val mapFragment = supportFragmentManager
+
+        mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
-
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-
-        fusedLocationProviderClient.lastLocation.addOnSuccessListener {
-            location = it
-            mapFragment.getMapAsync(this)
-        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -66,24 +76,5 @@ class GoogleMapActivity:AppCompatActivity(), OnMapReadyCallback {
         return true
     }
 
-    private fun selfCheck(){
-        val launcher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
-            permissions -> run {
-                when{
-                    permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false)->{
 
-                    }
-                    permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false)->{
-
-                    }else->{
-                        super.onBackPressed()
-                    }
-                }
-            }
-        }
-        val permissions = arrayListOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-        if(!checkPermissions(this, permissions)){
-            launcher.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
-        }
-    }
 }

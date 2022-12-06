@@ -2,7 +2,6 @@ package com.app.activity.explorer
 
 import android.Manifest
 import android.os.Bundle
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -13,7 +12,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.app.fragment.explorer.EXGroupFragment
 import com.app.fragment.explorer.EXListFragment
 import com.app.ngn.R
-import com.app.util.PermissionUtils.Companion.checkPermissions
+import com.app.util.Permission
 import com.app.util.ViewUtils
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -23,7 +22,14 @@ class FileExplorerActivity : AppCompatActivity(){
     private lateinit var tabs : TabLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        checkPermissions()
+        val requiredPermissions = Permission(listOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE),this, object : Permission.Callback{
+            override fun onDenied(permission: String) {
+                super.onDenied(permission)
+                exitProcess(0)
+            }
+        })
+        requiredPermissions.checkOrRequest()
+
         setContentView(R.layout.ac_viewpager)
         val pager = findViewById<ViewPager2>(R.id.pager)
         tabs = findViewById(R.id.tabs)
@@ -44,38 +50,6 @@ class FileExplorerActivity : AppCompatActivity(){
                 }
             }
         }.attach()
-    }
-
-    private fun checkPermissions(){
-        val requiredPermissions =
-            arrayListOf(
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            )
-        val launcher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
-            permission -> run {
-                when{
-                    permission.getOrDefault(Manifest.permission.READ_EXTERNAL_STORAGE, false) -> {
-
-                    }
-                    permission.getOrDefault(Manifest.permission.WRITE_EXTERNAL_STORAGE, false) -> {
-
-                    }
-                    else->{
-                        exitProcess(0)
-                    }
-                }
-            }
-        }
-
-        if(!checkPermissions(this, requiredPermissions)){
-            launcher.launch(
-                arrayOf(
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                )
-            )
-        }
     }
 
     inner class ExplorerFragmentAdapter(fm: FragmentManager, lc : Lifecycle) : FragmentStateAdapter(fm, lc){

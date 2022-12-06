@@ -181,11 +181,12 @@ class ExplorerListAdapter(fileInfoList : List<FileInfo>? = null, var isGrid: Boo
         }
     }
 
-    fun changeMode(mode : Mode){
+    fun changeMode(mode : Mode, fileInfo: FileInfo? = null){
         this.currentMode = mode
         data.forEach{
             it.checked  = false
         }
+
         notifyDataSetChanged()
     }
 

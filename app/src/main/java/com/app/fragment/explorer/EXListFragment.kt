@@ -15,13 +15,13 @@ import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.app.adapter.ExplorerListAdapter
+import com.app.data.explorer.FileInfo
+import com.app.data.explorer.FileInfoTask
 import com.app.ngn.R
 import com.app.task.TaskRunner
 import com.app.util.Animation.Companion.crossfade
 import com.app.util.FileUtils
-import com.app.adapter.ExplorerListAdapter
-import com.app.data.explorer.FileInfo
-import com.app.data.explorer.FileInfoTask
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 
@@ -154,7 +154,7 @@ class EXListFragment : Fragment(), ExplorerListAdapter.OnItemClickListener,
     }
 
     override fun onLongClick(fileInfo: FileInfo) {
-        adapter.changeMode(ExplorerListAdapter.Mode.Select)
+        adapter.changeMode(ExplorerListAdapter.Mode.Select, fileInfo)
         crossfade(bottomBar)
     }
 

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.CustomListAdapter
@@ -13,10 +14,12 @@ import com.app.data.Message
 import com.app.data.MessageManager
 import com.app.ngn.R
 import com.app.util.Animation.Companion.crossfade
+import com.app.viewmodel.ListHolderModel
 
-class MessageFragment(var messages : ArrayList<Message>) : Fragment() {
+class MessageFragment : Fragment() {
     private lateinit var progressBar: ProgressBar
     private lateinit var list : RecyclerView
+    private val listModel : ListHolderModel<Message> by activityViewModels()
     var isActivated = false
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,22 +35,22 @@ class MessageFragment(var messages : ArrayList<Message>) : Fragment() {
         list = view.findViewById(R.id.item_list)
         progressBar = view.findViewById(R.id.progress)
         progressBar.visibility = View.VISIBLE
-        val messageManager = MessageManager(messages)
+        val messageManager = MessageManager(listModel.data)
         list.adapter = CustomListAdapter(messageManager)
         list.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     }
 
-    /*fun add(message : Message){
-        messages.add(message)
-        adapter.notifyItemInserted(messages.size - 1)
-        list.scrollToPosition(messages.size - 1)
+    fun add(message : Message){
+        listModel.data.add(message)
+        list.adapter?.notifyItemInserted(listModel.data.size - 1)
+        list.scrollToPosition(listModel.data.size - 1)
     }
 
     fun remove(message: Message){
-        val pos = messages.indexOf(message)
-        messages.remove(message)
-        adapter.notifyItemRemoved(pos)
-    }*/
+        val pos = listModel.data.indexOf(message)
+        listModel.data.remove(message)
+        list.adapter?.notifyItemRemoved(pos)
+    }
 
     fun activate(){
         crossfade(list, progressBar, 1000)

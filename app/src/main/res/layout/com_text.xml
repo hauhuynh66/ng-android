@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:minHeight="40dp"
         android:textSize="5pt"
-        android:paddingLeft="20dp"
+        android:paddingLeft="10dp"
         android:gravity="center_vertical"
         android:fontFamily="@font/audiowide"
         app:layout_constraintTop_toTopOf="parent"

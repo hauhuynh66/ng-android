@@ -6,12 +6,14 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.app.data.Message
 import com.app.fragment.MessageFragment
 import com.app.ngn.R
 import com.app.util.Generator.Companion.generateString
+import com.app.viewmodel.ListHolderModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
@@ -20,6 +22,7 @@ class MessageActivity : AppCompatActivity() {
     private val database = FirebaseDatabase.getInstance("https://ng-fb-966ff-default-rtdb.asia-southeast1.firebasedatabase.app")
     private val ref : DatabaseReference = database.getReference("message")
     private val auth = Firebase.auth
+    private val listModel : ListHolderModel<Message> by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_message)
@@ -50,14 +53,14 @@ class MessageActivity : AppCompatActivity() {
             }
         }
 
-        supportFragmentManager.beginTransaction().replace(R.id.container, MessageFragment(arrayListOf())).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.container, MessageFragment()).commit()
 
         ref.addChildEventListener(object : ChildEventListener{
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val fragment = supportFragmentManager.findFragmentById(R.id.container)
                 val ms : Message? = snapshot.getValue(Message::class.java)
                 if(fragment is MessageFragment && ms!=null){
-                    //fragment.add(ms)
+                    fragment.add(ms)
                     if(!fragment.isActivated){
                         fragment.activate()
                     }
@@ -72,7 +75,7 @@ class MessageActivity : AppCompatActivity() {
                 val removed : Message? = snapshot.getValue(Message::class.java)
                 val fragment = supportFragmentManager.findFragmentById(R.id.container)
                 if(fragment is MessageFragment && removed!=null){
-                    //fragment.remove(removed)
+                    fragment.remove(removed)
                 }
             }
 
