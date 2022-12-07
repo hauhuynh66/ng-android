@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.app.adapter.CustomListAdapter
-import com.app.adapter.ListManager
+import com.app.data.ListManager
 import com.app.data.media.Audio
 import com.app.data.media.AudioListManager
 import com.app.ngn.R

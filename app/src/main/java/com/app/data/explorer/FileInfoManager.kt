@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.app.adapter.ListManager
+import com.app.data.ListManager
 import com.app.ngn.R
 
 class FileInfoManager(data : List<FileInfo>, private val type: Type) : ListManager<FileInfo>(data){

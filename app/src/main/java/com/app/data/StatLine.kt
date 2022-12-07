@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.app.adapter.ListManager
 import com.app.ngn.R
 import com.app.view.StatBar
 

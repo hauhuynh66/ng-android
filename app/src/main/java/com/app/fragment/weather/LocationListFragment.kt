@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.app.activity.weather.WeatherActivity
 import com.app.adapter.CustomListAdapter
-import com.app.adapter.ListManager
-import com.app.adapter.TextManager
+import com.app.data.ListManager
+import com.app.data.TextManager
 import com.app.model.AppDatabase
 import com.app.ngn.R
 import kotlinx.coroutines.Dispatchers

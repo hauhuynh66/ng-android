@@ -7,14 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.app.adapter.ListManager
 import com.app.ngn.R
 
 data class LineData(
     val name : String,
     val value : Any? = null,
     val icon : Int? = null,
-    val option : LineDisplayOption = LineDisplayOption())
+    val option : LineDisplayOption = LineDisplayOption()){
+
+}
 
 class LineDisplayOption(val color : Int = Color.BLACK, val textSize : Float = 6f, val gravity: Int? = null)
 

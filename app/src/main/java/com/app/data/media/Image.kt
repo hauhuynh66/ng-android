@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.app.adapter.ListManager
+import com.app.data.ListManager
 import com.app.ngn.R
 
 class Image(

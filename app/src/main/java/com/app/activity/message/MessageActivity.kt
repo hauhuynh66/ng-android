@@ -32,7 +32,6 @@ class MessageActivity : AppCompatActivity() {
         val title = toolbar.findViewById<TextView>(R.id.title)
         title.text = getString(R.string.message_title)
 
-
         val displayUser = if(auth.currentUser!=null){
             auth.currentUser!!.email!!
         }else{

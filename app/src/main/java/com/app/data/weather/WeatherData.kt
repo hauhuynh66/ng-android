@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.app.adapter.ListManager
+import com.app.data.ListManager
 import com.app.ngn.R
 import java.text.SimpleDateFormat
 import java.util.*

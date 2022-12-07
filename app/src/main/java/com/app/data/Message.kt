@@ -7,7 +7,6 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.app.adapter.ListManager
 import com.app.ngn.R
 
 class Message(val from : String? = null, val content : String? = null)

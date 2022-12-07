@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.MutableLiveData
 import com.app.ngn.R
 import com.app.util.Permission
 import com.app.util.ViewUtils
@@ -21,7 +22,7 @@ import kotlin.system.exitProcess
 
 class GoogleMapActivity:AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
-    private lateinit var location : Location
+    private val location : MutableLiveData<Location> = MutableLiveData()
     private lateinit var mapFragment : SupportMapFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +39,7 @@ class GoogleMapActivity:AppCompatActivity(), OnMapReadyCallback {
                 override fun onGranted() {
                     val fusedLocationProviderClient = FusedLocationProviderClient(this@GoogleMapActivity)
                     fusedLocationProviderClient.lastLocation.addOnSuccessListener{
-                        location = it
+                        location.value = it
                     }
                 }
 
@@ -54,17 +55,25 @@ class GoogleMapActivity:AppCompatActivity(), OnMapReadyCallback {
 
         mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        val lngLat = LatLng(location.latitude, location.longitude)
-        mMap.addMarker(
-            MarkerOptions()
-            .position(lngLat)
-            .title("Current Location"))
-        mMap.setMinZoomPreference(13f)
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(lngLat))
+        location.observe(this){
+            if(location.value == null){
+                return@observe
+            }
+
+            val lngLat = LatLng(location.value!!.longitude, location.value!!.latitude)
+            mMap.addMarker(
+                MarkerOptions()
+                    .position(lngLat)
+                    .title("Current Location"))
+
+            mMap.setMinZoomPreference(13f)
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(lngLat))
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
