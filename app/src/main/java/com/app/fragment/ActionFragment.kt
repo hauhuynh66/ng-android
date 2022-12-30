@@ -9,14 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.activity.CVActivity
-import com.app.activity.message.MessageActivity
 import com.app.activity.explorer.FileExplorerActivity
+import com.app.activity.message.MessageActivity
 import com.app.activity.player.BrowserActivity
+import com.app.activity.score.MainActivity
 import com.app.activity.weather.WeatherActivity
 import com.app.adapter.ActionAdapter
 import com.app.data.ActionData
 import com.app.ngn.R
-import com.app.activity.score.MainActivity
 
 class ActionFragment : Fragment() {
     private lateinit var data: ArrayList<ActionData>
@@ -71,6 +71,12 @@ class ActionFragment : Fragment() {
             override fun onClick() {
                 val intent = Intent(requireActivity(), MainActivity::class.java)
                 startActivity(intent)
+            }
+        }))
+
+        data.add(ActionData(R.drawable.ic_baseline_settings, "Test", object : ActionData.Callback{
+            override fun onClick() {
+
             }
         }))
 

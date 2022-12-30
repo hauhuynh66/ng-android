@@ -13,10 +13,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.app.activity.news.NewsActivity
-import com.app.fragment.AboutFragment
-import com.app.fragment.ActionFragment
-import com.app.fragment.MainFragment
-import com.app.fragment.NoteListFragment
+import com.app.fragment.*
 import com.app.ngn.R
 import com.app.viewmodel.Authentication
 import com.google.android.material.navigation.NavigationView
@@ -121,12 +118,10 @@ class NavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                     transaction.replace(R.id.container,  AboutFragment(), "ABOUT").commit()
                 }
                 R.id.nav_menu_test->{
-
-                    /*currentTitle = "Test"
-                    transaction.replace(R.id.container,  TestFragment(), "TEST").commit()*/
-                    val intent = Intent(this@NavigatorActivity, GoogleMapActivity::class.java)
-                    startActivity(intent)
+                    currentTitle = "Test"
+                    transaction.replace(R.id.container,  TestFragment(), "TEST").commit()
                 }
+
                 else->{
                     transaction.replace(R.id.container,  MainFragment(), "MAIN").commit()
                 }

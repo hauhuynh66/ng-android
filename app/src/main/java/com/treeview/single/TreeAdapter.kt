@@ -32,8 +32,6 @@ class TreeAdapter(private val nm : NodeManager) : RecyclerView.Adapter<RecyclerV
 
     class NodeHolder(view : View) : RecyclerView.ViewHolder(view){
         fun bind(node : Node, onNodeClickListener: OnNodeClickListener){
-            println("${node.level} - ${node.value}")
-            println("=============================")
             itemView.findViewById<TextView>(R.id.text1).text = "${node.value}"
             itemView.setPadding(
                 node.level * 50,

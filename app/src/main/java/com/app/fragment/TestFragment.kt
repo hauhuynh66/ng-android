@@ -4,10 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
-import androidx.recyclerview.widget.RecyclerView
 import com.app.ngn.R
 
 /**
@@ -21,7 +19,7 @@ class TestFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        return inflater.inflate(R.layout.fg_list, container, false)
+        return inflater.inflate(R.layout.fg_test, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,10 +33,6 @@ class TestFragment : Fragment() {
             }
         }
         zxingLauncher.launch(IntentIntegrator(requireActivity()).createScanIntent())*/
-
-        view.findViewById<RecyclerView>(R.id.item_list).apply {
-            adapter = null
-            layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
-        }
+        val wv = view.findViewById<ImageView>(R.id.gif)
     }
 }
