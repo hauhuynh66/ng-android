@@ -83,6 +83,9 @@
 
         <activity android:name="com.app.activity.score.MainActivity"
             android:exported="true"/>
+
+        <activity android:name="com.app.activity.TestActivity"
+            android:exported="true"/>
         
         <activity android:name="com.app.activity.player.BrowserActivity"
             android:exported="true"

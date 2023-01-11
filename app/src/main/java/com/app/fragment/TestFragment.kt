@@ -24,15 +24,5 @@ class TestFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        /*val zxingLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-            val result = IntentIntegrator.parseActivityResult(it.resultCode, it.data)
-
-            if(result.contents != null){
-                Snackbar.make(requireView(), result.contents, Snackbar.LENGTH_SHORT).show()
-            }
-        }
-        zxingLauncher.launch(IntentIntegrator(requireActivity()).createScanIntent())*/
-        val wv = view.findViewById<ImageView>(R.id.gif)
     }
 }

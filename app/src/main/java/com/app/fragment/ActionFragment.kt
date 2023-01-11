@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.activity.CVActivity
+import com.app.activity.TestActivity
 import com.app.activity.explorer.FileExplorerActivity
 import com.app.activity.message.MessageActivity
 import com.app.activity.player.BrowserActivity
@@ -76,7 +77,8 @@ class ActionFragment : Fragment() {
 
         data.add(ActionData(R.drawable.ic_baseline_settings, "Test", object : ActionData.Callback{
             override fun onClick() {
-
+                val intent = Intent(requireActivity(), TestActivity::class.java)
+                startActivity(intent)
             }
         }))
 
