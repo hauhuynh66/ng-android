@@ -8,8 +8,28 @@ import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ngn.R
+import java.util.*
 
-class Message(val from : String? = null, val content : String? = null)
+class Message(val key: String? = null, val from : String? = null, val content : String? = null)
+{
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Message
+
+        if (key != other.key) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = key.hashCode()
+        result = 31 * result + (from?.hashCode() ?: 0)
+        result = 31 * result + (content?.hashCode() ?: 0)
+        return result
+    }
+}
 
 class MessageManager(data : List<Message>) : ListManager<Message>(data) {
     private var lastPosition = -1

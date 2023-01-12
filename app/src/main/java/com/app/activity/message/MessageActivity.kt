@@ -17,6 +17,7 @@ import com.app.viewmodel.ListHolderModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
+import java.util.*
 
 class MessageActivity : AppCompatActivity() {
     private val database = FirebaseDatabase.getInstance("https://ng-fb-966ff-default-rtdb.asia-southeast1.firebasedatabase.app")
@@ -45,7 +46,7 @@ class MessageActivity : AppCompatActivity() {
                 val id = System.currentTimeMillis().toString()
                 val ms = ref.child(id)
                 val text = message.text.toString()
-                ms.setValue(Message(displayUser, text))
+                ms.setValue(Message(UUID.randomUUID().toString(),displayUser, text))
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(this.windowToken,0)
                 message.setText("")

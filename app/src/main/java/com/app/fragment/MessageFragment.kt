@@ -48,8 +48,10 @@ class MessageFragment : Fragment() {
 
     fun remove(message: Message){
         val pos = listModel.data.indexOf(message)
+        println(pos)
         listModel.data.remove(message)
         list.adapter?.notifyItemRemoved(pos)
+        list.scrollToPosition(pos)
     }
 
     fun activate(){
