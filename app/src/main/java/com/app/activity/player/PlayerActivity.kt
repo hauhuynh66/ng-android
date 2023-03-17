@@ -14,8 +14,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.app.ngn.R
 import com.app.service.MyBrowserService
-import com.app.util.DateTimeUtils
-import com.app.util.ViewUtils
+import com.general.DateTimeUtils
+import com.general.ViewUtils
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var mediaBrowser : MediaBrowserCompat

@@ -1,4 +1,4 @@
-package com.app.util
+package com.general
 
 import android.os.Environment
 import com.app.task.DownloadImageTask
@@ -15,7 +15,11 @@ class TestUtils {
                 val prefix = "https://picsum.photos/id/"
                 val id = random.nextInt(300)
                 val url = "${prefix}${id}/200/300"
-                val path = Environment.getExternalStorageDirectory().absolutePath + "/photo/${Generator.generateString(10)}.jpg"
+                val path = Environment.getExternalStorageDirectory().absolutePath + "/photo/${
+                    Generator.generateString(
+                        10
+                    )
+                }.jpg"
                 taskRunner.execute(DownloadImageTask(URL(url), path), object : TaskRunner.Callback<Boolean>{
                     override fun onComplete(result: Boolean) {
                         println(result)

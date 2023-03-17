@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.app.ngn.R
 
-class ConfirmDialog<T>(private val title : String? = null, private val message : String, val listener : Listener<T>, val data : T) : DialogFragment() {
+class ConfirmDialog<T>(private val title : String? = null, private val message : String, private val listener : Listener<T>, val data : T) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(requireContext())
         val view = (requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater)

@@ -15,9 +15,9 @@ import com.app.adapter.ColorAdapter
 import com.app.adapter.DrawAdapter
 import com.app.adapter.ValueAdapter
 import com.app.ngn.R
-import com.app.util.FileUtils
-import com.app.util.ViewUtils
-import com.app.view.DrawView
+import com.general.FileUtils
+import com.general.ViewUtils
+import com.custom.DrawView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.File
 import java.io.FileOutputStream

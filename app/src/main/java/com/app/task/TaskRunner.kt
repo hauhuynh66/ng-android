@@ -10,11 +10,11 @@ class TaskRunner {
     private val handler:Handler = Handler(Looper.getMainLooper())
 
     interface Callback<T>{
-        fun onComplete(result:T)
+        fun onComplete(result : T)
     }
 
     fun <T> execute(call:Callable<T>, callback: Callback<T>){
-        executor.execute{
+        executor.submit {
             val result = call.call()
             handler.post {
                 callback.onComplete(result)

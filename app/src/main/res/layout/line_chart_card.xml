@@ -40,7 +40,7 @@
                 android:textSize="4pt"
                 android:text="TITLE"/>
 
-            <com.app.view.LineChart
+            <com.charts.Line
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginVertical="5dp"

@@ -1,4 +1,4 @@
-package com.app.view
+package com.custom
 
 import android.content.Context
 import android.graphics.*
@@ -8,11 +8,13 @@ import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import com.app.data.weather.SunState
 import com.app.ngn.R
-import com.app.util.DateTimeUtils
-import java.text.SimpleDateFormat
+import com.general.DateTimeUtils
+import com.general.DateTimeUtils.Companion.formatDate
+import com.general.Ellipse
 import java.util.*
+import kotlin.math.abs
 
-class SunPositionView : View {
+class SunPosition : View {
     private var sunset: Long = 0
     private var sunrise: Long = 0
     private var current: Long = 0
@@ -22,11 +24,14 @@ class SunPositionView : View {
     private var bitmapSize : Float = 60f
 
     private var arcRect : RectF = RectF()
+    private var outerRect : RectF = RectF()
+    private var ellipse : Ellipse = Ellipse(0,0)
     private val bounds : Rect = Rect()
 
     private var dashedLinePaint : Paint = Paint()
     private var linePaint : Paint = Paint()
     private var textPaint : Paint = Paint()
+    private var offset : Float = 10f
     private val padding = 20f
 
     private fun getState(sunrise: Long, sunset: Long, current: Long) : SunState {
@@ -44,11 +49,11 @@ class SunPositionView : View {
     }
 
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs){
-        context!!.theme.obtainStyledAttributes(attrs, R.styleable.SunPositionView, 0, 0).apply {
+        context!!.theme.obtainStyledAttributes(attrs, R.styleable.SunPosition, 0, 0).apply {
             try {
-                dashColor = getColor(R.styleable.SunPositionView_dash_color, Color.BLACK)
-                lineColor = getColor(R.styleable.SunPositionView_line_color, Color.YELLOW)
-                bitmapSize = getDimension(R.styleable.SunPositionView_bmp_size, 60f)
+                dashColor = getColor(R.styleable.SunPosition_dash_color, Color.BLACK)
+                lineColor = getColor(R.styleable.SunPosition_line_color, Color.YELLOW)
+                bitmapSize = getDimension(R.styleable.SunPosition_bmp_size, 60f)
             }finally {
                 recycle()
             }
@@ -60,15 +65,15 @@ class SunPositionView : View {
     fun init(){
         dashedLinePaint.apply {
             color = dashColor
-            strokeWidth = 6f
+            strokeWidth = 20f
             style = Paint.Style.STROKE
             isAntiAlias = true
-            pathEffect = DashPathEffect(floatArrayOf(10f, 20f), 0f)
+            pathEffect = DashPathEffect(floatArrayOf(20f, 10f), 0f)
         }
 
         linePaint.apply {
             color = lineColor
-            strokeWidth = 10f
+            strokeWidth = 20f
             style = Paint.Style.STROKE
             isAntiAlias = true
         }
@@ -90,20 +95,23 @@ class SunPositionView : View {
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
+        outerRect = RectF(padding - offset, padding - offset, width.toFloat() - padding + offset, (height.toFloat() - padding)*2 + offset)
         arcRect = RectF(padding, padding, width.toFloat() - padding, (height.toFloat() - padding)*2)
+        ellipse = Ellipse(width.toFloat() - padding, (height.toFloat() - padding)*2)
     }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
+
         when(getState(sunrise, sunset, current)){
             SunState.State1->{
-                drawState1(canvas)
+                drawState1(canvas, ellipse)
             }
             SunState.State2->{
-                drawState2(canvas)
+                drawState2(canvas, ellipse)
             }
             SunState.State3->{
-                drawState3(canvas)
+                drawState3(canvas, ellipse)
             }
         }
     }
@@ -117,21 +125,26 @@ class SunPositionView : View {
         invalidate()
     }
 
-    private fun format(date : Date) : String{
-        val sdf = SimpleDateFormat("hh:mm a", Locale.getDefault())
-        return sdf.format(date)
-    }
+    private fun drawState1(canvas : Canvas?, ellipse : Ellipse){
+        val distance : Long = this.sunset - this.sunrise
+        val centerX = distance/2f
+        val x = ((this.current - this.sunrise) - centerX) * (ellipse.a.toFloat()/centerX)
+        val arc = (ellipse.getArcFromX(x).toDouble() * 180.0/ Math.PI).toFloat()
 
-    private fun drawState1(canvas : Canvas?){
-        val dis: Long = sunset - sunrise
-        val c: Long = current - sunrise
-        val deg = (c.toDouble()/dis.toDouble()) * 180.0
-        val srText = format(Date(this.sunrise*1000))
-        val ssText = format(Date(this.sunset*1000))
+        val sweep = if(arc > 0.0f)
+        {
+            90f + (90f - arc)
+        }else
+        {
+            abs(arc)
+        }
+
+        val srText = formatDate(Date(this.sunrise*1000), "hh:mm a")
+        val ssText = formatDate(Date(this.sunset*1000), "hh:mm a")
 
         canvas!!.apply {
             drawArc(arcRect, 180f, 180f, false, dashedLinePaint)
-            drawArc(arcRect, 180f, deg.toFloat(), false, linePaint)
+            drawArc(outerRect, 180f, sweep, false, linePaint)
             textPaint.getTextBounds(srText, 0, srText.length, bounds)
             drawText(srText, padding + 20f, height - bounds.height() / 2 - 10f, textPaint)
             textPaint.getTextBounds(ssText, 0, ssText.length, bounds)
@@ -139,18 +152,26 @@ class SunPositionView : View {
         }
     }
 
-    private fun drawState2(canvas: Canvas?){
+    private fun drawState2(canvas: Canvas?, ellipse: Ellipse){
         val midnight = DateTimeUtils.atEndDate(this.current * 1000) / 1000
         val distance = midnight - this.sunset
-        val weight = this.current - this.sunset
-        val deg = (weight.toDouble()/distance.toDouble()) * 180.0
+        val centerX = distance/2f
+        val x = ((this.current - this.sunset) - centerX) * (ellipse.a.toFloat()/centerX)
+        val arc = (ellipse.getArcFromX(x).toDouble() * 180.0/ Math.PI).toFloat() + 90f
+        val sweep = if(arc > 0.0f)
+        {
+            90f + (90f - arc)
+        }else
+        {
+            abs(arc)
+        }
 
-        val leftText = format(Date(this.sunset*1000))
+        val leftText = formatDate(Date(this.sunset*1000), "hh:mm a")
         val rightText = "11:59 PM "
 
         canvas!!.apply {
             drawArc(arcRect, 180f, 180f, false, dashedLinePaint)
-            drawArc(arcRect, 180f, deg.toFloat(), false, linePaint)
+            drawArc(outerRect, 180f, sweep, false, linePaint)
             textPaint.getTextBounds(leftText, 0, leftText.length, bounds)
             drawText(leftText, padding + 20f, height - bounds.height() / 2 - 10f, textPaint)
             textPaint.getTextBounds(rightText, 0, rightText.length, bounds)
@@ -158,18 +179,27 @@ class SunPositionView : View {
         }
     }
 
-    private fun drawState3(canvas: Canvas?){
+    private fun drawState3(canvas: Canvas?, ellipse: Ellipse){
         val midnight = DateTimeUtils.atStartDate(this.current * 1000) / 1000
+
         val distance = this.sunrise - midnight
-        val weight = this.current - midnight
-        val deg = (weight.toDouble()/distance.toDouble()) * 180.0
+        val centerX = distance/2f
+        val x = ((this.current - midnight) - centerX) * (ellipse.a.toFloat()/centerX)
+        val arc = (ellipse.getArcFromX(x).toDouble() * 180.0/ Math.PI).toFloat() + 90f
+        val sweep = if(arc > 0.0f)
+        {
+            90f + (90f - arc)
+        }else
+        {
+            abs(arc)
+        }
 
         val leftText = "00:00 AM"
-        val rightText = format(Date(this.sunrise*1000))
+        val rightText = formatDate(Date(this.sunrise*1000), "hh:mm a")
 
         canvas!!.apply {
             drawArc(arcRect, 180f, 180f, false, dashedLinePaint)
-            drawArc(arcRect, 180f, deg.toFloat(), false, linePaint)
+            drawArc(outerRect, 180f, sweep, false, linePaint)
             textPaint.getTextBounds(leftText, 0, leftText.length, bounds)
             drawText(leftText, padding + 20f, height - bounds.height() / 2 - 10f, textPaint)
             textPaint.getTextBounds(rightText, 0, rightText.length, bounds)

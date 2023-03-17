@@ -12,8 +12,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.app.fragment.explorer.EXGroupFragment
 import com.app.fragment.explorer.EXListFragment
 import com.app.ngn.R
-import com.app.util.Permission
-import com.app.util.ViewUtils
+import com.general.Permission
+import com.general.ViewUtils
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlin.system.exitProcess

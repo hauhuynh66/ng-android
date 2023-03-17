@@ -1,4 +1,4 @@
-package com.app.util
+package com.general
 
 import com.app.data.score.FootballStanding
 import com.app.data.score.FootballTeam

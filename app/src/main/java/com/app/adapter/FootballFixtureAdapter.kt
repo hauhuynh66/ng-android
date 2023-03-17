@@ -30,7 +30,6 @@ class FootballFixtureAdapter(var data : ArrayList<FootballResult>, val callback:
             itemView.setOnClickListener {
                 callback.onClick(data)
             }
-
             val homeIcon = itemView.findViewById<ImageView>(R.id.team_icon)
             val awayIcon = itemView.findViewById<ImageView>(R.id.team_icon2)
 

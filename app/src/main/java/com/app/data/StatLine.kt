@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ngn.R
-import com.app.view.StatBar
+import com.custom.StatBar
 
 data class StatLine(val name : String, val leftValue : Int, val rightValue : Int)
 

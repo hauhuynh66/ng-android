@@ -15,7 +15,7 @@ import com.app.data.LineData
 import com.app.data.LineDisplayOption
 import com.app.data.LineManager
 import com.app.ngn.R
-import com.app.util.ViewUtils
+import com.general.ViewUtils
 import com.app.viewmodel.Authentication
 import com.squareup.picasso.Picasso
 

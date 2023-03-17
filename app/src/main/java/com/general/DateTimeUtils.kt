@@ -1,4 +1,4 @@
-package com.app.util
+package com.general
 
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat

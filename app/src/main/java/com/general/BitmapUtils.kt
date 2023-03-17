@@ -1,4 +1,4 @@
-package com.app.util
+package com.general
 
 import android.content.ContentResolver
 import android.graphics.Bitmap

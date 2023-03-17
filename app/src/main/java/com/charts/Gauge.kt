@@ -1,4 +1,4 @@
-package com.app.view
+package com.charts
 
 import android.content.Context
 import android.graphics.*
@@ -19,9 +19,12 @@ class Gauge : View {
     private lateinit var pgPaint : Paint
     private lateinit var textPaint: Paint
     private var padding : Float = 20f
-    private var lineWidth : Float = 20f
+    private var lineWidth : Float = 40f
     private var displayType = GaugeDisplay.LINE
     private var displayText = false
+
+    private var offset : Float = 10f
+
     constructor(context: Context?) : super(context) {
         init()
     }
@@ -81,7 +84,7 @@ class Gauge : View {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         when(displayType){
-            GaugeDisplay.ARC->{
+            GaugeDisplay.ARC ->{
                 drawArc(canvas)
             }
             else->{
@@ -95,7 +98,7 @@ class Gauge : View {
         canvas!!.apply {
             drawLine(padding, height/2f, width-2*padding, height/2f, bgPaint)
             val x = (width-2*padding)*progress.toFloat()/100
-            drawLine(padding, height/2f, x, height/2f, pgPaint)
+            drawLine(padding, height/2f - offset, x, height/2f - offset, pgPaint)
             if(displayText) {
                 val text = "$progress%"
                 textPaint.getTextBounds(text, 0, text.length, bounds)

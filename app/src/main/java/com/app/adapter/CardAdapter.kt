@@ -7,10 +7,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ngn.R
-import com.app.view.BarChart
-import com.app.view.Gauge
-import com.app.view.LineChart
-import com.app.view.PieChart
+import com.charts.Bar
+import com.charts.Gauge
+import com.charts.Line
+import com.charts.Pie
 
 class CardAdapter(val data : ArrayList<CardData>, val orientation : Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -103,8 +103,8 @@ class CardAdapter(val data : ArrayList<CardData>, val orientation : Int) : Recyc
                 itemView.findViewById<TextView>(R.id.subtitle).text = data.subtitle
             }
 
-            itemView.findViewById<PieChart>(R.id.chart).apply {
-                this.setData(data.data)
+            itemView.findViewById<Pie>(R.id.chart).apply {
+                //this.setData(data.data)
             }
         }
     }
@@ -116,8 +116,8 @@ class CardAdapter(val data : ArrayList<CardData>, val orientation : Int) : Recyc
                 itemView.findViewById<TextView>(R.id.subtitle).text = data.subtitle
             }
 
-            itemView.findViewById<LineChart>(R.id.chart).apply {
-                this.setData(data.data)
+            itemView.findViewById<Line>(R.id.chart).apply {
+                //this.setData(data.data)
             }
         }
     }
@@ -129,7 +129,7 @@ class CardAdapter(val data : ArrayList<CardData>, val orientation : Int) : Recyc
                 itemView.findViewById<TextView>(R.id.subtitle).text = data.subtitle
             }
 
-            itemView.findViewById<BarChart>(R.id.chart).apply {
+            itemView.findViewById<Bar>(R.id.chart).apply {
                 this.setData(data.data)
             }
         }

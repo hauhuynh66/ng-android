@@ -1,4 +1,4 @@
-package com.app.util
+package com.general
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter

@@ -1,12 +1,7 @@
-package com.app.util
+package com.general
 
-import android.content.ContentResolver
 import android.graphics.Bitmap
-import android.graphics.ImageDecoder
-import android.net.Uri
-import android.os.Build
 import android.os.Environment
-import android.provider.MediaStore
 import org.opencv.android.Utils
 import org.opencv.core.*
 import org.opencv.features2d.BFMatcher

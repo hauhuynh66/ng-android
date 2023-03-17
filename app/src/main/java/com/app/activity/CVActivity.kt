@@ -20,9 +20,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import com.app.ngn.R
-import com.app.util.BitmapUtils
-import com.app.util.CVOperation
-import com.app.util.FileUtils
+import com.general.BitmapUtils
+import com.general.CVOperation
+import com.general.FileUtils
 import java.io.File
 import kotlin.system.exitProcess
 

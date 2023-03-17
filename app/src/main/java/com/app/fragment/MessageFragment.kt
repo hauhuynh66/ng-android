@@ -13,7 +13,7 @@ import com.app.adapter.CustomListAdapter
 import com.app.data.Message
 import com.app.data.MessageManager
 import com.app.ngn.R
-import com.app.util.Animation.Companion.crossfade
+import com.general.Animation.Companion.crossfade
 import com.app.viewmodel.ListHolderModel
 
 class MessageFragment : Fragment() {

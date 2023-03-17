@@ -16,8 +16,8 @@ import com.app.data.HttpResponse
 import com.app.ngn.R
 import com.app.task.GetHttpTask
 import com.app.task.TaskRunner
-import com.app.util.Animation.Companion.crossfade
-import com.app.util.JsonUtils
+import com.general.Animation.Companion.crossfade
+import com.general.JsonUtils
 import org.json.JSONObject
 
 class FootballStandingFragment : Fragment() {

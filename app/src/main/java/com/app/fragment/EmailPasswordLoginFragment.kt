@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.app.activity.NavigatorActivity
 import com.app.ngn.R
-import com.app.util.Animation
+import com.general.Animation
 import com.app.viewmodel.Authentication
 
 class EmailPasswordLoginFragment : Fragment() {

@@ -20,8 +20,8 @@ import com.app.data.explorer.FileInfo
 import com.app.data.explorer.FileInfoTask
 import com.app.ngn.R
 import com.app.task.TaskRunner
-import com.app.util.Animation.Companion.crossfade
-import com.app.util.FileUtils
+import com.general.Animation.Companion.crossfade
+import com.general.FileUtils
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 

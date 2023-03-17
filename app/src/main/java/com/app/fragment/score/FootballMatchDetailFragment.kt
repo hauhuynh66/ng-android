@@ -7,26 +7,32 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.adapter.CustomListAdapter
 import com.app.data.HttpResponse
 import com.app.data.StatLine
 import com.app.data.StatManager
+import com.app.data.score.FootballResult
+import com.app.data.score.ScoreContextHolder
 import com.app.ngn.R
 import com.app.task.GetHttpTask
 import com.app.task.TaskRunner
-import com.app.data.score.FootballResult
+import com.general.Animation.Companion.crossfade
 import com.squareup.picasso.Picasso
 import org.json.JSONObject
 
 class FootballMatchDetailFragment : Fragment() {
+    private val data : ScoreContextHolder by activityViewModels()
     private val postfix = "/fixtures/statistics"
-    private lateinit var data : List<StatLine>
-    private lateinit var taskRunner : TaskRunner
+    private var matchStats : List<StatLine> = arrayListOf()
     private lateinit var list : RecyclerView
     private lateinit var progress : ProgressBar
+    private lateinit var content : ConstraintLayout
+    private var attachTimes = 0
     private val stats =
         arrayListOf(
             "Shots on Goal", "Shots off Goal", "Total Shots", "Blocked Shots", "Shots insidebox", "Shots outsidebox",
@@ -44,18 +50,25 @@ class FootballMatchDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //redisplayOverview(model.matchOverview!!, view.findViewById(R.id.overview_group))
-        taskRunner = TaskRunner()
-        data = arrayListOf()
-        val statManager = StatManager(data)
+        redisplayOverview(data.currentMatchOverview!!, view.findViewById(R.id.overview_group))
+
+        val statManager = StatManager(matchStats)
 
         list = view.findViewById(R.id.item_list)
         list.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         list.adapter = CustomListAdapter(statManager)
 
         progress = view.findViewById(R.id.progress)
+        content = view.findViewById(R.id.detail_group)
+    }
 
-        getMatchDetails()
+    override fun onResume() {
+        super.onResume()
+        if(attachTimes < 1)
+        {
+            getMatchDetails()
+        }
+        attachTimes++
     }
 
     private fun redisplayOverview(overview : FootballResult, holder: View){
@@ -84,22 +97,22 @@ class FootballMatchDetailFragment : Fragment() {
     }
 
     private fun getMatchDetails(){
-        //val url = getString(R.string.football_api_url) + postfix + "?fixture=" + model.matchOverview!!.matchId
-        val url = getString(R.string.football_api_url) + postfix + "?fixture="
+        crossfade(progress, content)
+        val url = getString(R.string.football_api_url) + postfix + "?fixture=" + data.currentMatchOverview!!.matchId
 
         val headers = mutableMapOf(
             "x-rapidapi-host" to getString(R.string.football_api_host),
             "x-rapidapi-key" to getString(R.string.football_api_key)
         )
-        val task = GetHttpTask(url, headers)
+        val task = GetHttpTask(url, header = headers)
+        val taskRunner = TaskRunner()
         taskRunner.execute(task, object : TaskRunner.Callback<HttpResponse>{
             override fun onComplete(result: HttpResponse) {
                 if(result.ok()){
-                    /*suspend {
-                        adapter.data = processMatchDetails(result.getString())
-                    }
-                    adapter.notifyDataSetChanged()
-                    Animation.crossfade(arrayListOf(list), arrayListOf(progress))*/
+                    this@FootballMatchDetailFragment.matchStats = processMatchDetails(result.get())
+                    val statManager = StatManager(matchStats)
+                    this@FootballMatchDetailFragment.list.adapter = CustomListAdapter(statManager)
+                    crossfade(content, progress)
                 }
             }
         })

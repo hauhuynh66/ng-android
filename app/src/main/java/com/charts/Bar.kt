@@ -1,4 +1,4 @@
-package com.app.view
+package com.charts
 
 import android.content.Context
 import android.graphics.Canvas
@@ -8,9 +8,9 @@ import android.graphics.Path
 import android.util.AttributeSet
 import android.view.View
 import com.app.ngn.R
-import com.app.util.Generator
+import com.general.Generator
 
-class BarChart : View {
+class Bar : View {
     private lateinit var linePaint: Paint
     private lateinit var axPaint: Paint
     private lateinit var barPaint : Paint
@@ -44,10 +44,9 @@ class BarChart : View {
     }
 
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs){
-        context!!.theme.obtainStyledAttributes(attrs, R.styleable.BarChart, 0, 0).apply {
+        context!!.theme.obtainStyledAttributes(attrs, R.styleable.Bar, 0, 0).apply {
             try {
-                showAxes = getBoolean(R.styleable.BarChart_showAxes, false)
-                random = getBoolean(R.styleable.BarChart_random, false)
+                showAxes = getBoolean(R.styleable.Bar_showAxes, false)
             }finally {
                 recycle()
             }

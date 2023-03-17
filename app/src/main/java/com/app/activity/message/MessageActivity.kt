@@ -12,7 +12,7 @@ import androidx.appcompat.widget.Toolbar
 import com.app.data.Message
 import com.app.fragment.MessageFragment
 import com.app.ngn.R
-import com.app.util.Generator.Companion.generateString
+import com.general.Generator.Companion.generateString
 import com.app.viewmodel.ListHolderModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*

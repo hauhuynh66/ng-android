@@ -63,6 +63,9 @@
         <activity android:name="com.app.activity.explorer.FileListActivity"
             android:exported="true"/>
 
+        <activity android:name="com.app.activity.note.NoteActivity"
+            android:exported="true"/>
+
         <activity android:name="com.app.activity.CVActivity"
             android:exported="true"/>
 

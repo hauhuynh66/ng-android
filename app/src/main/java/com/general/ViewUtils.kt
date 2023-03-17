@@ -1,9 +1,10 @@
-package com.app.util
+package com.general
 
 import android.content.Context
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
@@ -191,6 +192,19 @@ class ViewUtils {
             constraintSet.connect(R.id.title, ConstraintSet.RIGHT, R.id.title_holder, ConstraintSet.RIGHT, rightMargin)
 
             constraintSet.applyTo(toolbar.findViewById(R.id.title_holder))
+        }
+
+        fun displayNoDataList(parent : ConstraintLayout, list : Int, text : String)
+        {
+            val lst = parent.findViewById<RecyclerView>(list) ?: return
+
+            val constraintSet = ConstraintSet()
+            constraintSet.clone(parent)
+            val lblEmpty = TextView(parent.context)
+            lblEmpty.text = text
+            parent.addView(lblEmpty)
+
+
         }
     }
 

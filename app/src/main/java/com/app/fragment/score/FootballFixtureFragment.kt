@@ -1,38 +1,40 @@
 package com.app.fragment.score
 
-import android.app.DatePickerDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.app.activity.score.MainActivity
+import com.app.adapter.FootballFixtureAdapter
 import com.app.data.HttpResponse
+import com.app.data.score.FootballResult
+import com.app.data.score.FootballTeam
+import com.app.data.score.ScoreContextHolder
+import com.app.data.score.ScoreFlag
 import com.app.ngn.R
 import com.app.task.GetHttpTask
 import com.app.task.TaskRunner
-import com.app.util.Animation.Companion.crossfade
-import com.app.util.JsonUtils
-import com.app.adapter.FootballFixtureAdapter
-import com.app.data.score.FootballResult
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.general.Animation.Companion.crossfade
+import com.general.DateTimeUtils.Companion.formatDate
+import com.general.JsonUtils
 import org.json.JSONObject
-import java.net.HttpURLConnection
 import java.util.*
 
 class FootballFixtureFragment : Fragment() {
-    //private val model : Football by activityViewModels()
+    private val data : ScoreContextHolder by activityViewModels()
     private val postfix : String = "/fixtures"
-    private lateinit var result : ArrayList<FootballResult>
+    private var result : ArrayList<FootballResult> = arrayListOf()
     private lateinit var progress : ProgressBar
     private lateinit var list : RecyclerView
     private lateinit var adapter : FootballFixtureAdapter
-    private lateinit var taskRunner : TaskRunner
-
-    private val calendar = GregorianCalendar()
+    private lateinit var parent : MainActivity
+    private var firstAttached : Int = 0
 
     private fun getResult(strLeagueId : String, strDate : String){
         crossfade(progress, list)
@@ -43,17 +45,15 @@ class FootballFixtureFragment : Fragment() {
             "x-rapidapi-key" to getString(R.string.football_api_key)
         )
 
-        val task = GetHttpTask(url, headers)
+        val task = GetHttpTask(url, header = headers)
+        val taskRunner = TaskRunner()
         taskRunner.execute(task, object : TaskRunner.Callback<HttpResponse>{
             override fun onComplete(result: HttpResponse) {
-                if(result.responseCode == HttpURLConnection.HTTP_OK){
-                    /*var data = arrayListOf<FootballResult>()
-                    suspend {
-                        data = processFootballResult(result.getString())
-                    }
-                    adapter.data = data
+                if(result.ok()){
+                    this@FootballFixtureFragment.result = processFootballResult(result.get())
+                    adapter.data = this@FootballFixtureFragment.result
                     adapter.notifyDataSetChanged()
-                    crossfade(arrayListOf(list), arrayListOf(progress))*/
+                    crossfade(list, progress)
                 }
             }
         })
@@ -92,6 +92,20 @@ class FootballFixtureFragment : Fragment() {
         }
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        firstAttached++
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(firstAttached < 2)
+        {
+            getResult("39", formatDate(Date(1677974400000	), "yyyy-MM-dd"))
+        }
+        firstAttached++
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -103,9 +117,9 @@ class FootballFixtureFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        taskRunner = TaskRunner()
+        this.parent = this.activity as MainActivity
 
-        val flBtn = view.findViewById<FloatingActionButton>(R.id.option_button)
+        /*val flBtn = view.findViewById<FloatingActionButton>(R.id.option_button)
         flBtn.apply {
             visibility = View.VISIBLE
             setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_calendar_today))
@@ -124,32 +138,26 @@ class FootballFixtureFragment : Fragment() {
                     calendar.get(Calendar.DATE)
                 ).show()
             }
-        }
+        }*/
+
         list = view.findViewById(R.id.item_list)
         progress = view.findViewById(R.id.progress)
-        result = arrayListOf()
 
-        /*adapter = FootballFixtureAdapter(result, object : FootballFixtureAdapter.Callback{
+        adapter = FootballFixtureAdapter(result, object : FootballFixtureAdapter.Callback{
             override fun onTeamClick(team: FootballTeam) {
-                val intent = Intent(requireActivity(), FootballDisplayActivity::class.java)
-                intent.putExtra("type","team")
-                intent.putExtra("team", team)
-                startActivity(intent)
+                this@FootballFixtureFragment.data.selectedTeamId = team.id
+                this@FootballFixtureFragment.parent.navigate(ScoreFlag.Team)
             }
 
             override fun onClick(overview: FootballResult) {
-                val intent = Intent(requireActivity(), FootballDisplayActivity::class.java)
-                intent.putExtra("type","match")
-                intent.putExtra("match", overview)
-                startActivity(intent)
+                this@FootballFixtureFragment.data.currentMatchOverview = overview
+                this@FootballFixtureFragment.parent.navigate(ScoreFlag.Match)
             }
         })
-
-        model.currentDate.observe(requireActivity()){
+        /*model.currentDate.observe(requireActivity()){
             calendar.time = model.currentDate.value!!
             getResult(model.currentLeague.value.toString(), formatDate(calendar.time, "yyyy-MM-dd"))
         }*/
-
         list.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         list.adapter = adapter
     }

@@ -37,10 +37,10 @@ import com.app.model.Setting
 import com.app.ngn.R
 import com.app.task.GetHttpTask
 import com.app.task.TaskRunner
-import com.app.util.Animation.Companion.crossfade
-import com.app.util.Permission
-import com.app.util.ViewUtils
-import com.app.view.SunPositionView
+import com.general.Animation.Companion.crossfade
+import com.general.Permission
+import com.general.ViewUtils
+import com.custom.SunPosition
 import com.app.viewmodel.Weather
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -283,7 +283,7 @@ class WeatherActivity : AppCompatActivity() {
             val cityName = obj.getJSONObject("city").getString("name")
             val fcList = obj.getJSONArray("list")
 
-            val sunPositionView = findViewById<SunPositionView>(R.id.gauge)
+            val sunPositionView = findViewById<SunPosition>(R.id.gauge)
             sunPositionView.display(obj.getJSONObject("city")
                 .getLong("sunrise"), obj.getJSONObject("city").getLong("sunset"))
 

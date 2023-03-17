@@ -9,20 +9,24 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
+import androidx.fragment.app.activityViewModels
 import com.app.data.score.FootballTeamDetail
 import com.app.data.HttpResponse
+import com.app.data.score.ScoreContextHolder
 import com.app.ngn.R
 import com.app.task.GetHttpTask
 import com.app.task.TaskRunner
+import com.general.Animation.Companion.crossfade
 import com.squareup.picasso.Picasso
 import org.json.JSONObject
 
 class FootballTeamDetailFragment : Fragment() {
+    private val data : ScoreContextHolder by activityViewModels()
     private val postfix : String = "/teams"
-    private val isDisplay : MutableLiveData<Boolean> = MutableLiveData(true)
     private var teamDetail : FootballTeamDetail? = null
-    private lateinit var taskRunner: TaskRunner
+    private lateinit var content : ConstraintLayout
+    private lateinit var progress : ProgressBar
+    private var attachedTimes: Int = 0
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,23 +38,25 @@ class FootballTeamDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        taskRunner = TaskRunner()
-        val content = view.findViewById<ConstraintLayout>(R.id.content)
-        val progress = view.findViewById<ProgressBar>(R.id.progress)
-        this.isDisplay.observe(requireActivity()){
-            /*when(isDisplay.value){
-                true->{
-                    crossfade(arrayListOf(content), arrayListOf(progress), 1000)
-                }
-                false->{
-                    crossfade(arrayListOf(progress), arrayListOf(content), 1000)
-                }
-            }*/
+        content = view.findViewById(R.id.content)
+        progress = view.findViewById(R.id.progress)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        println(attachedTimes)
+        if(attachedTimes < 1)
+        {
+            if(data.selectedTeamId!=null)
+            {
+                getTeamDetail(data.selectedTeamId!!)
+            }
         }
-        //getTeamDetail(model.team!!.id)
+        attachedTimes ++
     }
 
     private fun getTeamDetail(teamId : Int){
+        crossfade(progress, content)
         val url = getString(R.string.football_api_url) + postfix + "?id=" + teamId
 
         val headers = mutableMapOf(
@@ -58,18 +64,15 @@ class FootballTeamDetailFragment : Fragment() {
             "x-rapidapi-key" to getString(R.string.football_api_key)
         )
 
-        val task = GetHttpTask(url, headers)
+        val task = GetHttpTask(url,header = headers)
+        val taskRunner = TaskRunner()
         taskRunner.execute(task, object : TaskRunner.Callback<HttpResponse>{
             override fun onComplete(result: HttpResponse) {
                 if(result.ok()){
-                    /*suspend {
-                        teamDetail = processTeamDetailGeneral(result.getString())
-                    }
+                    this@FootballTeamDetailFragment.teamDetail = processTeamDetailGeneral(result.get())
 
-                    if(teamDetail!=null){
-                        display(teamDetail!!, view)
-                    }
-                    this@FootballTeamDetailFragment.isDisplay.value = true*/
+                    display(this@FootballTeamDetailFragment.teamDetail!!, content)
+                    crossfade(content, progress)
                 }
             }
         })
@@ -82,7 +85,7 @@ class FootballTeamDetailFragment : Fragment() {
         }else{
             val res = obj.getJSONArray("response").getJSONObject(0)
             val team = res.getJSONObject("team")
-            //val venue = res.getJSONObject("venue")
+            val venue = res.getJSONObject("venue")
             FootballTeamDetail(
                 team.getString("name"),
                 team.getString("logo"),

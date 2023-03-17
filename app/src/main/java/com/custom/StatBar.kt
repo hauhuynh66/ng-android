@@ -1,4 +1,4 @@
-package com.app.view
+package com.custom
 
 import android.content.Context
 import android.graphics.Canvas
@@ -10,7 +10,6 @@ import android.util.TypedValue
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import com.app.ngn.R
-import java.lang.Float.max
 
 class StatBar : View {
     private var bgPaint = Paint()

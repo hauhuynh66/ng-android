@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ngn.R
-import com.app.util.ViewUtils
+import com.general.ViewUtils
 
 class FileListActivity : AppCompatActivity() {
     private var type: Int = 1

@@ -15,8 +15,8 @@ import androidx.viewpager.widget.ViewPager
 import com.app.adapter.PageAdapter
 import com.app.data.PageData
 import com.app.ngn.R
-import com.app.util.Generator
-import com.app.util.ViewUtils
+import com.general.Generator
+import com.general.ViewUtils
 
 class AboutFragment : Fragment() {
     private lateinit var indicator : DotAdapter
