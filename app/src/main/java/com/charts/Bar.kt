@@ -1,43 +1,78 @@
 package com.charts
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Path
+import android.graphics.*
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.View
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.blue
+import androidx.core.graphics.green
+import androidx.core.graphics.red
 import com.app.ngn.R
-import com.general.Generator
+import com.charts.data.DataSet
+import com.general.NumberUtils
+import kotlin.math.max
+import kotlin.math.min
 
 class Bar : View {
+    enum class Type{
+        Single,
+        Stacked,
+        Grouped;
+        companion object
+        {
+            fun fromString(str : String) : Type
+            {
+                return when(str){
+                    "stacked"->{
+                        Stacked
+                    }
+                    "grouped"->{
+                        Grouped
+                    }
+                    else->{
+                        Single
+                    }
+                }
+            }
+        }
+    }
+
     private lateinit var linePaint: Paint
-    private lateinit var axPaint: Paint
-    private lateinit var barPaint : Paint
-    private var random : Boolean = false
-    private var data = listOf<Number>(
-        20,
-        10,
-        30,
-        50,
-        40,
-        80,
-        60,
-        90
-    )
+    private lateinit var fillPaint : Paint
+    private lateinit var textPaint : Paint
+    private lateinit var chartType : Type
+    private var displayText : Boolean = false
 
-    private var maxY : Double = 100.0
+    private var radius : Float = 20f
 
-    private var lineWidth = 40f
-    private var barWidth : Float = 200f
+    private var lx : Int = 0
+    private var ly : Float = 0f
 
-    private var distance : Float = 50f
+    private var data : List<DataSet> = getDefault()
+        set(value) {
+            field = value
+            invalidate()
+        }
+
+    private var lineWidth = 5f
+    private var barWidth = 40f
+    private val textBoundHolder : Rect = Rect()
 
     private var padding : Float = 20f
+
     private var showAxes : Boolean = true
 
+    private val colorList = arrayListOf(
+        Color.BLUE,
+        Color.YELLOW,
+        Color.RED,
+        Color.GREEN,
+        Color.MAGENTA,
+    )
+
     private lateinit var linePath : Path
-    private lateinit var colorList : List<String>
 
     constructor(context: Context?) : super(context){
         init()
@@ -47,24 +82,48 @@ class Bar : View {
         context!!.theme.obtainStyledAttributes(attrs, R.styleable.Bar, 0, 0).apply {
             try {
                 showAxes = getBoolean(R.styleable.Bar_showAxes, false)
+                displayText = getBoolean(R.styleable.Bar_displayText, false)
+                val str = getString(R.styleable.Bar_type)?:"single"
+                chartType = Type.fromString(str)
             }finally {
                 recycle()
             }
         }
 
-        colorList = Generator.generateColor(data.size)
-
         init()
     }
 
-    private fun init(){
-        axPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        axPaint.apply {
-            color = Color.BLUE
-            strokeWidth = 6f
-            style = Paint.Style.STROKE
+    private fun getDefault() : List<DataSet>
+    {
+        return arrayListOf(
+            DataSet("DataSet 1", arrayListOf(10, 20, 40, 30, 10)),
+            DataSet("DataSet 2", arrayListOf(100, 20, 30, 10, 60)),
+            DataSet("DataSet 3", arrayListOf(5, 150, 70, 40, 90))
+        )
+    }
+
+    fun addDataSet(set : DataSet)
+    {
+        val temp = this.data.toMutableList()
+        temp.add(temp.size, set)
+
+        this.data = temp
+    }
+
+    fun pop()
+    {
+        val temp = this.data.toMutableList()
+
+        if(temp.size < 1){
+            return
         }
 
+        temp.removeAt(temp.size - 1)
+
+        this.data = temp
+    }
+
+    private fun init(){
         linePaint = Paint(Paint.ANTI_ALIAS_FLAG)
         linePaint.apply {
             color = Color.GREEN
@@ -72,11 +131,26 @@ class Bar : View {
             style = Paint.Style.STROKE
         }
 
-        barPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        barPaint.apply {
+        fillPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+        fillPaint.apply {
             color = Color.GREEN
-            strokeWidth = barWidth
-            style = Paint.Style.STROKE
+            strokeWidth = 10f
+            style = Paint.Style.FILL
+        }
+
+        val size = 3f
+        val textSize = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_PT,
+            size, resources.displayMetrics
+        )
+        val customTypeface =
+            ResourcesCompat.getFont(context, R.font.audiowide)
+
+        textPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+        textPaint.apply {
+            color = Color.BLACK
+            this.textSize = textSize
+            typeface = customTypeface
         }
 
         linePath = Path()
@@ -84,9 +158,29 @@ class Bar : View {
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
+        this.ly = 0f
+        data.forEach{ set->
+            lx = max(lx, set.data.size)
+            ly = max(ly, NumberUtils.max(set.data.map {
+                it.toFloat()
+            }).toFloat())
+        }
 
-        maxY = data.maxOf {
-            it.toDouble()
+        when(this.chartType){
+            Type.Grouped->{
+                group(canvas)
+            }
+            Type.Stacked->{
+                stack(canvas)
+            }
+            else->{
+                //Change later
+                group(canvas)
+            }
+        }
+
+        /*maxY = data.maxOf {
+            it.
         }
 
         barWidth = 3*((width - 2*padding)/data.size)/5
@@ -109,23 +203,82 @@ class Bar : View {
                 val y = convertY(d.toDouble(), maxY)
                 canvas!!.drawLine(x, height-padding, x , y, barPaint)
             }
+        }*/
+    }
+
+    private fun drawBar(canvas: Canvas?, x: Float, y: Float, path: Path) {
+        canvas ?: return
+
+        val ratio = (this.height - 60f)/ ly
+        val canvasY = this.height - y * ratio
+
+        path.reset()
+        path.moveTo(x - this.barWidth / 2f, this.height + 0f)
+        path.lineTo(x - this.barWidth / 2f, canvasY)
+        path.lineTo(x + this.barWidth / 2f, canvasY)
+        path.lineTo(x + this.barWidth / 2f, this.height + 0f)
+        path.close()
+
+        canvas.drawPath(path, linePaint)
+
+        path.lineTo(x - this.barWidth / 2f, this.height + 0f)
+        path.close()
+
+        fillPaint.color = Color.argb(100, linePaint.color.red, linePaint.color.green, linePaint.color.blue)
+        canvas.drawPath(path, fillPaint)
+
+        if(displayText)
+        {
+            val s = y.toInt().toString()
+            textPaint.getTextBounds(s, 0, s.length, textBoundHolder)
+            canvas.drawText(s, x - textBoundHolder.width()/2f , canvasY - 10f, textPaint)
         }
     }
 
+    private fun group(canvas: Canvas?)
+    {
+        canvas?:return
 
-    private fun convertX(i : Int) : Float{
-        val x = (width - 2*padding)/data.size
-        return padding + (i+1)*x - x/2
+        if(data.size > colorList.size)
+        {
+            return
+        }
+
+        val parts = (this.width - 20f)/lx
+
+        this.padding = parts/4f
+        this.barWidth = (3*parts/4f)/data.size
+        this.lineWidth = min(this.barWidth/20f, this.lineWidth)
+
+        linePaint.strokeWidth = this.lineWidth
+        data.forEachIndexed { n, set ->
+            linePaint.color = colorList[n]
+            var currentX = n * this.barWidth + n * this.lineWidth
+            set.data.forEachIndexed { i, d ->
+                currentX += if(i > 0) {
+                    parts
+                }else {
+                    20f + this.barWidth/2f
+                }
+
+                drawBar(canvas, currentX, d.toFloat(), linePath)
+            }
+        }
     }
 
-    private fun convertY(y : Double, diffY : Double) : Float{
-        val ratio = (height-2*padding)/diffY
-        return (height - padding - y * ratio).toFloat()
+    private fun drawStack(canvas: Canvas?, x: Float, y: Float, path: Path) : Float
+    {
+        canvas?:return 0f
+
+        drawBar(canvas, x, y, path)
+
+        return this.height - y * ((this.height - 100f)/ ly)
     }
 
-    fun setData(list : List<Number>){
-        this.data = list
-        colorList = Generator.generateColor(data.size)
-        invalidate()
+    private fun stack(canvas: Canvas?)
+    {
+        canvas?:return
+        val stackPos = arrayListOf<Float>()
+
     }
 }

@@ -17,6 +17,7 @@ class Pie : View {
     private var rectF = RectF()
     private var center = PointF()
     private var r : Float = 0f
+    private var range : Float = 0f
     private var defaultRect : RectF = RectF()
 
     private var padding = 20f
@@ -27,7 +28,6 @@ class Pie : View {
             field = value
             invalidate()
         }
-    private var shadow = false
     private var donut = false
 
     constructor(context: Context?) : super(context){
@@ -36,7 +36,6 @@ class Pie : View {
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs){
         context!!.theme.obtainStyledAttributes(attrs, R.styleable.Pie, 0, 0).apply {
             try {
-                shadow = getBoolean(R.styleable.Pie_shadow, false)
                 donut = getBoolean(R.styleable.Pie_donut, false)
             }finally {
                 recycle()
@@ -47,7 +46,6 @@ class Pie : View {
     }
 
     private fun init(){
-
         sweepPaint = Paint(Paint.ANTI_ALIAS_FLAG)
         sweepPaint.apply {
             color = Color.GREEN
@@ -65,8 +63,7 @@ class Pie : View {
     private fun getDefault() : List<DataSet>
     {
         return arrayListOf(
-            DataSet("DataSet 1", arrayListOf(200, 300, 500, 400)),
-            DataSet("DataSet 2", arrayListOf(50, 200, 300, 60))
+            DataSet("DataSet 1", arrayListOf(200, 300, 500, 400))
         )
     }
 
@@ -96,19 +93,28 @@ class Pie : View {
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         this.r = min(w, h)/2f - padding
+
         this.center = PointF(w/2f, h/2f)
 
         defaultRect = RectF(center.x - r, center.y - r, center.x + r, center.y + r)
     }
 
     override fun onDraw(canvas: Canvas?) {
-        this.weight = this.r / this.data.size
-        rectF.apply {
+        this.rectF.apply {
             left = defaultRect.left
             right = defaultRect.right
             bottom = defaultRect.bottom
             top = defaultRect.top
         }
+
+        this.range = if(!donut){
+            this.r
+        }else
+        {
+            this.r/2f
+        }
+
+        this.weight = this.range / this.data.size
 
         this.data.forEachIndexed { i, set ->
             if(i > 0) {
@@ -120,40 +126,31 @@ class Pie : View {
                 }
             }
 
+            //canvas!!.drawRect(0f, 0f , width.toFloat(), height.toFloat(), cd)
+
             val sum = NumberUtils.sum(set.data.map{
                 it.toFloat()
             })
             var currentArc = -90f
-            //canvas!!.drawRect(0f, 0f , width.toFloat(), height.toFloat(), cd)
 
             set.data.forEach {
                 sweepPaint.color = Color.parseColor(generateColorCode())
 
                 val sweepArc = (it.toFloat()/sum.toFloat()) * 360f
-                canvas!!.drawArc(rectF, currentArc, sweepArc, true, sweepPaint)
-                currentArc += sweepArc
-            }
-        }
-        /*val sum : Double = data.reduce{
-            a,b -> a.toDouble() + b.toDouble()
-        }.toDouble()
-
-        var currentArc = -90f
-
-        canvas!!.drawRect(0f, 0f , width.toFloat(), height.toFloat(), cd)
-
-        data.forEachIndexed {
-            i, it -> run{
-                sweepPaint.color = Color.parseColor(colorList[i])
-                val sweepArc = ((it.toDouble()/sum)).toFloat() * 360f
-                canvas.drawArc(outerRectF, currentArc, sweepArc, true, sweepPaint)
+                canvas!!.drawArc(this.rectF, currentArc, sweepArc, true, sweepPaint)
                 currentArc += sweepArc
             }
         }
 
         if (donut){
-            canvas.drawArc(innerRectF, 0f, 360f, true, cd)
-        }*/
+            this.rectF.apply {
+                left = center.x - range
+                right = center.x + range
+                top = center.y - range
+                bottom = center.y + range
+            }
+            canvas!!.drawArc(rectF, 0f, 360f, true, cd)
+        }
     }
 
 }

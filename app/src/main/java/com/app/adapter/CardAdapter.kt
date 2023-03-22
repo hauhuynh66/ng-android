@@ -130,7 +130,7 @@ class CardAdapter(val data : ArrayList<CardData>, val orientation : Int) : Recyc
             }
 
             itemView.findViewById<Bar>(R.id.chart).apply {
-                this.setData(data.data)
+                //this.setData(data.data)
             }
         }
     }

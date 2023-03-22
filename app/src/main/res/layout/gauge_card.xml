@@ -46,7 +46,7 @@
                 app:layout_constraintDimensionRatio="h,1:1"
                 android:id="@+id/chart"
                 app:display="1"
-                app:display_text="true"/>
+                app:displayText="true"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

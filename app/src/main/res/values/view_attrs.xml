@@ -5,12 +5,13 @@
     <attr name="background_color" format="color"/>
     <attr name="dash_color" format="color"/>
     <attr name="line_color" format="color"/>
-    <attr name="display_text" format="boolean"/>
+    <attr name="displayText" format="boolean"/>
     <attr name="progress_color" format="color"/>
     <attr name="shadow" format="boolean"/>
     <attr name="line_width" format="dimension"/>
     <attr name="src" format="reference"/>
     <attr name="fill" format="boolean"/>
+    <attr name="type" format="string"/>
 
     <declare-styleable name="Line">
         <attr name="showAxes"/>
@@ -20,18 +21,20 @@
 
     <declare-styleable name="Bar">
         <attr name="showAxes"/>
+        <attr name="stacked" format="boolean"/>
+        <attr name="type"/>
+        <attr name="displayText"/>
     </declare-styleable>
 
     <declare-styleable name="Pie">
         <attr name="donut" format="boolean"/>
-        <attr name="shadow"/>
     </declare-styleable>
 
     <declare-styleable name="Gauge">
         <attr name="display" format="string"/>
         <attr name="background_color"/>
         <attr name="progress_color"/>
-        <attr name="display_text"/>
+        <attr name="displayText"/>
         <attr name="offset" format="dimension"/>
     </declare-styleable>
 
