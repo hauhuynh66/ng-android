@@ -5,14 +5,13 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="20dp">
-    <com.charts.Bar
+
+    <com.charts.Radar
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/chart"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="w,1:1"
-        android:id="@+id/chart"
-        app:displayText="true"
-        app:type="grouped"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintDimensionRatio="w,1:1"/>
     <Button
         app:layout_constraintTop_toBottomOf="@id/chart"
         android:id="@+id/add"

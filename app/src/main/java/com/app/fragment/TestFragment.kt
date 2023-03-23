@@ -8,6 +8,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.app.ngn.R
 import com.charts.Bar
+import com.charts.Polar
 import com.charts.data.DataSet
 import java.util.*
 
@@ -27,16 +28,16 @@ class TestFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val chart = view.findViewById<Bar>(R.id.chart)
+        //val chart = view.findViewById<Polar>(R.id.chart)
         val addBtn = view.findViewById<Button>(R.id.add)
         val removeBtn = view.findViewById<Button>(R.id.remove)
 
         addBtn.setOnClickListener {
-            chart.addDataSet(DataSet("Test", randomNum(5, 10, 200)))
+           // chart.addDataSet(DataSet("Test", randomNum(5, 10, 200)))
         }
 
         removeBtn.setOnClickListener {
-            chart.pop()
+            //chart.pop()
         }
     }
 
